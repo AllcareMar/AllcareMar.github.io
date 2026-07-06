@@ -264,6 +264,8 @@ section{padding:88px 0}
 .staff-states{font-size:10.5px;color:var(--gray-400);margin-top:2px}
 .staff-name{font-family:'Montserrat',sans-serif;font-size:13.5px;font-weight:800;color:var(--blue-dark);margin-bottom:3px}
 .staff-role{font-size:11px;color:var(--gray-400);line-height:1.5}
+.btn-view-agents{background:var(--blue);color:#fff;border:none;padding:15px 30px;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:14.5px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:9px;transition:var(--t);text-decoration:none}
+.btn-view-agents:hover{background:var(--blue-dark);transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,47,212,.3)}
 .agents-directory{background:var(--warm-card);border-radius:var(--r-lg);padding:32px;border:1.5px solid var(--gray-200)}
 .agents-directory h4{font-family:'Montserrat',sans-serif;font-size:15px;font-weight:800;color:var(--blue-dark);margin-bottom:16px;display:flex;align-items:center;gap:8px}
 .agents-directory h4 i{color:var(--red)}
@@ -506,11 +508,10 @@ const T={
     team_ey:"Meet Our Team",team_title:"The People Behind <em>Allcare Mar</em>",team_sub:"Licensed, bilingual professionals dedicated to guiding you through every Medicare decision — backed by a full office team that supports you year-round.",
     lead1_role:"Chairman & CEO",lead1_lang:"English, Spanish",
     lead2_role:"President & COO",lead2_lang:"English, Spanish",
-    lead3_role:"General Manager",lead3_lang:"English, Spanish",
+    lead3_role:"Training Manager",lead3_lang:"English, Spanish",
+    leader_states_label:"Licensed States",
     staff_subtitle:"Office Staff",
-    staff1_role:"Operating Manager",staff2_role:"Senior Administration",staff3_role:"Licensed Agent",staff4_role:"Technological Support",staff5_role:"Office Team Leader",
-    staff_agent_role:"Licensed Agent",staff_agent_role2:"Licensed Agent",staff_agent_role3:"Licensed Agent",
-    agents_dir_title:"Our Licensed Sales Agents",agents_count:"89 agents",agent_search_ph:"Search agent by name...",agents_no_results:"No agents found matching your search.",
+    view_agents_btn:"View All Agents & Partner Agencies",
     portal_ey:"Agent & Agency Portal",portal_title:"Your Success,<br>Our Priority",portal_desc:"Our exclusive portal gives licensed agents and agency partners the tools, training, and support they need to grow their Medicare business.",
     pf1:"Manage clients & enrollments",pf2:"Access training & certifications",pf3:"Track commissions & performance reports",pf4:"Download marketing materials",pf5:"Real-time carrier updates & tools",
     login_title:"Agent Login",login_sub:"Sign in with your Allcare Mar Google Workspace account",
@@ -590,11 +591,10 @@ const T={
     team_ey:"Conoce a Nuestro Equipo",team_title:"Las Personas Detrás de <em>Allcare Mar</em>",team_sub:"Profesionales certificados y bilingües dedicados a guiarte en cada decisión de Medicare — respaldados por un equipo de oficina completo que te apoya todo el año.",
     lead1_role:"Presidente y CEO",lead1_lang:"Inglés, Español",
     lead2_role:"Presidenta y COO",lead2_lang:"Inglés, Español",
-    lead3_role:"Gerente General",lead3_lang:"Inglés, Español",
+    lead3_role:"Gerente de Capacitación",lead3_lang:"Inglés, Español",
+    leader_states_label:"Estados con Licencia",
     staff_subtitle:"Personal de Oficina",
-    staff1_role:"Gerente de Operaciones",staff2_role:"Administración Senior",staff3_role:"Agente Certificada",staff4_role:"Soporte Tecnológico",staff5_role:"Líder de Equipo de Oficina",
-    staff_agent_role:"Agente Certificado",staff_agent_role2:"Agente Certificado",staff_agent_role3:"Agente Certificada",
-    agents_dir_title:"Nuestros Agentes de Ventas Certificados",agents_count:"89 agentes",agent_search_ph:"Buscar agente por nombre...",agents_no_results:"No se encontraron agentes con esa búsqueda.",
+    view_agents_btn:"Ver Todos los Agentes y Agencias Asociadas",
     portal_ey:"Portal de Agentes y Agencias",portal_title:"Tu Éxito,<br>Nuestra Prioridad",portal_desc:"Nuestro portal exclusivo brinda a los agentes certificados y socios de agencias las herramientas, capacitación y apoyo que necesitan para hacer crecer su negocio de Medicare.",
     pf1:"Gestionar clientes e inscripciones",pf2:"Acceder a capacitaciones y certificaciones",pf3:"Rastrear comisiones y reportes",pf4:"Descargar materiales de marketing",pf5:"Actualizaciones de aseguradoras en tiempo real",
     login_title:"Inicio de Sesión de Agente",login_sub:"Inicia sesión con tu cuenta de Google Workspace de Allcare Mar",
@@ -715,15 +715,10 @@ function setLang(l){
   document.getElementById('lead2-lang').textContent=t.lead2_lang;
   document.getElementById('lead3-role').textContent=t.lead3_role;
   document.getElementById('lead3-lang').textContent=t.lead3_lang;
+  document.querySelectorAll('.leader-states-label').forEach(function(el){el.textContent=t.leader_states_label;});
   document.getElementById('staff-subtitle').textContent=t.staff_subtitle;
-  document.getElementById('staff1-role').textContent=t.staff1_role;
-  document.getElementById('staff2-role').textContent=t.staff2_role;
-  document.getElementById('staff3-role').textContent=t.staff3_role;
-  document.getElementById('staff4-role').textContent=t.staff4_role;
-  document.getElementById('staff5-role').textContent=t.staff5_role;
-  document.getElementById('staff-agent-role').textContent=t.staff_agent_role;
-  document.getElementById('staff-agent-role2').textContent=t.staff_agent_role2;
-  document.getElementById('staff-agent-role3').textContent=t.staff_agent_role3;
+  document.getElementById('view-agents-label').textContent=t.view_agents_btn;
+  renderOfficeStaff();
   // portal
   document.getElementById('portal-ey').textContent=t.portal_ey;
   document.getElementById('portal-title').innerHTML=t.portal_title;
@@ -1088,7 +1083,7 @@ function setLang(l){
         <div class="leader-avatar"><img src="/agentes/marcos-rodriguez.webp" alt="Marcos Rodriguez" loading="lazy" onerror="this.style.display='none'"><span>MR</span></div>
         <div class="leader-name">Marcos Rodriguez</div>
         <div class="leader-role" id="lead1-role"></div>
-        <div class="leader-states">Estados con licencia: <em>—</em></div>
+        <div class="leader-states"><span class="leader-states-label"></span>: <em>NJ, NY, TX, SC, PA, OH, WI, TN, NC, MI, VA, RI, MD, LA, IL, GA, FL, DE, CT, CO, CA, AZ, AL</em></div>
         <div class="leader-meta">
           <a href="mailto:mrodriguez@allcaremar.com">mrodriguez@allcaremar.com</a><br>
           Ext. 403 · <span id="lead1-lang"></span>
@@ -1098,7 +1093,7 @@ function setLang(l){
         <div class="leader-avatar"><img src="/agentes/maria-santiago.webp" alt="Maria Santiago" loading="lazy" onerror="this.style.display='none'"><span>MS</span></div>
         <div class="leader-name">Maria Santiago</div>
         <div class="leader-role" id="lead2-role"></div>
-        <div class="leader-states">Estados con licencia: <em>—</em></div>
+        <div class="leader-states"><span class="leader-states-label"></span>: <em>NJ, NY, PA, TX, OH, VA, RI, AL, CA, CT, DE, FL, GA, LA</em></div>
         <div class="leader-meta">
           <a href="mailto:msanti@allcaremar.com">msanti@allcaremar.com</a><br>
           Ext. 404 · <span id="lead2-lang"></span>
@@ -1108,7 +1103,7 @@ function setLang(l){
         <div class="leader-avatar"><img src="/agentes/julian-vega.webp" alt="Julian Vega" loading="lazy" onerror="this.style.display='none'"><span>JV</span></div>
         <div class="leader-name">Julian Vega</div>
         <div class="leader-role" id="lead3-role"></div>
-        <div class="leader-states">Estados con licencia: <em>—</em></div>
+        <div class="leader-states"><span class="leader-states-label"></span>: <em>—</em></div>
         <div class="leader-meta">
           <a href="mailto:julian_vega@allcaremar.com">julian_vega@allcaremar.com</a><br>
           Ext. 400 · <span id="lead3-lang"></span>
@@ -1116,17 +1111,12 @@ function setLang(l){
       </div>
     </div>
 
-    <!-- Office staff / Agent Directory -->
+    <!-- Office staff — cargado dinámicamente desde staff.json -->
     <h3 class="reveal" style="font-family:'Montserrat',sans-serif;font-size:16px;font-weight:800;color:var(--blue-dark);margin-bottom:1.2rem" id="staff-subtitle"></h3>
-    <div class="staff-grid reveal" style="transition-delay:.05s">
-      <div class="staff-card"><div class="staff-avatar"><img src="/agentes/waldo-martinez.webp" alt="Waldo Martinez" loading="lazy" onerror="this.style.display='none'"><span>WM</span></div><div class="staff-name">Waldo Martinez</div><div class="staff-role" id="staff1-role"></div><div class="staff-states">Lic.: —</div></div>
-      <div class="staff-card"><div class="staff-avatar"><img src="/agentes/jessica-dominguez.webp" alt="Jessica Dominguez" loading="lazy" onerror="this.style.display='none'"><span>JD</span></div><div class="staff-name">Jessica Dominguez</div><div class="staff-role" id="staff2-role"></div><div class="staff-states">Lic.: —</div></div>
-      <div class="staff-card"><div class="staff-avatar"><img src="/agentes/nicole-arratia.webp" alt="Nicole Arratia" loading="lazy" onerror="this.style.display='none'"><span>NA</span></div><div class="staff-name">Nicole Arratia</div><div class="staff-role" id="staff3-role"></div><div class="staff-states">Lic.: —</div></div>
-      <div class="staff-card"><div class="staff-avatar"><img src="/agentes/jesus-cabreja.webp" alt="Jesus Cabreja" loading="lazy" onerror="this.style.display='none'"><span>JC</span></div><div class="staff-name">Jesus Cabreja</div><div class="staff-role" id="staff4-role"></div><div class="staff-states">Lic.: —</div></div>
-      <div class="staff-card"><div class="staff-avatar"><img src="/agentes/mariel-capellan.webp" alt="Mariel Capellan" loading="lazy" onerror="this.style.display='none'"><span>MC</span></div><div class="staff-name">Mariel Capellan</div><div class="staff-role" id="staff5-role"></div><div class="staff-states">Lic.: —</div></div>
-      <div class="staff-card"><div class="staff-avatar"><img src="/agentes/glenda-colon.webp" alt="Glenda Colon" loading="lazy" onerror="this.style.display='none'"><span>GC</span></div><div class="staff-name">Glenda Colon</div><div class="staff-role" id="staff-agent-role"></div><div class="staff-states">Lic.: —</div></div>
-      <div class="staff-card"><div class="staff-avatar"><img src="/agentes/roland-pinzon.webp" alt="Roland Pinzon" loading="lazy" onerror="this.style.display='none'"><span>RP</span></div><div class="staff-name">Roland Pinzon</div><div class="staff-role" id="staff-agent-role2"></div><div class="staff-states">Lic.: —</div></div>
-      <div class="staff-card"><div class="staff-avatar"><img src="/agentes/ana-marie-martell.webp" alt="Ana Marie Martell" loading="lazy" onerror="this.style.display='none'"><span>AM</span></div><div class="staff-name">Ana Marie Martell</div><div class="staff-role" id="staff-agent-role3"></div><div class="staff-states">Lic.: —</div></div>
+    <div class="staff-grid reveal" style="transition-delay:.05s" id="staffGrid"></div>
+
+    <div class="team-cta reveal" style="text-align:center;margin-top:.5rem">
+      <a class="btn-view-agents" href="agents.html" id="btn-view-agents"><i class="fas fa-users"></i> <span id="view-agents-label">View All Agents &amp; Partner Agencies</span></a>
     </div>
   </div>
 </section>
@@ -1382,24 +1372,32 @@ function setLang(l){
 <a href="tel:8006975631" class="float-phone" aria-label="Call Allcare Mar"><i class="fas fa-phone-alt"></i></a>
 
 <script>
+// Office Staff — cargado dinámicamente desde staff.json (misma fuente que usa agents.html)
+let staffDataCache=null;
+
 // Init language
 setLang('en');
 
 // Mobile menu
 function toggleMob(){document.getElementById('mobMenu').classList.toggle('open')}
 
-// FAQ
-// Agent directory search filter
-function filterAgents(query){
-  const q=query.trim().toLowerCase();
-  const spans=document.querySelectorAll('#agentsList span');
-  let visibleCount=0;
-  spans.forEach(s=>{
-    const match=s.textContent.toLowerCase().includes(q);
-    s.classList.toggle('hide',!match);
-    if(match)visibleCount++;
-  });
-  document.getElementById('agentsNoResults').style.display=visibleCount===0?'block':'none';
+async function renderOfficeStaff(){
+  const grid=document.getElementById('staffGrid');
+  if(!grid)return;
+  try{
+    if(!staffDataCache){
+      const res=await fetch('staff.json');
+      staffDataCache=await res.json();
+    }
+    const list=staffDataCache.office_staff||[];
+    grid.innerHTML=list.map(p=>{
+      const initials=p.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+      const position=lang==='es'?(p.position_es||p.position_en):(p.position_en||p.position_es);
+      return '<div class="staff-card"><div class="staff-avatar"><img src="'+p.image+'" alt="'+p.name+'" loading="lazy" onerror="this.style.display=\'none\'"><span>'+initials+'</span></div><div class="staff-name">'+p.name+'</div><div class="staff-role">'+position+'</div></div>';
+    }).join('');
+  }catch(err){
+    console.error('No se pudo cargar staff.json',err);
+  }
 }
 
 function toggleFaq(btn){

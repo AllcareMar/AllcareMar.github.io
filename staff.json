@@ -1,0 +1,793 @@
+{
+  "_readme": "Fuente única de datos para el directorio de agentes de Allcare Mar. Usado por index.html (solo office_staff) y agents.html (independent_agents + partner_agencies). Datos actualizados desde Agent-Contact-Website.xlsx (fuente autoritativa, 2026-07-06). licensed_states usa códigos de 2 letras (ej. 'FL', 'NJ', 'TX'); ['PENDIENTE'] indica que el agente aún no tiene estados licenciados registrados en la hoja de cálculo — no inventar datos de licencia.",
+  "office_staff": [
+    {
+      "name": "Jessica Dominguez",
+      "position_en": "Senior Administration",
+      "position_es": "Administración Senior",
+      "phone": "(551) 363-2049",
+      "extension": "422",
+      "email": "jdominguez@allcaremar.com",
+      "image": "/agentes/jessica-dominguez.webp"
+    },
+    {
+      "name": "Mariel Capellan",
+      "position_en": "Office Team Leader",
+      "position_es": "Líder de Equipo de Oficina",
+      "phone": "(973) 944-5544",
+      "extension": "435",
+      "email": "mcapellan@allcaremar.com",
+      "image": "/agentes/mariel-capellan.webp"
+    },
+    {
+      "name": "Karen Perez",
+      "position_en": "Receptionist",
+      "position_es": "Recepcionista",
+      "phone": "(551) 230-2235",
+      "extension": "2235",
+      "email": "kperez@allcaremar.com",
+      "image": "/agentes/karen-perez.webp"
+    },
+    {
+      "name": "Jesus Cabreja",
+      "position_en": "Technological Support",
+      "position_es": "Soporte Tecnológico",
+      "phone": "(610) 628-9202",
+      "extension": "202",
+      "email": "jcabreja@allcaremar.com",
+      "image": "/agentes/jesus-cabreja.webp"
+    },
+    {
+      "name": "Aurelyn Castillo",
+      "position_en": "CEO Assistant",
+      "position_es": "Asistente del CEO",
+      "phone": "(551) 233-7115",
+      "extension": "7115",
+      "email": "acastillo@allcaremar.com",
+      "image": "/agentes/aurelyn-castillo.webp"
+    },
+    {
+      "name": "Waldo Martinez",
+      "position_en": "Operations",
+      "position_es": "Operaciones",
+      "phone": "(973) 665-2100",
+      "extension": "2100",
+      "email": "wmartinez@allcaremar.com",
+      "image": "/agentes/waldo-martinez.webp"
+    }
+  ],
+  "independent_agents": [
+    {
+      "name": "Nicole Arratia",
+      "phone": "(407) 495-4119",
+      "extension": "119",
+      "email": "nicole_arratia@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/nicole-arratia.webp"
+    },
+    {
+      "name": "Adriana Ayala",
+      "phone": "(856) 349-0178",
+      "extension": "430",
+      "email": "a.ayala@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/adriana-ayala.webp"
+    },
+    {
+      "name": "Iris Balgobin",
+      "phone": "(201) 350-6619",
+      "extension": "426",
+      "email": "iris.pina@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/iris-balgobin.webp"
+    },
+    {
+      "name": "Yaisha Colon",
+      "phone": "(352) 327-3600",
+      "extension": "416",
+      "email": "yaisha.colon@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/yaisha-colon.webp"
+    },
+    {
+      "name": "Jonathan Fernandez",
+      "phone": "(862) 347-4366",
+      "extension": "866",
+      "email": "jfernandez@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/jonathan-fernandez.webp"
+    },
+    {
+      "name": "Jesus Garcia",
+      "phone": "(956) 441-2494",
+      "extension": "457",
+      "email": "j.garcia@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/jesus-garcia.webp"
+    },
+    {
+      "name": "Ramon Gil",
+      "phone": "(646) 586-2316",
+      "extension": "316",
+      "email": "rgil@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/ramon-gil.webp"
+    },
+    {
+      "name": "Tayler Gray",
+      "phone": "(804) 715-1356",
+      "extension": "1356",
+      "email": "tgray@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/tayler-gray.webp"
+    },
+    {
+      "name": "Ulysses Hyman",
+      "phone": "(551) 273-3318",
+      "extension": "318",
+      "email": "uhyman@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/ulysses-hyman.webp"
+    },
+    {
+      "name": "Oliver Jimenez",
+      "phone": "(201) 809-9079",
+      "extension": "419",
+      "email": "oliver.j@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/oliver-jimenez.webp"
+    },
+    {
+      "name": "Felix Liriano",
+      "phone": "(804) 630-0228",
+      "extension": "228",
+      "email": "fliriano@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/felix-liriano.webp"
+    },
+    {
+      "name": "Kimberly Lopez",
+      "phone": "(407) 487-3134",
+      "extension": "134",
+      "email": "klopez@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/kimberly-lopez.webp"
+    },
+    {
+      "name": "Nelson Lopez",
+      "phone": "(407) 674-0140",
+      "extension": "140",
+      "email": "nlopez@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/nelson-lopez.webp"
+    },
+    {
+      "name": "Alvorine Martin",
+      "phone": "(856) 349-0154",
+      "extension": "424",
+      "email": "amartin@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/alvorine-martin.webp"
+    },
+    {
+      "name": "Maria Monsalve",
+      "phone": "(856) 349-0181",
+      "extension": "421",
+      "email": "mmonsalve@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/maria-monsalve.webp"
+    },
+    {
+      "name": "Francia Munoz",
+      "phone": "(201) 882-0308",
+      "extension": "418",
+      "email": "fmunoz@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/francia-munoz.webp"
+    },
+    {
+      "name": "Alicia Nunez",
+      "phone": "(804) 388-9502",
+      "extension": "502",
+      "email": "anunez@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/alicia-nunez.webp"
+    },
+    {
+      "name": "Paola Peguero",
+      "phone": "(856) 864-1791",
+      "extension": "791",
+      "email": "ppeguero@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/paola-peguero.webp"
+    },
+    {
+      "name": "Carlos Perez",
+      "phone": "(201) 777-3206",
+      "extension": "414",
+      "email": "carloshealthagent@gmail.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/carlos-perez.webp"
+    },
+    {
+      "name": "Luz Pujols",
+      "phone": "(551) 258-4604",
+      "extension": "4604",
+      "email": "lpujols@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/luz-pujols.webp"
+    },
+    {
+      "name": "Cristian Quinones",
+      "phone": "(856) 349-0184",
+      "extension": "433",
+      "email": "cquinones@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/cristian-quinones.webp"
+    },
+    {
+      "name": "Mariela Read",
+      "phone": "(954) 451-1151",
+      "extension": "151",
+      "email": "mread@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/mariela-read.webp"
+    },
+    {
+      "name": "Luis Rodriguez",
+      "phone": "(201) 578-9172",
+      "extension": "172",
+      "email": "luis.rod@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/luis-rodriguez.webp"
+    },
+    {
+      "name": "Sixto Rodriguez",
+      "phone": "(908) 335-9496",
+      "extension": "9496",
+      "email": "sirodriguez@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/sixto-rodriguez.webp"
+    },
+    {
+      "name": "Marcos Rodriguez-Martinez",
+      "phone": "(201) 987-1097",
+      "extension": "403",
+      "email": "mrodriguez@allcaremar.com",
+      "licensed_states": [
+        "NJ",
+        "NY",
+        "TX",
+        "SC",
+        "PA",
+        "OH",
+        "WI",
+        "TN",
+        "NC",
+        "MI",
+        "VA",
+        "RI",
+        "MD",
+        "LA",
+        "IL",
+        "GA",
+        "FL",
+        "DE",
+        "CT",
+        "CO",
+        "CA",
+        "AZ",
+        "AL"
+      ],
+      "image": "/agentes/marcos-rodriguez-martinez.webp"
+    },
+    {
+      "name": "Jorge Rodriguez",
+      "phone": "(407) 632-1434",
+      "extension": "1434",
+      "email": "jirodriguez@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/jorge-rodriguez.webp"
+    },
+    {
+      "name": "Maria Rosario",
+      "phone": "(407) 490-0244",
+      "extension": "244",
+      "email": "mrosario@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/maria-rosario.webp"
+    },
+    {
+      "name": "Yisel Rosario",
+      "phone": "(973) 936-9994",
+      "extension": "9994",
+      "email": "yrosario@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/yisel-rosario.webp"
+    },
+    {
+      "name": "Carlos Sanchez",
+      "phone": "(973) 640-7746",
+      "extension": "469",
+      "email": "csanchez@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/carlos-sanchez.webp"
+    },
+    {
+      "name": "Maria Santiago",
+      "phone": "(201) 987-1079",
+      "extension": "404",
+      "email": "msanti@allcaremar.com",
+      "licensed_states": [
+        "NJ",
+        "NY",
+        "PA",
+        "TX",
+        "OH",
+        "VA",
+        "RI",
+        "AL",
+        "CA",
+        "CT",
+        "DE",
+        "FL",
+        "GA",
+        "LA"
+      ],
+      "image": "/agentes/maria-santiago.webp"
+    },
+    {
+      "name": "Yissela Velazquez",
+      "phone": "(773) 977-7442",
+      "extension": "7442",
+      "email": "yvelazquez@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "image": "/agentes/yissela-velazquez.webp"
+    }
+  ],
+  "partner_agencies": [
+    {
+      "agency_id": "jpm-solutions",
+      "agency_name": "JPM Solutions",
+      "agency_description": "Authorized partner agency of Allcare Mar Agency.",
+      "agents": [
+        {
+          "name": "Karitssa Barry",
+          "phone": "(551) 246-1036",
+          "extension": "1036",
+          "email": "kfernandez@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/karitssa-barry.webp"
+        },
+        {
+          "name": "Patricia Sixon",
+          "phone": "(201) 534-2143",
+          "extension": "143",
+          "email": "psixon@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/patricia-sixon.webp"
+        },
+        {
+          "name": "Julian Vega",
+          "phone": "(201) 710-7752",
+          "extension": "400",
+          "email": "julian_vega@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/julian-vega.webp"
+        }
+      ]
+    },
+    {
+      "agency_id": "gw-ins-group-llc",
+      "agency_name": "GW Ins Group LLC",
+      "agency_description": "Authorized partner agency of Allcare Mar Agency.",
+      "agents": [
+        {
+          "name": "Christopher Barry",
+          "phone": "(201) 534-9142",
+          "extension": "142",
+          "email": "cbarry@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/christopher-barry.webp"
+        },
+        {
+          "name": "Carlos Colon",
+          "phone": "(973) 206-3088",
+          "extension": "388",
+          "email": "ccolon@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/carlos-colon.webp"
+        },
+        {
+          "name": "Glenda Colon",
+          "phone": "(856) 349-0159",
+          "extension": "417",
+          "email": "glendahealthagent@gmail.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/glenda-colon.webp"
+        },
+        {
+          "name": "Johnny De Los Angeles",
+          "phone": "(201) 350-6624",
+          "extension": "624",
+          "email": "jdelosangeles@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/johnny-de-los-angeles.webp"
+        },
+        {
+          "name": "Marilyn Gamboa",
+          "phone": "(352) 760-9137",
+          "extension": "137",
+          "email": "mgamboa@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/marilyn-gamboa.webp"
+        },
+        {
+          "name": "Alison Rodriguez",
+          "phone": "(973) 695-0889",
+          "extension": "445",
+          "email": "alisonrodriguez@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/alison-rodriguez.webp"
+        }
+      ]
+    },
+    {
+      "agency_id": "martell-multi-service-llc",
+      "agency_name": "Martell Multi Service LLC",
+      "agency_description": "Authorized partner agency of Allcare Mar Agency.",
+      "agents": [
+        {
+          "name": "Gabriela Brito",
+          "phone": "(551) 246-1406",
+          "extension": "1406",
+          "email": "gbrito@allcaremar.com",
+          "licensed_states": [
+            "NJ",
+            "PA"
+          ],
+          "image": "/agentes/gabriela-brito.webp"
+        },
+        {
+          "name": "Jose Fernandez",
+          "phone": "(973) 640-7745",
+          "extension": "745",
+          "email": "jofernandez@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/jose-fernandez.webp"
+        },
+        {
+          "name": "Glorivette Giunto",
+          "phone": "(201) 468-9825",
+          "extension": "439",
+          "email": "egiunto@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/glorivette-giunto.webp"
+        },
+        {
+          "name": "Ana Martell",
+          "phone": "(973) 218-8770",
+          "extension": "770",
+          "email": "amartell@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/ana-martell.webp"
+        },
+        {
+          "name": "Julissa Padilla",
+          "phone": "(973) 221-5128",
+          "extension": "128",
+          "email": "jpadilla@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/julissa-padilla.webp"
+        },
+        {
+          "name": "Sergio Ramirez",
+          "phone": "(551) 264-5208",
+          "extension": "208",
+          "email": "sramirez@allcaremar.com",
+          "licensed_states": [
+            "NJ"
+          ],
+          "image": "/agentes/sergio-ramirez.webp"
+        },
+        {
+          "name": "Gisela Uribe",
+          "phone": "(551) 244-1189",
+          "extension": "189",
+          "email": "guribe@allcaremar.com",
+          "licensed_states": [
+            "NJ",
+            "NY",
+            "FL"
+          ],
+          "image": "/agentes/gisela-uribe.webp"
+        }
+      ]
+    },
+    {
+      "agency_id": "kmra-group-llc",
+      "agency_name": "KMRA Group LLC",
+      "agency_description": "Authorized partner agency of Allcare Mar Agency.",
+      "agents": [
+        {
+          "name": "Melissa Acosta",
+          "phone": "(551) 258-2175",
+          "extension": "175",
+          "email": "macosta@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/melissa-acosta.webp"
+        },
+        {
+          "name": "Brittany Gibbs",
+          "phone": "(201) 623-0980",
+          "extension": "980",
+          "email": "brittany.gibbs@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/brittany-gibbs.webp"
+        },
+        {
+          "name": "Amanda Ortiz",
+          "phone": "(201) 479-1476",
+          "extension": "1476",
+          "email": "aortiz@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/amanda-ortiz.webp"
+        },
+        {
+          "name": "Roland Pinzon",
+          "phone": "(201) 623-0954",
+          "extension": "954",
+          "email": "rpinzon@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/roland-pinzon.webp"
+        },
+        {
+          "name": "Carol Quinones",
+          "phone": "(443) 376-6051",
+          "extension": "6051",
+          "email": "cmquinones@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/carol-quinones.webp"
+        },
+        {
+          "name": "Olga Reyes",
+          "phone": "(973) 475-5595",
+          "extension": "5595",
+          "email": "oreyes@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/olga-reyes.webp"
+        },
+        {
+          "name": "Samir Sanchez",
+          "phone": "(551) 273-3190",
+          "extension": "3190",
+          "email": "ssanchez@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/samir-sanchez.webp"
+        },
+        {
+          "name": "Tammy Tanksley",
+          "phone": "(201) 502-0264",
+          "extension": "264",
+          "email": "ttanksley@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/tammy-tanksley.webp"
+        }
+      ]
+    },
+    {
+      "agency_id": "top-tier-health-consultants",
+      "agency_name": "Top Tier Health Consultants",
+      "agency_description": "Authorized partner agency of Allcare Mar Agency.",
+      "agents": [
+        {
+          "name": "Margot Flores",
+          "phone": "(551) 408-9040",
+          "extension": "9040",
+          "email": "mflores@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/margot-flores.webp"
+        },
+        {
+          "name": "Priscilla Galarza",
+          "phone": "(201) 710-7727",
+          "extension": "441",
+          "email": "pgalarza@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/priscilla-galarza.webp"
+        },
+        {
+          "name": "Joshua Munoz",
+          "phone": "(732) 298-6107",
+          "extension": "413",
+          "email": "j.munoz@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/joshua-munoz.webp"
+        },
+        {
+          "name": "Jocelyn Rodriguez",
+          "phone": "(732) 298-6106",
+          "extension": "412",
+          "email": "jocelyn.rod@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/jocelyn-rodriguez.webp"
+        }
+      ]
+    },
+    {
+      "agency_id": "amc-care-group-llc",
+      "agency_name": "AMC Care Group LLC",
+      "agency_description": "Authorized partner agency of Allcare Mar Agency.",
+      "agents": [
+        {
+          "name": "Gary Chicnes",
+          "phone": "(205) 737-1088",
+          "extension": "1088",
+          "email": "gchicnes@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/gary-chicnes.webp"
+        },
+        {
+          "name": "Ana Christopher",
+          "phone": "(862) 347-4365",
+          "extension": "428",
+          "email": "anamichelle@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/ana-christopher.webp"
+        },
+        {
+          "name": "Emanuel Cruz",
+          "phone": "(201) 534-1122",
+          "extension": "122",
+          "email": "ecruz@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/emanuel-cruz.webp"
+        },
+        {
+          "name": "Michael Ocasio",
+          "phone": "(321) 335-6105",
+          "extension": "6105",
+          "email": "mocasio@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/michael-ocasio.webp"
+        },
+        {
+          "name": "Carlos Ortega",
+          "phone": "(862) 347-4364",
+          "extension": "427",
+          "email": "cortega@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/carlos-ortega.webp"
+        },
+        {
+          "name": "Keylin Pagan",
+          "phone": "(201) 702-8217",
+          "extension": "217",
+          "email": "kpagan@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/keylin-pagan.webp"
+        }
+      ]
+    }
+  ]
+}
