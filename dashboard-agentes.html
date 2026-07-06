@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Agent Dashboard — Allcare Mar Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<style>
+:root{
+  --blue:#1a2fd4; --blue-dark:#0f1e9a; --blue-light:#e8ecff;
+  --red:#e8001d; --red-dark:#b50016; --red-light:#fff0f2;
+  --white:#ffffff; --gray-50:#faf8f5; --gray-100:#f3efe9; --gray-200:#e6e0d6;
+  --gray-400:#8b8377; --gray-600:#544f47; --gray-800:#2b2723;
+  --green:#00a86b; --warm-card:#fffdfa;
+  --r:12px; --r-lg:20px; --r-xl:28px;
+  --sh:0 4px 24px rgba(58,53,48,.08); --sh-lg:0 16px 56px rgba(58,53,48,.14);
+  --t:.25s ease;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Open Sans',sans-serif;color:var(--gray-800);background:var(--gray-50);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,h3{font-family:'Montserrat',sans-serif;line-height:1.2}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+
+.auth-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 5vw;background:#fff;border-bottom:1px solid var(--gray-200)}
+.auth-logo img{height:38px;width:auto}
+.auth-nav-right{display:flex;align-items:center;gap:18px}
+.auth-phone{font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;color:var(--blue-dark);display:flex;align-items:center;gap:6px}
+.lang-toggle{background:var(--blue-light);color:var(--blue-dark);border:none;border-radius:20px;padding:7px 16px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:12px;cursor:pointer;letter-spacing:.03em}
+.lang-toggle:hover{background:var(--blue);color:#fff}
+
+.auth-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;background:radial-gradient(circle at 20% 20%,var(--blue-light) 0%,var(--gray-50) 55%)}
+.auth-card{background:#fff;border-radius:var(--r-xl);box-shadow:var(--sh-lg);padding:44px 40px;width:100%;max-width:460px;border:1px solid var(--gray-200)}
+.auth-card.wide{max-width:620px}
+.auth-eyebrow{font-family:'Montserrat',sans-serif;font-size:11.5px;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.auth-card h1{font-size:24px;font-weight:800;color:var(--blue-dark);margin-bottom:8px}
+.auth-sub{font-size:13.5px;color:var(--gray-600);margin-bottom:28px;line-height:1.6}
+
+.form-grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-grp{margin-bottom:16px}
+.form-grp label{display:block;font-size:12.5px;font-weight:700;color:var(--gray-800);margin-bottom:6px;font-family:'Montserrat',sans-serif}
+.form-grp input,.form-grp select{width:100%;padding:12px 14px;border:1.5px solid var(--gray-200);border-radius:10px;font-size:14px;font-family:'Open Sans',sans-serif;background:#fff;color:var(--gray-800);transition:var(--t)}
+.form-grp input:focus,.form-grp select:focus{outline:none;border-color:var(--blue)}
+
+.btn-primary{width:100%;background:var(--blue);color:#fff;border:none;padding:14px;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:var(--t);display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px}
+.btn-primary:hover{background:var(--blue-dark);transform:translateY(-1px)}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.btn-outline{width:100%;background:#fff;color:var(--blue);border:1.5px solid var(--blue);padding:13px;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:var(--t)}
+.btn-outline:hover{background:var(--blue-light)}
+
+.auth-links{margin-top:18px;text-align:center;font-size:13px;color:var(--gray-600)}
+.auth-links a{color:var(--blue);font-weight:700}
+.auth-divider{text-align:center;font-size:12px;color:var(--gray-400);margin:18px 0}
+
+.alert{border-radius:10px;padding:14px 16px;font-size:13px;line-height:1.6;margin-bottom:18px;display:none}
+.alert.show{display:block}
+.alert-error{background:var(--red-light);color:var(--red-dark);border:1px solid #ffd0d6}
+.alert-info{background:var(--blue-light);color:var(--blue-dark);border:1px solid #cdd7ff}
+.alert-success{background:#e6f8f0;color:#046a45;border:1px solid #b8ecd4}
+
+.auth-mini-footer{padding:22px 20px;text-align:center;font-size:11.5px;color:var(--gray-400);background:#fff;border-top:1px solid var(--gray-200)}
+.auth-mini-footer a{color:var(--gray-600);font-weight:700;margin-left:6px}
+
+.dash-header{display:flex;align-items:center;justify-content:space-between;padding:20px 5vw;background:linear-gradient(135deg,var(--blue-dark),var(--blue));color:#fff;flex-wrap:wrap;gap:12px}
+.dash-header .brand{display:flex;align-items:center;gap:14px}
+.dash-header .brand img{height:32px}
+.dash-header .who{font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px}
+.dash-header .who span{opacity:.75;font-weight:600;font-size:12px;display:block;margin-top:2px}
+.btn-logout{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.4);color:#fff;padding:9px 18px;border-radius:20px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:12.5px;cursor:pointer}
+.btn-logout:hover{background:rgba(255,255,255,.28)}
+.dash-wrap{flex:1;padding:44px 5vw;background:var(--gray-50)}
+.dash-title{font-size:22px;font-weight:800;color:var(--blue-dark);margin-bottom:6px}
+.dash-sub{font-size:13.5px;color:var(--gray-600);margin-bottom:32px}
+.tool-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.tool-card{background:#fff;border:1.5px solid var(--gray-200);border-radius:var(--r-lg);padding:28px 20px;text-align:center;transition:var(--t);cursor:pointer}
+.tool-card:hover{border-color:var(--blue);transform:translateY(-4px);box-shadow:var(--sh-lg)}
+.tool-card .ti{width:56px;height:56px;border-radius:50%;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 14px}
+.tool-card .tn{font-family:'Montserrat',sans-serif;font-weight:800;font-size:13.5px;color:var(--gray-800)}
+.admin-banner{background:#fff3cd;border:1px solid #ffe08a;color:#7a5b00;font-size:12.5px;padding:14px 18px;border-radius:10px;margin-bottom:22px;line-height:1.6}
+.admin-table{width:100%;border-collapse:collapse;background:#fff;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh)}
+.admin-table th{background:var(--blue-dark);color:#fff;font-family:'Montserrat',sans-serif;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;padding:12px 14px;text-align:left}
+.admin-table td{padding:12px 14px;font-size:13px;border-bottom:1px solid var(--gray-200)}
+.badge{display:inline-block;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:800;font-family:'Montserrat',sans-serif}
+.badge-pending{background:#fff3cd;color:#7a5b00}
+.badge-approved{background:#e6f8f0;color:#046a45}
+.badge-rejected{background:var(--red-light);color:var(--red-dark)}
+.row-actions button{border:none;border-radius:6px;padding:6px 10px;font-size:11.5px;font-weight:700;cursor:pointer;margin-right:6px;font-family:'Montserrat',sans-serif}
+.btn-approve{background:var(--green);color:#fff}
+.btn-reject{background:var(--red);color:#fff}
+.btn-delete{background:var(--gray-200);color:var(--gray-800)}
+@media(max-width:900px){.tool-grid{grid-template-columns:repeat(2,1fr)}.form-grid2{grid-template-columns:1fr}}
+@media(max-width:480px){.tool-grid{grid-template-columns:1fr}.auth-card{padding:30px 22px}}
+
+.gsi-card{text-align:center}
+.gsi-btn-wrap{display:flex;justify-content:center;margin:22px 0 8px;min-height:44px}
+.gsi-note{font-size:11.5px;color:var(--gray-400);text-align:center;margin-top:10px;line-height:1.6}
+.denied-box{display:none;text-align:left}
+.denied-box.show{display:block}
+.shield-icon{width:64px;height:64px;border-radius:50%;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 18px}
+</style>
+</head>
+<body>
+<div class="dash-header">
+  <div class="brand">
+    <img src="assets/img/logo-allcaremar.png" alt="Allcare Mar" style="filter:brightness(0) invert(1)"/>
+    <div class="who"><span id="welcome-label"></span> <span id="agentName"></span><span id="agentMeta"></span></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:14px">
+    <button class="lang-toggle" id="langBtn" style="background:rgba(255,255,255,.15);color:#fff"><span id="lang-label">ES</span></button>
+    <button class="btn-logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> <span id="logout-label"></span></button>
+  </div>
+</div>
+<main class="dash-wrap">
+  <div class="dash-title" id="dashTitle"></div>
+  <div class="dash-sub" id="dashSub"></div>
+  <div class="tool-grid">
+    <a class="tool-card" href="#"><div class="ti"><i class="fas fa-chart-line"></i></div><div class="tn" id="tool1"></div></a>
+    <a class="tool-card" href="#"><div class="ti"><i class="fas fa-address-book"></i></div><div class="tn" id="tool2"></div></a>
+    <a class="tool-card" href="#"><div class="ti"><i class="fas fa-life-ring"></i></div><div class="tn" id="tool3"></div></a>
+    <a class="tool-card" href="#"><div class="ti"><i class="fas fa-shuttle-van"></i></div><div class="tn" id="tool4"></div></a>
+    <a class="tool-card" href="#"><div class="ti"><i class="fas fa-door-open"></i></div><div class="tn" id="tool5"></div></a>
+    <a class="tool-card" href="#"><div class="ti"><i class="fas fa-video"></i></div><div class="tn" id="tool6"></div></a>
+    <a class="tool-card" href="#"><div class="ti"><i class="fas fa-folder-open"></i></div><div class="tn" id="tool7"></div></a>
+  </div>
+</main>
+<footer class="auth-mini-footer">
+  <span id="mini-copy"></span><a href="privacy-security-policy.pdf" target="_blank" rel="noopener" id="mini-priv"></a>
+</footer>
+<script type="module">
+import { WORKSPACE_DOMAIN } from "./google-config.js";
+
+let curLang='en';
+const I18N = {
+  en:{ welcome:'Welcome,', logout:'Logout', dashTitle:'Agent Tools', dashSub:'Access your corporate resources below.',
+    t1:'Daily Sales Report', t2:'Agents Contact List', t3:'IT-Ticket', t4:'Sprinter/Van Reservations', t5:'Conference Room Reservations', t6:'Training Videos', t7:'Materials' },
+  es:{ welcome:'Bienvenido,', logout:'Cerrar Sesi\u00F3n', dashTitle:'Herramientas del Agente', dashSub:'Accede a tus recursos corporativos a continuaci\u00F3n.',
+    t1:'Reporte de Ventas Diario', t2:'Directorio de Agentes', t3:'Ticket de TI', t4:'Reservas de Sprinter/Van', t5:'Reservas de Sala de Conferencias', t6:'Videos de Capacitaci\u00F3n', t7:'Materiales' }
+};
+function applyLang(){
+  const t = I18N[curLang];
+  document.documentElement.lang = curLang; document.documentElement.setAttribute('data-lang',curLang);
+  document.getElementById('lang-label').textContent = curLang==='en' ? 'ES' : 'EN';
+  document.getElementById('welcome-label').textContent=t.welcome;
+  document.getElementById('logout-label').textContent=t.logout;
+  document.getElementById('dashTitle').textContent=t.dashTitle;
+  document.getElementById('dashSub').textContent=t.dashSub;
+  document.getElementById('tool1').textContent=t.t1;
+  document.getElementById('tool2').textContent=t.t2;
+  document.getElementById('tool3').textContent=t.t3;
+  document.getElementById('tool4').textContent=t.t4;
+  document.getElementById('tool5').textContent=t.t5;
+  document.getElementById('tool6').textContent=t.t6;
+  document.getElementById('tool7').textContent=t.t7;
+  applyMiniFooter();
+}
+function toggleLang(){ curLang = curLang==='en'?'es':'en'; applyLang(); }
+document.getElementById('langBtn').addEventListener('click', toggleLang);
+
+function applyMiniFooter(){
+  document.getElementById('mini-copy').textContent = curLang==='en' ? '\u00A9 2026 Allcare Mar Insurance Advisors. All Rights Reserved.' : '\u00A9 2026 Allcare Mar Insurance Advisors. Todos los derechos reservados.';
+  document.getElementById('mini-priv').textContent = curLang==='en' ? 'Privacy & Security Policy (PDF)' : 'Politica de Privacidad y Seguridad (PDF)';
+}
+
+document.getElementById('logoutBtn').addEventListener('click', function(){
+  sessionStorage.removeItem('acm_gsession');
+  if(typeof google !== 'undefined' && google.accounts){ try{ google.accounts.id.disableAutoSelect(); }catch(e){} }
+  window.location.href='login.html';
+});
+
+(function guard(){
+  const raw = sessionStorage.getItem('acm_gsession');
+  if(!raw){ window.location.href='login.html'; return; }
+  let session;
+  try{ session = JSON.parse(raw); }catch(e){ sessionStorage.removeItem('acm_gsession'); window.location.href='login.html'; return; }
+
+  const domain = (session.email||'').split('@')[1] || '';
+  const nowSec = Math.floor(Date.now()/1000);
+  if(domain.toLowerCase() !== WORKSPACE_DOMAIN.toLowerCase() || !session.exp || nowSec > session.exp){
+    sessionStorage.removeItem('acm_gsession');
+    window.location.href='login.html';
+    return;
+  }
+  document.getElementById('agentName').textContent = session.name || session.email;
+  document.getElementById('agentMeta').textContent = ' \u00B7 ' + session.email;
+})();
+applyLang();
+</script>
+</body>
+</html>

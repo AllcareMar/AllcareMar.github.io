@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Allcare Mar Insurance Advisors — Medicare Made Simple</title>
+<meta name="description" content="Allcare Mar Insurance Advisors — Independent Medicare specialists helping seniors find the best Medicare Advantage, Supplement, and Prescription Drug plans. Free consultation. Licensed in multiple states."/>
+<meta name="robots" content="index, follow"/>
+<link rel="canonical" href="https://www.allcaremar.com/"/>
+<meta name="theme-color" content="#1a2fd4"/>
+
+<!-- Favicons -->
+<link rel="icon" href="/favicon.ico" sizes="any"/>
+<link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32"/>
+<link rel="icon" type="image/png" href="/favicon-16.png" sizes="16x16"/>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+
+<!-- Open Graph / Social -->
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="Allcare Mar Insurance Advisors"/>
+<meta property="og:title" content="Allcare Mar Insurance Advisors — Medicare Made Simple"/>
+<meta property="og:description" content="Independent Medicare specialists helping seniors find the best Medicare Advantage, Supplement, and Prescription Drug plans. Free consultation. Licensed in multiple states."/>
+<meta property="og:url" content="https://www.allcaremar.com/"/>
+<meta property="og:image" content="https://www.allcaremar.com/assets/img/hero-senior-couple.jpg"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:locale:alternate" content="es_ES"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Allcare Mar Insurance Advisors — Medicare Made Simple"/>
+<meta name="twitter:description" content="Independent Medicare specialists helping seniors find the best Medicare plans. Free consultation."/>
+<meta name="twitter:image" content="https://www.allcaremar.com/assets/img/hero-senior-couple.jpg"/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="preload" as="image" href="assets/img/hero-senior-couple.jpg" fetchpriority="high"/>
+<style>
+:root{
+  --blue:#1a2fd4;
+  --blue-dark:#0f1e9a;
+  --blue-light:#e8ecff;
+  --red:#e8001d;
+  --red-dark:#b50016;
+  --red-light:#fff0f2;
+  --white:#ffffff;
+  --gray-50:#faf8f5;
+  --gray-100:#f3efe9;
+  --gray-200:#e6e0d6;
+  --gray-400:#8b8377;
+  --gray-600:#544f47;
+  --gray-800:#2b2723;
+  --gold:#c98a2b;
+  --green:#00a86b;
+  --warm-dark:#3a3530;
+  --warm-card:#fffdfa;
+  --r:12px;
+  --r-lg:20px;
+  --r-xl:28px;
+  --sh:0 4px 24px rgba(58,53,48,.08);
+  --sh-lg:0 16px 56px rgba(58,53,48,.14);
+  --t:.28s cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Open Sans',sans-serif;color:var(--gray-800);background:#fff;overflow-x:hidden}
+h1,h2,h3,h4,h5{font-family:'Montserrat',sans-serif;line-height:1.18}
+img{display:block;max-width:100%}
+a{text-decoration:none;color:inherit}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--blue-dark);color:rgba(255,255,255,.78);font-size:12.5px;padding:8px 0;text-align:center;position:relative;z-index:200}
+.topbar .ti{display:flex;justify-content:center;align-items:center;gap:24px;flex-wrap:wrap;max-width:1200px;margin:0 auto;padding:0 1.5rem}
+.topbar a{color:#ffd0d6;font-weight:600}
+.topbar .lang-sw{margin-left:auto;display:flex;gap:0}
+.lang-btn{background:transparent;border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.7);font-size:11px;font-weight:700;padding:3px 9px;cursor:pointer;font-family:'Montserrat',sans-serif;letter-spacing:.05em;transition:var(--t)}
+.lang-btn:first-child{border-radius:4px 0 0 4px;border-right:none}
+.lang-btn:last-child{border-radius:0 4px 4px 0}
+.lang-btn.active,.lang-btn:hover{background:var(--red);border-color:var(--red);color:#fff}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:150;background:#fff;box-shadow:0 2px 16px rgba(0,0,0,.09);transition:var(--t)}
+.nav-wrap{max-width:1240px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;gap:16px;height:76px}
+.nav-logo img{height:54px;width:auto}
+.nav-links{display:flex;gap:4px;margin-left:auto}
+.nav-links a,.nav-dd-btn{font-family:'Montserrat',sans-serif;font-size:13.5px;font-weight:600;color:var(--gray-600);padding:8px 13px;border-radius:8px;border:none;background:transparent;cursor:pointer;transition:var(--t);display:flex;align-items:center;gap:5px;position:relative}
+.nav-links a:hover,.nav-dd-btn:hover{color:var(--blue);background:var(--blue-light)}
+.nav-links a.active{color:var(--blue)}
+.nav-dd{position:relative}
+.nav-dd-menu{position:absolute;top:calc(100% + 8px);left:0;background:#fff;border-radius:var(--r);box-shadow:var(--sh-lg);border:1px solid var(--gray-200);min-width:220px;opacity:0;pointer-events:none;transform:translateY(-8px);transition:var(--t)}
+.nav-dd:hover .nav-dd-menu{opacity:1;pointer-events:all;transform:none}
+.nav-dd-menu a{display:flex;align-items:center;gap:10px;padding:11px 16px;font-size:13px;font-weight:600;font-family:'Montserrat',sans-serif;color:var(--gray-600);transition:var(--t)}
+.nav-dd-menu a:hover{background:var(--blue-light);color:var(--blue)}
+.nav-dd-menu a i{width:18px;text-align:center;color:var(--blue);font-size:14px}
+.nav-cta-wrap{display:flex;align-items:center;gap:10px;margin-left:8px}
+.nav-phone{font-family:'Montserrat',sans-serif;font-size:14px;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:7px;white-space:nowrap}
+.nav-phone i{color:var(--red);font-size:16px}
+.btn-nav{background:var(--red);color:#fff;border:none;padding:10px 20px;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:var(--t);white-space:nowrap}
+.btn-nav:hover{background:var(--red-dark);transform:translateY(-1px);box-shadow:0 4px 14px rgba(232,0,29,.35)}
+.btn-agent-login{background:var(--blue);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:var(--t);display:flex;align-items:center;gap:7px}
+.btn-agent-login:hover{background:var(--blue-dark);transform:translateY(-1px)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;margin-left:auto}
+.hamburger span{display:block;width:23px;height:2.5px;background:var(--blue);border-radius:2px;transition:var(--t)}
+.mob-menu{display:none;flex-direction:column;background:#fff;border-top:1px solid var(--gray-200);padding:12px 1.5rem 20px}
+.mob-menu.open{display:flex}
+.mob-menu a,.mob-menu button{display:block;padding:11px 8px;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:600;color:var(--gray-600);border:none;background:none;cursor:pointer;text-align:left;border-bottom:1px solid var(--gray-100)}
+
+/* ── HERO ── */
+.hero{position:relative;background:linear-gradient(135deg,#ffffff 0%,#f4f7ff 55%,#e8edff 100%);overflow:hidden;min-height:90vh;display:flex;align-items:center}
+.hero-bg-img{display:none}
+.hero-overlay{display:none}
+/* Animated wave bottom */
+.hero-wave{position:absolute;bottom:-2px;left:0;right:0;z-index:2}
+.hero-wave svg{display:block;width:100%}
+.hero-inner{position:relative;z-index:3;max-width:1240px;margin:0 auto;padding:5rem 1.5rem 7rem;display:grid;grid-template-columns:1.1fr 0.9fr;gap:4rem;align-items:center}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--blue-light);border:1px solid rgba(26,47,212,.18);color:var(--blue-dark);font-family:'Montserrat',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border-radius:30px;margin-bottom:1.4rem}
+.hero-eyebrow i{color:var(--gold);font-size:10px}
+.hero h1{font-size:clamp(2.1rem,4.5vw,3.6rem);font-weight:900;color:var(--blue-dark);line-height:1.12;margin-bottom:1.4rem}
+.hero h1 em{color:var(--red);font-style:normal;position:relative}
+.hero h1 em::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:3px;background:var(--red);border-radius:2px;opacity:.5}
+.hero-desc{font-size:16.5px;color:var(--gray-600);line-height:1.8;margin-bottom:2rem;max-width:520px}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:2.5rem}
+.btn-hero-red{background:var(--blue);color:#fff;border:none;padding:15px 28px;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:15px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:9px;transition:var(--t)}
+.btn-hero-red:hover{background:var(--blue-dark);transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,47,212,.3)}
+.btn-hero-outline{background:#fff;color:var(--blue-dark);border:2px solid var(--gray-200);padding:15px 28px;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:15px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:9px;transition:var(--t)}
+.btn-hero-outline:hover{border-color:var(--blue);background:var(--blue-light)}
+.hero-trust{display:flex;gap:28px;flex-wrap:wrap}
+.trust-item{display:flex;flex-direction:column;align-items:flex-start}
+.trust-num{font-family:'Montserrat',sans-serif;font-size:27px;font-weight:900;color:var(--blue-dark);line-height:1}
+.trust-label{font-size:11.5px;color:var(--gray-400);margin-top:3px}
+.trust-divider{width:1px;background:var(--gray-200);align-self:stretch}
+/* Hero right side */
+.hero-right{position:relative}
+.hero-main-img{border-radius:var(--r-xl);width:100%;aspect-ratio:4/3;object-fit:cover;object-position:center top;box-shadow:var(--sh-lg);border:3px solid #fff}
+.hero-badge{position:absolute;bottom:-18px;left:-24px;background:#fff;border-radius:var(--r);padding:14px 18px;box-shadow:var(--sh-lg);display:flex;align-items:center;gap:13px;z-index:4}
+.hb-icon{width:44px;height:44px;background:var(--blue-light);color:var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.hb-text strong{display:block;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:800;color:var(--blue)}
+.hb-text span{font-size:11.5px;color:var(--gray-400)}
+.hero-badge2{position:absolute;top:-16px;right:-16px;background:linear-gradient(135deg,var(--blue) 0%,var(--blue-dark) 100%);border-radius:var(--r);padding:12px 16px;box-shadow:0 8px 24px rgba(26,47,212,.3);z-index:4;text-align:center}
+.hb2-num{font-family:'Montserrat',sans-serif;font-size:22px;font-weight:900;color:#fff;line-height:1}
+.hb2-label{font-size:10.5px;color:rgba(255,255,255,.8);margin-top:2px}
+/* Pulse animation */
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.hero-badge2{animation:pulse 3s ease-in-out infinite}
+
+/* ── STATS BAR ── */
+.stats-bar{background:linear-gradient(135deg,var(--blue) 0%,var(--blue-dark) 100%);padding:28px 0;position:relative;z-index:10}
+.stats-bar-inner{max-width:1240px;margin:0 auto;padding:0 1.5rem;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.15)}
+.stat-item{background:transparent;padding:20px;text-align:center}
+.stat-icon{font-size:22px;color:rgba(255,255,255,.6);margin-bottom:6px}
+.stat-num{font-family:'Montserrat',sans-serif;font-size:28px;font-weight:900;color:#fff;line-height:1}
+.stat-lbl{font-size:12px;color:rgba(255,255,255,.78);margin-top:3px;font-weight:600}
+
+/* ── SECTIONS COMMON ── */
+section{padding:88px 0}
+.container{max-width:1240px;margin:0 auto;padding:0 1.5rem}
+.section-center{text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:'Montserrat',sans-serif;font-size:11.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:12px}
+.eyebrow::before,.eyebrow::after{content:'';display:block;width:28px;height:2.5px;background:var(--red);border-radius:2px}
+.eyebrow.left::before{display:none}
+.s-title{font-family:'Montserrat',sans-serif;font-size:clamp(1.65rem,3.2vw,2.55rem);font-weight:800;color:var(--blue-dark);margin-bottom:.8rem;line-height:1.18}
+.s-title em{color:var(--red);font-style:normal}
+.s-sub{font-size:15.5px;color:var(--gray-600);line-height:1.8;max-width:640px}
+.s-sub.center{margin:0 auto}
+
+/* ── PLANS & SERVICES ── */
+.plans-section{background:var(--gray-50)}
+.plans-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:2.8rem}
+.plan-card{background:#fff;border-radius:var(--r-lg);padding:28px 22px;border:1.5px solid var(--gray-200);transition:var(--t);cursor:default;position:relative;overflow:hidden}
+.plan-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:var(--t)}
+.plan-card:hover{transform:translateY(-6px);box-shadow:var(--sh-lg);border-color:transparent}
+.plan-card:hover::after{transform:scaleX(1)}
+.plan-card:nth-child(2)::after{background:var(--red)}
+.plan-card:nth-child(3)::after{background:var(--gold)}
+.plan-card:nth-child(4)::after{background:var(--green)}
+.pc-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:18px}
+.pc-icon.blue{background:var(--blue-light);color:var(--blue)}
+.pc-icon.red{background:var(--red-light);color:var(--red)}
+.pc-icon.gold{background:#fff8e8;color:#b57800}
+.pc-icon.green{background:#e8fff5;color:var(--green)}
+.plan-card h3{font-family:'Montserrat',sans-serif;font-size:16px;font-weight:800;color:var(--blue-dark);margin-bottom:10px}
+.plan-card p{font-size:13.5px;color:var(--gray-600);line-height:1.7;margin-bottom:16px}
+.learn-more{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;color:var(--blue);display:inline-flex;align-items:center;gap:5px;transition:var(--t)}
+.learn-more:hover{gap:9px;color:var(--red)}
+
+/* ── CARRIERS ── */
+.carriers-section{background:#fff}
+.carriers-scroll{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:2.5rem}
+.carrier-tile{background:#fff;border:1.5px solid var(--gray-200);border-radius:var(--r);padding:22px 16px;text-align:center;transition:var(--t);cursor:default;display:flex;flex-direction:column;align-items:center;gap:10px}
+.carrier-tile:hover{border-color:var(--blue);transform:translateY(-4px);box-shadow:var(--sh)}
+.ct-logo{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:900;letter-spacing:-.3px;flex-shrink:0}
+.ct-uhc{background:#e6f0ff;color:#002677}
+.ct-aetna{background:#f4e9f7;color:#7d3f98}
+.ct-humana{background:#e3f2e9;color:#00833e}
+.ct-devoted{background:#fde8ef;color:#cc1d5a}
+.ct-clover{background:#f0e6f5;color:#673399}
+.ct-hf{background:#e8f4fb;color:#0066a4}
+.ct-emblem{background:#eef0fb;color:#3b3e8f}
+.ct-jefferson{background:#e8eef5;color:#13294b}
+.ct-anthem{background:#e8f2ec;color:#00543c}
+.ct-more{background:var(--gray-100);color:var(--gray-600)}
+.ct-name{font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:var(--gray-800)}
+.ct-type{font-size:11px;color:var(--gray-400)}
+/* Scrolling carrier ticker */
+.carrier-ticker-wrap{overflow:hidden;margin-top:2rem;position:relative}
+.carrier-ticker-wrap::before,.carrier-ticker-wrap::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2}
+.carrier-ticker-wrap::before{left:0;background:linear-gradient(to right,#fff,transparent)}
+.carrier-ticker-wrap::after{right:0;background:linear-gradient(to left,#fff,transparent)}
+.carrier-ticker{display:flex;gap:32px;animation:ticker 22s linear infinite;width:max-content;align-items:center;padding:10px 0}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.carrier-ticker:hover{animation-play-state:paused}
+.ticker-item{font-family:'Montserrat',sans-serif;font-size:14px;font-weight:800;color:var(--gray-400);white-space:nowrap;padding:6px 18px;border-radius:30px;border:1.5px solid var(--gray-200);transition:var(--t)}
+.ticker-item:hover{border-color:var(--blue);color:var(--blue)}
+
+/* ── HOW IT WORKS ── */
+.hiw-section{background:var(--gray-50)}
+.hiw-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-top:3rem}
+.hiw-img-wrap{position:relative}
+.hiw-img{width:100%;border-radius:var(--r-xl);aspect-ratio:3/4;object-fit:cover;object-position:center top;box-shadow:var(--sh-lg)}
+.hiw-card-float{position:absolute;bottom:-20px;right:-20px;background:#fff;border-radius:var(--r);padding:18px 20px;box-shadow:var(--sh-lg);text-align:center}
+.hiw-cf-num{font-family:'Montserrat',sans-serif;font-size:32px;font-weight:900;color:var(--blue);line-height:1}
+.hiw-cf-label{font-size:12px;color:var(--gray-400);margin-top:4px;font-weight:600}
+.hiw-steps{display:flex;flex-direction:column;gap:0}
+.step-row{display:flex;gap:20px;padding:24px 0;border-bottom:1px solid var(--gray-200);position:relative}
+.step-row:last-child{border-bottom:none}
+.step-num-wrap{display:flex;flex-direction:column;align-items:center;gap:0;flex-shrink:0}
+.step-circle{width:46px;height:46px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:17px;font-weight:900;flex-shrink:0}
+.step-line{flex:1;width:2px;background:var(--gray-200);margin:6px 0}
+.step-row:last-child .step-line{display:none}
+.step-body h4{font-family:'Montserrat',sans-serif;font-size:16px;font-weight:800;color:var(--blue-dark);margin-bottom:6px}
+.step-body p{font-size:14px;color:var(--gray-600);line-height:1.7}
+.step-tag{display:inline-block;background:var(--blue-light);color:var(--blue);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-top:7px;font-family:'Montserrat',sans-serif}
+
+/* ── PHOTO GRID ── */
+.photo-section{background:#fff;overflow:hidden}
+.photo-mosaic{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:260px 260px;gap:14px;margin-top:2.5rem}
+.pm1{grid-column:1/6;grid-row:1/3;border-radius:var(--r-xl);overflow:hidden}
+.pm2{grid-column:6/10;grid-row:1/2;border-radius:var(--r-lg);overflow:hidden}
+.pm3{grid-column:10/13;grid-row:1/2;border-radius:var(--r-lg);overflow:hidden}
+.pm4{grid-column:6/9;grid-row:2/3;border-radius:var(--r-lg);overflow:hidden}
+.pm5{grid-column:9/13;grid-row:2/3;border-radius:var(--r-lg);overflow:hidden}
+.photo-mosaic div img{width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .5s ease}
+.photo-mosaic div:hover img{transform:scale(1.06)}
+.pm-label{position:relative}
+.pm-label::after{content:attr(data-label);position:absolute;bottom:16px;left:16px;background:#fff;color:var(--blue-dark);font-family:'Montserrat',sans-serif;font-size:12px;font-weight:800;padding:6px 14px;border-radius:20px;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+
+/* ── TEAM SECTION ── */
+.team-section{background:var(--gray-50)}
+.leader-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:2.8rem;margin-bottom:3rem}
+.leader-card{background:var(--warm-card);border-radius:var(--r-lg);padding:30px 26px;text-align:center;border:1.5px solid var(--gray-200);transition:var(--t)}
+.leader-card:hover{transform:translateY(-5px);box-shadow:var(--sh-lg)}
+.leader-avatar{position:relative;width:84px;height:84px;border-radius:50%;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:28px;font-weight:900;margin:0 auto 16px;overflow:hidden}
+.leader-avatar img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;border-radius:50%}
+.leader-states{font-size:11.5px;color:var(--gray-500,#8a93a3);margin-bottom:8px}
+.leader-states em{font-style:normal;font-weight:700;color:var(--blue-dark)}
+.leader-name{font-family:'Montserrat',sans-serif;font-size:17px;font-weight:800;color:var(--blue-dark);margin-bottom:4px}
+.leader-role{font-size:13px;color:var(--red);font-weight:700;margin-bottom:10px}
+.leader-meta{font-size:12.5px;color:var(--gray-600);line-height:1.7}
+.leader-meta a{color:var(--blue);font-weight:600}
+.staff-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:3rem}
+.staff-card{background:var(--warm-card);border-radius:var(--r);padding:20px 16px;text-align:center;border:1.5px solid var(--gray-200);transition:var(--t)}
+.staff-card:hover{border-color:var(--blue);transform:translateY(-3px)}
+.staff-avatar{position:relative;width:56px;height:56px;border-radius:50%;background:var(--red-light);color:var(--red);display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:17px;font-weight:800;margin:0 auto 12px;overflow:hidden}
+.staff-avatar img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;border-radius:50%}
+.staff-states{font-size:10.5px;color:var(--gray-400);margin-top:2px}
+.staff-name{font-family:'Montserrat',sans-serif;font-size:13.5px;font-weight:800;color:var(--blue-dark);margin-bottom:3px}
+.staff-role{font-size:11px;color:var(--gray-400);line-height:1.5}
+.agents-directory{background:var(--warm-card);border-radius:var(--r-lg);padding:32px;border:1.5px solid var(--gray-200)}
+.agents-directory h4{font-family:'Montserrat',sans-serif;font-size:15px;font-weight:800;color:var(--blue-dark);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.agents-directory h4 i{color:var(--red)}
+.agents-count{font-size:12px;font-weight:600;color:var(--gray-400);background:var(--blue-light);padding:3px 10px;border-radius:20px;margin-left:auto}
+.agents-search-wrap{position:relative;margin-bottom:18px}
+.agents-search-wrap i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--gray-400);font-size:13px}
+.agents-search-wrap input{width:100%;padding:10px 14px 10px 38px;border:1.5px solid var(--gray-200);border-radius:8px;font-family:'Open Sans',sans-serif;font-size:13.5px;color:var(--gray-800);outline:none;transition:var(--t);background:var(--gray-50)}
+.agents-search-wrap input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(26,47,212,.09)}
+.agents-list{display:grid;grid-template-columns:repeat(4,1fr);gap:8px 18px;font-size:13px;color:var(--gray-600)}
+.agents-list span{padding:5px 0;border-bottom:1px dashed var(--gray-200)}
+.agents-list span.hide{display:none}
+.agents-no-results{text-align:center;color:var(--gray-400);font-size:13.5px;padding:20px 0}
+
+
+.portal-section{background:linear-gradient(135deg,var(--blue-dark) 0%,var(--blue) 45%,#eef2ff 100%);padding:88px 0;position:relative;overflow:hidden}
+.portal-bg-pattern{position:absolute;inset:0;opacity:.06;background-image:radial-gradient(circle,#fff 1px,transparent 1px);background-size:28px 28px}
+.portal-inner{position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:0 1.5rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.portal-left .eyebrow{color:#ffd874}
+.portal-left .eyebrow::before,.portal-left .eyebrow::after{background:#ffd874}
+.portal-left h2{color:#fff;margin-bottom:1rem}
+.portal-left p{color:rgba(255,255,255,.85);font-size:15.5px;line-height:1.8;margin-bottom:2rem}
+.portal-features{display:flex;flex-direction:column;gap:14px;margin-bottom:2.2rem}
+.pf-item{display:flex;align-items:center;gap:13px;color:#fff;font-size:14.5px;font-weight:500}
+.pf-item i{width:32px;height:32px;background:rgba(255,255,255,.18);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#ffd874;font-size:14px;flex-shrink:0}
+.btn-portal{background:#fff;color:var(--blue-dark);border:none;padding:15px 28px;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:15px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:9px;transition:var(--t)}
+.btn-portal:hover{background:var(--blue-light);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.2)}
+/* Portal login card */
+.portal-card{background:#fff;border-radius:var(--r-xl);padding:36px 32px;box-shadow:var(--sh-lg)}
+.portal-card-header{text-align:center;margin-bottom:24px}
+.portal-logo-ring{width:64px;height:64px;background:var(--blue-light);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:26px;color:var(--blue)}
+.portal-card-header h3{font-family:'Montserrat',sans-serif;font-size:19px;font-weight:800;color:var(--blue-dark);margin-bottom:4px}
+.portal-card-header p{font-size:13px;color:var(--gray-400)}
+.portal-tab-row{display:flex;background:var(--gray-100);border-radius:9px;padding:4px;gap:4px;margin-bottom:22px}
+.ptab{flex:1;padding:9px;background:transparent;border:none;border-radius:7px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;color:var(--gray-400);cursor:pointer;transition:var(--t)}
+.ptab.active{background:#fff;color:var(--blue);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.form-grp{margin-bottom:14px}
+.form-grp label{display:block;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:var(--gray-600);margin-bottom:6px;letter-spacing:.03em}
+.form-grp input,.form-grp select{width:100%;padding:11px 14px;border:1.5px solid var(--gray-200);border-radius:8px;font-family:'Open Sans',sans-serif;font-size:14px;color:var(--gray-800);outline:none;transition:var(--t);background:#fff}
+.form-grp input:focus,.form-grp select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,47,212,.1)}
+.form-grp .input-ico{position:relative}
+.form-grp .input-ico input{padding-left:38px}
+.form-grp .input-ico i{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--gray-400);font-size:15px}
+.btn-login{width:100%;background:var(--blue);color:#fff;border:none;padding:13px;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:var(--t);display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px}
+.btn-login:hover{background:var(--blue-dark);transform:translateY(-1px);box-shadow:0 6px 20px rgba(26,47,212,.35)}
+.portal-forgot{text-align:center;margin-top:12px;font-size:12.5px;color:var(--gray-400)}
+.portal-forgot a{color:var(--blue);font-weight:600}
+.portal-divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--gray-400);font-size:12px}
+.portal-divider::before,.portal-divider::after{content:'';flex:1;height:1px;background:var(--gray-200)}
+.btn-request-access{width:100%;background:var(--red);color:#fff;border:none;padding:12px;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:var(--t)}
+.btn-request-access:hover{background:var(--red-dark)}
+.btn-google{width:100%;background:#fff;color:#3c4043;border:1px solid #dadce0;padding:12px 18px;border-radius:30px;font-family:'Roboto','Montserrat',sans-serif;font-size:14.5px;font-weight:600;cursor:pointer;transition:var(--t);display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px}
+.btn-google:hover{box-shadow:0 2px 10px rgba(0,0,0,.18);background:#f8f9fa}
+.portal-disclaimer{font-size:11px;color:var(--gray-400);text-align:center;margin-top:12px;line-height:1.6}
+
+/* ── TESTIMONIALS ── */
+.testi-section{background:var(--gray-50)}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:2.8rem}
+.testi-card{background:#fff;border-radius:var(--r-lg);padding:30px;border:1.5px solid var(--gray-200);transition:var(--t);position:relative}
+.testi-card:hover{transform:translateY(-4px);box-shadow:var(--sh-lg);border-color:var(--blue)}
+.testi-card.featured{border-color:var(--red);border-width:2px}
+.tc-quote{position:absolute;top:20px;right:22px;font-size:56px;font-family:'Montserrat',sans-serif;font-weight:900;color:var(--blue-light);line-height:1}
+.tc-stars{color:var(--gold);font-size:15px;margin-bottom:14px}
+.tc-text{font-size:14.5px;color:var(--gray-600);line-height:1.8;margin-bottom:20px;font-style:italic}
+.tc-author{display:flex;align-items:center;gap:13px}
+.tc-avatar{width:46px;height:46px;border-radius:50%;object-fit:cover;flex-shrink:0}
+.tc-avatar-letter{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:16px;font-weight:800;color:#fff;flex-shrink:0}
+.av-blue{background:var(--blue)}
+.av-red{background:var(--red)}
+.av-gold{background:#b57800}
+.tc-name{font-family:'Montserrat',sans-serif;font-size:14px;font-weight:800;color:var(--blue-dark)}
+.tc-loc{font-size:12px;color:var(--gray-400)}
+/* Slider dots */
+.testi-dots{display:flex;justify-content:center;gap:8px;margin-top:2rem}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--gray-200);cursor:pointer;transition:var(--t)}
+.dot.active{background:var(--blue);width:24px;border-radius:4px}
+
+/* ── CTA BAND ── */
+.cta-band{position:relative;overflow:hidden;background:var(--red);padding:72px 0}
+.cta-band::before{content:'';position:absolute;right:-100px;top:-80px;width:360px;height:360px;border-radius:50%;background:rgba(255,255,255,.06)}
+.cta-band::after{content:'';position:absolute;left:-80px;bottom:-80px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,.04)}
+.cta-inner{position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:0 1.5rem;display:flex;justify-content:space-between;align-items:center;gap:3rem;flex-wrap:wrap}
+.cta-left h2{font-family:'Montserrat',sans-serif;font-size:clamp(1.7rem,3vw,2.4rem);font-weight:900;color:#fff;margin-bottom:.6rem}
+.cta-left p{font-size:16px;color:rgba(255,255,255,.8)}
+.cta-right{display:flex;flex-direction:column;gap:12px;align-items:flex-end;flex-shrink:0}
+.btn-cta-white{background:#fff;color:var(--red);border:none;padding:16px 32px;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:16px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:9px;transition:var(--t)}
+.btn-cta-white:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,.2)}
+.cta-phone-link{color:rgba(255,255,255,.9);font-family:'Montserrat',sans-serif;font-size:20px;font-weight:900;display:flex;align-items:center;gap:9px}
+.cta-phone-link i{font-size:18px}
+
+/* ── MAP SECTION ── */
+.map-section{background:#fff;padding:88px 0}
+.map-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:3.5rem;align-items:start}
+.contact-blocks{display:flex;flex-direction:column;gap:20px;margin:2rem 0}
+.cb-item{display:flex;gap:16px;align-items:flex-start}
+.cb-icon{width:46px;height:46px;background:var(--blue-light);color:var(--blue);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.cb-label{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-400);margin-bottom:4px}
+.cb-value{font-size:15px;font-weight:600;color:var(--blue-dark)}
+.cb-value a{color:var(--blue)}
+.hours-tbl{display:grid;grid-template-columns:auto auto;gap:4px 20px;font-size:13px;margin-top:4px}
+.hours-tbl span{color:var(--gray-600)}
+.hours-tbl strong{color:var(--blue-dark);font-weight:700;text-align:right}
+.map-frame{border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--sh-lg);border:2px solid var(--gray-200)}
+.map-frame iframe{display:block;width:100%;height:460px;border:none}
+
+/* ── CONTACT FORM ── */
+.cf-section{background:var(--gray-50);padding:88px 0}
+.cf-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
+.form-wrap{background:#fff;border-radius:var(--r-xl);padding:40px;box-shadow:var(--sh)}
+.form-wrap h3{font-family:'Montserrat',sans-serif;font-size:21px;font-weight:800;color:var(--blue-dark);margin-bottom:6px}
+.form-wrap .fw-sub{font-size:13.5px;color:var(--gray-400);margin-bottom:26px}
+.form-row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-grp2{margin-bottom:15px}
+.form-grp2 label{display:block;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:var(--gray-600);margin-bottom:6px;letter-spacing:.03em}
+.form-grp2 input,.form-grp2 select,.form-grp2 textarea{width:100%;padding:11px 14px;border:1.5px solid var(--gray-200);border-radius:8px;font-family:'Open Sans',sans-serif;font-size:14px;color:var(--gray-800);outline:none;transition:var(--t);background:var(--gray-50)}
+.form-grp2 input:focus,.form-grp2 select:focus,.form-grp2 textarea:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(26,47,212,.09)}
+.form-grp2 textarea{min-height:96px;resize:vertical}
+.btn-submit-form{width:100%;background:var(--blue);color:#fff;border:none;padding:14px;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:16px;font-weight:800;cursor:pointer;transition:var(--t);display:flex;align-items:center;justify-content:center;gap:9px;margin-top:6px}
+.btn-submit-form:hover{background:var(--blue-dark);transform:translateY(-1px);box-shadow:0 6px 20px rgba(26,47,212,.3)}
+.form-note{font-size:11.5px;color:var(--gray-400);text-align:center;margin-top:10px}
+.form-msg{font-size:13.5px;text-align:center;margin-top:12px;padding:10px 14px;border-radius:8px;font-weight:600}
+.form-msg-success{background:#e3f7ea;color:#1a7a3d}
+.form-msg-error{background:#fdeaea;color:#c0272d}
+/* FAQ accordion */
+.faq-wrap{margin-top:1rem}
+.faq-item{border-bottom:1.5px solid var(--gray-200)}
+.faq-q{width:100%;background:none;border:none;text-align:left;padding:18px 0;font-family:'Montserrat',sans-serif;font-size:15px;font-weight:700;color:var(--blue-dark);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;transition:var(--t)}
+.faq-q:hover{color:var(--blue)}
+.faq-q i{color:var(--red);font-size:14px;transition:var(--t);flex-shrink:0}
+.faq-a{font-size:14px;color:var(--gray-600);line-height:1.8;padding-bottom:16px;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .faq-q i{transform:rotate(45deg)}
+
+/* ── DISCLAIMER SECTION ── */
+.disclaimer-section{background:var(--blue-dark);padding:40px 0}
+.disc-inner{max-width:1240px;margin:0 auto;padding:0 1.5rem}
+.disc-inner h4{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:800;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
+.disc-inner p{font-size:11.5px;color:rgba(255,255,255,.45);line-height:1.8}
+.disc-inner a{color:rgba(255,255,255,.6)}
+.privsum-section{background:#0d2340;padding:36px 0;border-top:1px solid rgba(255,255,255,.08)}
+.privsum-inner{max-width:1240px;margin:0 auto;padding:0 1.5rem}
+.privsum-inner .eyebrow{color:var(--red-light,#ff8f8f);font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.privsum-inner h4{font-family:'Montserrat',sans-serif;font-size:15px;font-weight:800;color:#fff;margin-bottom:14px}
+.privsum-list{list-style:none;padding:0;margin:0 0 16px;display:grid;grid-template-columns:repeat(2,1fr);gap:8px 28px}
+.privsum-list li{font-size:11.5px;color:rgba(255,255,255,.55);line-height:1.7;padding-left:16px;position:relative}
+.privsum-list li::before{content:"\2713";position:absolute;left:0;color:var(--blue,#4a9eff);font-weight:800}
+.privsum-btn{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);border-radius:30px;padding:9px 20px;text-decoration:none;transition:.2s}
+.privsum-btn:hover{background:rgba(255,255,255,.18)}
+@media(max-width:640px){.privsum-list{grid-template-columns:1fr}}
+
+/* ── FOOTER ── */
+footer{background:#0a1340;padding:60px 0 0}
+.footer-grid{max-width:1240px;margin:0 auto;padding:0 1.5rem;display:grid;grid-template-columns:2.2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:48px}
+.fg-brand p{font-size:13.5px;color:rgba(255,255,255,.5);line-height:1.8;margin-top:14px;max-width:260px}
+.footer-logo{height:50px;width:auto}
+.social-row{display:flex;gap:10px;margin-top:18px}
+.soc-btn{width:38px;height:38px;border-radius:9px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.55);font-size:16px;text-decoration:none;transition:var(--t)}
+.soc-btn:hover{background:var(--blue);border-color:var(--blue);color:#fff}
+.fg-col h4{font-family:'Montserrat',sans-serif;font-size:12px;font-weight:800;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:18px}
+.fg-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.fg-col ul a{font-size:14px;color:rgba(255,255,255,.55);text-decoration:none;transition:var(--t);display:flex;align-items:center;gap:7px}
+.fg-col ul a:hover{color:#fff}
+.fg-col ul a i{font-size:12px;width:14px;color:var(--red)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding:20px 1.5rem;max-width:1240px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-bottom span{font-size:12px;color:rgba(255,255,255,.3)}
+.footer-bottom-links{display:flex;gap:18px}
+.footer-bottom-links a{font-size:12px;color:rgba(255,255,255,.35);text-decoration:none;transition:var(--t)}
+.footer-bottom-links a:hover{color:rgba(255,255,255,.7)}
+
+/* ── FLOATING PHONE ── */
+.float-phone{position:fixed;bottom:26px;right:26px;background:var(--red);color:#fff;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 8px 28px rgba(232,0,29,.45);z-index:500;text-decoration:none;transition:var(--t)}
+.float-phone:hover{background:var(--red-dark);transform:scale(1.1)}
+@keyframes ring{0%,100%{transform:scale(1) rotate(0)}10%{transform:scale(1.12) rotate(-8deg)}20%{transform:scale(1.12) rotate(8deg)}30%{transform:scale(1.12) rotate(-5deg)}40%{transform:scale(1.12) rotate(5deg)}50%{transform:scale(1) rotate(0)}}
+.float-phone{animation:ring 4s ease-in-out infinite}
+
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
+.reveal.visible{opacity:1;transform:none}
+.reveal-left{opacity:0;transform:translateX(-28px);transition:opacity .65s ease,transform .65s ease}
+.reveal-left.visible{opacity:1;transform:none}
+.reveal-right{opacity:0;transform:translateX(28px);transition:opacity .65s ease,transform .65s ease}
+.reveal-right.visible{opacity:1;transform:none}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .plans-grid,.carriers-scroll{grid-template-columns:repeat(2,1fr)}
+  .hiw-grid,.portal-inner,.map-grid,.cf-grid{grid-template-columns:1fr}
+  .hiw-img-wrap{display:none}
+  .cta-inner{flex-direction:column;text-align:center}
+  .cta-right{align-items:center}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:2.5rem}
+  .stats-bar-inner{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){
+  .nav-links,.nav-cta-wrap{display:none}
+  .hamburger{display:flex}
+  .hero-inner{grid-template-columns:1fr}
+  .hero-right{display:none}
+  .testi-grid{grid-template-columns:1fr}
+  .photo-mosaic{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .pm1,.pm2,.pm3,.pm4,.pm5{grid-column:span 1;grid-row:span 1}
+  .footer-grid{grid-template-columns:1fr}
+  .form-row2{grid-template-columns:1fr}
+  .portal-card{margin-top:2rem}
+  .carriers-scroll{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- TRANSLATIONS (JS object) -->
+<script>
+const T={
+  en:{
+    topbar:"📞 Call Toll-Free: <a href='tel:8006975631'>800.697.5631</a> &nbsp;|&nbsp; Mon–Fri 9AM–5:30PM, Sat 9AM–2PM &nbsp;|&nbsp; 100% Free Service for Medicare Beneficiaries &nbsp;|&nbsp; <a href='#contact'>Se Habla Español</a>",
+    hero_eyebrow:"Licensed Medicare Advisors · No Cost to You",
+    hero_h1:"Local, Trusted Guidance on <em>Medicare</em> Plans",
+    hero_desc:"We are independent insurance advisors helping seniors across the country find the best Medicare Advantage, Supplement, and Prescription Drug plans — from the top carriers.",
+    hero_btn1:"Get a Free Consultation",hero_btn2:"Explore Plans",
+    nav_medicare:"Medicare",nav_resources:"Resources",nav_team:"Our Team",nav_contact:"Contact",
+    hero_badge_members:"Members & Families",hero_badge_free:"Free Service",
+    nav_dd_ma:"Medicare Advantage",nav_dd_ms:"Medicare Supplement",nav_dd_pd:"Prescription Drug Plans",nav_dd_dsnp:"Dual Eligible (DSNP)",
+    nav_dd_carriers:"Our Carriers",nav_dd_how:"How It Works",nav_dd_faqs:"FAQs",
+    nav_agent_login:"Agent Login",nav_free_consult:"Free Consult",
+    mob_plans:"Medicare Plans",mob_carriers:"Our Carriers",mob_how:"How It Works",mob_team:"Our Team",mob_testi:"Testimonials",mob_contact:"Contact",mob_agent_login:"Agent & Agency Login",
+    trust1:"Members<br>Served",trust2:"States<br>Licensed",trust3:"Licensed<br>Agents",trust4:"Years of<br>Experience",
+    plans_ey:"Plans & Services",plans_title:"Everything Medicare<br>Under One Roof",plans_sub:"From your first enrollment to annual plan reviews, we guide you through every Medicare decision — free of charge.",
+    learn_more:"Learn More",
+    sb_lbl1:"Members Served",sb_lbl2:"States Licensed",sb_lbl3:"Licensed Agents",sb_lbl4:"EN / ES Support",
+    p1t:"Medicare Advantage",p1d:"All-in-one plans that may include $0 copays, dental, vision, hearing & more.",
+    p2t:"Medicare Supplement",p2d:"Help cover out-of-pocket costs not covered by Original Medicare (Parts A & B).",
+    p3t:"Prescription Drug Plans",p3d:"Compare Part D plans to find the best coverage for your medications at the lowest cost.",
+    p4t:"Dual Eligible (DSNP)",p4d:"Special plans for those with both Medicare & Medicaid offering enhanced benefits.",
+    carriers_ey:"Our Carrier Partners",carriers_title:"We Work With <em>Top Carriers</em>",carriers_sub:"As independent advisors, we are contracted with the nation's leading Medicare insurance carriers — giving you unbiased options.",
+    hiw_ey:"How It Works",hiw_title:"From Confusion to <em>Confidence</em><br>in 4 Simple Steps",
+    s1t:"Schedule a Free Call",s1d:"Tell us about your health needs, your doctors, your medications and your budget. No pressure, no obligations.",s1tag:"15-min consult",
+    s2t:"We Review Your Options",s2d:"We compare all available plans in your area across multiple carriers to find what fits you best.",s2tag:"Unbiased comparison",
+    s3t:"Enroll with Confidence",s3d:"We guide you through the enrollment process step by step, making sure every detail is correct.",s3tag:"Guided enrollment",
+    s4t:"We're Here Year-Round",s4d:"After enrollment, our agents remain available for questions, claims assistance, and annual reviews.",s4tag:"Ongoing support",
+    photos_ey:"Our Community",photos_title:"Real People. Real <em>Results.</em>",
+    team_ey:"Meet Our Team",team_title:"The People Behind <em>Allcare Mar</em>",team_sub:"Licensed, bilingual professionals dedicated to guiding you through every Medicare decision — backed by a full office team that supports you year-round.",
+    lead1_role:"Chairman & CEO",lead1_lang:"English, Spanish",
+    lead2_role:"President & COO",lead2_lang:"English, Spanish",
+    lead3_role:"General Manager",lead3_lang:"English, Spanish",
+    staff_subtitle:"Office Staff",
+    staff1_role:"Operating Manager",staff2_role:"Senior Administration",staff3_role:"Licensed Agent",staff4_role:"Technological Support",staff5_role:"Office Team Leader",
+    staff_agent_role:"Licensed Agent",staff_agent_role2:"Licensed Agent",staff_agent_role3:"Licensed Agent",
+    agents_dir_title:"Our Licensed Sales Agents",agents_count:"89 agents",agent_search_ph:"Search agent by name...",agents_no_results:"No agents found matching your search.",
+    portal_ey:"Agent & Agency Portal",portal_title:"Your Success,<br>Our Priority",portal_desc:"Our exclusive portal gives licensed agents and agency partners the tools, training, and support they need to grow their Medicare business.",
+    pf1:"Manage clients & enrollments",pf2:"Access training & certifications",pf3:"Track commissions & performance reports",pf4:"Download marketing materials",pf5:"Real-time carrier updates & tools",
+    login_title:"Agent Login",login_sub:"Sign in with your Allcare Mar Google Workspace account",
+    btn_portal:"Agent & Agency Login",google_cta:"Sign in with Google",
+    portal_disc:"Access is restricted to authorized @allcaremar.com Google Workspace accounts only. Unauthorized access is prohibited.",
+    testi_ey:"Member Testimonials",testi_title:"What Our Members Say",
+    t1:'"Allcare Mar made Medicare simple for me. They explained everything, answered every question I had and found the perfect plan. I couldn\'t have done it without them."',
+    t1n:"Carmen R.",t1l:"Secaucus, NJ",
+    t2:'"I switched plans during open enrollment and saved over $140 a month. The agent verified all my doctors were in network before I even signed anything. Outstanding service."',
+    t2n:"Roberto M.",t2l:"Orlando, FL",
+    t3:'"They helped my entire family understand Medicare. Bilingual, professional, patient. We now refer all our friends and neighbors to Allcare Mar."',
+    t3n:"María L.",t3l:"Miami, FL",
+    cta_h:"Let\'s Find the Right Plan for You",cta_p:"Our licensed advisors are ready to help you make the best choice for your health and your budget.",cta_btn:"Get Started Today",
+    map_ey:"Find Us",map_title:"Visit Us or Call — We\'re Here for You",map_desc:"We serve clients in-person, by phone, or by video call — wherever is most convenient for you.",
+    lbl_addr:"Address",lbl_phone:"Phone",lbl_email:"Email",lbl_hours:"Business Hours",
+    addr_val:"546 Avenue C, Bayonne, NJ 07002",ph_val:"<a href='tel:8006975631'>800.697.5631</a> (Toll-Free)",em_val:"<a href='mailto:info@allcaremar.com'>info@allcaremar.com</a>",
+    h1:"Mon – Fri",h1v:"9:00 AM – 5:30 PM",h2:"Saturday",h2v:"9:00 AM – 2:00 PM",h3:"Sunday",h3v:"Closed",
+    cf_ey:"Contact Us",cf_title:"Request Your <em>Free Consultation</em>",cf_h3:"Tell Us About You",cf_sub:"We\'ll respond within 24 business hours. No commitment, no cost.",
+    lb_fn:"First Name",lb_ln:"Last Name",lb_ph:"Phone Number",lb_em:"Email",lb_age:"Your Age Range",lb_int:"I\'m Interested In",lb_msg:"Message (optional)",
+    age_opt:["Select age range","60–64 (turning 65 soon)","65–70","71–79","80 or older"],
+    int_opt:["Select topic","New to Medicare (first time)","Switching or reviewing my plan","Comparing carriers","Understanding my benefits","Medicare & Medicaid (Dual Eligible)","Other"],
+    msg_ph:"Briefly describe your situation or question...",
+    btn_sub:"Send My Request",form_note:"🔒 Your information is private and never shared with third parties.",
+    faq_ey:"FAQ",faq_title:"Frequently Asked <em>Questions</em>",
+    faqs:[
+      {q:"Is Allcare Mar\'s service really free?",a:"Yes, completely. We are compensated by the insurance carriers, not by you. The price of your plan is exactly the same with or without an agent — but with us you have a licensed expert who guides and advocates for you at no additional cost."},
+      {q:"When can I enroll in Medicare?",a:"Your Initial Enrollment Period begins 3 months before your 65th birthday and ends 3 months after. The Annual Open Enrollment Period runs October 15 – December 7 each year. Special Enrollment Periods exist for qualifying life events. Contact us to review your specific situation."},
+      {q:"Can I keep my current doctors?",a:"That's one of the most important things we verify for you before recommending any plan. We check every plan's network to make sure your existing doctors and specialists are covered."},
+      {q:"Do you offer services in Spanish?",a:"Absolutely. All our agents are bilingual. You can communicate with us in Spanish or English — whichever is most comfortable for you."},
+      {q:"What if I already have a plan and want to change?",a:"We can review your current plan and compare it against available options. If we find something better for you, we guide you through the switch during the next enrollment period. Many clients save hundreds of dollars simply by reviewing their options each year."}
+    ],
+    disc_title:"Important Disclosures",
+    disc:"Allcare Mar Insurance Advisors is an independent insurance agency. We are not affiliated with or endorsed by the Centers for Medicare & Medicaid Services (CMS) or any government agency. We do not offer every plan available in your area — we represent a select portfolio of carriers. The information on this website is for educational purposes and does not constitute legal, financial, or medical advice. Medicare has neither reviewed nor endorsed this information. Contact Medicare.gov or call 1-800-MEDICARE (1-800-633-4227) for official information. Plans may vary by location. Not all plans available in all areas. Limitations, copayments, and restrictions may apply.",
+    footer_tagline:"Helping seniors make confident Medicare decisions with care, integrity, and expertise.",
+    fn_med:"Medicare",fl_ma:"Medicare Advantage",fl_ms:"Medicare Supplement",fl_pd:"Prescription Drug Plans",fl_dsnp:"DSNP Plans",
+    fn_res:"Resources",fl_comp:"Plan Comparisons",fl_bas:"Medicare Basics",fl_faq:"FAQs",fl_ev:"Events",
+    fn_co:"Company",fl_ab:"About Us",fl_team:"Our Team",fl_car:"Careers",fl_con:"Contact",
+    fn_sup:"Support",fl_p1:"800.697.5631",fl_p2:"info@allcaremar.com",fl_p3:"Mon–Fri 9AM–5:30PM",fl_p4:"Se Habla Español",
+    copy:"© 2026 Allcare Mar Insurance Advisors. All Rights Reserved.",
+    priv:"Privacy Policy",terms:"Terms of Use",cms_disc:"CMS Disclaimer",access:"Accessibility",
+    privsum_ey:"HIPAA & HITECH Compliance",
+    privsum_title:"Your Privacy & Security Policy — Summary",
+    privsum_p1:"We only collect information you voluntarily provide (name, contact info, basic Medicare status) to connect you with a licensed agent.",
+    privsum_p2:"We never sell, rent, or share your data with third parties outside our organization, under any circumstance.",
+    privsum_p3:"All form data travels encrypted end-to-end (SSL/HTTPS); access is restricted and protected with multi-factor authentication.",
+    privsum_p4:"Text \"STOP\" to any of our messages to opt out of SMS at any time. You may request access, correction, or deletion of your data at no cost.",
+    privsum_p5:"CMS Disclaimer: we do not offer every plan available in your area. Contact Medicare.gov or 1-800-MEDICARE for all of your options.",
+    privsum_btn_label:"View Full Privacy & Security Policy (PDF)"
+  },
+  es:{
+    topbar:"📞 Llamada Gratuita: <a href='tel:8006975631'>800.697.5631</a> &nbsp;|&nbsp; Lun–Vie 9AM–5:30PM, Sáb 9AM–2PM &nbsp;|&nbsp; Servicio 100% Gratuito · Se Habla Español &nbsp;|&nbsp; <a href='#contact'>Contáctenos</a>",
+    hero_eyebrow:"Asesores Certificados de Medicare · Sin Costo para Ti",
+    hero_h1:"Asesoría Local y de Confianza en Planes <em>Medicare</em>",
+    hero_desc:"Somos asesores independientes de seguros que ayudamos a personas mayores en todo el país a encontrar los mejores planes de Medicare Advantage, Suplementario y Medicamentos — con las aseguradoras líderes.",
+    hero_btn1:"Consulta Gratis",hero_btn2:"Ver Planes",
+    nav_medicare:"Medicare",nav_resources:"Recursos",nav_team:"Nuestro Equipo",nav_contact:"Contacto",
+    hero_badge_members:"Miembros y Familias",hero_badge_free:"Servicio Gratis",
+    nav_dd_ma:"Medicare Advantage",nav_dd_ms:"Medicare Suplementario",nav_dd_pd:"Planes de Medicamentos",nav_dd_dsnp:"Doble Elegibilidad (DSNP)",
+    nav_dd_carriers:"Nuestras Aseguradoras",nav_dd_how:"Cómo Funciona",nav_dd_faqs:"Preguntas Frecuentes",
+    nav_agent_login:"Acceso Agentes",nav_free_consult:"Consulta Gratis",
+    mob_plans:"Planes de Medicare",mob_carriers:"Nuestras Aseguradoras",mob_how:"Cómo Funciona",mob_team:"Nuestro Equipo",mob_testi:"Testimonios",mob_contact:"Contacto",mob_agent_login:"Acceso de Agentes y Agencias",
+    trust1:"Miembros<br>Atendidos",trust2:"Estados con<br>Licencia",trust3:"Agentes<br>Certificados",trust4:"Años de<br>Experiencia",
+    plans_ey:"Planes y Servicios",plans_title:"Todo lo que Necesitas<br>en un Solo Lugar",plans_sub:"Desde tu primera inscripción hasta revisiones anuales, te orientamos en cada decisión de Medicare — sin costo alguno.",
+    learn_more:"Ver Más",
+    sb_lbl1:"Miembros Atendidos",sb_lbl2:"Estados con Licencia",sb_lbl3:"Agentes Certificados",sb_lbl4:"Soporte EN / ES",
+    p1t:"Medicare Advantage",p1d:"Planes todo-en-uno que pueden incluir copagos $0, dental, visión, audición y más.",
+    p2t:"Medicare Suplementario",p2d:"Cubren los gastos de bolsillo que el Medicare Original no cubre (Partes A y B).",
+    p3t:"Planes de Medicamentos",p3d:"Compara planes Parte D para encontrar la mejor cobertura para tus medicamentos al menor costo.",
+    p4t:"Doble Elegible (DSNP)",p4d:"Planes especiales para quienes tienen Medicare y Medicaid con beneficios mejorados.",
+    carriers_ey:"Nuestras Aseguradoras",carriers_title:"Trabajamos con las <em>Mejores Aseguradoras</em>",carriers_sub:"Como asesores independientes, estamos contratados con las principales aseguradoras de Medicare del país — para darte opciones sin sesgo.",
+    hiw_ey:"Cómo Funciona",hiw_title:"De la Confusión a la <em>Confianza</em><br>en 4 Simples Pasos",
+    s1t:"Agenda una Llamada Gratuita",s1d:"Cuéntanos sobre tu salud, tus médicos, tus medicamentos y tu presupuesto. Sin presión ni compromiso.",s1tag:"Consulta 15 min",
+    s2t:"Revisamos Tus Opciones",s2d:"Comparamos todos los planes disponibles en tu área entre múltiples aseguradoras para encontrar lo mejor para ti.",s2tag:"Comparación imparcial",
+    s3t:"Inscripción con Confianza",s3d:"Te guiamos paso a paso en el proceso de inscripción, asegurándonos de que todo sea correcto.",s3tag:"Inscripción guiada",
+    s4t:"Estamos Todo el Año",s4d:"Después de la inscripción, nuestros agentes permanecen disponibles para preguntas, asistencia y revisiones anuales.",s4tag:"Apoyo continuo",
+    photos_ey:"Nuestra Comunidad",photos_title:"Personas Reales. Resultados <em>Reales.</em>",
+    team_ey:"Conoce a Nuestro Equipo",team_title:"Las Personas Detrás de <em>Allcare Mar</em>",team_sub:"Profesionales certificados y bilingües dedicados a guiarte en cada decisión de Medicare — respaldados por un equipo de oficina completo que te apoya todo el año.",
+    lead1_role:"Presidente y CEO",lead1_lang:"Inglés, Español",
+    lead2_role:"Presidenta y COO",lead2_lang:"Inglés, Español",
+    lead3_role:"Gerente General",lead3_lang:"Inglés, Español",
+    staff_subtitle:"Personal de Oficina",
+    staff1_role:"Gerente de Operaciones",staff2_role:"Administración Senior",staff3_role:"Agente Certificada",staff4_role:"Soporte Tecnológico",staff5_role:"Líder de Equipo de Oficina",
+    staff_agent_role:"Agente Certificado",staff_agent_role2:"Agente Certificado",staff_agent_role3:"Agente Certificada",
+    agents_dir_title:"Nuestros Agentes de Ventas Certificados",agents_count:"89 agentes",agent_search_ph:"Buscar agente por nombre...",agents_no_results:"No se encontraron agentes con esa búsqueda.",
+    portal_ey:"Portal de Agentes y Agencias",portal_title:"Tu Éxito,<br>Nuestra Prioridad",portal_desc:"Nuestro portal exclusivo brinda a los agentes certificados y socios de agencias las herramientas, capacitación y apoyo que necesitan para hacer crecer su negocio de Medicare.",
+    pf1:"Gestionar clientes e inscripciones",pf2:"Acceder a capacitaciones y certificaciones",pf3:"Rastrear comisiones y reportes",pf4:"Descargar materiales de marketing",pf5:"Actualizaciones de aseguradoras en tiempo real",
+    login_title:"Inicio de Sesión de Agente",login_sub:"Inicia sesión con tu cuenta de Google Workspace de Allcare Mar",
+    btn_portal:"Portal de Agentes y Agencias",google_cta:"Iniciar sesión con Google",
+    portal_disc:"El acceso está restringido a cuentas autorizadas de Google Workspace @allcaremar.com. El acceso no autorizado está prohibido.",
+    testi_ey:"Testimonios",testi_title:"Lo Que Dicen Nuestros Miembros",
+    t1:'"Allcare Mar me hizo Medicare simple. Me explicaron todo, respondieron cada pregunta y encontraron el plan perfecto. No podría haberlo hecho sin ellos."',
+    t1n:"Carmen R.",t1l:"Secaucus, NJ",
+    t2:'"Cambié de plan en la temporada abierta y ahorré más de $140 al mes. El agente verificó que mis médicos estaban en la red antes de firmar nada. Servicio excepcional."',
+    t2n:"Roberto M.",t2l:"Orlando, FL",
+    t3:'"Ayudaron a toda mi familia a entender Medicare. Bilingüe, profesional, paciente. Referimos a todos nuestros amigos y vecinos a Allcare Mar."',
+    t3n:"María L.",t3l:"Miami, FL",
+    cta_h:"Encontremos el Plan Ideal para Ti",cta_p:"Nuestros asesores certificados están listos para ayudarte a tomar la mejor decisión para tu salud y tu presupuesto.",cta_btn:"Comenzar Hoy",
+    map_ey:"Encuéntranos",map_title:"Visítanos o Llama — Estamos Aquí para Ti",map_desc:"Atendemos en persona, por teléfono o videollamada — donde sea más cómodo para ti.",
+    lbl_addr:"Dirección",lbl_phone:"Teléfono",lbl_email:"Correo",lbl_hours:"Horario de Atención",
+    addr_val:"546 Avenue C, Bayonne, NJ 07002",ph_val:"<a href='tel:8006975631'>800.697.5631</a> (Sin Costo)",em_val:"<a href='mailto:info@allcaremar.com'>info@allcaremar.com</a>",
+    h1:"Lun – Vie",h1v:"9:00 AM – 5:30 PM",h2:"Sábado",h2v:"9:00 AM – 2:00 PM",h3:"Domingo",h3v:"Cerrado",
+    cf_ey:"Contáctenos",cf_title:"Solicita tu <em>Consulta Gratuita</em>",cf_h3:"Cuéntanos Sobre Ti",cf_sub:"Respondemos dentro de 24 horas hábiles. Sin compromiso, sin costo.",
+    lb_fn:"Nombre",lb_ln:"Apellido",lb_ph:"Teléfono",lb_em:"Correo Electrónico",lb_age:"Tu Rango de Edad",lb_int:"Me Interesa",lb_msg:"Mensaje (opcional)",
+    age_opt:["Selecciona rango","60–64 (próximo a cumplir 65)","65–70","71–79","80 años o más"],
+    int_opt:["Selecciona tema","Nuevo en Medicare (primera vez)","Cambiar o revisar mi plan","Comparar aseguradoras","Entender mis beneficios","Medicare y Medicaid (Doble Elegible)","Otro"],
+    msg_ph:"Describe brevemente tu situación o pregunta...",
+    btn_sub:"Enviar Solicitud",form_note:"🔒 Tu información es privada y nunca se comparte con terceros.",
+    faq_ey:"Preguntas Frecuentes",faq_title:"Respuestas a tus <em>Preguntas</em>",
+    faqs:[
+      {q:"¿El servicio de Allcare Mar es realmente gratuito?",a:"Sí, completamente. Somos compensados por las aseguradoras, no por ti. El precio de tu plan es exactamente el mismo con o sin agente — pero con nosotros tienes un experto certificado que te orienta y defiende sin costo adicional."},
+      {q:"¿Cuándo puedo inscribirme en Medicare?",a:"Tu Período de Inscripción Inicial comienza 3 meses antes de tu cumpleaños 65 y termina 3 meses después. La Temporada Abierta Anual va del 15 de octubre al 7 de diciembre cada año. Existen períodos especiales por cambios de vida. Contáctanos para revisar tu caso específico."},
+      {q:"¿Puedo mantener a mis médicos actuales?",a:"Esa es una de las cosas más importantes que verificamos antes de recomendarte cualquier plan. Revisamos la red de cada plan para asegurarnos de que tus médicos y especialistas actuales estén cubiertos."},
+      {q:"¿Ofrecen servicios en español?",a:"Absolutamente. Todos nuestros agentes son bilingües. Puedes comunicarte con nosotros en español o inglés — como te sea más cómodo."},
+      {q:"¿Qué pasa si ya tengo un plan y quiero cambiarlo?",a:"Podemos revisar tu plan actual y compararlo con las opciones disponibles. Si encontramos algo mejor para ti, te guiamos en el cambio durante la próxima temporada de inscripción. Muchos clientes ahorran cientos de dólares simplemente revisando sus opciones cada año."}
+    ],
+    disc_title:"Divulgaciones Importantes",
+    disc:"Allcare Mar Insurance Advisors es una agencia de seguros independiente. No estamos afiliados ni respaldados por los Centros de Servicios de Medicare y Medicaid (CMS) ni ninguna agencia gubernamental. No ofrecemos todos los planes disponibles en su área. La información en este sitio web es educativa y no constituye asesoramiento legal, financiero ni médico. Medicare no ha revisado ni respaldado esta información. Contacte Medicare.gov o llame al 1-800-MEDICARE (1-800-633-4227) para información oficial. Los planes pueden variar por ubicación. Se aplican limitaciones, copagos y restricciones.",
+    footer_tagline:"Ayudamos a personas mayores a tomar decisiones informadas de Medicare con cuidado, integridad y experiencia.",
+    fn_med:"Medicare",fl_ma:"Medicare Advantage",fl_ms:"Medicare Suplementario",fl_pd:"Planes de Medicamentos",fl_dsnp:"Planes DSNP",
+    fn_res:"Recursos",fl_comp:"Comparación de Planes",fl_bas:"Conceptos Básicos",fl_faq:"Preguntas Frecuentes",fl_ev:"Eventos",
+    fn_co:"Compañía",fl_ab:"Sobre Nosotros",fl_team:"Nuestro Equipo",fl_car:"Empleo",fl_con:"Contacto",
+    fn_sup:"Soporte",fl_p1:"800.697.5631",fl_p2:"info@allcaremar.com",fl_p3:"Lun–Vie 9AM–5:30PM",fl_p4:"Se Habla Español",
+    copy:"© 2026 Allcare Mar Insurance Advisors. Todos los derechos reservados.",
+    priv:"Política de Privacidad",terms:"Términos de Uso",cms_disc:"Divulgación CMS",access:"Accesibilidad",
+    privsum_ey:"Cumplimiento HIPAA y HITECH",
+    privsum_title:"Política de Privacidad y Seguridad — Resumen",
+    privsum_p1:"Solo recopilamos la información que nos proporcionas voluntariamente (nombre, contacto, situación básica con Medicare) para conectarte con un agente licenciado.",
+    privsum_p2:"Nunca vendemos, alquilamos ni compartimos tus datos con terceros fuera de nuestra organización, bajo ninguna circunstancia.",
+    privsum_p3:"Los datos de los formularios viajan cifrados de extremo a extremo (SSL/HTTPS); el acceso está restringido y protegido con autenticación multifactor.",
+    privsum_p4:"Envía \"STOP\" a cualquier mensaje nuestro para cancelar los SMS en cualquier momento. Puedes solicitar acceso, corrección o eliminación de tus datos sin costo.",
+    privsum_p5:"Divulgación CMS: no ofrecemos todos los planes disponibles en tu área. Contacta Medicare.gov o 1-800-MEDICARE para conocer todas tus opciones.",
+    privsum_btn_label:"Ver Política Completa de Privacidad y Seguridad (PDF)"
+  }
+};
+let lang='en';
+function setLang(l){
+  lang=l;
+  document.documentElement.setAttribute('data-lang',l);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.l===l));
+  const t=T[l];
+  // topbar
+  document.getElementById('topbar-text').innerHTML=t.topbar;
+  // hero
+  document.getElementById('hero-eyebrow').innerHTML='<i class="fas fa-shield-alt"></i> '+t.hero_eyebrow;
+  document.getElementById('hero-h1').innerHTML=t.hero_h1;
+  document.getElementById('hero-desc').textContent=t.hero_desc;
+  document.getElementById('hero-btn1').innerHTML='<i class="fas fa-calendar-check"></i> '+t.hero_btn1;
+  document.getElementById('nav-medicare').textContent=t.nav_medicare;
+  document.getElementById('hero-badge-members').textContent=t.hero_badge_members;
+  document.getElementById('hero-badge-free').textContent=t.hero_badge_free;
+  document.querySelectorAll('.learn-more-txt').forEach(el=>el.textContent=t.learn_more);
+  document.getElementById('sb-lbl1').textContent=t.sb_lbl1;
+  document.getElementById('sb-lbl2').textContent=t.sb_lbl2;
+  document.getElementById('sb-lbl3').textContent=t.sb_lbl3;
+  document.getElementById('sb-lbl4').textContent=t.sb_lbl4;
+  document.getElementById('nav-resources').textContent=t.nav_resources;
+  document.getElementById('nav-team').textContent=t.nav_team;
+  document.getElementById('nav-contact').textContent=t.nav_contact;
+  document.getElementById('nav-dd-ma').textContent=t.nav_dd_ma;
+  document.getElementById('nav-dd-ms').textContent=t.nav_dd_ms;
+  document.getElementById('nav-dd-pd').textContent=t.nav_dd_pd;
+  document.getElementById('nav-dd-dsnp').textContent=t.nav_dd_dsnp;
+  document.getElementById('nav-dd-carriers').textContent=t.nav_dd_carriers;
+  document.getElementById('nav-dd-how').textContent=t.nav_dd_how;
+  document.getElementById('nav-dd-faqs').textContent=t.nav_dd_faqs;
+  document.getElementById('nav-agent-login').textContent=t.nav_agent_login;
+  document.getElementById('nav-free-consult').textContent=t.nav_free_consult;
+  document.getElementById('mob-plans').textContent=t.mob_plans;
+  document.getElementById('mob-carriers').textContent=t.mob_carriers;
+  document.getElementById('mob-how').textContent=t.mob_how;
+  document.getElementById('mob-team').textContent=t.mob_team;
+  document.getElementById('mob-testi').textContent=t.mob_testi;
+  document.getElementById('mob-contact').textContent=t.mob_contact;
+  document.getElementById('mob-agent-login').textContent=t.mob_agent_login;
+  document.getElementById('hero-btn2').innerHTML='<i class="fas fa-search"></i> '+t.hero_btn2;
+  document.getElementById('trust1').innerHTML=t.trust1;
+  document.getElementById('trust2').innerHTML=t.trust2;
+  document.getElementById('trust3').innerHTML=t.trust3;
+  document.getElementById('trust4').innerHTML=t.trust4;
+  // plans
+  document.getElementById('plans-ey').textContent=t.plans_ey;
+  document.getElementById('plans-title').innerHTML=t.plans_title;
+  document.getElementById('plans-sub').textContent=t.plans_sub;
+  ['p1t','p1d','p2t','p2d','p3t','p3d','p4t','p4d'].forEach(id=>document.getElementById(id).textContent=t[id]);
+  // carriers
+  document.getElementById('carriers-ey').textContent=t.carriers_ey;
+  document.getElementById('carriers-title').innerHTML=t.carriers_title;
+  document.getElementById('carriers-sub').textContent=t.carriers_sub;
+  // hiw
+  document.getElementById('hiw-ey').textContent=t.hiw_ey;
+  document.getElementById('hiw-title').innerHTML=t.hiw_title;
+  ['s1t','s1d','s1tag','s2t','s2d','s2tag','s3t','s3d','s3tag','s4t','s4d','s4tag'].forEach(id=>document.getElementById(id).textContent=t[id]);
+  // photos
+  document.getElementById('photos-ey').textContent=t.photos_ey;
+  document.getElementById('photos-title').innerHTML=t.photos_title;
+  document.getElementById('team-ey').textContent=t.team_ey;
+  document.getElementById('team-title').innerHTML=t.team_title;
+  document.getElementById('team-sub').textContent=t.team_sub;
+  document.getElementById('lead1-role').textContent=t.lead1_role;
+  document.getElementById('lead1-lang').textContent=t.lead1_lang;
+  document.getElementById('lead2-role').textContent=t.lead2_role;
+  document.getElementById('lead2-lang').textContent=t.lead2_lang;
+  document.getElementById('lead3-role').textContent=t.lead3_role;
+  document.getElementById('lead3-lang').textContent=t.lead3_lang;
+  document.getElementById('staff-subtitle').textContent=t.staff_subtitle;
+  document.getElementById('staff1-role').textContent=t.staff1_role;
+  document.getElementById('staff2-role').textContent=t.staff2_role;
+  document.getElementById('staff3-role').textContent=t.staff3_role;
+  document.getElementById('staff4-role').textContent=t.staff4_role;
+  document.getElementById('staff5-role').textContent=t.staff5_role;
+  document.getElementById('staff-agent-role').textContent=t.staff_agent_role;
+  document.getElementById('staff-agent-role2').textContent=t.staff_agent_role2;
+  document.getElementById('staff-agent-role3').textContent=t.staff_agent_role3;
+  // portal
+  document.getElementById('portal-ey').textContent=t.portal_ey;
+  document.getElementById('portal-title').innerHTML=t.portal_title;
+  document.getElementById('portal-desc').textContent=t.portal_desc;
+  ['pf1','pf2','pf3','pf4','pf5'].forEach(id=>document.getElementById(id).textContent=t[id]);
+  document.getElementById('btn-portal').innerHTML='<i class="fas fa-lock"></i> '+t.btn_portal;
+  document.getElementById('login-title').textContent=t.login_title;
+  document.getElementById('login-sub').textContent=t.login_sub;
+  document.getElementById('google-cta-label').textContent=t.google_cta;
+  document.getElementById('portal-disc').textContent=t.portal_disc;
+  // testi
+  document.getElementById('testi-ey').textContent=t.testi_ey;
+  document.getElementById('testi-title').textContent=t.testi_title;
+  document.getElementById('t1').textContent=t.t1;
+  document.getElementById('t1n').textContent=t.t1n;document.getElementById('t1l').textContent=t.t1l;
+  document.getElementById('t2').textContent=t.t2;
+  document.getElementById('t2n').textContent=t.t2n;document.getElementById('t2l').textContent=t.t2l;
+  document.getElementById('t3').textContent=t.t3;
+  document.getElementById('t3n').textContent=t.t3n;document.getElementById('t3l').textContent=t.t3l;
+  // cta
+  document.getElementById('cta-h').textContent=t.cta_h;
+  document.getElementById('cta-p').textContent=t.cta_p;
+  document.getElementById('cta-btn').innerHTML=t.cta_btn+' <i class="fas fa-arrow-right"></i>';
+  // map
+  document.getElementById('map-ey').textContent=t.map_ey;
+  document.getElementById('map-title').textContent=t.map_title;
+  document.getElementById('map-desc').textContent=t.map_desc;
+  document.getElementById('lbl-addr').textContent=t.lbl_addr;
+  document.getElementById('addr-val').innerHTML=t.addr_val;
+  document.getElementById('lbl-phone').textContent=t.lbl_phone;
+  document.getElementById('ph-val').innerHTML=t.ph_val;
+  document.getElementById('lbl-email').textContent=t.lbl_email;
+  document.getElementById('em-val').innerHTML=t.em_val;
+  document.getElementById('lbl-hours').textContent=t.lbl_hours;
+  document.getElementById('h1l').textContent=t.h1;document.getElementById('h1v').textContent=t.h1v;
+  document.getElementById('h2l').textContent=t.h2;document.getElementById('h2v').textContent=t.h2v;
+  document.getElementById('h3l').textContent=t.h3;document.getElementById('h3v').textContent=t.h3v;
+  // contact form
+  document.getElementById('cf-ey').textContent=t.cf_ey;
+  document.getElementById('cf-title').innerHTML=t.cf_title;
+  document.getElementById('cf-h3').textContent=t.cf_h3;
+  document.getElementById('cf-sub').textContent=t.cf_sub;
+  ['lb-fn','lb-ln','lb-ph','lb-em','lb-age','lb-int','lb-msg'].forEach(id=>document.getElementById(id).textContent=t[id.replace(/-/g,'_')]);
+  const ageSel=document.getElementById('age-sel');
+  ageSel.innerHTML=t.age_opt.map(o=>`<option>${o}</option>`).join('');
+  const intSel=document.getElementById('int-sel');
+  intSel.innerHTML=t.int_opt.map(o=>`<option>${o}</option>`).join('');
+  document.getElementById('msg-ta').placeholder=t.msg_ph;
+  document.getElementById('btn-sub').innerHTML='<i class="fas fa-paper-plane"></i> '+t.btn_sub;
+  document.getElementById('form-note').textContent=t.form_note;
+  // faq
+  document.getElementById('faq-ey').textContent=t.faq_ey;
+  document.getElementById('faq-title').innerHTML=t.faq_title;
+  const faqC=document.getElementById('faq-container');
+  faqC.innerHTML=t.faqs.map((f,i)=>`
+    <div class="faq-item${i===0?' open':''}">
+      <button class="faq-q" onclick="toggleFaq(this)">${f.q} <i class="fas fa-plus"></i></button>
+      <div class="faq-a">${f.a}</div>
+    </div>`).join('');
+  // disclaimer
+  document.getElementById('disc-title').textContent=t.disc_title;
+  document.getElementById('disc-text').textContent=t.disc;
+  // privacy & security summary
+  document.getElementById('privsum-ey').textContent=t.privsum_ey;
+  document.getElementById('privsum-title').textContent=t.privsum_title;
+  document.getElementById('privsum-p1').textContent=t.privsum_p1;
+  document.getElementById('privsum-p2').textContent=t.privsum_p2;
+  document.getElementById('privsum-p3').textContent=t.privsum_p3;
+  document.getElementById('privsum-p4').textContent=t.privsum_p4;
+  document.getElementById('privsum-p5').textContent=t.privsum_p5;
+  document.getElementById('privsum-btn-label').textContent=t.privsum_btn_label;
+  // footer
+  document.getElementById('footer-tagline').textContent=t.footer_tagline;
+  ['fn-med','fl-ma','fl-ms','fl-pd','fl-dsnp','fn-res','fl-comp','fl-bas','fl-faq','fl-ev','fn-co','fl-ab','fl-team','fl-car','fl-con','fn-sup','fl-p1','fl-p2','fl-p3','fl-p4'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=t[id.replace(/-/g,'_')]});
+  document.getElementById('copy').textContent=t.copy;
+  document.getElementById('priv').textContent=t.priv;
+  document.getElementById('priv').setAttribute('href','privacy-security-policy.pdf');
+  document.getElementById('priv').setAttribute('target','_blank');
+  document.getElementById('priv').setAttribute('rel','noopener');
+  document.getElementById('terms').textContent=t.terms;
+  document.getElementById('cms-disc').textContent=t.cms_disc;
+  document.getElementById('access').textContent=t.access;
+}
+</script>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="ti">
+    <span id="topbar-text"></span>
+    <div class="lang-sw">
+      <button class="lang-btn active" data-l="en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" data-l="es" onclick="setLang('es')">ES</button>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-wrap">
+    <a href="#" class="nav-logo">
+      <img src="assets/img/logo-allcaremar.png" alt="Allcare Mar Insurance Advisors" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/>
+      <div style="display:none;align-items:center;gap:10px">
+        <div style="width:42px;height:42px;background:var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center">
+          <span style="font-family:Montserrat,sans-serif;font-size:20px;font-weight:900;color:#fff">A</span>
+        </div>
+        <div><strong style="font-family:Montserrat,sans-serif;font-size:15px;font-weight:900;color:var(--blue)">ALLCARE MAR</strong><br>
+        <span style="font-size:10px;font-family:Montserrat,sans-serif;font-weight:700;color:var(--red);letter-spacing:.06em;text-transform:uppercase">Insurance Advisors</span></div>
+      </div>
+    </a>
+    <div class="nav-links">
+      <div class="nav-dd">
+        <button class="nav-dd-btn"><span id="nav-medicare">Medicare</span> <i class="fas fa-chevron-down" style="font-size:10px"></i></button>
+        <div class="nav-dd-menu">
+          <a href="#plans"><i class="fas fa-heart"></i> <span id="nav-dd-ma">Medicare Advantage</span></a>
+          <a href="#plans"><i class="fas fa-shield-alt"></i> <span id="nav-dd-ms">Medicare Supplement</span></a>
+          <a href="#plans"><i class="fas fa-pills"></i> <span id="nav-dd-pd">Prescription Drug Plans</span></a>
+          <a href="#plans"><i class="fas fa-users"></i> <span id="nav-dd-dsnp">Dual Eligible (DSNP)</span></a>
+        </div>
+      </div>
+      <div class="nav-dd">
+        <button class="nav-dd-btn"><span id="nav-resources">Resources</span> <i class="fas fa-chevron-down" style="font-size:10px"></i></button>
+        <div class="nav-dd-menu">
+          <a href="#carriers"><i class="fas fa-building"></i> <span id="nav-dd-carriers">Our Carriers</span></a>
+          <a href="#how"><i class="fas fa-list-ol"></i> <span id="nav-dd-how">How It Works</span></a>
+          <a href="#contact"><i class="fas fa-question-circle"></i> <span id="nav-dd-faqs">FAQs</span></a>
+        </div>
+      </div>
+      <a href="#team" id="nav-team">Our Team</a>
+      <a href="#contact" id="nav-contact">Contact</a>
+    </div>
+    <div class="nav-cta-wrap">
+      <a href="tel:8006975631" class="nav-phone"><i class="fas fa-phone-alt"></i> 800.697.5631</a>
+      <button class="btn-agent-login" onclick="location.href='login.html'">
+        <i class="fas fa-lock"></i> <span id="nav-agent-login">Agent Login</span>
+      </button>
+      <a href="#contact" class="btn-nav" id="nav-free-consult">Free Consult</a>
+    </div>
+    <div class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></div>
+  </div>
+  <div class="mob-menu" id="mobMenu">
+    <a href="#plans" id="mob-plans">Medicare Plans</a>
+    <a href="#carriers" id="mob-carriers">Our Carriers</a>
+    <a href="#how" id="mob-how">How It Works</a>
+    <a href="#team" id="mob-team">Our Team</a>
+    <a href="#testimonials" id="mob-testi">Testimonials</a>
+    <a href="#contact" id="mob-contact">Contact</a>
+    <button onclick="location.href='login.html'" style="color:var(--blue)"><i class="fas fa-lock"></i> <span id="mob-agent-login">Agent &amp; Agency Login</span></button>
+    <a href="tel:8006975631" style="color:var(--red);font-weight:700"><i class="fas fa-phone-alt"></i> 800.697.5631</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <img class="hero-bg-img" src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=1800&q=80" alt=""/>
+  <div class="hero-overlay"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge reveal-left" id="hero-eyebrow"></div>
+      <h1 class="reveal" id="hero-h1" style="transition-delay:.1s"></h1>
+      <p class="hero-desc reveal" id="hero-desc" style="transition-delay:.2s"></p>
+      <div class="hero-btns reveal" style="transition-delay:.3s">
+        <a href="#contact" class="btn-hero-red" id="hero-btn1"></a>
+        <a href="#plans" class="btn-hero-outline" id="hero-btn2"></a>
+      </div>
+      <div class="hero-trust reveal" style="transition-delay:.4s">
+        <div class="trust-item"><div class="trust-num">20K+</div><div class="trust-label" id="trust1"></div></div>
+        <div class="trust-divider"></div>
+        <div class="trust-item"><div class="trust-num">22</div><div class="trust-label" id="trust2"></div></div>
+        <div class="trust-divider"></div>
+        <div class="trust-item"><div class="trust-num">80+</div><div class="trust-label" id="trust3"></div></div>
+        <div class="trust-divider"></div>
+        <div class="trust-item"><div class="trust-num">15+</div><div class="trust-label" id="trust4"></div></div>
+      </div>
+    </div>
+    <div class="hero-right reveal-right" style="transition-delay:.2s">
+      <div style="position:relative">
+        <img class="hero-main-img" src="assets/img/hero-senior-couple.jpg" alt="Senior couple dancing together in the park, smiling" fetchpriority="high"/>
+        <div class="hero-badge">
+          <div class="hb-icon"><i class="fas fa-users"></i></div>
+          <div class="hb-text"><strong>20K+</strong><span id="hero-badge-members">Members & Families</span></div>
+        </div>
+        <div class="hero-badge2">
+          <div class="hb2-num">100%</div>
+          <div class="hb2-label" id="hero-badge-free">Free Service</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-wave">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#ffffff"/>
+    </svg>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-bar-inner">
+    <div class="stat-item"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-num">20K+</div><div class="stat-lbl" id="sb-lbl1">Members Served</div></div>
+    <div class="stat-item"><div class="stat-icon"><i class="fas fa-map-marked-alt"></i></div><div class="stat-num">22</div><div class="stat-lbl" id="sb-lbl2">States Licensed</div></div>
+    <div class="stat-item"><div class="stat-icon"><i class="fas fa-id-badge"></i></div><div class="stat-num">80+</div><div class="stat-lbl" id="sb-lbl3">Licensed Agents</div></div>
+    <div class="stat-item"><div class="stat-icon"><i class="fas fa-headset"></i></div><div class="stat-num">Bilingual</div><div class="stat-lbl" id="sb-lbl4">EN / ES Support</div></div>
+  </div>
+</div>
+
+<!-- PLANS & SERVICES -->
+<section id="plans" class="plans-section">
+  <div class="container">
+    <div class="section-center">
+      <div class="eyebrow" id="plans-ey"></div>
+      <h2 class="s-title reveal" id="plans-title"></h2>
+      <p class="s-sub center reveal" id="plans-sub" style="transition-delay:.1s;margin-top:.5rem"></p>
+    </div>
+    <div class="plans-grid">
+      <div class="plan-card reveal" style="transition-delay:.05s">
+        <div class="pc-icon blue"><i class="fas fa-heart"></i></div>
+        <h3 id="p1t"></h3><p id="p1d"></p>
+        <a href="#contact" class="learn-more"><span class="learn-more-txt">Learn More</span> <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="plan-card reveal" style="transition-delay:.1s">
+        <div class="pc-icon red"><i class="fas fa-shield-alt"></i></div>
+        <h3 id="p2t"></h3><p id="p2d"></p>
+        <a href="#contact" class="learn-more"><span class="learn-more-txt">Learn More</span> <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="plan-card reveal" style="transition-delay:.15s">
+        <div class="pc-icon gold"><i class="fas fa-pills"></i></div>
+        <h3 id="p3t"></h3><p id="p3d"></p>
+        <a href="#contact" class="learn-more"><span class="learn-more-txt">Learn More</span> <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="plan-card reveal" style="transition-delay:.2s">
+        <div class="pc-icon green"><i class="fas fa-hand-holding-heart"></i></div>
+        <h3 id="p4t"></h3><p id="p4d"></p>
+        <a href="#contact" class="learn-more"><span class="learn-more-txt">Learn More</span> <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CARRIERS -->
+<section id="carriers" class="carriers-section">
+  <div class="container">
+    <div class="section-center">
+      <div class="eyebrow" id="carriers-ey"></div>
+      <h2 class="s-title reveal" id="carriers-title"></h2>
+      <p class="s-sub center reveal" id="carriers-sub" style="transition-delay:.1s;margin-top:.5rem"></p>
+    </div>
+    <div class="carriers-scroll reveal" style="transition-delay:.1s">
+      <div class="carrier-tile"><div class="ct-logo ct-uhc">UHC</div><div class="ct-name">UnitedHealthcare</div><div class="ct-type">Medicare Advantage · Supplement</div></div>
+      <div class="carrier-tile"><div class="ct-logo ct-aetna">AET</div><div class="ct-name">Aetna</div><div class="ct-type">Medicare Advantage · Part D</div></div>
+      <div class="carrier-tile"><div class="ct-logo ct-humana">HUM</div><div class="ct-name">Humana</div><div class="ct-type">Medicare Advantage · DSNP</div></div>
+      <div class="carrier-tile"><div class="ct-logo ct-devoted">DEV</div><div class="ct-name">Devoted Health</div><div class="ct-type">Medicare Advantage · 5★ CMS</div></div>
+      <div class="carrier-tile"><div class="ct-logo ct-clover">CLO</div><div class="ct-name">Clover Health</div><div class="ct-type">Medicare Advantage</div></div>
+    </div>
+    <!-- Scrolling ticker -->
+    <div class="carrier-ticker-wrap reveal" style="transition-delay:.2s">
+      <div class="carrier-ticker">
+        <span class="ticker-item">UnitedHealthcare</span>
+        <span class="ticker-item">Aetna</span>
+        <span class="ticker-item">Humana</span>
+        <span class="ticker-item">Devoted Health</span>
+        <span class="ticker-item">Clover Health</span>
+        <span class="ticker-item">Healthfirst</span>
+        <span class="ticker-item">EmblemHealth</span>
+        <span class="ticker-item">Jefferson Health</span>
+        <span class="ticker-item">Anthem / BCBS</span>
+        <span class="ticker-item">Wellcare</span>
+        <span class="ticker-item">Cigna</span>
+        <span class="ticker-item">Molina Healthcare</span>
+        <span class="ticker-item">UnitedHealthcare</span>
+        <span class="ticker-item">Aetna</span>
+        <span class="ticker-item">Humana</span>
+        <span class="ticker-item">Devoted Health</span>
+        <span class="ticker-item">Clover Health</span>
+        <span class="ticker-item">Healthfirst</span>
+        <span class="ticker-item">EmblemHealth</span>
+        <span class="ticker-item">Jefferson Health</span>
+        <span class="ticker-item">Anthem / BCBS</span>
+        <span class="ticker-item">Wellcare</span>
+        <span class="ticker-item">Cigna</span>
+        <span class="ticker-item">Molina Healthcare</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="hiw-section">
+  <div class="container">
+    <div class="section-center">
+      <div class="eyebrow" id="hiw-ey"></div>
+      <h2 class="s-title reveal" id="hiw-title"></h2>
+    </div>
+    <div class="hiw-grid">
+      <div class="hiw-img-wrap reveal-left">
+        <img class="hiw-img" src="assets/img/how-it-works-agent.jpg" alt="Agent helping senior with Medicare" loading="lazy"/>
+        <div class="hiw-card-float">
+          <div class="hiw-cf-num">4.9★</div>
+          <div class="hiw-cf-label">Agent Rating</div>
+        </div>
+      </div>
+      <div class="hiw-steps reveal-right" style="transition-delay:.1s">
+        <div class="step-row">
+          <div class="step-num-wrap"><div class="step-circle">1</div><div class="step-line"></div></div>
+          <div class="step-body"><h4 id="s1t"></h4><p id="s1d"></p><span class="step-tag" id="s1tag"></span></div>
+        </div>
+        <div class="step-row">
+          <div class="step-num-wrap"><div class="step-circle">2</div><div class="step-line"></div></div>
+          <div class="step-body"><h4 id="s2t"></h4><p id="s2d"></p><span class="step-tag" id="s2tag"></span></div>
+        </div>
+        <div class="step-row">
+          <div class="step-num-wrap"><div class="step-circle">3</div><div class="step-line"></div></div>
+          <div class="step-body"><h4 id="s3t"></h4><p id="s3d"></p><span class="step-tag" id="s3tag"></span></div>
+        </div>
+        <div class="step-row">
+          <div class="step-num-wrap"><div class="step-circle" style="background:var(--red)">4</div><div class="step-line"></div></div>
+          <div class="step-body"><h4 id="s4t"></h4><p id="s4d"></p><span class="step-tag" id="s4tag" style="background:var(--red-light);color:var(--red)"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTO GALLERY -->
+<section class="photo-section">
+  <div class="container">
+    <div class="section-center">
+      <div class="eyebrow" id="photos-ey"></div>
+      <h2 class="s-title reveal" id="photos-title"></h2>
+    </div>
+    <div class="photo-mosaic">
+      <div class="pm1 pm-label" data-label="Healthy · Happy · Covered">
+        <img src="assets/img/community-couple-embracing.jpg" alt="Senior couple embracing and smiling" loading="lazy"/>
+      </div>
+      <div class="pm2">
+        <img src="assets/img/community-caregiver-daughter.jpg" alt="Woman lovingly caring for her senior mother" loading="lazy"/>
+      </div>
+      <div class="pm3">
+        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80" alt="Insurance advisor" loading="lazy"/>
+      </div>
+      <div class="pm4 pm-label" data-label="Active Seniors">
+        <img src="assets/img/community-thumbs-up.jpg" alt="Happy senior couple giving thumbs up" loading="lazy"/>
+      </div>
+      <div class="pm5 pm-label" data-label="Bilingual Support">
+        <img src="assets/img/community-group-seniors.jpg" alt="Diverse group of smiling seniors" loading="lazy"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM SECTION -->
+<section id="team" class="team-section">
+  <div class="container">
+    <div class="section-center">
+      <div class="eyebrow" id="team-ey"></div>
+      <h2 class="s-title reveal" id="team-title"></h2>
+      <p class="s-sub center reveal" id="team-sub" style="transition-delay:.1s;margin-top:.5rem"></p>
+    </div>
+
+    <!-- Leadership / Agent Directory -->
+    <div class="leader-grid">
+      <div class="leader-card reveal" style="transition-delay:.05s">
+        <div class="leader-avatar"><img src="/agentes/marcos-rodriguez.webp" alt="Marcos Rodriguez" loading="lazy" onerror="this.style.display='none'"><span>MR</span></div>
+        <div class="leader-name">Marcos Rodriguez</div>
+        <div class="leader-role" id="lead1-role"></div>
+        <div class="leader-states">Estados con licencia: <em>—</em></div>
+        <div class="leader-meta">
+          <a href="mailto:mrodriguez@allcaremar.com">mrodriguez@allcaremar.com</a><br>
+          Ext. 403 · <span id="lead1-lang"></span>
+        </div>
+      </div>
+      <div class="leader-card reveal" style="transition-delay:.1s">
+        <div class="leader-avatar"><img src="/agentes/maria-santiago.webp" alt="Maria Santiago" loading="lazy" onerror="this.style.display='none'"><span>MS</span></div>
+        <div class="leader-name">Maria Santiago</div>
+        <div class="leader-role" id="lead2-role"></div>
+        <div class="leader-states">Estados con licencia: <em>—</em></div>
+        <div class="leader-meta">
+          <a href="mailto:msanti@allcaremar.com">msanti@allcaremar.com</a><br>
+          Ext. 404 · <span id="lead2-lang"></span>
+        </div>
+      </div>
+      <div class="leader-card reveal" style="transition-delay:.15s">
+        <div class="leader-avatar"><img src="/agentes/julian-vega.webp" alt="Julian Vega" loading="lazy" onerror="this.style.display='none'"><span>JV</span></div>
+        <div class="leader-name">Julian Vega</div>
+        <div class="leader-role" id="lead3-role"></div>
+        <div class="leader-states">Estados con licencia: <em>—</em></div>
+        <div class="leader-meta">
+          <a href="mailto:julian_vega@allcaremar.com">julian_vega@allcaremar.com</a><br>
+          Ext. 400 · <span id="lead3-lang"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Office staff / Agent Directory -->
+    <h3 class="reveal" style="font-family:'Montserrat',sans-serif;font-size:16px;font-weight:800;color:var(--blue-dark);margin-bottom:1.2rem" id="staff-subtitle"></h3>
+    <div class="staff-grid reveal" style="transition-delay:.05s">
+      <div class="staff-card"><div class="staff-avatar"><img src="/agentes/waldo-martinez.webp" alt="Waldo Martinez" loading="lazy" onerror="this.style.display='none'"><span>WM</span></div><div class="staff-name">Waldo Martinez</div><div class="staff-role" id="staff1-role"></div><div class="staff-states">Lic.: —</div></div>
+      <div class="staff-card"><div class="staff-avatar"><img src="/agentes/jessica-dominguez.webp" alt="Jessica Dominguez" loading="lazy" onerror="this.style.display='none'"><span>JD</span></div><div class="staff-name">Jessica Dominguez</div><div class="staff-role" id="staff2-role"></div><div class="staff-states">Lic.: —</div></div>
+      <div class="staff-card"><div class="staff-avatar"><img src="/agentes/nicole-arratia.webp" alt="Nicole Arratia" loading="lazy" onerror="this.style.display='none'"><span>NA</span></div><div class="staff-name">Nicole Arratia</div><div class="staff-role" id="staff3-role"></div><div class="staff-states">Lic.: —</div></div>
+      <div class="staff-card"><div class="staff-avatar"><img src="/agentes/jesus-cabreja.webp" alt="Jesus Cabreja" loading="lazy" onerror="this.style.display='none'"><span>JC</span></div><div class="staff-name">Jesus Cabreja</div><div class="staff-role" id="staff4-role"></div><div class="staff-states">Lic.: —</div></div>
+      <div class="staff-card"><div class="staff-avatar"><img src="/agentes/mariel-capellan.webp" alt="Mariel Capellan" loading="lazy" onerror="this.style.display='none'"><span>MC</span></div><div class="staff-name">Mariel Capellan</div><div class="staff-role" id="staff5-role"></div><div class="staff-states">Lic.: —</div></div>
+      <div class="staff-card"><div class="staff-avatar"><img src="/agentes/glenda-colon.webp" alt="Glenda Colon" loading="lazy" onerror="this.style.display='none'"><span>GC</span></div><div class="staff-name">Glenda Colon</div><div class="staff-role" id="staff-agent-role"></div><div class="staff-states">Lic.: —</div></div>
+      <div class="staff-card"><div class="staff-avatar"><img src="/agentes/roland-pinzon.webp" alt="Roland Pinzon" loading="lazy" onerror="this.style.display='none'"><span>RP</span></div><div class="staff-name">Roland Pinzon</div><div class="staff-role" id="staff-agent-role2"></div><div class="staff-states">Lic.: —</div></div>
+      <div class="staff-card"><div class="staff-avatar"><img src="/agentes/ana-marie-martell.webp" alt="Ana Marie Martell" loading="lazy" onerror="this.style.display='none'"><span>AM</span></div><div class="staff-name">Ana Marie Martell</div><div class="staff-role" id="staff-agent-role3"></div><div class="staff-states">Lic.: —</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENT PORTAL SECTION -->
+
+<section class="portal-section" id="portal-section">
+  <div class="portal-bg-pattern"></div>
+  <div class="portal-inner">
+    <div class="portal-left reveal-left">
+      <div class="eyebrow" id="portal-ey"></div>
+      <h2 class="s-title" id="portal-title" style="color:#fff"></h2>
+      <p id="portal-desc"></p>
+      <div class="portal-features">
+        <div class="pf-item"><i class="fas fa-users"></i><span id="pf1"></span></div>
+        <div class="pf-item"><i class="fas fa-graduation-cap"></i><span id="pf2"></span></div>
+        <div class="pf-item"><i class="fas fa-chart-line"></i><span id="pf3"></span></div>
+        <div class="pf-item"><i class="fas fa-download"></i><span id="pf4"></span></div>
+        <div class="pf-item"><i class="fas fa-bell"></i><span id="pf5"></span></div>
+      </div>
+      <button class="btn-portal" id="btn-portal" onclick="document.getElementById('portal-card').scrollIntoView({behavior:'smooth'})"></button>
+    </div>
+    <div class="portal-card reveal-right" id="portal-card" style="transition-delay:.15s;text-align:center">
+      <div class="portal-card-header">
+        <div class="portal-logo-ring"><i class="fas fa-shield-alt"></i></div>
+        <h3 id="login-title"></h3>
+        <p id="login-sub"></p>
+      </div>
+      <button class="btn-google" onclick="location.href='login.html'">
+        <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84c-.21 1.13-.84 2.09-1.8 2.73v2.27h2.91c1.7-1.57 2.69-3.88 2.69-6.64z"/>
+          <path fill="#34A853" d="M9 18c2.43 0 4.47-.81 5.96-2.18l-2.91-2.27c-.81.54-1.85.86-3.05.86-2.34 0-4.33-1.58-5.04-3.71H.96v2.34C2.44 15.98 5.48 18 9 18z"/>
+          <path fill="#FBBC05" d="M3.96 10.7A5.4 5.4 0 0 1 3.68 9c0-.59.1-1.17.28-1.7V4.96H.96A9 9 0 0 0 0 9c0 1.45.35 2.83.96 4.04l3-2.34z"/>
+          <path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0 5.48 0 2.44 2.02.96 4.96l3 2.34C4.67 5.17 6.66 3.58 9 3.58z"/>
+        </svg>
+        <span id="google-cta-label"></span>
+      </button>
+      <p class="portal-disclaimer" id="portal-disc"></p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" class="testi-section">
+  <div class="container">
+    <div class="section-center">
+      <div class="eyebrow" id="testi-ey"></div>
+      <h2 class="s-title reveal" id="testi-title"></h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal" style="transition-delay:.05s">
+        <div class="tc-quote">"</div>
+        <div class="tc-stars">★★★★★</div>
+        <p class="tc-text" id="t1"></p>
+        <div class="tc-author">
+          <img class="tc-avatar" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&q=80" alt="Carmen"/>
+          <div><div class="tc-name" id="t1n"></div><div class="tc-loc" id="t1l"></div></div>
+        </div>
+      </div>
+      <div class="testi-card featured reveal" style="transition-delay:.12s">
+        <div class="tc-quote">"</div>
+        <div class="tc-stars">★★★★★</div>
+        <p class="tc-text" id="t2"></p>
+        <div class="tc-author">
+          <div class="tc-avatar-letter av-blue">RM</div>
+          <div><div class="tc-name" id="t2n"></div><div class="tc-loc" id="t2l"></div></div>
+        </div>
+      </div>
+      <div class="testi-card reveal" style="transition-delay:.2s">
+        <div class="tc-quote">"</div>
+        <div class="tc-stars">★★★★★</div>
+        <p class="tc-text" id="t3"></p>
+        <div class="tc-author">
+          <img class="tc-avatar" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=100&q=80" alt="Maria"/>
+          <div><div class="tc-name" id="t3n"></div><div class="tc-loc" id="t3l"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-dots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<div class="cta-band">
+  <div class="cta-inner">
+    <div class="cta-left">
+      <h2 id="cta-h"></h2>
+      <p id="cta-p"></p>
+    </div>
+    <div class="cta-right">
+      <a href="#contact" class="btn-cta-white" id="cta-btn"></a>
+      <a href="tel:8006975631" class="cta-phone-link"><i class="fas fa-phone-alt"></i> 800.697.5631</a>
+    </div>
+  </div>
+</div>
+
+<!-- MAP -->
+<section class="map-section" id="location">
+  <div class="container">
+    <div class="section-center" style="margin-bottom:3rem">
+      <div class="eyebrow" id="map-ey"></div>
+      <h2 class="s-title reveal" id="map-title"></h2>
+      <p class="s-sub center reveal" id="map-desc" style="transition-delay:.1s;margin-top:.5rem"></p>
+    </div>
+    <div class="map-grid">
+      <div class="reveal-left">
+        <div class="contact-blocks">
+          <div class="cb-item">
+            <div class="cb-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div><div class="cb-label" id="lbl-addr"></div><div class="cb-value" id="addr-val"></div></div>
+          </div>
+          <div class="cb-item">
+            <div class="cb-icon"><i class="fas fa-phone-alt"></i></div>
+            <div><div class="cb-label" id="lbl-phone"></div><div class="cb-value" id="ph-val"></div></div>
+          </div>
+          <div class="cb-item">
+            <div class="cb-icon"><i class="fas fa-envelope"></i></div>
+            <div><div class="cb-label" id="lbl-email"></div><div class="cb-value" id="em-val"></div></div>
+          </div>
+          <div class="cb-item">
+            <div class="cb-icon"><i class="fas fa-clock"></i></div>
+            <div>
+              <div class="cb-label" id="lbl-hours"></div>
+              <div class="hours-tbl">
+                <span id="h1l"></span><strong id="h1v"></strong>
+                <span id="h2l"></span><strong id="h2v"></strong>
+                <span id="h3l"></span><strong id="h3v"></strong>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="#contact" class="btn-hero-red" style="margin-top:1rem;display:inline-flex"><i class="fas fa-calendar-check"></i> Schedule Appointment</a>
+      </div>
+      <div class="map-frame reveal-right">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2987.3!2d-74.1195641!3d40.6659736!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25f084606dcfd%3A0x7f53dd9db276a560!2sUnited%20Healthcare%20-%20Allcare%20Mar%20Agency!5e0!3m2!1sen!2sus!4v1719700000000!5m2!1sen!2sus" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Allcare Mar Agency - 546 Avenue C, Bayonne NJ 07002"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT FORM + FAQ -->
+<section class="cf-section" id="contact">
+  <div class="container">
+    <div class="section-center" style="margin-bottom:3rem">
+      <div class="eyebrow" id="cf-ey"></div>
+      <h2 class="s-title reveal" id="cf-title"></h2>
+    </div>
+    <div class="cf-grid">
+      <div class="form-wrap reveal-left">
+        <h3 id="cf-h3"></h3>
+        <p class="fw-sub" id="cf-sub"></p>
+        <div class="form-row2">
+          <div class="form-grp2"><label id="lb-fn"></label><input type="text" id="fn-input" placeholder="Ana"/></div>
+          <div class="form-grp2"><label id="lb-ln"></label><input type="text" id="ln-input" placeholder="García"/></div>
+        </div>
+        <div class="form-row2">
+          <div class="form-grp2"><label id="lb-ph"></label><input type="tel" id="phone-input" placeholder="(305) 000-0000"/></div>
+          <div class="form-grp2"><label id="lb-em"></label><input type="email" id="email-input" placeholder="ana@email.com"/></div>
+        </div>
+        <div class="form-grp2"><label id="lb-age"></label><select id="age-sel"></select></div>
+        <div class="form-grp2"><label id="lb-int"></label><select id="int-sel"></select></div>
+        <div class="form-grp2"><label id="lb-msg"></label><textarea id="msg-ta"></textarea></div>
+        <button class="btn-submit-form" id="btn-sub" onclick="handleContactSubmit()"></button>
+        <p class="form-msg" id="form-msg" style="display:none"></p>
+        <p class="form-note" id="form-note"></p>
+      </div>
+      <div class="reveal-right" style="transition-delay:.1s">
+        <div class="eyebrow left" id="faq-ey"></div>
+        <h2 class="s-title" id="faq-title"></h2>
+        <div class="faq-wrap" id="faq-container"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CMS DISCLAIMER -->
+<div class="disclaimer-section">
+  <div class="disc-inner">
+    <h4 id="disc-title"></h4>
+    <p id="disc-text"></p>
+  </div>
+</div>
+
+<!-- PRIVACY & SECURITY POLICY SUMMARY -->
+<div class="privsum-section">
+  <div class="privsum-inner">
+    <div class="eyebrow" id="privsum-ey"></div>
+    <h4 id="privsum-title"></h4>
+    <ul class="privsum-list">
+      <li id="privsum-p1"></li>
+      <li id="privsum-p2"></li>
+      <li id="privsum-p3"></li>
+      <li id="privsum-p4"></li>
+      <li id="privsum-p5"></li>
+    </ul>
+    <a class="privsum-btn" id="privsum-btn" href="privacy-security-policy.pdf" target="_blank" rel="noopener"><i class="fas fa-file-pdf"></i> <span id="privsum-btn-label"></span></a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="fg-brand">
+      <img class="footer-logo" src="assets/img/logo-allcaremar.png" alt="Allcare Mar" onerror="this.style.filter='invert(1)'"/>
+      <p id="footer-tagline"></p>
+      <div class="social-row">
+        <a href="https://www.facebook.com/Allcaremedicare" target="_blank" class="soc-btn"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/allcare_mar/" target="_blank" class="soc-btn"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.linkedin.com/company/allcare-mar-agency/" target="_blank" class="soc-btn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="tel:8006975631" class="soc-btn"><i class="fas fa-phone-alt"></i></a>
+      </div>
+    </div>
+    <div class="fg-col">
+      <h4 id="fn-med"></h4>
+      <ul>
+        <li><a href="#plans"><i class="fas fa-chevron-right"></i> <span id="fl-ma"></span></a></li>
+        <li><a href="#plans"><i class="fas fa-chevron-right"></i> <span id="fl-ms"></span></a></li>
+        <li><a href="#plans"><i class="fas fa-chevron-right"></i> <span id="fl-pd"></span></a></li>
+        <li><a href="#plans"><i class="fas fa-chevron-right"></i> <span id="fl-dsnp"></span></a></li>
+      </ul>
+    </div>
+    <div class="fg-col">
+      <h4 id="fn-co"></h4>
+      <ul>
+        <li><a href="#"><i class="fas fa-chevron-right"></i> <span id="fl-ab"></span></a></li>
+        <li><a href="#team"><i class="fas fa-chevron-right"></i> <span id="fl-team"></span></a></li>
+        <li><a href="#portal-section"><i class="fas fa-chevron-right"></i> <span id="fl-car"></span></a></li>
+        <li><a href="#contact"><i class="fas fa-chevron-right"></i> <span id="fl-con"></span></a></li>
+      </ul>
+    </div>
+    <div class="fg-col">
+      <h4 id="fn-sup"></h4>
+      <ul>
+        <li><a href="tel:8006975631"><i class="fas fa-phone-alt"></i> <span id="fl-p1"></span></a></li>
+        <li><a href="mailto:info@allcaremar.com"><i class="fas fa-envelope"></i> <span id="fl-p2"></span></a></li>
+        <li><a href="#"><i class="fas fa-clock"></i> <span id="fl-p3"></span></a></li>
+        <li><a href="#contact"><i class="fas fa-language"></i> <span id="fl-p4"></span></a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span id="copy"></span>
+    <div class="footer-bottom-links">
+      <a href="#" id="priv"></a>
+      <a href="#" id="terms"></a>
+      <a href="#" id="cms-disc"></a>
+      <a href="#" id="access"></a>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING PHONE -->
+<a href="tel:8006975631" class="float-phone" aria-label="Call Allcare Mar"><i class="fas fa-phone-alt"></i></a>
+
+<script>
+// Init language
+setLang('en');
+
+// Mobile menu
+function toggleMob(){document.getElementById('mobMenu').classList.toggle('open')}
+
+// FAQ
+// Agent directory search filter
+function filterAgents(query){
+  const q=query.trim().toLowerCase();
+  const spans=document.querySelectorAll('#agentsList span');
+  let visibleCount=0;
+  spans.forEach(s=>{
+    const match=s.textContent.toLowerCase().includes(q);
+    s.classList.toggle('hide',!match);
+    if(match)visibleCount++;
+  });
+  document.getElementById('agentsNoResults').style.display=visibleCount===0?'block':'none';
+}
+
+function toggleFaq(btn){
+  const item=btn.parentElement;
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+  if(!isOpen)item.classList.add('open');
+}
+
+// Contact form
+const GOOGLE_SCRIPT_URL = "TU_URL_AQUI";
+
+async function handleContactSubmit(){
+  const fnEl=document.getElementById('fn-input');
+  const lnEl=document.getElementById('ln-input');
+  const phEl=document.getElementById('phone-input');
+  const emEl=document.getElementById('email-input');
+  const ageEl=document.getElementById('age-sel');
+  const intEl=document.getElementById('int-sel');
+  const msgEl=document.getElementById('msg-ta');
+  const noteEl=document.getElementById('form-msg');
+  const btn=document.getElementById('btn-sub');
+
+  const fn=fnEl.value.trim();
+  const ln=lnEl.value.trim();
+  const ph=phEl.value.trim();
+  const em=emEl.value.trim();
+  const age=ageEl.value.trim();
+  const intr=intEl.value.trim();
+  const msg=msgEl.value.trim();
+
+  if(!fn||!ln||!ph||!age||!intr){
+    noteEl.className='form-msg form-msg-error';
+    noteEl.textContent=lang==='en'?'Please complete all required fields.':'Por favor completa todos los campos obligatorios.';
+    noteEl.style.display='block';
+    return;
+  }
+
+  const originalHTML=btn.innerHTML;
+  btn.disabled=true;
+  btn.innerHTML=lang==='en'?'Sending...':'Enviando...';
+  noteEl.style.display='none';
+
+  try{
+    const payload=new URLSearchParams({
+      firstName:fn,lastName:ln,phone:ph,email:em,ageRange:age,interest:intr,message:msg,lang
+    });
+    await fetch(GOOGLE_SCRIPT_URL,{method:'POST',mode:'no-cors',body:payload});
+
+    fnEl.value='';lnEl.value='';phEl.value='';emEl.value='';msgEl.value='';
+    ageEl.selectedIndex=0;intEl.selectedIndex=0;
+
+    noteEl.className='form-msg form-msg-success';
+    noteEl.textContent=lang==='en'
+      ?'Thank you! An Allcare Mar agent will contact you shortly.'
+      :'¡Gracias! Un agente de Allcare Mar te contactará en breve.';
+    noteEl.style.display='block';
+  }catch(err){
+    noteEl.className='form-msg form-msg-error';
+    noteEl.textContent=lang==='en'?'Something went wrong. Please call 800.697.5631.':'Ocurrió un error. Por favor llama al 800.697.5631.';
+    noteEl.style.display='block';
+  }finally{
+    btn.disabled=false;
+    btn.innerHTML=originalHTML;
+  }
+}
+
+// Scroll reveal
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:.12});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>observer.observe(el));
+
+// Counter animation
+function animateCounters(){
+  document.querySelectorAll('.stat-num').forEach(el=>{
+    const target=parseInt(el.textContent);
+    if(isNaN(target))return;
+    let start=0;const dur=1600;const step=16;
+    const inc=target/(dur/step);
+    const timer=setInterval(()=>{
+      start+=inc;
+      if(start>=target){el.textContent=target.toLocaleString()+(el.dataset.suffix||'');clearInterval(timer);}
+      else el.textContent=Math.floor(start).toLocaleString();
+    },step);
+  });
+}
+const statsEl=document.querySelector('.stats-bar');
+const statsObs=new IntersectionObserver(e=>{if(e[0].isIntersecting){animateCounters();statsObs.disconnect();}},{threshold:.5});
+statsObs.observe(statsEl);
+
+// Close mobile menu on link click
+document.querySelectorAll('.mob-menu a').forEach(a=>a.addEventListener('click',()=>document.getElementById('mobMenu').classList.remove('open')));
+</script>
+</body>
+</html>
