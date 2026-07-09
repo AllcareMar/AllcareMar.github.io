@@ -86,8 +86,14 @@ nav{position:sticky;top:0;z-index:150;background:#fff;box-shadow:0 2px 16px rgba
 .nav-links a:hover,.nav-dd-btn:hover{color:var(--blue);background:var(--blue-light)}
 .nav-links a.active{color:var(--blue)}
 .nav-dd{position:relative}
-.nav-dd-menu{position:absolute;top:calc(100% + 8px);left:0;background:#fff;border-radius:var(--r);box-shadow:var(--sh-lg);border:1px solid var(--gray-200);min-width:220px;opacity:0;pointer-events:none;transform:translateY(-8px);transition:var(--t)}
-.nav-dd:hover .nav-dd-menu{opacity:1;pointer-events:all;transform:none}
+/* El padding-top (en vez de "top" con un hueco) mantiene el área activa de :hover
+   contigua entre el botón y el menú — así el cursor nunca "sale" del elemento al
+   bajar en diagonal, que era la causa de que el menú se cerrara antes de poder
+   elegir una opción. El espaciado visual de 8px se conserva con este padding. */
+.nav-dd-menu{position:absolute;top:100%;left:0;padding-top:8px;opacity:0;pointer-events:none;transition:var(--t)}
+.nav-dd:hover .nav-dd-menu,.nav-dd:focus-within .nav-dd-menu{opacity:1;pointer-events:all}
+.nav-dd-menu-inner{background:#fff;border-radius:var(--r);box-shadow:var(--sh-lg);border:1px solid var(--gray-200);min-width:220px;padding:10px;transform:translateY(-8px);transition:var(--t)}
+.nav-dd:hover .nav-dd-menu-inner,.nav-dd:focus-within .nav-dd-menu-inner{transform:none}
 .nav-dd-menu a{display:flex;align-items:center;gap:10px;padding:11px 16px;font-size:13px;font-weight:600;font-family:'Montserrat',sans-serif;color:var(--gray-600);transition:var(--t)}
 .nav-dd-menu a:hover{background:var(--blue-light);color:var(--blue)}
 .nav-dd-menu a i{width:18px;text-align:center;color:var(--blue);font-size:14px}
@@ -268,6 +274,8 @@ section{padding:88px 0}
 .staff-states{font-size:10.5px;color:var(--gray-400);margin-top:2px}
 .staff-name{font-family:'Montserrat',sans-serif;font-size:13.5px;font-weight:800;color:var(--blue-dark);margin-bottom:3px}
 .staff-role{font-size:11px;color:var(--gray-400);line-height:1.5}
+.staff-meta{font-size:10.5px;color:var(--gray-600);line-height:1.6;margin-top:6px}
+.staff-meta a{color:var(--blue);font-weight:600;word-break:break-word}
 .btn-view-agents{background:var(--blue);color:#fff;border:none;padding:15px 30px;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:14.5px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:9px;transition:var(--t);text-decoration:none}
 .btn-view-agents:hover{background:var(--blue-dark);transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,47,212,.3)}
 .agents-directory{background:var(--warm-card);border-radius:var(--r-lg);padding:32px;border:1.5px solid var(--gray-200)}
@@ -867,18 +875,22 @@ function setLang(l){
       <div class="nav-dd">
         <button class="nav-dd-btn"><span id="nav-medicare">Medicare</span> <i class="fas fa-chevron-down" style="font-size:10px"></i></button>
         <div class="nav-dd-menu">
-          <a href="#plans"><i class="fas fa-heart"></i> <span id="nav-dd-ma">Medicare Advantage</span></a>
-          <a href="#plans"><i class="fas fa-shield-alt"></i> <span id="nav-dd-ms">Medicare Supplement</span></a>
-          <a href="#plans"><i class="fas fa-pills"></i> <span id="nav-dd-pd">Prescription Drug Plans</span></a>
-          <a href="#plans"><i class="fas fa-users"></i> <span id="nav-dd-dsnp">Dual Eligible (DSNP)</span></a>
+          <div class="nav-dd-menu-inner">
+            <a href="#plans"><i class="fas fa-heart"></i> <span id="nav-dd-ma">Medicare Advantage</span></a>
+            <a href="#plans"><i class="fas fa-shield-alt"></i> <span id="nav-dd-ms">Medicare Supplement</span></a>
+            <a href="#plans"><i class="fas fa-pills"></i> <span id="nav-dd-pd">Prescription Drug Plans</span></a>
+            <a href="#plans"><i class="fas fa-users"></i> <span id="nav-dd-dsnp">Dual Eligible (DSNP)</span></a>
+          </div>
         </div>
       </div>
       <div class="nav-dd">
         <button class="nav-dd-btn"><span id="nav-resources">Resources</span> <i class="fas fa-chevron-down" style="font-size:10px"></i></button>
         <div class="nav-dd-menu">
-          <a href="#carriers"><i class="fas fa-building"></i> <span id="nav-dd-carriers">Our Carriers</span></a>
-          <a href="#how"><i class="fas fa-list-ol"></i> <span id="nav-dd-how">How It Works</span></a>
-          <a href="#contact"><i class="fas fa-question-circle"></i> <span id="nav-dd-faqs">FAQs</span></a>
+          <div class="nav-dd-menu-inner">
+            <a href="#carriers"><i class="fas fa-building"></i> <span id="nav-dd-carriers">Our Carriers</span></a>
+            <a href="#how"><i class="fas fa-list-ol"></i> <span id="nav-dd-how">How It Works</span></a>
+            <a href="#contact"><i class="fas fa-question-circle"></i> <span id="nav-dd-faqs">FAQs</span></a>
+          </div>
         </div>
       </div>
       <a href="#team" id="nav-team">Our Team</a>
@@ -1120,6 +1132,7 @@ function setLang(l){
         <div class="leader-role" id="lead1-role"></div>
         <div class="leader-states"><span class="leader-states-label"></span>: <em>NJ, NY, TX, SC, PA, OH, WI, TN, NC, MI, VA, RI, MD, LA, IL, GA, FL, DE, CT, CO, CA, AZ, AL</em></div>
         <div class="leader-meta">
+          <a href="tel:+12019871097" onclick="event.stopPropagation()">(201) 987-1097</a><br>
           <a href="mailto:mrodriguez@allcaremar.com" onclick="event.stopPropagation()">mrodriguez@allcaremar.com</a><br>
           Ext. 403 · <span id="lead1-lang"></span>
         </div>
@@ -1130,6 +1143,7 @@ function setLang(l){
         <div class="leader-role" id="lead2-role"></div>
         <div class="leader-states"><span class="leader-states-label"></span>: <em>NJ, NY, PA, TX, OH, VA, RI, AL, CA, CT, DE, FL, GA, LA</em></div>
         <div class="leader-meta">
+          <a href="tel:+12019871079">(201) 987-1079</a><br>
           <a href="mailto:msanti@allcaremar.com">msanti@allcaremar.com</a><br>
           Ext. 404 · <span id="lead2-lang"></span>
         </div>
@@ -1140,6 +1154,7 @@ function setLang(l){
         <div class="leader-role" id="lead3-role"></div>
         <div class="leader-states"><span class="leader-states-label"></span>: <em>NJ, NY, TX, PA, FL, DE, AL</em></div>
         <div class="leader-meta">
+          <a href="tel:+12017107752">(201) 710-7752</a><br>
           <a href="mailto:julian_vega@allcaremar.com">julian_vega@allcaremar.com</a><br>
           Ext. 400 · <span id="lead3-lang"></span>
         </div>
@@ -1443,7 +1458,13 @@ async function renderOfficeStaff(){
     grid.innerHTML=list.map(p=>{
       const initials=p.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
       const position=lang==='es'?(p.position_es||p.position_en):(p.position_en||p.position_es);
-      return '<div class="staff-card"><div class="staff-avatar"><img src="'+p.image+'" alt="'+p.name+'" loading="lazy" onerror="this.style.display=\'none\'"><span>'+initials+'</span></div><div class="staff-name">'+p.name+'</div><div class="staff-role">'+position+'</div></div>';
+      const hasExt=p.extension&&p.extension!=='PENDIENTE';
+      const hasEmail=p.email&&p.email!=='PENDIENTE';
+      const extPart=hasExt?('Ext. '+p.extension):'';
+      const emailPart=hasEmail?('<a href="mailto:'+p.email+'">'+p.email+'</a>'):'';
+      const metaLine=(extPart&&emailPart)?(extPart+' · '+emailPart):(extPart||emailPart);
+      const meta=metaLine?('<div class="staff-meta">'+metaLine+'</div>'):'';
+      return '<div class="staff-card"><div class="staff-avatar"><img src="'+p.image+'" alt="'+p.name+'" loading="lazy" onerror="this.style.display=\'none\'"><span>'+initials+'</span></div><div class="staff-name">'+p.name+'</div><div class="staff-role">'+position+'</div>'+meta+'</div>';
     }).join('');
   }catch(err){
     console.error('No se pudo cargar staff.json',err);
@@ -1462,26 +1483,49 @@ var usmapLicensedCount=0;
 var usmapBuilt=false;
 
 // Silueta de fondo (marca de agua) del territorio continental de EE.UU.
-// Se construye con una curva suave (Catmull-Rom → Bezier) que pasa por los estados
-// del perímetro, usando el MISMO sistema de coordenadas que los puntos de los estados
-// (US_STATE_COORDS) — así queda automáticamente alineada con los círculos, sin
-// depender de ningún archivo/proyección geográfica externa.
-const US_SILHOUETTE_PERIMETER=['WA','MT','ND','MN','WI','MI','NY','VT','NH','ME','MA','RI','CT','NJ','DE','MD','VA','NC','SC','GA','FL','AL','MS','LA','TX','NM','AZ','CA','OR'];
-function catmullRomClosedPath(points){
-  const n=points.length;
-  let d='M'+points[0][0].toFixed(1)+','+points[0][1].toFixed(1)+' ';
-  for(let i=0;i<n;i++){
-    const p0=points[(i-1+n)%n], p1=points[i], p2=points[(i+1)%n], p3=points[(i+2)%n];
-    const c1x=p1[0]+(p2[0]-p0[0])/6, c1y=p1[1]+(p2[1]-p0[1])/6;
-    const c2x=p2[0]-(p3[0]-p1[0])/6, c2y=p2[1]-(p3[1]-p1[1])/6;
-    d+='C'+c1x.toFixed(1)+','+c1y.toFixed(1)+' '+c2x.toFixed(1)+','+c2y.toFixed(1)+' '+p2[0].toFixed(1)+','+p2[1].toFixed(1)+' ';
+// Puntos de contorno hechos a mano (independientes de US_STATE_COORDS, para evitar
+// que pequeñas irregularidades de esos puntos —pensados solo para leer los círculos—
+// generen picos/nudos raros en el contorno) que luego se suavizan con el algoritmo
+// de Chaikin (subdivisión de esquinas): un método robusto y predecible que no genera
+// los bucles/rebotes que a veces produce una curva Catmull-Rom sobre puntos irregulares.
+// No depende de ningún archivo/proyección geográfica externa — sigue siendo 100% liviano.
+const US_OUTLINE_POINTS=[
+  [51.9,24.7],[92,26],[119.9,50],[150,28],[177.5,29.4],[230,20],[282.4,23.5],
+  [318,28],[353.8,37.6],[380,48],[404.5,57.6],[430,45],[456.4,61.2],[480,55],
+  [500,58],[532,72],[564.5,81.6],[578,68],[589.9,56.7],[610,53],[629.5,50.2],
+  [642,44],[653.1,42.2],[665,60],[655,72],[637.2,78.7],[652,92],[660,100],
+  [648.6,101.8],[634,104],[620.8,106.9],[610,120],[599.7,132.6],[594,145],
+  [588.5,157.5],[578,163],[565,168],[546,166],[525.6,163.5],[517,173],
+  [508.3,183.5],[494,190],[479.5,197.6],[488,222],[501.4,245.9],[498,268],
+  [484,272],[468,250],[458,222],[440.3,196.5],[424,197],[406.8,197.6],
+  [396,206],[381.5,215.3],[392,238],[368,252],[340,250],[318,232],
+  [296.2,211.8],[286,240],[268,248],[248,220],[217.8,176.5],[184,178],
+  [151.0,180.0],[118,164],[96.8,120.0],[78,132],[61.1,144.7],[54,104],
+  [50.7,64.7],[52,44]
+];
+function chaikinSmoothClosed(points,iterations){
+  let pts=points;
+  for(let it=0;it<iterations;it++){
+    const next=[];
+    const n=pts.length;
+    for(let i=0;i<n;i++){
+      const p0=pts[i], p1=pts[(i+1)%n];
+      next.push([p0[0]*0.8+p1[0]*0.2, p0[1]*0.8+p1[1]*0.2]);
+      next.push([p0[0]*0.2+p1[0]*0.8, p0[1]*0.2+p1[1]*0.8]);
+    }
+    pts=next;
   }
+  return pts;
+}
+function smoothClosedPolylinePath(points){
+  let d='M'+points[0][0].toFixed(1)+','+points[0][1].toFixed(1)+' ';
+  for(let i=1;i<points.length;i++){ d+='L'+points[i][0].toFixed(1)+','+points[i][1].toFixed(1)+' '; }
   return d+'Z';
 }
 function buildUsSilhouette(){
-  const pts=US_SILHOUETTE_PERIMETER.map(code=>US_STATE_COORDS[code]);
-  const path=catmullRomClosedPath(pts);
-  return '<path d="'+path+'" fill="#e8ecff" stroke="#c7d0f5" stroke-width="1.5" opacity=".65"></path>';
+  const smoothed=chaikinSmoothClosed(US_OUTLINE_POINTS,3);
+  const path=smoothClosedPolylinePath(smoothed);
+  return '<path d="'+path+'" fill="#e8ecff" stroke="#c7d0f5" stroke-width="1.5" stroke-linejoin="round" opacity=".7"></path>';
 }
 
 function buildUsMapSvg(licensedList){

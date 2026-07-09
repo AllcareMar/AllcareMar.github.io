@@ -353,6 +353,7 @@ const T={
     section_partners_title:"Partner Agencies Network",
     section_partners_sub:"Agencies we partner with, and their licensed agents.",
     label_states:"Licensed States",
+    pending_states:"Pending",
     no_results:"No agents found matching your search.",
     footer_tagline:"Helping seniors make confident Medicare decisions with care, integrity, and expertise.",
     fn_med:"Medicare",fl_ma:"Medicare Advantage",fl_ms:"Medicare Supplement",fl_pd:"Prescription Drug Plans",fl_dsnp:"DSNP Plans",
@@ -377,6 +378,7 @@ const T={
     section_partners_title:"Red de Agencias Asociadas",
     section_partners_sub:"Agencias con las que somos socios, y sus agentes certificados.",
     label_states:"Estados con Licencia",
+    pending_states:"Pendiente",
     no_results:"No se encontraron agentes con esa búsqueda.",
     footer_tagline:"Ayudamos a personas mayores a tomar decisiones informadas de Medicare con cuidado, integridad y experiencia.",
     fn_med:"Medicare",fl_ma:"Medicare Advantage",fl_ms:"Medicare Suplementario",fl_pd:"Planes de Medicamentos",fl_dsnp:"Planes DSNP",
@@ -468,7 +470,8 @@ const AGENT_ENROLL_URLS={
 function agentCardHTML(a){
   const t=T[lang];
   const initials=a.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-  const states=(a.licensed_states&&a.licensed_states.length?a.licensed_states.join(', '):'—');
+  const isPending=a.licensed_states&&a.licensed_states.length===1&&a.licensed_states[0]==='PENDIENTE';
+  const states=isPending?t.pending_states:(a.licensed_states&&a.licensed_states.length?a.licensed_states.join(', '):'—');
   const hasEmail=a.email&&a.email!=='PENDIENTE';
   const email=hasEmail?('<a href="mailto:'+a.email+'">'+a.email+'</a>'):'—';
   const hasExt=a.extension&&a.extension!=='PENDIENTE';
