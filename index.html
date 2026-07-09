@@ -128,6 +128,10 @@ nav{position:sticky;top:0;z-index:150;background:#fff;box-shadow:0 2px 16px rgba
 .trust-num{font-family:'Montserrat',sans-serif;font-size:27px;font-weight:900;color:var(--blue-dark);line-height:1}
 .trust-label{font-size:11.5px;color:var(--gray-400);margin-top:3px}
 .trust-divider{width:1px;background:var(--gray-200);align-self:stretch}
+.trust-click,.stat-click{cursor:pointer;border-radius:10px;transition:var(--t)}
+.trust-click:hover{background:var(--blue-light)}
+.trust-click:focus-visible,.stat-click:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.stat-click:hover{background:rgba(255,255,255,.08)}
 /* Hero right side */
 .hero-right{position:relative}
 .hero-main-img{border-radius:var(--r-xl);width:100%;aspect-ratio:4/3;object-fit:cover;object-position:center top;box-shadow:var(--sh-lg);border:3px solid #fff}
@@ -448,6 +452,24 @@ footer{background:#0a1340;padding:60px 0 0}
 .reveal-right{opacity:0;transform:translateX(28px);transition:opacity .65s ease,transform .65s ease}
 .reveal-right.visible{opacity:1;transform:none}
 
+/* ── US LICENSED-STATES MAP MODAL ── */
+.usmap-overlay{position:fixed;inset:0;background:rgba(20,18,15,.6);z-index:300;display:none;align-items:center;justify-content:center;padding:20px}
+.usmap-overlay.open{display:flex}
+.usmap-modal{background:#fff;border-radius:var(--r-xl);max-width:780px;width:100%;max-height:90vh;overflow-y:auto;padding:32px 32px 28px;position:relative;box-shadow:var(--sh-lg)}
+.usmap-close{position:absolute;top:18px;right:18px;width:36px;height:36px;border-radius:50%;background:var(--gray-100);border:none;color:var(--gray-800);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--t)}
+.usmap-close:hover{background:var(--gray-200)}
+.usmap-title{font-family:'Montserrat',sans-serif;font-size:21px;font-weight:800;color:var(--blue-dark);margin-bottom:4px}
+.usmap-sub{font-size:13.5px;color:var(--gray-600);margin-bottom:6px;max-width:560px;line-height:1.6}
+.usmap-count{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:800;color:var(--red);margin-bottom:18px}
+.usmap-svg-wrap{width:100%;overflow-x:auto}
+.usmap-svg-wrap svg{width:100%;height:auto;min-width:520px}
+.usmap-dot{transition:fill .2s}
+.usmap-label{font-family:'Montserrat',sans-serif;font-size:9px;font-weight:800;pointer-events:none}
+.usmap-legend{display:flex;gap:22px;margin-top:16px;flex-wrap:wrap}
+.usmap-legend-item{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--gray-600)}
+.usmap-legend-dot{width:13px;height:13px;border-radius:50%;flex-shrink:0}
+.usmap-loading{padding:40px;text-align:center;color:var(--gray-400);font-size:13.5px}
+
 /* ── RESPONSIVE ── */
 @media(max-width:1024px){
   .plans-grid,.carriers-scroll{grid-template-columns:repeat(2,1fr)}
@@ -510,6 +532,12 @@ const T={
     lead2_role:"President & COO",lead2_lang:"English, Spanish",
     lead3_role:"Training Manager",lead3_lang:"English, Spanish",
     leader_states_label:"Licensed States",
+    usmap_title:"States We're Licensed In",
+    usmap_sub:"Our agency's licensed coverage area across the United States, based on our Chairman's active state licenses.",
+    usmap_count:"Licensed in {n} states",
+    usmap_legend_yes:"Licensed",
+    usmap_legend_no:"Not yet licensed",
+    usmap_loading:"Loading map…",
     staff_subtitle:"Office Staff",
     view_agents_btn:"View All Agents & Partner Agencies",
     portal_ey:"Agent & Agency Portal",portal_title:"Your Success,<br>Our Priority",portal_desc:"Our exclusive portal gives licensed agents and agency partners the tools, training, and support they need to grow their Medicare business.",
@@ -593,6 +621,12 @@ const T={
     lead2_role:"Presidenta y COO",lead2_lang:"Inglés, Español",
     lead3_role:"Gerente de Capacitación",lead3_lang:"Inglés, Español",
     leader_states_label:"Estados con Licencia",
+    usmap_title:"Estados Donde Tenemos Licencia",
+    usmap_sub:"Nuestra cobertura de licencia como agencia en todo Estados Unidos, según las licencias activas de nuestro Presidente.",
+    usmap_count:"Licenciados en {n} estados",
+    usmap_legend_yes:"Con licencia",
+    usmap_legend_no:"Aún sin licencia",
+    usmap_loading:"Cargando mapa…",
     staff_subtitle:"Personal de Oficina",
     view_agents_btn:"Ver Todos los Agentes y Agencias Asociadas",
     portal_ey:"Portal de Agentes y Agencias",portal_title:"Tu Éxito,<br>Nuestra Prioridad",portal_desc:"Nuestro portal exclusivo brinda a los agentes certificados y socios de agencias las herramientas, capacitación y apoyo que necesitan para hacer crecer su negocio de Medicare.",
@@ -690,6 +724,7 @@ function setLang(l){
   document.getElementById('trust2').innerHTML=t.trust2;
   document.getElementById('trust3').innerHTML=t.trust3;
   document.getElementById('trust4').innerHTML=t.trust4;
+  if(typeof applyUsMapText==='function')applyUsMapText();
   // plans
   document.getElementById('plans-ey').textContent=t.plans_ey;
   document.getElementById('plans-title').innerHTML=t.plans_title;
@@ -886,11 +921,11 @@ function setLang(l){
       <div class="hero-trust reveal" style="transition-delay:.4s">
         <div class="trust-item"><div class="trust-num">20K+</div><div class="trust-label" id="trust1"></div></div>
         <div class="trust-divider"></div>
-        <div class="trust-item"><div class="trust-num">22</div><div class="trust-label" id="trust2"></div></div>
+        <div class="trust-item trust-click" id="trustStatesBtn" role="button" tabindex="0"><div class="trust-num">23+</div><div class="trust-label" id="trust2"></div></div>
         <div class="trust-divider"></div>
-        <div class="trust-item"><div class="trust-num">80+</div><div class="trust-label" id="trust3"></div></div>
+        <div class="trust-item trust-click" id="trustAgentsBtn" role="button" tabindex="0"><div class="trust-num">80+</div><div class="trust-label" id="trust3"></div></div>
         <div class="trust-divider"></div>
-        <div class="trust-item"><div class="trust-num">15+</div><div class="trust-label" id="trust4"></div></div>
+        <div class="trust-item"><div class="trust-num">10+</div><div class="trust-label" id="trust4"></div></div>
       </div>
     </div>
     <div class="hero-right reveal-right" style="transition-delay:.2s">
@@ -917,9 +952,9 @@ function setLang(l){
 <!-- STATS BAR -->
 <div class="stats-bar">
   <div class="stats-bar-inner">
-    <div class="stat-item"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-num">20K+</div><div class="stat-lbl" id="sb-lbl1">Members Served</div></div>
-    <div class="stat-item"><div class="stat-icon"><i class="fas fa-map-marked-alt"></i></div><div class="stat-num">22</div><div class="stat-lbl" id="sb-lbl2">States Licensed</div></div>
-    <div class="stat-item"><div class="stat-icon"><i class="fas fa-id-badge"></i></div><div class="stat-num">80+</div><div class="stat-lbl" id="sb-lbl3">Licensed Agents</div></div>
+    <div class="stat-item"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-num" data-suffix="K+">20K+</div><div class="stat-lbl" id="sb-lbl1">Members Served</div></div>
+    <div class="stat-item stat-click" id="sbStatesBtn" role="button" tabindex="0"><div class="stat-icon"><i class="fas fa-map-marked-alt"></i></div><div class="stat-num" data-suffix="+">23+</div><div class="stat-lbl" id="sb-lbl2">States Licensed</div></div>
+    <div class="stat-item stat-click" id="sbAgentsBtn" role="button" tabindex="0"><div class="stat-icon"><i class="fas fa-id-badge"></i></div><div class="stat-num" data-suffix="+">80+</div><div class="stat-lbl" id="sb-lbl3">Licensed Agents</div></div>
     <div class="stat-item"><div class="stat-icon"><i class="fas fa-headset"></i></div><div class="stat-num">Bilingual</div><div class="stat-lbl" id="sb-lbl4">EN / ES Support</div></div>
   </div>
 </div>
@@ -1080,7 +1115,7 @@ function setLang(l){
     <!-- Leadership / Agent Directory -->
     <div class="leader-grid">
       <div class="leader-card reveal" style="transition-delay:.05s">
-        <div class="leader-avatar"><img src="/agentes/marcos-rodriguez.webp" alt="Marcos Rodriguez" loading="lazy" onerror="this.style.display='none'"><span>MR</span></div>
+        <div class="leader-avatar"><img src="/agentes/marcos-rodriguez-martinez.webp" alt="Marcos Rodriguez" loading="lazy" onerror="this.style.display='none'"><span>MR</span></div>
         <div class="leader-name">Marcos Rodriguez</div>
         <div class="leader-role" id="lead1-role"></div>
         <div class="leader-states"><span class="leader-states-label"></span>: <em>NJ, NY, TX, SC, PA, OH, WI, TN, NC, MI, VA, RI, MD, LA, IL, GA, FL, DE, CT, CO, CA, AZ, AL</em></div>
@@ -1371,6 +1406,21 @@ function setLang(l){
 <!-- FLOATING PHONE -->
 <a href="tel:8006975631" class="float-phone" aria-label="Call Allcare Mar"><i class="fas fa-phone-alt"></i></a>
 
+<!-- LICENSED-STATES MAP MODAL -->
+<div class="usmap-overlay" id="usmapOverlay">
+  <div class="usmap-modal" role="dialog" aria-modal="true" aria-labelledby="usmapTitle">
+    <button class="usmap-close" id="usmapCloseBtn" aria-label="Close"><i class="fas fa-times"></i></button>
+    <div class="usmap-title" id="usmapTitle"></div>
+    <p class="usmap-sub" id="usmapSub"></p>
+    <div class="usmap-count" id="usmapCount"></div>
+    <div class="usmap-svg-wrap" id="usmapSvgWrap"><div class="usmap-loading" id="usmapLoading"></div></div>
+    <div class="usmap-legend">
+      <div class="usmap-legend-item"><span class="usmap-legend-dot" style="background:var(--blue)"></span><span id="usmapLegendYes"></span></div>
+      <div class="usmap-legend-item"><span class="usmap-legend-dot" style="background:var(--gray-200)"></span><span id="usmapLegendNo"></span></div>
+    </div>
+  </div>
+</div>
+
 <script>
 // Office Staff — cargado dinámicamente desde staff.json (misma fuente que usa agents.html)
 let staffDataCache=null;
@@ -1399,6 +1449,96 @@ async function renderOfficeStaff(){
     console.error('No se pudo cargar staff.json',err);
   }
 }
+
+// ── US Licensed-States Map ──
+// Coordenadas aproximadas (proyección simple lat/lon) para un mapa punteado de EE.UU.
+// AK/HI en recuadro aparte (convención cartográfica estándar).
+const US_STATE_COORDS={AK:[30,350],AL:[440.3,196.5],AR:[375.7,171.8],AZ:[151.0,180.0],CA:[61.1,144.7],CO:[224.7,123.5],CT:[620.8,106.9],DE:[588.5,157.5],FL:[501.4,245.9],GA:[479.5,197.6],HI:[95,350],IA:[363.1,88.2],ID:[119.9,61.2],IL:[412.6,111.8],IN:[446.0,112.9],KS:[306.6,129.4],KY:[457.6,141.2],LA:[381.5,215.3],MA:[637.2,78.7],MD:[554.7,155.5],ME:[653.1,42.2],MI:[456.4,61.2],MN:[353.8,37.6],MO:[374.6,129.4],MS:[406.8,197.6],MT:[177.5,29.4],NC:[525.6,163.5],ND:[282.4,23.5],NE:[290.4,94.1],NH:[629.5,50.2],NJ:[599.7,132.6],NM:[217.8,176.5],NV:[96.8,120.0],NY:[564.5,81.6],OH:[487.5,108.2],OK:[316.9,163.5],OR:[50.7,64.7],PA:[541.2,107.2],RI:[648.6,101.8],SC:[508.3,183.5],SD:[285.8,60.0],TN:[444.9,160.0],TX:[296.2,211.8],UT:[153.3,120.0],VA:[533.6,141.2],VT:[589.9,56.7],WA:[51.9,24.7],WI:[404.5,57.6],WV:[511.7,128.2],WY:[201.7,76.5]};
+// Nombre EXACTO tal como aparece en staff.json → es la fuente única de verdad.
+// Si mañana se agrega/quita un estado a Marcos Rodriguez-Martinez en el Excel/staff.json,
+// este mapa lo refleja automáticamente sin tocar código (se lee en vivo, no hardcodeado).
+const USMAP_REFERENCE_AGENT='Marcos Rodriguez-Martinez';
+var usmapLicensedCount=0;
+var usmapBuilt=false;
+
+function buildUsMapSvg(licensedList){
+  const licensed=new Set((licensedList||[]).map(s=>s.trim().toUpperCase()));
+  const r=11;
+  let dots='';
+  for(const code in US_STATE_COORDS){
+    const [x,y]=US_STATE_COORDS[code];
+    const isOn=licensed.has(code);
+    const fill=isOn?'#1a2fd4':'#e6e0d6';
+    const txt=isOn?'#fff':'#8b8377';
+    dots+='<g><circle class="usmap-dot" cx="'+x+'" cy="'+y+'" r="'+r+'" fill="'+fill+'"></circle>'+
+      '<text class="usmap-label" x="'+x+'" y="'+(y+3.2)+'" text-anchor="middle" fill="'+txt+'">'+code+'</text></g>';
+  }
+  // Recuadros de referencia para AK / HI (no están a escala real, es convención de mapas de EE.UU.)
+  const insetsBg='<rect x="8" y="330" width="66" height="46" rx="6" fill="none" stroke="#e6e0d6" stroke-width="1"/>'+
+    '<rect x="82" y="330" width="66" height="46" rx="6" fill="none" stroke="#e6e0d6" stroke-width="1"/>';
+  return '<svg viewBox="0 0 700 385" xmlns="http://www.w3.org/2000/svg">'+insetsBg+dots+'</svg>';
+}
+
+async function loadUsMapData(){
+  if(!staffDataCache){
+    try{
+      const res=await fetch('staff.json');
+      staffDataCache=await res.json();
+    }catch(err){
+      console.error('No se pudo cargar staff.json para el mapa de estados',err);
+      return [];
+    }
+  }
+  const agent=(staffDataCache.independent_agents||[]).find(a=>a.name===USMAP_REFERENCE_AGENT);
+  if(!agent||!agent.licensed_states||agent.licensed_states[0]==='PENDIENTE')return [];
+  return agent.licensed_states;
+}
+
+function usmapSetText(id, text){
+  const el=document.getElementById(id);
+  if(el)el.textContent=text; // no-op si el elemento no existe (ej. usmapLoading ya fue reemplazado por el SVG, o el usuario navegó a otra página)
+}
+function applyUsMapText(){
+  const t=T[lang];
+  if(!document.getElementById('usmapTitle'))return;
+  usmapSetText('usmapTitle', t.usmap_title);
+  usmapSetText('usmapSub', t.usmap_sub);
+  usmapSetText('usmapLegendYes', t.usmap_legend_yes);
+  usmapSetText('usmapLegendNo', t.usmap_legend_no);
+  usmapSetText('usmapLoading', t.usmap_loading);
+  usmapSetText('usmapCount', t.usmap_count.replace('{n}', usmapLicensedCount));
+}
+
+async function openUsMap(){
+  document.getElementById('usmapOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  applyUsMapText();
+  if(!usmapBuilt){
+    const states=await loadUsMapData();
+    usmapLicensedCount=states.length;
+    document.getElementById('usmapSvgWrap').innerHTML=buildUsMapSvg(states);
+    usmapBuilt=true;
+    applyUsMapText();
+  }
+}
+function closeUsMap(){
+  document.getElementById('usmapOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function bindActivatable(id, handler){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.addEventListener('click', handler);
+  el.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); handler(); } });
+}
+bindActivatable('trustStatesBtn', openUsMap);
+bindActivatable('sbStatesBtn', openUsMap);
+bindActivatable('trustAgentsBtn', ()=>location.href='agents.html');
+bindActivatable('sbAgentsBtn', ()=>location.href='agents.html');
+document.getElementById('usmapCloseBtn').addEventListener('click', closeUsMap);
+document.getElementById('usmapOverlay').addEventListener('click', e=>{ if(e.target.id==='usmapOverlay')closeUsMap(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape')closeUsMap(); });
 
 function toggleFaq(btn){
   const item=btn.parentElement;
