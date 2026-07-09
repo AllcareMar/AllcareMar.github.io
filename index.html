@@ -533,7 +533,7 @@ const T={
     lead3_role:"Training Manager",lead3_lang:"English, Spanish",
     leader_states_label:"Licensed States",
     usmap_title:"States We're Licensed In",
-    usmap_sub:"Our agency's licensed coverage area across the United States, based on our Chairman's active state licenses.",
+    usmap_sub:"Our agency's licensed coverage area across the United States.",
     usmap_count:"Licensed in {n} states",
     usmap_legend_yes:"Licensed",
     usmap_legend_no:"Not yet licensed",
@@ -622,7 +622,7 @@ const T={
     lead3_role:"Gerente de Capacitación",lead3_lang:"Inglés, Español",
     leader_states_label:"Estados con Licencia",
     usmap_title:"Estados Donde Tenemos Licencia",
-    usmap_sub:"Nuestra cobertura de licencia como agencia en todo Estados Unidos, según las licencias activas de nuestro Presidente.",
+    usmap_sub:"Nuestra cobertura de licencia como agencia en todo Estados Unidos.",
     usmap_count:"Licenciados en {n} estados",
     usmap_legend_yes:"Con licencia",
     usmap_legend_no:"Aún sin licencia",
@@ -1114,13 +1114,13 @@ function setLang(l){
 
     <!-- Leadership / Agent Directory -->
     <div class="leader-grid">
-      <div class="leader-card reveal" style="transition-delay:.05s">
+      <div class="leader-card reveal trust-click" id="leaderMarcosCard" style="transition-delay:.05s" role="link" tabindex="0" aria-label="Marcos Rodriguez — Enroll (opens in new tab)">
         <div class="leader-avatar"><img src="/agentes/marcos-rodriguez-martinez.webp" alt="Marcos Rodriguez" loading="lazy" onerror="this.style.display='none'"><span>MR</span></div>
         <div class="leader-name">Marcos Rodriguez</div>
         <div class="leader-role" id="lead1-role"></div>
         <div class="leader-states"><span class="leader-states-label"></span>: <em>NJ, NY, TX, SC, PA, OH, WI, TN, NC, MI, VA, RI, MD, LA, IL, GA, FL, DE, CT, CO, CA, AZ, AL</em></div>
         <div class="leader-meta">
-          <a href="mailto:mrodriguez@allcaremar.com">mrodriguez@allcaremar.com</a><br>
+          <a href="mailto:mrodriguez@allcaremar.com" onclick="event.stopPropagation()">mrodriguez@allcaremar.com</a><br>
           Ext. 403 · <span id="lead1-lang"></span>
         </div>
       </div>
@@ -1461,6 +1461,29 @@ const USMAP_REFERENCE_AGENT='Marcos Rodriguez-Martinez';
 var usmapLicensedCount=0;
 var usmapBuilt=false;
 
+// Silueta de fondo (marca de agua) del territorio continental de EE.UU.
+// Se construye con una curva suave (Catmull-Rom → Bezier) que pasa por los estados
+// del perímetro, usando el MISMO sistema de coordenadas que los puntos de los estados
+// (US_STATE_COORDS) — así queda automáticamente alineada con los círculos, sin
+// depender de ningún archivo/proyección geográfica externa.
+const US_SILHOUETTE_PERIMETER=['WA','MT','ND','MN','WI','MI','NY','VT','NH','ME','MA','RI','CT','NJ','DE','MD','VA','NC','SC','GA','FL','AL','MS','LA','TX','NM','AZ','CA','OR'];
+function catmullRomClosedPath(points){
+  const n=points.length;
+  let d='M'+points[0][0].toFixed(1)+','+points[0][1].toFixed(1)+' ';
+  for(let i=0;i<n;i++){
+    const p0=points[(i-1+n)%n], p1=points[i], p2=points[(i+1)%n], p3=points[(i+2)%n];
+    const c1x=p1[0]+(p2[0]-p0[0])/6, c1y=p1[1]+(p2[1]-p0[1])/6;
+    const c2x=p2[0]-(p3[0]-p1[0])/6, c2y=p2[1]-(p3[1]-p1[1])/6;
+    d+='C'+c1x.toFixed(1)+','+c1y.toFixed(1)+' '+c2x.toFixed(1)+','+c2y.toFixed(1)+' '+p2[0].toFixed(1)+','+p2[1].toFixed(1)+' ';
+  }
+  return d+'Z';
+}
+function buildUsSilhouette(){
+  const pts=US_SILHOUETTE_PERIMETER.map(code=>US_STATE_COORDS[code]);
+  const path=catmullRomClosedPath(pts);
+  return '<path d="'+path+'" fill="#e8ecff" stroke="#c7d0f5" stroke-width="1.5" opacity=".65"></path>';
+}
+
 function buildUsMapSvg(licensedList){
   const licensed=new Set((licensedList||[]).map(s=>s.trim().toUpperCase()));
   const r=11;
@@ -1474,9 +1497,9 @@ function buildUsMapSvg(licensedList){
       '<text class="usmap-label" x="'+x+'" y="'+(y+3.2)+'" text-anchor="middle" fill="'+txt+'">'+code+'</text></g>';
   }
   // Recuadros de referencia para AK / HI (no están a escala real, es convención de mapas de EE.UU.)
-  const insetsBg='<rect x="8" y="330" width="66" height="46" rx="6" fill="none" stroke="#e6e0d6" stroke-width="1"/>'+
-    '<rect x="82" y="330" width="66" height="46" rx="6" fill="none" stroke="#e6e0d6" stroke-width="1"/>';
-  return '<svg viewBox="0 0 700 385" xmlns="http://www.w3.org/2000/svg">'+insetsBg+dots+'</svg>';
+  const insetsBg='<rect x="8" y="330" width="66" height="46" rx="6" fill="#f3efe9" stroke="#e6e0d6" stroke-width="1"/>'+
+    '<rect x="82" y="330" width="66" height="46" rx="6" fill="#f3efe9" stroke="#e6e0d6" stroke-width="1"/>';
+  return '<svg viewBox="0 0 700 385" xmlns="http://www.w3.org/2000/svg">'+buildUsSilhouette()+insetsBg+dots+'</svg>';
 }
 
 async function loadUsMapData(){
@@ -1536,6 +1559,7 @@ bindActivatable('trustStatesBtn', openUsMap);
 bindActivatable('sbStatesBtn', openUsMap);
 bindActivatable('trustAgentsBtn', ()=>location.href='agents.html');
 bindActivatable('sbAgentsBtn', ()=>location.href='agents.html');
+bindActivatable('leaderMarcosCard', ()=>window.open('https://www.planenroll.com/?purl=Marcos-Rodriguez-Martinez','_blank','noopener'));
 document.getElementById('usmapCloseBtn').addEventListener('click', closeUsMap);
 document.getElementById('usmapOverlay').addEventListener('click', e=>{ if(e.target.id==='usmapOverlay')closeUsMap(); });
 document.addEventListener('keydown', e=>{ if(e.key==='Escape')closeUsMap(); });
