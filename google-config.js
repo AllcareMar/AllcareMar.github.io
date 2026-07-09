@@ -13,5 +13,5 @@
 // 5. Copy the Client ID below. See GOOGLE_SETUP.md for the full guide.
 // ============================================================================
 
-export const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
+export const GOOGLE_CLIENT_ID = "564752963603-nanb8q4atdnmrl70s4mg8ljom7md3336.apps.googleusercontent.com";
 export const WORKSPACE_DOMAIN = "allcaremar.com";
