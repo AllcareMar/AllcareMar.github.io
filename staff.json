@@ -1,5 +1,5 @@
 {
-  "_readme": "Fuente única de datos para el directorio de agentes de Allcare Mar. Usado por index.html (solo office_staff) y agents.html (independent_agents + partner_agencies). Datos actualizados desde Agent-Contact-Website.xlsx (fuente autoritativa, 2026-07-06). licensed_states usa códigos de 2 letras (ej. 'FL', 'NJ', 'TX'); ['PENDIENTE'] indica que el agente aún no tiene estados licenciados registrados en la hoja de cálculo — no inventar datos de licencia.",
+  "_readme": "Fuente única de datos para el directorio de agentes de Allcare Mar. Usado por index.html (solo office_staff) y agents.html (independent_agents + partner_agencies). Datos actualizados desde Agent-Contact-Website.xlsx (fuente autoritativa, 2026-07-09). licensed_states usa códigos de 2 letras (ej. 'FL', 'NJ', 'TX'); ['PENDIENTE'] indica que el agente aún no tiene estados licenciados registrados en la hoja de cálculo — no inventar datos de licencia.",
   "office_staff": [
     {
       "name": "Jessica Dominguez",
@@ -218,16 +218,6 @@
       "image": "/agentes/francia-munoz.webp"
     },
     {
-      "name": "Alicia Nunez",
-      "phone": "(804) 388-9502",
-      "extension": "502",
-      "email": "anunez@allcaremar.com",
-      "licensed_states": [
-        "PENDIENTE"
-      ],
-      "image": "/agentes/alicia-nunez.webp"
-    },
-    {
       "name": "Paola Peguero",
       "phone": "(856) 864-1791",
       "extension": "791",
@@ -276,16 +266,6 @@
         "PENDIENTE"
       ],
       "image": "/agentes/mariela-read.webp"
-    },
-    {
-      "name": "Luis Rodriguez",
-      "phone": "(201) 578-9172",
-      "extension": "172",
-      "email": "luis.rod@allcaremar.com",
-      "licensed_states": [
-        "PENDIENTE"
-      ],
-      "image": "/agentes/luis-rodriguez.webp"
     },
     {
       "name": "Sixto Rodriguez",
@@ -350,16 +330,6 @@
       "image": "/agentes/maria-rosario.webp"
     },
     {
-      "name": "Yisel Rosario",
-      "phone": "(973) 936-9994",
-      "extension": "9994",
-      "email": "yrosario@allcaremar.com",
-      "licensed_states": [
-        "PENDIENTE"
-      ],
-      "image": "/agentes/yisel-rosario.webp"
-    },
-    {
       "name": "Carlos Sanchez",
       "phone": "(973) 640-7746",
       "extension": "469",
@@ -415,7 +385,7 @@
           "extension": "1036",
           "email": "kfernandez@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ"
           ],
           "image": "/agentes/karitssa-barry.webp"
         },
@@ -425,9 +395,24 @@
           "extension": "143",
           "email": "psixon@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "NY",
+            "FL",
+            "DE",
+            "AL"
           ],
           "image": "/agentes/patricia-sixon.webp"
+        },
+        {
+          "name": "Yisel Rosario",
+          "phone": "(973) 936-9994",
+          "extension": "9994",
+          "email": "yrosario@allcaremar.com",
+          "licensed_states": [
+            "NJ",
+            "PA"
+          ],
+          "image": "/agentes/yisel-rosario.webp"
         },
         {
           "name": "Julian Vega",
@@ -435,7 +420,13 @@
           "extension": "400",
           "email": "julian_vega@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "NY",
+            "TX",
+            "PA",
+            "FL",
+            "DE",
+            "AL"
           ],
           "image": "/agentes/julian-vega.webp"
         }
@@ -738,14 +729,14 @@
           "image": "/agentes/gary-chicnes.webp"
         },
         {
-          "name": "Ana Christopher",
+          "name": "Ana Michelle Christopher",
           "phone": "(862) 347-4365",
           "extension": "428",
           "email": "anamichelle@allcaremar.com",
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/ana-christopher.webp"
+          "image": "/agentes/ana-michelle-christopher.webp"
         },
         {
           "name": "Emanuel Cruz",
