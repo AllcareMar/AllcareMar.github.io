@@ -1,10 +1,12 @@
 # Estado del Proyecto — Allcare Mar Agency Website
 
-Última actualización: 2026-07-09 (noche).
+Última actualización: 2026-07-10.
 
 ## 1. Archivos listos y aprobados
 
-- **`index.html`, `login.html`, `dashboard-agentes.html`, `agents.html`** — ✅ LISTOS, en el repo de GitHub.
+- **`index.html`** — ✅ LISTO con fix responsive móvil (ver 4.5). Actualizado localmente 2026-07-10, **pendiente que Jesus haga commit+push** (en curso).
+- **`login.html`, `dashboard-agentes.html`, `agents.html`** — ✅ LISTOS, en el repo de GitHub.
+- **`.github/workflows/purge-cloudflare-cache.yml`** — ✅ NUEVO, generado y entregado a Jesus (ver 4.6). **Pendiente que Jesus lo coloque manualmente** (el puente remoto bloquea escritura en `.github/workflows/` por seguridad) + cree 2 secrets en GitHub + haga commit+push (en curso).
 - **`staff.json`** — ✅ ACTUALIZADO 2026-07-09 desde `Agent-Contact-Website.xlsx` (fuente autoritativa entregada por el socio ese mismo día). Listo para subir/reemplazar en el repo.
 - **`/agentes/*.webp`** — ✅ NUEVO. 62 fotos reales de agentes/staff procesadas y listas para subir al repo (ver sección 2).
 - **`editor-fotos-agentes.html`** — ✅ NUEVO. Herramienta standalone (también persistida como artifact en Cowork) para recortar/centrar manualmente cualquier foto dentro del círculo; útil para corregir encuadres y para las 7 personas sin foto aún.
@@ -106,18 +108,51 @@ Reemplazado por completo el panel privado de agentes (antes header superior + 7 
 3. **Sección "Nuestro Equipo":** se agregó el teléfono a los 3 líderes (Marcos Rodriguez (201) 987-1097, Maria Santiago (201) 987-1079, Julian Vega (201) 710-7752, todos como enlace `tel:` clicable) tomados de `staff.json`. Las tarjetas del personal de oficina (Jessica Dominguez, Mariel Capellan, Karen Perez, Jesus Cabreja, Aurelyn Castillo, Waldo Martinez) ahora muestran **Ext. + email** (sin teléfono, tal como se pidió) — antes no mostraban ningún dato de contacto.
 4. **Bug de idioma en `agents.html`:** los agentes sin estados de licencia confirmados (marcados internamente como `PENDIENTE` en `staff.json`) mostraban literalmente la palabra en español "PENDIENTE" también en la versión en inglés del sitio. Corregido: ahora se traduce correctamente — "Pending" en inglés, "Pendiente" en español. Verificado en ambos idiomas con Playwright (ya no aparece "PENDIENTE" sin traducir en ningún idioma).
 
+## 4.5 ✅ COMPLETADO (2026-07-10) — Fix responsive móvil en `index.html`
+
+- **Diagnóstico:** auditoría directa del `<style>` inline de `index.html` (no vía screenshot — la extensión de Chrome no pudo forzar el viewport móvil en la ventana real de Jesus, ni con `resize_window` ni con atajos de DevTools; se optó por revisar el CSS fuente, método más confiable). Solo existían 2 breakpoints (`1024px`, `768px`) y 2 bugs reales confirmados por grep:
+  - `.plans-grid` (grid de Medicare Advantage/Supplement/Part D/DSNP) se quedaba fijo en 2 columnas en cualquier ancho ≤768px — nunca bajaba a 1 columna en celular.
+  - `.staff-grid` (tarjetas de personal de oficina) **no tenía ninguna regla `@media`** — se quedaba fijo en 4 columnas sin importar el tamaño de pantalla (bug más severo de los dos).
+- **Fix aplicado:** dentro del bloque `@media(max-width:768px)` existente se agregó `.plans-grid{grid-template-columns:1fr}` y `.staff-grid{grid-template-columns:repeat(2,1fr)}`. Se agregó un nuevo bloque `@media(max-width:480px)` (mismo patrón de breakpoint que ya usan `agents.html`/`login.html`/`dashboard-agentes.html`) que baja `.staff-grid` a 1 columna en teléfonos chicos.
+- **Resto de páginas revisadas y SIN cambios** — `agents.html`, `login.html`, `dashboard-agentes.html`, `editor-fotos-agentes.html` ya tenían breakpoints correctos (900/1100px y 480px) y colapsan bien a 1 columna en móvil. Las 4 tienen `<meta name="viewport" content="width=device-width,initial-scale=1.0">` correcto.
+- **Nota:** el ajuste desktop/tablet/móvil es 100% vía CSS media queries (auto-detección por ancho de viewport) — no hay ni se necesita JS de detección de dispositivo/user-agent.
+- **Pendiente de verificación visual real** (screenshot en un móvil de verdad o en la ventana de Jesus una vez la extensión pueda forzar el viewport) — el fix está verificado por lógica de CSS/grid, no por captura de pantalla.
+
+## 4.6 ✅ COMPLETADO (2026-07-10) — Solución de raíz: purga automática de caché de Cloudflare
+
+- **Causa del problema "hay que borrar cookies para ver cambios":** no son cookies técnicamente — es caché del navegador/CDN. `index.html` (y las demás páginas) son archivo único sin CSS/JS externos versionados, servidos por GitHub Pages (Fastly) con Cloudflare de por medio; sin cache-busting, el navegador reutiliza la copia vieja hasta que expira el TTL.
+- **Fix de raíz:** se creó `.github/workflows/purge-cloudflare-cache.yml` — se dispara automáticamente con el evento `page_build` de GitHub (justo cuando termina de reconstruir el Pages) y purga el caché completo de la zona en Cloudflare vía API.
+- **Bloqueado por seguridad del puente remoto:** no se pudo escribir el archivo directo en `.github/workflows/` de la carpeta conectada (protegido). Se entregó el archivo a Jesus por chat para que lo coloque él mismo.
+- **Pendiente que Jesus haga, en orden:**
+  1. Crear `.github\workflows\` en la carpeta del proyecto y guardar ahí `purge-cloudflare-cache.yml` (ya se lo mandé).
+  2. Copiar el **Zone ID** de `allcaremar.com` desde el dashboard de Cloudflare (panel derecho, no requiere token).
+  3. Crear un **API Token** en Cloudflare (My Profile → API Tokens → plantilla "Cache Purge", o custom scoped a `Zone.Cache Purge:Edit` solo para la zona `allcaremar.com`).
+  4. En GitHub → repo → Settings → Secrets and variables → Actions: crear `CF_ZONE_ID` y `CF_API_TOKEN` con esos valores (nunca compartir el token en el chat).
+  5. Commit + push del workflow.
+- Una vez activo, nadie (ni Jesus ni un visitante) volverá a necesitar borrar caché manualmente después de un deploy.
+
+## 4.7 🆕 Análisis de capacidad / conexiones simultáneas (2026-07-10)
+
+- **Pregunta del socio:** ¿cómo se comporta el sitio con 3-5 personas vs. 100-300 personas conectadas al mismo tiempo desde cualquier parte del mundo?
+- **Respuesta (análisis de arquitectura, sin prueba de carga real contra producción):** el sitio público es 100% estático, servido por la CDN de GitHub Pages (Fastly) + Cloudflare encima — ningún visitante golpea un servidor propio, cada uno recibe una copia cacheada del nodo de borde más cercano. No hay diferencia de comportamiento entre 3 y 300+ visitantes simultáneos en `index.html`, `agents.html` o el login — es el modelo estándar de una CDN.
+- **Único punto con límite real:** el formulario "Tell Us About You", porque corre sobre Google Apps Script (`Codigo.gs`), que sí tiene cuotas de Google (ejecuciones simultáneas, tiempo de ejecución diario). No es un riesgo para el volumen normal de la agencia; solo queda documentado por si algún día hay una campaña de tráfico pagado muy grande y conviene revisar cuotas o mover el formulario a un backend más robusto.
+
 ## 5. Pendientes que NO bloquean
 
 - Subir `google-config.js` (Client ID nuevo) al repo — ver 4.1.
 - 7 personas sin foto todavía (ver lista arriba) — quedan con iniciales, es correcto y no es un error.
 - Confirmar "Enforce HTTPS" marcado en GitHub Pages.
 - Auditoría de contenido del Google Site viejo (PASO 7 del roadmap) — no bloquea.
+- **Decisión pendiente de Jesus:** qué hacer con las 4 fotos de stock de Unsplash en `index.html` (hero-bg línea ~922, foto "advisor" del mosaico línea ~1106, avatars "Carmen"/"Maria" en testimonios líneas ~1225/1243). Propuesta de Claude (no aplicada aún, esperando luz verde): reusar `assets/img/hero-senior-couple.jpg` para el fondo del hero, `assets/img/how-it-works-agent.jpg` para la foto del mosaico, y cambiar los 2 avatars de testimonios a iniciales con círculo de color (mismo patrón que ya usa el 3er testimonio "RM") — elimina la dependencia de Unsplash sin necesitar fotos nuevas.
+- Verificación visual real del fix responsive de 4.5 en un dispositivo/ventana móvil de verdad (quedó verificado por lógica de CSS, no por screenshot).
 
 ## 6. Siguiente paso exacto
 
-1. Subir `google-config.js` al repo de GitHub (reemplazar el archivo existente).
-2. Abrir `https://www.allcaremar.com/login.html` y probar el login real con una cuenta @allcaremar.com — confirmar que redirige a `dashboard-agentes.html` y que una cuenta fuera del dominio es rechazada.
-3. Revisar el nuevo `dashboard-agentes.html` en producción (sidebar, 10 herramientas + 8 portales Medicare) una vez subido al repo.
-4. Cuando el socio tenga fotos de las 7 personas faltantes (ver sección 3), seguir la misma convención `/agentes/{slug}.webp` y reprocesar con el mismo pipeline (recorte facial → 300×300 → webp).
+1. **(En curso ahora mismo)** Jesus sube `index.html` (fix responsive, ver 4.5) y coloca + sube `.github/workflows/purge-cloudflare-cache.yml` (ver 4.6) — falta crear los 2 secrets de Cloudflare en GitHub antes de que el workflow funcione.
+2. Subir `google-config.js` al repo de GitHub (reemplazar el archivo existente).
+3. Abrir `https://www.allcaremar.com/login.html` y probar el login real con una cuenta @allcaremar.com — confirmar que redirige a `dashboard-agentes.html` y que una cuenta fuera del dominio es rechazada.
+4. Revisar el nuevo `dashboard-agentes.html` en producción (sidebar, 10 herramientas + 8 portales Medicare) una vez subido al repo.
+5. Jesus decide qué hacer con las 4 fotos de Unsplash (ver propuesta en sección 5) — si aprueba, Claude aplica el cambio en el próximo turno, sin necesitar fotos nuevas.
+6. Cuando el socio tenga fotos de las 7 personas faltantes (ver sección 3), seguir la misma convención `/agentes/{slug}.webp` y reprocesar con el mismo pipeline (recorte facial → 300×300 → webp).
 
 El formulario "Tell Us About You" (PASO 3) ya está resuelto y verificado end-to-end.
