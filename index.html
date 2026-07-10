@@ -61,7 +61,7 @@
   --t:.28s cubic-bezier(.4,0,.2,1);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;font-size:16px}
+html{scroll-behavior:smooth;font-size:16px;overflow-x:hidden}
 body{font-family:'Open Sans',sans-serif;color:var(--gray-800);background:#fff;overflow-x:hidden}
 h1,h2,h3,h4,h5{font-family:'Montserrat',sans-serif;line-height:1.18}
 img{display:block;max-width:100%}
@@ -264,8 +264,14 @@ section{padding:88px 0}
 .leader-states em{font-style:normal;font-weight:700;color:var(--blue-dark)}
 .leader-name{font-family:'Montserrat',sans-serif;font-size:17px;font-weight:800;color:var(--blue-dark);margin-bottom:4px}
 .leader-role{font-size:13px;color:var(--red);font-weight:700;margin-bottom:10px}
-.leader-meta{font-size:12.5px;color:var(--gray-600);line-height:1.7}
-.leader-meta a{color:var(--blue);font-weight:600}
+.leader-phone-text{font-size:12.5px;color:var(--blue-dark);font-weight:700;margin-bottom:12px}
+.leader-icon-row{display:flex;justify-content:center;gap:10px}
+.leader-icon-btn{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;text-decoration:none;transition:var(--t);box-shadow:0 4px 10px rgba(0,0,0,.12)}
+.leader-icon-btn:hover{transform:translateY(-2px) scale(1.06)}
+.leader-icon-btn.icon-call{background:var(--red)}
+.leader-icon-btn.icon-email{background:var(--green)}
+.leader-icon-btn.icon-profile{background:var(--blue)}
+.leader-icon-btn.disabled{background:var(--gray-200);color:var(--gray-400);box-shadow:none;cursor:default;pointer-events:none}
 .staff-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:3rem}
 .staff-card{background:var(--warm-card);border-radius:var(--r);padding:20px 16px;text-align:center;border:1.5px solid var(--gray-200);transition:var(--t)}
 .staff-card:hover{border-color:var(--blue);transform:translateY(-3px)}
@@ -275,7 +281,9 @@ section{padding:88px 0}
 .staff-name{font-family:'Montserrat',sans-serif;font-size:13.5px;font-weight:800;color:var(--blue-dark);margin-bottom:3px}
 .staff-role{font-size:11px;color:var(--gray-400);line-height:1.5}
 .staff-meta{font-size:10.5px;color:var(--gray-600);line-height:1.6;margin-top:6px}
-.staff-meta a{color:var(--blue);font-weight:600;word-break:break-word}
+.staff-email-btn{width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11.5px;text-decoration:none;margin:8px auto 0;transition:var(--t);box-shadow:0 3px 8px rgba(0,0,0,.12)}
+.staff-email-btn:hover{transform:translateY(-2px) scale(1.06)}
+.staff-email-btn.disabled{background:var(--gray-200);color:var(--gray-400);box-shadow:none;pointer-events:none}
 .btn-view-agents{background:var(--blue);color:#fff;border:none;padding:15px 30px;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:14.5px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:9px;transition:var(--t);text-decoration:none}
 .btn-view-agents:hover{background:var(--blue-dark);transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,47,212,.3)}
 .agents-directory{background:var(--warm-card);border-radius:var(--r-lg);padding:32px;border:1.5px solid var(--gray-200)}
@@ -449,6 +457,8 @@ footer{background:#0a1340;padding:60px 0 0}
 /* ── FLOATING PHONE ── */
 .float-phone{position:fixed;bottom:26px;right:26px;background:var(--red);color:#fff;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 8px 28px rgba(232,0,29,.45);z-index:500;text-decoration:none;transition:var(--t)}
 .float-phone:hover{background:var(--red-dark);transform:scale(1.1)}
+.float-whatsapp{position:fixed;bottom:96px;right:26px;background:#25D366;color:#fff;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:27px;box-shadow:0 8px 28px rgba(37,211,102,.45);z-index:500;text-decoration:none;transition:var(--t)}
+.float-whatsapp:hover{background:#1ebe57;transform:scale(1.1)}
 @keyframes ring{0%,100%{transform:scale(1) rotate(0)}10%{transform:scale(1.12) rotate(-8deg)}20%{transform:scale(1.12) rotate(8deg)}30%{transform:scale(1.12) rotate(-5deg)}40%{transform:scale(1.12) rotate(5deg)}50%{transform:scale(1) rotate(0)}}
 .float-phone{animation:ring 4s ease-in-out infinite}
 
@@ -480,7 +490,7 @@ footer{background:#0a1340;padding:60px 0 0}
 
 /* ── RESPONSIVE ── */
 @media(max-width:1024px){
-  .plans-grid,.carriers-scroll{grid-template-columns:repeat(2,1fr)}
+  .plans-grid,.carriers-scroll,.leader-grid{grid-template-columns:repeat(2,1fr)}
   .hiw-grid,.portal-inner,.map-grid,.cf-grid{grid-template-columns:1fr}
   .hiw-img-wrap{display:none}
   .cta-inner{flex-direction:column;text-align:center}
@@ -502,6 +512,7 @@ footer{background:#0a1340;padding:60px 0 0}
   .carriers-scroll{grid-template-columns:repeat(2,1fr)}
   .plans-grid{grid-template-columns:1fr}
   .staff-grid{grid-template-columns:repeat(2,1fr)}
+  .leader-grid{grid-template-columns:1fr}
 }
 @media(max-width:480px){
   .staff-grid{grid-template-columns:1fr}
@@ -759,11 +770,8 @@ function setLang(l){
   document.getElementById('team-title').innerHTML=t.team_title;
   document.getElementById('team-sub').textContent=t.team_sub;
   document.getElementById('lead1-role').textContent=t.lead1_role;
-  document.getElementById('lead1-lang').textContent=t.lead1_lang;
   document.getElementById('lead2-role').textContent=t.lead2_role;
-  document.getElementById('lead2-lang').textContent=t.lead2_lang;
   document.getElementById('lead3-role').textContent=t.lead3_role;
-  document.getElementById('lead3-lang').textContent=t.lead3_lang;
   document.querySelectorAll('.leader-states-label').forEach(function(el){el.textContent=t.leader_states_label;});
   document.getElementById('staff-subtitle').textContent=t.staff_subtitle;
   document.getElementById('view-agents-label').textContent=t.view_agents_btn;
@@ -925,7 +933,7 @@ function setLang(l){
 
 <!-- HERO -->
 <section class="hero">
-  <img class="hero-bg-img" src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=1800&q=80" alt=""/>
+  <img class="hero-bg-img" src="assets/img/hero-senior-couple.jpg" alt=""/>
   <div class="hero-overlay"></div>
   <div class="hero-inner">
     <div>
@@ -1109,7 +1117,7 @@ function setLang(l){
         <img src="assets/img/community-caregiver-daughter.jpg" alt="Woman lovingly caring for her senior mother" loading="lazy"/>
       </div>
       <div class="pm3">
-        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80" alt="Insurance advisor" loading="lazy"/>
+        <img src="assets/img/how-it-works-agent.jpg" alt="Insurance advisor" loading="lazy"/>
       </div>
       <div class="pm4 pm-label" data-label="Active Seniors">
         <img src="assets/img/community-thumbs-up.jpg" alt="Happy senior couple giving thumbs up" loading="lazy"/>
@@ -1132,15 +1140,16 @@ function setLang(l){
 
     <!-- Leadership / Agent Directory -->
     <div class="leader-grid">
-      <div class="leader-card reveal trust-click" id="leaderMarcosCard" style="transition-delay:.05s" role="link" tabindex="0" aria-label="Marcos Rodriguez — Enroll (opens in new tab)">
+      <div class="leader-card reveal" id="leaderMarcosCard" style="transition-delay:.05s">
         <div class="leader-avatar"><img src="/agentes/marcos-rodriguez-martinez.webp" alt="Marcos Rodriguez" loading="lazy" onerror="this.style.display='none'"><span>MR</span></div>
         <div class="leader-name">Marcos Rodriguez</div>
         <div class="leader-role" id="lead1-role"></div>
         <div class="leader-states"><span class="leader-states-label"></span>: <em>NJ, NY, TX, SC, PA, OH, WI, TN, NC, MI, VA, RI, MD, LA, IL, GA, FL, DE, CT, CO, CA, AZ, AL</em></div>
-        <div class="leader-meta">
-          <a href="tel:+12019871097" onclick="event.stopPropagation()">(201) 987-1097</a><br>
-          <a href="mailto:mrodriguez@allcaremar.com" onclick="event.stopPropagation()">mrodriguez@allcaremar.com</a><br>
-          Ext. 403 · <span id="lead1-lang"></span>
+        <div class="leader-phone-text">(201) 987-1097 · Ext. 403</div>
+        <div class="leader-icon-row">
+          <a href="tel:+12019871097" class="leader-icon-btn icon-call" aria-label="Call Marcos Rodriguez"><i class="fas fa-phone-alt"></i></a>
+          <a href="mailto:mrodriguez@allcaremar.com" class="leader-icon-btn icon-email" aria-label="Email Marcos Rodriguez"><i class="fas fa-envelope"></i></a>
+          <a href="https://www.planenroll.com/?purl=Marcos-Rodriguez-Martinez" target="_blank" rel="noopener" class="leader-icon-btn icon-profile" aria-label="View profile — Marcos Rodriguez (opens in new tab)"><i class="fas fa-arrow-up-right-from-square"></i></a>
         </div>
       </div>
       <div class="leader-card reveal" style="transition-delay:.1s">
@@ -1148,10 +1157,11 @@ function setLang(l){
         <div class="leader-name">Maria Santiago</div>
         <div class="leader-role" id="lead2-role"></div>
         <div class="leader-states"><span class="leader-states-label"></span>: <em>NJ, NY, PA, TX, OH, VA, RI, AL, CA, CT, DE, FL, GA, LA</em></div>
-        <div class="leader-meta">
-          <a href="tel:+12019871079">(201) 987-1079</a><br>
-          <a href="mailto:msanti@allcaremar.com">msanti@allcaremar.com</a><br>
-          Ext. 404 · <span id="lead2-lang"></span>
+        <div class="leader-phone-text">(201) 987-1079 · Ext. 404</div>
+        <div class="leader-icon-row">
+          <a href="tel:+12019871079" class="leader-icon-btn icon-call" aria-label="Call Maria Santiago"><i class="fas fa-phone-alt"></i></a>
+          <a href="mailto:msanti@allcaremar.com" class="leader-icon-btn icon-email" aria-label="Email Maria Santiago"><i class="fas fa-envelope"></i></a>
+          <span class="leader-icon-btn icon-profile disabled" aria-hidden="true" title="Coming soon"><i class="fas fa-arrow-up-right-from-square"></i></span>
         </div>
       </div>
       <div class="leader-card reveal" style="transition-delay:.15s">
@@ -1159,10 +1169,11 @@ function setLang(l){
         <div class="leader-name">Julian Vega</div>
         <div class="leader-role" id="lead3-role"></div>
         <div class="leader-states"><span class="leader-states-label"></span>: <em>NJ, NY, TX, PA, FL, DE, AL</em></div>
-        <div class="leader-meta">
-          <a href="tel:+12017107752">(201) 710-7752</a><br>
-          <a href="mailto:julian_vega@allcaremar.com">julian_vega@allcaremar.com</a><br>
-          Ext. 400 · <span id="lead3-lang"></span>
+        <div class="leader-phone-text">(201) 710-7752 · Ext. 400</div>
+        <div class="leader-icon-row">
+          <a href="tel:+12017107752" class="leader-icon-btn icon-call" aria-label="Call Julian Vega"><i class="fas fa-phone-alt"></i></a>
+          <a href="mailto:julian_vega@allcaremar.com" class="leader-icon-btn icon-email" aria-label="Email Julian Vega"><i class="fas fa-envelope"></i></a>
+          <span class="leader-icon-btn icon-profile disabled" aria-hidden="true" title="Coming soon"><i class="fas fa-arrow-up-right-from-square"></i></span>
         </div>
       </div>
     </div>
@@ -1228,7 +1239,7 @@ function setLang(l){
         <div class="tc-stars">★★★★★</div>
         <p class="tc-text" id="t1"></p>
         <div class="tc-author">
-          <img class="tc-avatar" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&q=80" alt="Carmen"/>
+          <div class="tc-avatar-letter av-red">CR</div>
           <div><div class="tc-name" id="t1n"></div><div class="tc-loc" id="t1l"></div></div>
         </div>
       </div>
@@ -1246,7 +1257,7 @@ function setLang(l){
         <div class="tc-stars">★★★★★</div>
         <p class="tc-text" id="t3"></p>
         <div class="tc-author">
-          <img class="tc-avatar" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=100&q=80" alt="Maria"/>
+          <div class="tc-avatar-letter av-red">ML</div>
           <div><div class="tc-name" id="t3n"></div><div class="tc-loc" id="t3l"></div></div>
         </div>
       </div>
@@ -1424,7 +1435,8 @@ function setLang(l){
   </div>
 </footer>
 
-<!-- FLOATING PHONE -->
+<!-- FLOATING PHONE + WHATSAPP -->
+<a href="https://wa.me/12019871097" target="_blank" rel="noopener" class="float-whatsapp" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
 <a href="tel:8006975631" class="float-phone" aria-label="Call Allcare Mar"><i class="fas fa-phone-alt"></i></a>
 
 <!-- LICENSED-STATES MAP MODAL -->
@@ -1466,11 +1478,11 @@ async function renderOfficeStaff(){
       const position=lang==='es'?(p.position_es||p.position_en):(p.position_en||p.position_es);
       const hasExt=p.extension&&p.extension!=='PENDIENTE';
       const hasEmail=p.email&&p.email!=='PENDIENTE';
-      const extPart=hasExt?('Ext. '+p.extension):'';
-      const emailPart=hasEmail?('<a href="mailto:'+p.email+'">'+p.email+'</a>'):'';
-      const metaLine=(extPart&&emailPart)?(extPart+' · '+emailPart):(extPart||emailPart);
-      const meta=metaLine?('<div class="staff-meta">'+metaLine+'</div>'):'';
-      return '<div class="staff-card"><div class="staff-avatar"><img src="'+p.image+'" alt="'+p.name+'" loading="lazy" onerror="this.style.display=\'none\'"><span>'+initials+'</span></div><div class="staff-name">'+p.name+'</div><div class="staff-role">'+position+'</div>'+meta+'</div>';
+      const extPart=hasExt?('<div class="staff-meta">Ext. '+p.extension+'</div>'):'';
+      const emailBtn=hasEmail
+        ? '<a href="mailto:'+p.email+'" class="staff-email-btn" aria-label="Email '+p.name+'"><i class="fas fa-envelope"></i></a>'
+        : '<span class="staff-email-btn disabled" aria-hidden="true"><i class="fas fa-envelope"></i></span>';
+      return '<div class="staff-card"><div class="staff-avatar"><img src="'+p.image+'" alt="'+p.name+'" loading="lazy" onerror="this.style.display=\'none\'"><span>'+initials+'</span></div><div class="staff-name">'+p.name+'</div><div class="staff-role">'+position+'</div>'+extPart+emailBtn+'</div>';
     }).join('');
   }catch(err){
     console.error('No se pudo cargar staff.json',err);
@@ -1609,7 +1621,6 @@ bindActivatable('trustStatesBtn', openUsMap);
 bindActivatable('sbStatesBtn', openUsMap);
 bindActivatable('trustAgentsBtn', ()=>location.href='agents.html');
 bindActivatable('sbAgentsBtn', ()=>location.href='agents.html');
-bindActivatable('leaderMarcosCard', ()=>window.open('https://www.planenroll.com/?purl=Marcos-Rodriguez-Martinez','_blank','noopener'));
 document.getElementById('usmapCloseBtn').addEventListener('click', closeUsMap);
 document.getElementById('usmapOverlay').addEventListener('click', e=>{ if(e.target.id==='usmapOverlay')closeUsMap(); });
 document.addEventListener('keydown', e=>{ if(e.key==='Escape')closeUsMap(); });

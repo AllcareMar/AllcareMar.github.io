@@ -55,7 +55,7 @@
   --t:.25s ease;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;font-size:16px}
+html{scroll-behavior:smooth;font-size:16px;overflow-x:hidden}
 body{font-family:'Open Sans',sans-serif;color:var(--gray-800);background:var(--gray-50);overflow-x:hidden}
 h1,h2,h3,h4{font-family:'Montserrat',sans-serif;line-height:1.2}
 a{text-decoration:none;color:inherit}
@@ -122,15 +122,19 @@ nav{position:sticky;top:0;z-index:100;background:#fff;box-shadow:0 2px 12px rgba
 .agent-card{background:var(--warm-card);border:1.5px solid var(--gray-200);border-radius:var(--r-lg);padding:24px 18px;text-align:center;transition:var(--t)}
 .agent-card:hover{transform:translateY(-4px);box-shadow:var(--sh-lg);border-color:var(--blue)}
 .agent-card.hide{display:none}
-.agent-card--clickable{cursor:pointer}
-.agent-card--clickable:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .agent-avatar{position:relative;width:72px;height:72px;border-radius:50%;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:22px;font-weight:900;margin:0 auto 14px;overflow:hidden}
 .agent-avatar img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;border-radius:50%}
 .agent-name{font-family:'Montserrat',sans-serif;font-size:14.5px;font-weight:800;color:var(--blue-dark);margin-bottom:4px}
 .agent-states{font-size:11px;color:var(--gray-400);margin-bottom:8px}
 .agent-states em{font-style:normal;font-weight:700;color:var(--blue-dark)}
-.agent-meta{font-size:11.5px;color:var(--gray-600);line-height:1.7}
-.agent-meta a{color:var(--blue);font-weight:600}
+.agent-phone-text{font-size:11.5px;color:var(--blue-dark);font-weight:700;margin-bottom:10px}
+.icon-row{display:flex;justify-content:center;gap:8px}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;text-decoration:none;transition:var(--t);box-shadow:0 3px 8px rgba(0,0,0,.12)}
+.icon-btn:hover{transform:translateY(-2px) scale(1.06)}
+.icon-call{background:var(--red)}
+.icon-email{background:var(--green)}
+.icon-profile{background:var(--blue)}
+.icon-btn.disabled{background:var(--gray-200);color:var(--gray-400);box-shadow:none;cursor:default;pointer-events:none}
 
 .agency-block{background:#fff;border:1.5px solid var(--gray-200);border-radius:var(--r-lg);padding:30px 28px;margin-bottom:28px}
 .agency-block-header{margin-bottom:22px}
@@ -165,6 +169,8 @@ footer{background:var(--gray-800);color:#d8d3cc;padding:60px 5vw 0}
 
 .float-phone{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 8px 24px rgba(232,0,29,.35);z-index:90;transition:var(--t)}
 .float-phone:hover{transform:scale(1.08)}
+.float-whatsapp{position:fixed;bottom:90px;right:24px;width:56px;height:56px;border-radius:50%;background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:23px;box-shadow:0 8px 24px rgba(37,211,102,.35);z-index:90;transition:var(--t)}
+.float-whatsapp:hover{transform:scale(1.08)}
 </style>
 </head>
 <body>
@@ -328,6 +334,7 @@ footer{background:var(--gray-800);color:#d8d3cc;padding:60px 5vw 0}
   </div>
 </footer>
 
+<a href="https://wa.me/12019871097" target="_blank" rel="noopener" class="float-whatsapp" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
 <a href="tel:8006975631" class="float-phone" aria-label="Call Allcare Mar"><i class="fas fa-phone-alt"></i></a>
 
 <script>
@@ -472,22 +479,27 @@ function agentCardHTML(a){
   const initials=a.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
   const isPending=a.licensed_states&&a.licensed_states.length===1&&a.licensed_states[0]==='PENDIENTE';
   const states=isPending?t.pending_states:(a.licensed_states&&a.licensed_states.length?a.licensed_states.join(', '):'—');
-  const hasEmail=a.email&&a.email!=='PENDIENTE';
-  const email=hasEmail?('<a href="mailto:'+a.email+'">'+a.email+'</a>'):'—';
   const hasExt=a.extension&&a.extension!=='PENDIENTE';
-  const ext=hasExt?(' · Ext. '+a.extension):'';
   const hasPhone=a.phone&&a.phone!=='PENDIENTE';
   const phoneDigits=(a.phone||'').replace(/\D/g,'');
-  const phone=hasPhone?('<a href="tel:+1'+phoneDigits+'">'+a.phone+'</a>'):'—';
+  const phoneText=hasPhone?(a.phone+(hasExt?' · Ext. '+a.extension:'')):'—';
+  const hasEmail=a.email&&a.email!=='PENDIENTE';
   const enrollUrl=AGENT_ENROLL_URLS[a.name];
-  const cardAttrs=enrollUrl
-    ? ' class="agent-card agent-card--clickable" role="link" tabindex="0" aria-label="'+a.name+' — Enroll (opens in new tab)" onclick="if(!event.target.closest(\'a\'))window.open(\''+enrollUrl+'\',\'_blank\',\'noopener\')" onkeydown="if((event.key===\'Enter\'||event.key===\' \')&&!event.target.closest(\'a\')){event.preventDefault();window.open(\''+enrollUrl+'\',\'_blank\',\'noopener\')}"'
-    : ' class="agent-card"';
-  return '<div'+cardAttrs+' data-name="'+a.name.toLowerCase()+'">'+
+  const callBtn=hasPhone
+    ? '<a href="tel:+1'+phoneDigits+'" class="icon-btn icon-call" aria-label="Call '+a.name+'"><i class="fas fa-phone-alt"></i></a>'
+    : '<span class="icon-btn icon-call disabled" aria-hidden="true"><i class="fas fa-phone-alt"></i></span>';
+  const emailBtn=hasEmail
+    ? '<a href="mailto:'+a.email+'" class="icon-btn icon-email" aria-label="Email '+a.name+'"><i class="fas fa-envelope"></i></a>'
+    : '<span class="icon-btn icon-email disabled" aria-hidden="true"><i class="fas fa-envelope"></i></span>';
+  const profileBtn=enrollUrl
+    ? '<a href="'+enrollUrl+'" target="_blank" rel="noopener" class="icon-btn icon-profile" aria-label="View profile — '+a.name+' (opens in new tab)"><i class="fas fa-arrow-up-right-from-square"></i></a>'
+    : '<span class="icon-btn icon-profile disabled" aria-hidden="true" title="Coming soon"><i class="fas fa-arrow-up-right-from-square"></i></span>';
+  return '<div class="agent-card" data-name="'+a.name.toLowerCase()+'">'+
     '<div class="agent-avatar"><img src="'+a.image+'" alt="'+a.name+'" loading="lazy" onerror="this.style.display=\'none\'"><span>'+initials+'</span></div>'+
     '<div class="agent-name">'+a.name+'</div>'+
     '<div class="agent-states">'+t.label_states+': <em>'+states+'</em></div>'+
-    '<div class="agent-meta">'+phone+ext+'<br>'+email+'</div>'+
+    '<div class="agent-phone-text">'+phoneText+'</div>'+
+    '<div class="icon-row">'+callBtn+emailBtn+profileBtn+'</div>'+
   '</div>';
 }
 
