@@ -1,13 +1,17 @@
 # Estado del Proyecto — Allcare Mar Agency Website
 
-Última actualización: 2026-07-10.
+Última actualización: 2026-07-13 (noche).
+
+**Socio / interlocutor:** Jesus. Dirigirse a él por su nombre en cada respuesta.
+
+**⚠️ Nota técnica para la próxima sesión:** el puente remoto tuvo un bug reproducible el 2026-07-13 — al escribir `estado-proyecto.md` de vuelta a la carpeta local de Jesus (`device_commit_files`), la herramienta reporta éxito y actualiza el mtime, pero el contenido real en disco no cambia (sigue mostrando versiones viejas al re-leer). Solo pasó con este archivo; `index.html`, `agents.html`, `staff.json` y el logo sí se escribieron bien. Posible causa: algún programa/sync (OneDrive/Drive) con el `.md` abierto revirtiéndolo. **Mitigación:** entregar siempre el `.md` por chat (SendUserFile) y pedirle a Jesus que lo reemplace él mismo en la carpeta — no confiar en que el `device_commit_files` de este archivo específico haya quedado guardado sin pedirle confirmación visual a Jesus.
 
 ## 1. Archivos listos y aprobados
 
-- **`index.html`** — ✅ LISTO con fix responsive móvil (ver 4.5). Actualizado localmente 2026-07-10, **pendiente que Jesus haga commit+push** (en curso).
+- **`index.html`** — ✅ LISTO, **entregado a Jesus por chat el 2026-07-13 (noche), pendiente que lo suba (commit+push) al repo.** Incluye: fix responsive móvil (ver 4.5), logo nuevo + WhatsApp actualizado (ver 4.11), y cargos de líderes + ver 4.12 (Marcos → "Chief Executive Officer & Founder" / "Director Ejecutivo y Fundador"; Maria → "Chief Operating Officer" / "Directora de Operaciones").
 - **`login.html`, `dashboard-agentes.html`, `agents.html`** — ✅ LISTOS, en el repo de GitHub.
-- **`.github/workflows/purge-cloudflare-cache.yml`** — ✅ NUEVO, generado y entregado a Jesus (ver 4.6). **Pendiente que Jesus lo coloque manualmente** (el puente remoto bloquea escritura en `.github/workflows/` por seguridad) + cree 2 secrets en GitHub + haga commit+push (en curso).
-- **`staff.json`** — ✅ ACTUALIZADO 2026-07-09 desde `Agent-Contact-Website.xlsx` (fuente autoritativa entregada por el socio ese mismo día). Listo para subir/reemplazar en el repo.
+- **`.github/workflows/purge-cloudflare-cache.yml`** — ✅ COMPLETADO Y VERIFICADO EN PRODUCCIÓN (ver 4.6). Archivo en el repo, secrets `CF_ZONE_ID`/`CF_API_TOKEN` creados, corrió con éxito en Actions y el Pages source es "Deploy from a branch" — confirmado por Jesus el 2026-07-13.
+- **`staff.json`** — ✅ LISTO, **entregado a Jesus por chat el 2026-07-13 (noche), pendiente que lo suba junto con `index.html`** (mismo commit — el orden del Office Staff depende de este archivo). Cambio: orden de Office Staff reordenado a Mariel, Jessica, Karen / Waldo, Aurelyn, Jesus (ver 4.12). Última actualización de contenido 2026-07-09 desde `Agent-Contact-Website.xlsx`.
 - **`/agentes/*.webp`** — ✅ NUEVO. 62 fotos reales de agentes/staff procesadas y listas para subir al repo (ver sección 2).
 - **`editor-fotos-agentes.html`** — ✅ NUEVO. Herramienta standalone (también persistida como artifact en Cowork) para recortar/centrar manualmente cualquier foto dentro del círculo; útil para corregir encuadres y para las 7 personas sin foto aún.
 - **Repo:** `github.com/AllcareMar/AllcareMar.github.io` — GitHub Pages activo (branch `main`/root).
@@ -118,18 +122,12 @@ Reemplazado por completo el panel privado de agentes (antes header superior + 7 
 - **Nota:** el ajuste desktop/tablet/móvil es 100% vía CSS media queries (auto-detección por ancho de viewport) — no hay ni se necesita JS de detección de dispositivo/user-agent.
 - **Pendiente de verificación visual real** (screenshot en un móvil de verdad o en la ventana de Jesus una vez la extensión pueda forzar el viewport) — el fix está verificado por lógica de CSS/grid, no por captura de pantalla.
 
-## 4.6 ✅ COMPLETADO (2026-07-10) — Solución de raíz: purga automática de caché de Cloudflare
+## 4.6 ✅ COMPLETADO Y VERIFICADO EN PRODUCCIÓN (2026-07-13) — Purga automática de caché de Cloudflare
 
 - **Causa del problema "hay que borrar cookies para ver cambios":** no son cookies técnicamente — es caché del navegador/CDN. `index.html` (y las demás páginas) son archivo único sin CSS/JS externos versionados, servidos por GitHub Pages (Fastly) con Cloudflare de por medio; sin cache-busting, el navegador reutiliza la copia vieja hasta que expira el TTL.
-- **Fix de raíz:** se creó `.github/workflows/purge-cloudflare-cache.yml` — se dispara automáticamente con el evento `page_build` de GitHub (justo cuando termina de reconstruir el Pages) y purga el caché completo de la zona en Cloudflare vía API.
-- **Bloqueado por seguridad del puente remoto:** no se pudo escribir el archivo directo en `.github/workflows/` de la carpeta conectada (protegido). Se entregó el archivo a Jesus por chat para que lo coloque él mismo.
-- **Pendiente que Jesus haga, en orden:**
-  1. Crear `.github\workflows\` en la carpeta del proyecto y guardar ahí `purge-cloudflare-cache.yml` (ya se lo mandé).
-  2. Copiar el **Zone ID** de `allcaremar.com` desde el dashboard de Cloudflare (panel derecho, no requiere token).
-  3. Crear un **API Token** en Cloudflare (My Profile → API Tokens → plantilla "Cache Purge", o custom scoped a `Zone.Cache Purge:Edit` solo para la zona `allcaremar.com`).
-  4. En GitHub → repo → Settings → Secrets and variables → Actions: crear `CF_ZONE_ID` y `CF_API_TOKEN` con esos valores (nunca compartir el token en el chat).
-  5. Commit + push del workflow.
-- Una vez activo, nadie (ni Jesus ni un visitante) volverá a necesitar borrar caché manualmente después de un deploy.
+- **Fix de raíz:** `.github/workflows/purge-cloudflare-cache.yml` — se dispara automáticamente con el evento `page_build` de GitHub (justo cuando termina de reconstruir el Pages) y purga el caché completo de la zona en Cloudflare vía API (`secrets.CF_ZONE_ID` / `secrets.CF_API_TOKEN`).
+- **✅ Confirmado por Jesus el 2026-07-13, los 3 puntos:** (1) el archivo del workflow está en el repo remoto (`main`); (2) corrió en la pestaña Actions después del último push y terminó en éxito (el `--fail` del curl habría marcado el run en rojo si el Zone ID/token estuvieran mal); (3) el Pages source del repo es "Deploy from a branch" (no "GitHub Actions"), que es el único modo donde el evento `page_build` se dispara — confirma que el trigger seguirá funcionando en cada deploy futuro.
+- **Cerrado.** Nadie (ni Jesus ni un visitante) vuelve a necesitar borrar caché manualmente después de un deploy.
 
 ## 4.7 🆕 Análisis de capacidad / conexiones simultáneas (2026-07-10)
 
@@ -137,22 +135,61 @@ Reemplazado por completo el panel privado de agentes (antes header superior + 7 
 - **Respuesta (análisis de arquitectura, sin prueba de carga real contra producción):** el sitio público es 100% estático, servido por la CDN de GitHub Pages (Fastly) + Cloudflare encima — ningún visitante golpea un servidor propio, cada uno recibe una copia cacheada del nodo de borde más cercano. No hay diferencia de comportamiento entre 3 y 300+ visitantes simultáneos en `index.html`, `agents.html` o el login — es el modelo estándar de una CDN.
 - **Único punto con límite real:** el formulario "Tell Us About You", porque corre sobre Google Apps Script (`Codigo.gs`), que sí tiene cuotas de Google (ejecuciones simultáneas, tiempo de ejecución diario). No es un riesgo para el volumen normal de la agencia; solo queda documentado por si algún día hay una campaña de tráfico pagado muy grande y conviene revisar cuotas o mover el formulario a un backend más robusto.
 
+## 4.8 ✅ COMPLETADO (2026-07-10) — Eliminada dependencia de Unsplash en `index.html`
+
+- **Aprobado por Jesus.** Se reemplazaron las 4 referencias a `images.unsplash.com`:
+  - Fondo del hero → ahora usa `assets/img/hero-senior-couple.jpg` (ya local, mismo archivo que la foto principal del hero).
+  - Foto "Insurance advisor" del mosaico → ahora usa `assets/img/how-it-works-agent.jpg` (ya local).
+  - Avatars de testimonios "Carmen" y "María" → cambiados a iniciales con círculo de color (`tc-avatar-letter`), mismo patrón que ya usaba el 3er testimonio ("RM" / `av-blue`). Carmen R. → "CR" `av-red`, María L. → "ML" `av-red`.
+- `index.html` ya no tiene **ninguna** dependencia de dominios externos para imágenes — 100% assets propios del repo. Confirmado con grep, cero resultados para "unsplash".
+- **Ya subido por Jesus al repo** (commit + push realizado el mismo día).
+
+## 4.9 ✅ COMPLETADO (2026-07-10) — Botón flotante de WhatsApp + confirmación de click-to-call
+
+- **Botón de WhatsApp agregado en `index.html` y `agents.html`** (páginas públicas de cara al cliente): flotante, circular, verde WhatsApp (#25D366), apilado justo arriba del botón de teléfono existente para no superponerse. Enlaza a `https://wa.me/12019871097` (número de Marcos Rodriguez-Martinez, formato E.164 sin símbolos), `target="_blank"` para no perder el sitio. Es `position:fixed`, así que funciona igual en celular, tablet y desktop sin media queries adicionales.
+- **Confirmado (no requirió cambios):** todos los números de teléfono del sitio ya usan `tel:` correctamente, incluyendo el (201) 987-1097 de Marcos (`tel:+12019871097`, línea ~1141 de `index.html`) — al hacer clic en celular/tablet abre el marcador nativo listo para llamar. Verificado en topbar, nav, menú móvil, tarjetas de líderes, footer y botón flotante.
+- **Contacto por agente (email/teléfono/link futuro) — ya estaba resuelto en `agents.html`, no requirió cambios nuevos:** cada tarjeta de agente ya muestra teléfono (`tel:`) y email (`mailto:`) individuales desde `staff.json`. El "link que se agregará más adelante" (ej. enrollment) ya tiene mecanismo listo: objeto `AGENT_ENROLL_URLS` en el `<script>` de `agents.html` — para activarlo en un agente nuevo, solo se agrega su nombre exacto + URL a ese objeto (una línea), y la tarjeta completa se vuelve clicable automáticamente (abre en pestaña nueva, accesible por teclado). Ya está en uso para Marcos Rodriguez-Martinez.
+- **Sugerencia pendiente de aprobación (no aplicada):** las tarjetas con link de inscripción no tienen ninguna señal visual de que son clicables (solo cambia el cursor) — se podría agregar un pequeño ícono de enlace en la esquina de la tarjeta para que sea más obvio. A decidir por Jesus.
+
+## 4.10 ✅ COMPLETADO (2026-07-10) — Sistema de 3 íconos de contacto (llamar/email/perfil) + fix de scroll horizontal en móvil
+
+- **Sistema de íconos aplicado en las 3 tarjetas de líderes (`index.html`), Staff de Oficina (`index.html`), y las 62+ tarjetas de `agents.html`.**
+- **Líderes (Marcos, Maria, Julian):** visibles cargo, todos los estados con licencia, teléfono+Ext. en una sola línea de **texto plano (ya NO es clicable)**. Se ocultaron email e idiomas del texto. 3 íconos: rojo=llamar (`tel:`), verde=email (`mailto:`), azul=perfil/PlanEnroll. Azul activo solo en Marcos; gris/apagado (sin `href`, `pointer-events:none`) en Maria y Julian hasta que se les cargue su link. Se quitó el comportamiento de "toda la tarjeta de Marcos es clicable" (`trust-click`, `role=link`, `bindActivatable('leaderMarcosCard',...)`) — ahora el ícono azul es el único punto de clic.
+- **Staff de Oficina (6 personas):** visibles cargo y extensión. Email oculto del texto — solo 1 ícono verde. Sin ícono rojo ni azul (no aplica).
+- **`agents.html` (62+ agentes independientes + agencias asociadas):** mismo patrón que líderes — teléfono+Ext. en texto plano sin link, 3 íconos (rojo/verde/azul), azul activo solo donde `AGENT_ENROLL_URLS` tenga el nombre exacto del agente (hoy solo Marcos Rodriguez-Martinez), gris/apagado en el resto. Se quitó el mecanismo de "tarjeta completa clicable" (`agent-card--clickable`, `onclick`/`onkeydown` en el div) — reemplazado por los 3 botones explícitos.
+- **Bug corregido en el camino (JS):** al quitar los `<span id="lead1-lang">` etc. del HTML, las líneas `document.getElementById('lead1-lang').textContent=...` en `setLang()` habrían roto el cambio de idioma completo (`Cannot set properties of null`) — se eliminaron esas 3 líneas.
+- **Bug de scroll horizontal en móvil — causa raíz encontrada y corregida:** `.leader-grid` (las 3 tarjetas de líderes) nunca tenía una regla `@media` que lo bajara de `repeat(3,1fr)` — al forzar 3 columnas en una pantalla de celular, el contenido (nombres largos, lista de estados) rompía el ancho de columna y generaba overflow horizontal en toda la página (el "espacio en blanco al mover el dedo a la derecha" reportado). Se agregó `.leader-grid` a los breakpoints de 1024px (2 columnas) y 768px (1 columna), mismo patrón que `.plans-grid`/`.staff-grid`. Además, por seguridad adicional, se agregó `overflow-x:hidden` también a `html{}` (antes solo estaba en `body{}`) en las 4 páginas (`index.html`, `agents.html`, `login.html`, `dashboard-agentes.html`) — evita que elementos `position:fixed` (como los botones flotantes) puedan generar scroll horizontal fantasma en algunos navegadores móviles.
+- **Verificado con Chromium headless a 390px de ancho (simulación de celular real):** `document.documentElement.scrollWidth - window.innerWidth = 0` en `index.html` y `agents.html` — cero overflow horizontal confirmado con datos, no a ojo. Capturas de pantalla entregadas a Jesus como evidencia.
+- **Nota:** la extensión de Chrome del socio no pudo forzar el viewport móvil real (limitación ya documentada en 4.5), así que toda esta verificación se hizo con Chromium headless local sirviendo copias de los archivos — método más confiable y medible que una captura manual.
+
+## 4.11 ✅ COMPLETADO (2026-07-13) — Logo nuevo + número de WhatsApp actualizado
+
+- **Logo actualizado:** se detectó `logo.png` nuevo en `J:\My Drive\Operations\Website-Claude\` (subido por el socio, 3147×1087px). Mismo ícono circular rojo/azul de la "A" (sin cambio), pero el texto pasó de "INSURANCE ADVISORS" a **"LICENSED INSURANCE AGENTS"** y la tipografía "ALLCARE MAR" ahora tiene doble contorno. Se redimensionó a 1400×484px (mantiene proporción 2.9:1 idéntica al original) para no inflar el peso de carga, y se reemplazó **`assets/img/logo-allcaremar.png`** en el repo (mismo nombre/ruta — no requiere tocar ningún HTML, ya que `index.html`, `login.html`, `dashboard-agentes.html` y `agents.html` referencian ese mismo archivo). Favicons/`apple-touch-icon.png` **no se tocaron** — usan solo el ícono "A" circular, que no cambió.
+- **Número de WhatsApp actualizado:** el botón flotante de WhatsApp (ver 4.9) en `index.html` y `agents.html` apuntaba a `https://wa.me/12019871097` (número personal de Marcos Rodriguez-Martinez). Cambiado a **`https://wa.me/12013506628`** en ambos archivos. No se tocaron los `tel:` individuales de Marcos/Maria/Julian (son números de contacto directo del staff, no el WhatsApp general — el socio solo pidió cambiar el de WhatsApp).
+
+## 4.12 ✅ COMPLETADO (2026-07-13, noche) — Cargos de líderes + reorden de Office Staff
+
+- **Cargos actualizados en `index.html`** (EN/ES, ambos idiomas — variables `lead1_role`/`lead2_role` en el objeto de traducciones, líneas ~556-557 y ~645-646):
+  - Marcos Rodriguez: "Chairman & CEO" → **"Chief Executive Officer & Founder"** / "Presidente y CEO" → **"Director Ejecutivo y Fundador"**.
+  - Maria Santiago: "President & COO" → **"Chief Operating Officer"** / "Presidenta y COO" → **"Directora de Operaciones"**.
+  - Julian Vega ("Training Manager"/"Gerente de Capacitación") sin cambios.
+- **Orden del Office Staff reordenado en `staff.json`** (array `office_staff` — el grid en `index.html` se pinta dinámicamente desde este archivo vía `fetch`, sin hardcodear HTML, así que reordenar el array reordena la grilla automáticamente): antes Jessica, Mariel, Karen, Jesus, Aurelyn, Waldo → ahora **Mariel, Jessica, Karen** (fila 1) / **Waldo, Aurelyn, Jesus** (fila 2).
+- **Entregados ambos archivos a Jesus por chat (2026-07-13, noche) — pendiente que los suba juntos al repo** (el reorden no se ve reflejado hasta que `staff.json` esté en el repo también).
+
 ## 5. Pendientes que NO bloquean
 
 - Subir `google-config.js` (Client ID nuevo) al repo — ver 4.1.
 - 7 personas sin foto todavía (ver lista arriba) — quedan con iniciales, es correcto y no es un error.
 - Confirmar "Enforce HTTPS" marcado en GitHub Pages.
 - Auditoría de contenido del Google Site viejo (PASO 7 del roadmap) — no bloquea.
-- **Decisión pendiente de Jesus:** qué hacer con las 4 fotos de stock de Unsplash en `index.html` (hero-bg línea ~922, foto "advisor" del mosaico línea ~1106, avatars "Carmen"/"Maria" en testimonios líneas ~1225/1243). Propuesta de Claude (no aplicada aún, esperando luz verde): reusar `assets/img/hero-senior-couple.jpg` para el fondo del hero, `assets/img/how-it-works-agent.jpg` para la foto del mosaico, y cambiar los 2 avatars de testimonios a iniciales con círculo de color (mismo patrón que ya usa el 3er testimonio "RM") — elimina la dependencia de Unsplash sin necesitar fotos nuevas.
 - Verificación visual real del fix responsive de 4.5 en un dispositivo/ventana móvil de verdad (quedó verificado por lógica de CSS, no por screenshot).
 
 ## 6. Siguiente paso exacto
 
-1. **(En curso ahora mismo)** Jesus sube `index.html` (fix responsive, ver 4.5) y coloca + sube `.github/workflows/purge-cloudflare-cache.yml` (ver 4.6) — falta crear los 2 secrets de Cloudflare en GitHub antes de que el workflow funcione.
+1. **(Prioridad ahora mismo)** Jesus sube `index.html` + `staff.json` al repo (commit+push juntos — ver 4.12: cargos de líderes + orden de Office Staff + logo/WhatsApp de 4.11).
 2. Subir `google-config.js` al repo de GitHub (reemplazar el archivo existente).
 3. Abrir `https://www.allcaremar.com/login.html` y probar el login real con una cuenta @allcaremar.com — confirmar que redirige a `dashboard-agentes.html` y que una cuenta fuera del dominio es rechazada.
 4. Revisar el nuevo `dashboard-agentes.html` en producción (sidebar, 10 herramientas + 8 portales Medicare) una vez subido al repo.
-5. Jesus decide qué hacer con las 4 fotos de Unsplash (ver propuesta en sección 5) — si aprueba, Claude aplica el cambio en el próximo turno, sin necesitar fotos nuevas.
-6. Cuando el socio tenga fotos de las 7 personas faltantes (ver sección 3), seguir la misma convención `/agentes/{slug}.webp` y reprocesar con el mismo pipeline (recorte facial → 300×300 → webp).
+5. Cuando el socio tenga fotos de las 7 personas faltantes (ver sección 3), seguir la misma convención `/agentes/{slug}.webp` y reprocesar con el mismo pipeline (recorte facial → 300×300 → webp).
 
 El formulario "Tell Us About You" (PASO 3) ya está resuelto y verificado end-to-end.

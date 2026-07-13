@@ -2,15 +2,6 @@
   "_readme": "Fuente única de datos para el directorio de agentes de Allcare Mar. Usado por index.html (solo office_staff) y agents.html (independent_agents + partner_agencies). Datos actualizados desde Agent-Contact-Website.xlsx (fuente autoritativa, 2026-07-09). licensed_states usa códigos de 2 letras (ej. 'FL', 'NJ', 'TX'); ['PENDIENTE'] indica que el agente aún no tiene estados licenciados registrados en la hoja de cálculo — no inventar datos de licencia.",
   "office_staff": [
     {
-      "name": "Jessica Dominguez",
-      "position_en": "Senior Administration",
-      "position_es": "Administración Senior",
-      "phone": "(551) 363-2049",
-      "extension": "422",
-      "email": "jdominguez@allcaremar.com",
-      "image": "/agentes/jessica-dominguez.webp"
-    },
-    {
       "name": "Mariel Capellan",
       "position_en": "Office Team Leader",
       "position_es": "Líder de Equipo de Oficina",
@@ -18,6 +9,15 @@
       "extension": "435",
       "email": "mcapellan@allcaremar.com",
       "image": "/agentes/mariel-capellan.webp"
+    },
+    {
+      "name": "Jessica Dominguez",
+      "position_en": "Senior Administration",
+      "position_es": "Administración Senior",
+      "phone": "(551) 363-2049",
+      "extension": "422",
+      "email": "jdominguez@allcaremar.com",
+      "image": "/agentes/jessica-dominguez.webp"
     },
     {
       "name": "Karen Perez",
@@ -29,13 +29,13 @@
       "image": "/agentes/karen-perez.webp"
     },
     {
-      "name": "Jesus Cabreja",
-      "position_en": "Technological Support",
-      "position_es": "Soporte Tecnológico",
-      "phone": "(610) 628-9202",
-      "extension": "202",
-      "email": "jcabreja@allcaremar.com",
-      "image": "/agentes/jesus-cabreja.webp"
+      "name": "Waldo Martinez",
+      "position_en": "Operations",
+      "position_es": "Operaciones",
+      "phone": "(973) 665-2100",
+      "extension": "2100",
+      "email": "wmartinez@allcaremar.com",
+      "image": "/agentes/waldo-martinez.webp"
     },
     {
       "name": "Aurelyn Castillo",
@@ -47,13 +47,13 @@
       "image": "/agentes/aurelyn-castillo.webp"
     },
     {
-      "name": "Waldo Martinez",
-      "position_en": "Operations",
-      "position_es": "Operaciones",
-      "phone": "(973) 665-2100",
-      "extension": "2100",
-      "email": "wmartinez@allcaremar.com",
-      "image": "/agentes/waldo-martinez.webp"
+      "name": "Jesus Cabreja",
+      "position_en": "Technological Support",
+      "position_es": "Soporte Tecnológico",
+      "phone": "(610) 628-9202",
+      "extension": "202",
+      "email": "jcabreja@allcaremar.com",
+      "image": "/agentes/jesus-cabreja.webp"
     }
   ],
   "independent_agents": [
