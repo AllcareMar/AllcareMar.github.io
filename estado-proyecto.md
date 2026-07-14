@@ -1,22 +1,26 @@
 # Estado del Proyecto — Allcare Mar Agency Website
 
-Última actualización: 2026-07-14 (tarde).
+Última actualización: 2026-07-14 (tarde/noche). Sesión cerrada aquí — continúa en la próxima sesión con este archivo como memoria.
 
 **Socio / interlocutor:** Jesus. Dirigirse a él por su nombre en cada respuesta.
 
 **⚠️ BUG CRÍTICO CONFIRMADO ESTA SESIÓN (2026-07-14) — `device_commit_files` no escribe en la carpeta del repo:** verificado con checksums (md5), no solo tamaño de archivo. Se intentó escribir `index.html`, `agents.html`, `staff.json`, `login.html`, `dashboard-agentes.html` + 6 imágenes directo a `C:\Users\jicab\Claude\Projects\Allcaremar.com New Site\` dos veces en esta sesión. La herramienta reportó éxito (`"written"`) ambas veces, pero al releer el archivo desde esa carpeta seguía siendo la versión vieja sin cambios (confirmado con `md5sum`, no solo mtime/bytes — el propio metadata que devuelve la herramienta sobre bytes escritos no coincidía con lo que realmente quedó en disco). Es el mismo patrón que el bug ya documentado con `estado-proyecto.md` en la sesión anterior, pero ahora afecta TODA la carpeta del repo, no solo ese archivo.
 **Mitigación obligatoria de ahora en adelante:** NUNCA confiar en `device_commit_files` para esta carpeta sin verificar después con `device_stage_files` + comparación de contenido real (no solo bytes/mtime). Entregar SIEMPRE los archivos por chat (`SendUserFile`) y pedirle a Jesus que los reemplace él mismo arrastrándolos a la carpeta. Si el problema persiste, sugerir correr la próxima tarea grande "en su computadora" desde la app de escritorio (evita el puente remoto por completo).
 
-## 1. Archivos listos — ENTREGADOS POR CHAT el 2026-07-14, PENDIENTE que Jesus los reemplace manualmente en el repo y haga commit+push
+## 1. Archivos listos — ENTREGADOS POR CHAT en 2 tandas el 2026-07-14, PENDIENTE que Jesus los reemplace manualmente en el repo y haga commit+push (NINGUNO confirmado en disco todavía — ver bug crítico arriba)
 
-- **`index.html`** — ✅ Listo. Incluye: reemplazo completo "Advisors"→"Agents" (título, meta tags, tagline del logo, footer, disclosures — ver sección 2), alternancia de vocabulario "Agents"/"Licensed Agents"/"Insurance Professionals"/"Representatives" en el copy de venta (ver sección 2), rediseño de Top Carriers con 6 logos reales clicables (ver sección 3), link de Facebook corregido a `https://www.facebook.com/Allcaremar/` (antes `Allcaremedicare`, estaba mal).
-- **`agents.html`** — ✅ Listo. Incluye: mismo reemplazo Advisors→Agents + alternancia de vocabulario, sistema de filtro por carrier vía `?carrier=<slug>` con banner bilingüe (ver sección 3), link de Facebook corregido.
+- **`index.html`** — ✅ Listo (versión final = 2da entrega, ya incluye todo). Incluye: reemplazo completo "Advisors"→"Agents" (título, meta tags, tagline del logo, footer, disclosures — ver sección 2), alternancia de vocabulario "Agents"/"Licensed Agents"/"Insurance Professionals"/"Representatives" en el copy de venta (ver sección 2), rediseño de Top Carriers con 6 logos reales clicables (ver sección 3), link de Facebook corregido a `https://www.facebook.com/Allcaremar/` (antes `Allcaremedicare`, estaba mal), horario del pie de página corregido para incluir sábado (ver 1.1).
+- **`agents.html`** — ✅ Listo (versión final = 2da entrega, ya incluye todo). Incluye: mismo reemplazo Advisors→Agents + alternancia de vocabulario, sistema de filtro por carrier vía `?carrier=<slug>` con banner bilingüe (ver sección 3), link de Facebook corregido, horario del pie de página corregido (ver 1.1).
 - **`staff.json`** — ✅ Listo. Regenerado desde el Excel actualizado por Jesus (ver sección 4): 30 independent_agents (antes 28, +Patricia Sanchez +Diego Zetina), partner_agencies con 36 agentes totales (antes 35, +Glorie Alicea en JPM Solutions) = **72 personas en el directorio** (6 oficina + 66 vendedores, antes 69). Cada agente vendedor tiene ahora campo `"carriers"` (array de slugs, todos con `"unitedhealthcare"` mínimo). 28 agentes con `licensed_states` reales (ya no "PENDIENTE").
 - **`login.html`, `dashboard-agentes.html`** — ✅ Listos, solo cambio Advisors→Agents (logo/tagline/footer).
 - **`assets/img/carriers/*.webp`** — ✅ 6 archivos NUEVOS (unitedhealthcare, aetna, humana, devoted-health, jefferson-health, horizon.webp) — logos reales recortados/optimizados desde los PNG/JPG que Jesus subió a `Website-Claude`. Van en una carpeta nueva `assets/img/carriers/` dentro del repo (crearla si no existe).
 - **`editor-fotos-agentes.html`** — sin cambios esta sesión.
 - **`privacy-security-policy.pdf`** — revisado, no tiene la palabra "advisor", no requiere cambios.
 - **Repo:** `github.com/AllcareMar/AllcareMar.github.io` — GitHub Pages activo (branch `main`/root).
+
+## 1.1 🆕 Fix de horario en pie de página (2026-07-14, noche)
+
+- El pie de página (columna "Support"/"Soporte") solo decía "Mon–Fri 9AM–5:30PM" — le faltaba el sábado, mientras que la barra superior y la sección de contacto ya tenían "Sat 9AM–2PM". Corregido en `index.html` y `agents.html` (EN/ES): ahora dice **"Mon–Fri 9AM–5:30PM, Sat 9AM–2PM"** / **"Lun–Vie 9AM–5:30PM, Sáb 9AM–2PM"**. Verificado con Playwright que no se desborda en desktop ni móvil.
 
 ## 2. 🆕 Cambio de vocabulario "Advisors" → "Agents" + alternancia (2026-07-14)
 
@@ -51,10 +55,10 @@
 - Confirmar "Enforce HTTPS" marcado en GitHub Pages.
 - Verificación visual real del fix responsive en un dispositivo móvil de verdad.
 
-## 6. Siguiente paso exacto
+## 6. Siguiente paso exacto (arrancar aquí en la próxima sesión)
 
-1. **(Prioridad ahora mismo)** Jesus descarga los 11 archivos entregados por chat en esta sesión (`index.html`, `agents.html`, `staff.json`, `login.html`, `dashboard-agentes.html` + 6 `.webp` en `assets/img/carriers/`) y los reemplaza MANUALMENTE en `C:\Users\jicab\Claude\Projects\Allcaremar.com New Site\` (NO confiar en que el bridge remoto los haya escrito — ver bug crítico arriba). Luego commit + push al repo.
-2. Jesus llena la columna "Carriers" para Jefferson Health y Horizon en el Excel, y la adjunta por chat (no por la carpeta de Drive) para que se regenere `staff.json` de nuevo.
-3. Subir `google-config.js` al repo (pendiente de antes).
+1. **(Prioridad #1)** Confirmar con Jesus si ya reemplazó manualmente en `C:\Users\jicab\Claude\Projects\Allcaremar.com New Site\` los archivos entregados por chat esta sesión: `index.html`, `agents.html` (versión final con horario corregido), `staff.json`, `login.html`, `dashboard-agentes.html` + 6 `.webp` en `assets/img/carriers/` + este mismo `estado-proyecto.md`. Y si ya hizo commit + push al repo. Si no, retomar desde ahí.
+2. Jesus llena la columna "Carriers" para Jefferson Health y Horizon en el Excel, y la adjunta por chat (no por la carpeta de Drive — ver bug de sección 4) para que se regenere `staff.json` de nuevo.
+3. Subir `google-config.js` al repo (pendiente de sesión anterior a ésta).
 4. Fotos para los 10 agentes/staff sin foto, cuando Jesus las tenga.
-5. Si el bug de sincronización del bridge se repite, considerar correr la próxima tarea grande "en tu computadora" desde la app de escritorio en vez de en la nube.
+5. **Antes de usar `device_commit_files` de nuevo en esta carpeta:** verificar SIEMPRE después con `device_stage_files` + `md5sum`/diff de contenido real, no solo mtime/bytes reportados por la herramienta. Si vuelve a fallar, correr la próxima tarea grande "en tu computadora" desde la app de escritorio en vez de en la nube.
