@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Agents &amp; Partner Agencies Directory — Allcare Mar Insurance Advisors</title>
+<title>Agents &amp; Partner Agencies Directory — Allcare Mar Insurance Agents</title>
 <meta name="description" content="Meet Allcare Mar's licensed independent Medicare agents and our partner agencies network."/>
 <meta name="robots" content="index, follow"/>
 <link rel="canonical" href="https://www.allcaremar.com/agents.html"/>
@@ -17,8 +17,8 @@
 
 <!-- Open Graph / Social -->
 <meta property="og:type" content="website"/>
-<meta property="og:site_name" content="Allcare Mar Insurance Advisors"/>
-<meta property="og:title" content="Agents &amp; Partner Agencies Directory — Allcare Mar Insurance Advisors"/>
+<meta property="og:site_name" content="Allcare Mar Insurance Agents"/>
+<meta property="og:title" content="Agents &amp; Partner Agencies Directory — Allcare Mar Insurance Agents"/>
 <meta property="og:description" content="Meet Allcare Mar's licensed independent Medicare agents and our partner agencies network."/>
 <meta property="og:url" content="https://www.allcaremar.com/agents.html"/>
 <meta property="og:image" content="https://www.allcaremar.com/assets/img/how-it-works-agent.jpg"/>
@@ -110,6 +110,9 @@ nav{position:sticky;top:0;z-index:100;background:#fff;box-shadow:0 2px 12px rgba
 .agents-search-wrap i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--gray-400);font-size:13px}
 .agents-search-wrap input{width:100%;padding:12px 16px 12px 38px;border:1.5px solid var(--gray-200);border-radius:9px;font-family:'Open Sans',sans-serif;font-size:14px;color:var(--gray-800);outline:none;transition:var(--t);background:#fff}
 .agents-search-wrap input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,47,212,.09)}
+.carrier-filter-banner{display:none;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;max-width:560px;margin:18px auto 0;background:var(--blue-light);border:1.5px solid var(--blue);border-radius:30px;padding:10px 20px;font-family:'Montserrat',sans-serif;font-size:12.5px;font-weight:700;color:var(--blue-dark);text-align:center}
+.carrier-filter-banner.show{display:flex}
+.carrier-filter-banner a{color:var(--red);text-decoration:underline;white-space:nowrap}
 
 /* Directory sections */
 .agents-section{padding:50px 0}
@@ -188,13 +191,13 @@ footer{background:var(--gray-800);color:#d8d3cc;padding:60px 5vw 0}
 <nav>
   <div class="nav-wrap">
     <a href="index.html" class="nav-logo">
-      <img src="assets/img/logo-allcaremar.png" alt="Allcare Mar Insurance Advisors" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/>
+      <img src="assets/img/logo-allcaremar.png" alt="Allcare Mar Insurance Agents" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/>
       <div style="display:none;align-items:center;gap:10px">
         <div style="width:42px;height:42px;background:var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center">
           <span style="font-family:Montserrat,sans-serif;font-size:20px;font-weight:900;color:#fff">A</span>
         </div>
         <div><strong style="font-family:Montserrat,sans-serif;font-size:15px;font-weight:900;color:var(--blue)">ALLCARE MAR</strong><br>
-        <span style="font-size:10px;font-family:Montserrat,sans-serif;font-weight:700;color:var(--red);letter-spacing:.06em;text-transform:uppercase">Insurance Advisors</span></div>
+        <span style="font-size:10px;font-family:Montserrat,sans-serif;font-weight:700;color:var(--red);letter-spacing:.06em;text-transform:uppercase">Insurance Agents</span></div>
       </div>
     </a>
     <div class="nav-links">
@@ -250,6 +253,7 @@ footer{background:var(--gray-800);color:#d8d3cc;padding:60px 5vw 0}
         <i class="fas fa-search"></i>
         <input type="text" id="agentSearchInput" oninput="filterAgents(this.value)" placeholder="Search agent by name..."/>
       </div>
+      <div class="carrier-filter-banner" id="carrierFilterBanner"></div>
     </div>
   </div>
 </section>
@@ -289,7 +293,7 @@ footer{background:var(--gray-800);color:#d8d3cc;padding:60px 5vw 0}
       <img class="footer-logo" src="assets/img/logo-allcaremar.png" alt="Allcare Mar" onerror="this.style.filter='invert(1)'"/>
       <p id="footer-tagline"></p>
       <div class="social-row">
-        <a href="https://www.facebook.com/Allcaremedicare" target="_blank" class="soc-btn"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.facebook.com/Allcaremar/" target="_blank" class="soc-btn"><i class="fab fa-facebook-f"></i></a>
         <a href="https://www.instagram.com/allcare_mar/" target="_blank" class="soc-btn"><i class="fab fa-instagram"></i></a>
         <a href="https://www.linkedin.com/company/allcare-mar-agency/" target="_blank" class="soc-btn"><i class="fab fa-linkedin-in"></i></a>
         <a href="tel:8006975631" class="soc-btn"><i class="fas fa-phone-alt"></i></a>
@@ -353,12 +357,12 @@ const T={
     mob_plans:"Medicare Plans",mob_carriers:"Our Carriers",mob_how:"How It Works",mob_team:"Our Team",mob_testi:"Testimonials",mob_contact:"Contact",mob_agent_login:"Agent & Agency Login",
     page_eyebrow:"Meet Our Network",
     page_title:"Agents &amp; Partner Agencies Directory",
-    page_sub:"Browse our full team of independent licensed agents, plus the partner agencies we work with across the country.",
+    page_sub:"Browse our full team of independent licensed insurance professionals, plus the partner agencies we work with across the country.",
     search_ph:"Search agent by name...",
     section_independent_title:"Our Independent Agents",
-    section_independent_sub:"Licensed Allcare Mar agents ready to help you find the right Medicare plan.",
+    section_independent_sub:"Licensed Allcare Mar representatives ready to help you find the right Medicare plan.",
     section_partners_title:"Partner Agencies Network",
-    section_partners_sub:"Agencies we partner with, and their licensed agents.",
+    section_partners_sub:"Agencies we partner with, and their licensed insurance professionals.",
     label_states:"Licensed States",
     pending_states:"Pending",
     no_results:"No agents found matching your search.",
@@ -366,7 +370,7 @@ const T={
     fn_med:"Medicare",fl_ma:"Medicare Advantage",fl_ms:"Medicare Supplement",fl_pd:"Prescription Drug Plans",fl_dsnp:"DSNP Plans",
     fn_co:"Company",fl_ab:"About Us",fl_team:"Our Team",fl_car:"Careers",fl_con:"Contact",
     fn_sup:"Support",fl_p1:"800.697.5631",fl_p2:"info@allcaremar.com",fl_p3:"Mon–Fri 9AM–5:30PM",fl_p4:"Se Habla Español",
-    copy:"© 2026 Allcare Mar Insurance Advisors. All Rights Reserved.",
+    copy:"© 2026 Allcare Mar Insurance Agents. All Rights Reserved.",
     priv:"Privacy Policy",terms:"Terms of Use",cms_disc:"CMS Disclaimer",access:"Accessibility"
   },
   es:{
@@ -378,12 +382,12 @@ const T={
     mob_plans:"Planes de Medicare",mob_carriers:"Nuestras Aseguradoras",mob_how:"Cómo Funciona",mob_team:"Nuestro Equipo",mob_testi:"Testimonios",mob_contact:"Contacto",mob_agent_login:"Acceso de Agentes y Agencias",
     page_eyebrow:"Conoce Nuestra Red",
     page_title:"Directorio de Agentes y Agencias Asociadas",
-    page_sub:"Explora nuestro equipo completo de agentes independientes certificados, junto con las agencias asociadas con las que trabajamos en todo el país.",
+    page_sub:"Explora nuestro equipo completo de profesionales de seguros independientes certificados, junto con las agencias asociadas con las que trabajamos en todo el país.",
     search_ph:"Buscar agente por nombre...",
     section_independent_title:"Nuestros Agentes Independientes",
-    section_independent_sub:"Agentes certificados de Allcare Mar listos para ayudarte a encontrar el plan de Medicare correcto.",
+    section_independent_sub:"Representantes certificados de Allcare Mar listos para ayudarte a encontrar el plan de Medicare correcto.",
     section_partners_title:"Red de Agencias Asociadas",
-    section_partners_sub:"Agencias con las que somos socios, y sus agentes certificados.",
+    section_partners_sub:"Agencias con las que somos socios, y sus profesionales de seguros certificados.",
     label_states:"Estados con Licencia",
     pending_states:"Pendiente",
     no_results:"No se encontraron agentes con esa búsqueda.",
@@ -391,7 +395,7 @@ const T={
     fn_med:"Medicare",fl_ma:"Medicare Advantage",fl_ms:"Medicare Suplementario",fl_pd:"Planes de Medicamentos",fl_dsnp:"Planes DSNP",
     fn_co:"Compañía",fl_ab:"Sobre Nosotros",fl_team:"Nuestro Equipo",fl_car:"Empleo",fl_con:"Contacto",
     fn_sup:"Soporte",fl_p1:"800.697.5631",fl_p2:"info@allcaremar.com",fl_p3:"Lun–Vie 9AM–5:30PM",fl_p4:"Se Habla Español",
-    copy:"© 2026 Allcare Mar Insurance Advisors. Todos los derechos reservados.",
+    copy:"© 2026 Allcare Mar Insurance Agents. Todos los derechos reservados.",
     priv:"Política de Privacidad",terms:"Términos de Uso",cms_disc:"Divulgación CMS",access:"Accesibilidad"
   }
 };
@@ -485,6 +489,7 @@ function agentCardHTML(a){
   const phoneText=hasPhone?(a.phone+(hasExt?' · Ext. '+a.extension:'')):'—';
   const hasEmail=a.email&&a.email!=='PENDIENTE';
   const enrollUrl=AGENT_ENROLL_URLS[a.name];
+  const carriers=(a.carriers||[]).join(',');
   const callBtn=hasPhone
     ? '<a href="tel:+1'+phoneDigits+'" class="icon-btn icon-call" aria-label="Call '+a.name+'"><i class="fas fa-phone-alt"></i></a>'
     : '<span class="icon-btn icon-call disabled" aria-hidden="true"><i class="fas fa-phone-alt"></i></span>';
@@ -494,7 +499,7 @@ function agentCardHTML(a){
   const profileBtn=enrollUrl
     ? '<a href="'+enrollUrl+'" target="_blank" rel="noopener" class="icon-btn icon-profile" aria-label="View profile — '+a.name+' (opens in new tab)"><i class="fas fa-arrow-up-right-from-square"></i></a>'
     : '<span class="icon-btn icon-profile disabled" aria-hidden="true" title="Coming soon"><i class="fas fa-arrow-up-right-from-square"></i></span>';
-  return '<div class="agent-card" data-name="'+a.name.toLowerCase()+'">'+
+  return '<div class="agent-card" data-name="'+a.name.toLowerCase()+'" data-carriers="'+carriers+'">'+
     '<div class="agent-avatar"><img src="'+a.image+'" alt="'+a.name+'" loading="lazy" onerror="this.style.display=\'none\'"><span>'+initials+'</span></div>'+
     '<div class="agent-name">'+a.name+'</div>'+
     '<div class="agent-states">'+t.label_states+': <em>'+states+'</em></div>'+
@@ -521,12 +526,24 @@ function renderDirectory(){
 
 function filterAgents(query){ applySearchFilter(query); }
 
+const CARRIER_NAMES={
+  unitedhealthcare:'UnitedHealthcare',aetna:'Aetna',humana:'Humana',
+  'devoted-health':'Devoted Health','jefferson-health':'Jefferson Health Plans',horizon:'Horizon BCBSNJ'
+};
+function currentCarrier(){
+  const p=new URLSearchParams(location.search).get('carrier');
+  return p?p.toLowerCase():null;
+}
 function applySearchFilter(query){
   const q=(query||'').trim().toLowerCase();
+  const carrier=currentCarrier();
   const cards=document.querySelectorAll('.agent-card');
   let visible=0;
   cards.forEach(c=>{
-    const match=c.dataset.name.includes(q);
+    const nameMatch=c.dataset.name.includes(q);
+    const carrierList=(c.dataset.carriers||'').split(',').filter(Boolean);
+    const carrierMatch=!carrier||carrierList.includes(carrier);
+    const match=nameMatch&&carrierMatch;
     c.classList.toggle('hide',!match);
     if(match)visible++;
   });
@@ -535,6 +552,18 @@ function applySearchFilter(query){
     block.style.display=anyVisible?'':'none';
   });
   document.getElementById('agentsNoResults').style.display=(visible===0)?'block':'none';
+  renderCarrierBanner(carrier,visible);
+}
+function renderCarrierBanner(carrier,visibleCount){
+  const el=document.getElementById('carrierFilterBanner');
+  if(!carrier){el.classList.remove('show');el.innerHTML='';return;}
+  const name=CARRIER_NAMES[carrier]||carrier;
+  const msg=lang==='en'
+    ? 'Showing '+visibleCount+' agent'+(visibleCount===1?'':'s')+' licensed to sell <strong>'+name+'</strong>'
+    : 'Mostrando '+visibleCount+' agente'+(visibleCount===1?'':'s')+' certificado'+(visibleCount===1?'':'s')+' para vender <strong>'+name+'</strong>';
+  const clearTxt=lang==='en'?'View All Agents':'Ver Todos los Agentes';
+  el.innerHTML='<i class="fas fa-filter"></i> <span>'+msg+'</span> <a href="agents.html">'+clearTxt+'</a>';
+  el.classList.add('show');
 }
 
 const observer=new IntersectionObserver(entries=>{

@@ -1,5 +1,5 @@
 {
-  "_readme": "Fuente única de datos para el directorio de agentes de Allcare Mar. Usado por index.html (solo office_staff) y agents.html (independent_agents + partner_agencies). Datos actualizados desde Agent-Contact-Website.xlsx (fuente autoritativa, 2026-07-09). licensed_states usa códigos de 2 letras (ej. 'FL', 'NJ', 'TX'); ['PENDIENTE'] indica que el agente aún no tiene estados licenciados registrados en la hoja de cálculo — no inventar datos de licencia.",
+  "_readme": "Fuente única de datos para el directorio de agentes de Allcare Mar. Usado por index.html (solo office_staff) y agents.html (independent_agents + partner_agencies). Datos actualizados desde Agent-Contact-Website.xlsx (fuente autoritativa, 2026-07-09). licensed_states usa códigos de 2 letras (ej. 'FL', 'NJ', 'TX'); ['PENDIENTE'] indica que el agente aún no tiene estados licenciados registrados en la hoja de cálculo — no inventar datos de licencia. Campo 'carriers' (array de slugs: unitedhealthcare, aetna, humana, devoted-health, jefferson-health, horizon) indica qué carriers vende cada agente — todos tienen 'unitedhealthcare' por defecto; los demás se llenan según la columna 'Carriers' de Agent-Contact-Website.xlsx. Usado por agents.html para el filtro ?carrier=<slug> desde las tarjetas clicables de Top Carriers en index.html.",
   "office_staff": [
     {
       "name": "Mariel Capellan",
@@ -63,9 +63,14 @@
       "extension": "119",
       "email": "nicole_arratia@allcaremar.com",
       "licensed_states": [
-        "PENDIENTE"
+        "NJ",
+        "FL",
+        "AL"
       ],
-      "image": "/agentes/nicole-arratia.webp"
+      "image": "/agentes/nicole-arratia.webp",
+      "carriers": [
+        "unitedhealthcare"
+      ]
     },
     {
       "name": "Adriana Ayala",
@@ -73,9 +78,23 @@
       "extension": "430",
       "email": "a.ayala@allcaremar.com",
       "licensed_states": [
-        "PENDIENTE"
+        "NJ",
+        "FL",
+        "TX",
+        "PA",
+        "NY",
+        "NC",
+        "MI",
+        "GA",
+        "DE",
+        "CT",
+        "CA",
+        "AZ"
       ],
-      "image": "/agentes/adriana-ayala.webp"
+      "image": "/agentes/adriana-ayala.webp",
+      "carriers": [
+        "unitedhealthcare"
+      ]
     },
     {
       "name": "Iris Balgobin",
@@ -83,9 +102,17 @@
       "extension": "426",
       "email": "iris.pina@allcaremar.com",
       "licensed_states": [
-        "PENDIENTE"
+        "NJ",
+        "FL",
+        "TX",
+        "VA",
+        "PA",
+        "AZ"
       ],
-      "image": "/agentes/iris-balgobin.webp"
+      "image": "/agentes/iris-balgobin.webp",
+      "carriers": [
+        "unitedhealthcare"
+      ]
     },
     {
       "name": "Yaisha Colon",
@@ -93,9 +120,14 @@
       "extension": "416",
       "email": "yaisha.colon@allcaremar.com",
       "licensed_states": [
-        "PENDIENTE"
+        "NJ",
+        "FL",
+        "VA"
       ],
-      "image": "/agentes/yaisha-colon.webp"
+      "image": "/agentes/yaisha-colon.webp",
+      "carriers": [
+        "unitedhealthcare"
+      ]
     },
     {
       "name": "Jonathan Fernandez",
@@ -103,9 +135,15 @@
       "extension": "866",
       "email": "jfernandez@allcaremar.com",
       "licensed_states": [
-        "PENDIENTE"
+        "NJ",
+        "FL",
+        "DE",
+        "PA"
       ],
-      "image": "/agentes/jonathan-fernandez.webp"
+      "image": "/agentes/jonathan-fernandez.webp",
+      "carriers": [
+        "unitedhealthcare"
+      ]
     },
     {
       "name": "Jesus Garcia",
@@ -113,9 +151,23 @@
       "extension": "457",
       "email": "j.garcia@allcaremar.com",
       "licensed_states": [
-        "PENDIENTE"
+        "NJ",
+        "TN",
+        "TX",
+        "SC",
+        "PA",
+        "NC",
+        "MI",
+        "VA",
+        "FL",
+        "CT",
+        "CA",
+        "AZ"
       ],
-      "image": "/agentes/jesus-garcia.webp"
+      "image": "/agentes/jesus-garcia.webp",
+      "carriers": [
+        "unitedhealthcare"
+      ]
     },
     {
       "name": "Ramon Gil",
@@ -123,9 +175,14 @@
       "extension": "316",
       "email": "rgil@allcaremar.com",
       "licensed_states": [
-        "PENDIENTE"
+        "NJ",
+        "NY",
+        "DE"
       ],
-      "image": "/agentes/ramon-gil.webp"
+      "image": "/agentes/ramon-gil.webp",
+      "carriers": [
+        "unitedhealthcare"
+      ]
     },
     {
       "name": "Tayler Gray",
@@ -133,9 +190,14 @@
       "extension": "1356",
       "email": "tgray@allcaremar.com",
       "licensed_states": [
-        "PENDIENTE"
+        "NJ",
+        "PA",
+        "VA"
       ],
-      "image": "/agentes/tayler-gray.webp"
+      "image": "/agentes/tayler-gray.webp",
+      "carriers": [
+        "unitedhealthcare"
+      ]
     },
     {
       "name": "Ulysses Hyman",
@@ -143,9 +205,16 @@
       "extension": "318",
       "email": "uhyman@allcaremar.com",
       "licensed_states": [
-        "PENDIENTE"
+        "NJ",
+        "PA",
+        "MD",
+        "DE",
+        "AL"
       ],
-      "image": "/agentes/ulysses-hyman.webp"
+      "image": "/agentes/ulysses-hyman.webp",
+      "carriers": [
+        "unitedhealthcare"
+      ]
     },
     {
       "name": "Oliver Jimenez",
@@ -155,7 +224,10 @@
       "licensed_states": [
         "PENDIENTE"
       ],
-      "image": "/agentes/oliver-jimenez.webp"
+      "image": "/agentes/oliver-jimenez.webp",
+      "carriers": [
+        "unitedhealthcare"
+      ]
     },
     {
       "name": "Felix Liriano",
@@ -163,9 +235,14 @@
       "extension": "228",
       "email": "fliriano@allcaremar.com",
       "licensed_states": [
-        "PENDIENTE"
+        "NJ",
+        "NY",
+        "VA"
       ],
-      "image": "/agentes/felix-liriano.webp"
+      "image": "/agentes/felix-liriano.webp",
+      "carriers": [
+        "unitedhealthcare"
+      ]
     },
     {
       "name": "Kimberly Lopez",
@@ -173,9 +250,23 @@
       "extension": "134",
       "email": "klopez@allcaremar.com",
       "licensed_states": [
-        "PENDIENTE"
+        "NJ",
+        "TN",
+        "TX",
+        "SC",
+        "PA",
+        "OH",
+        "NC",
+        "MI",
+        "VA",
+        "IL",
+        "FL",
+        "CO"
       ],
-      "image": "/agentes/kimberly-lopez.webp"
+      "image": "/agentes/kimberly-lopez.webp",
+      "carriers": [
+        "unitedhealthcare"
+      ]
     },
     {
       "name": "Nelson Lopez",
@@ -183,9 +274,14 @@
       "extension": "140",
       "email": "nlopez@allcaremar.com",
       "licensed_states": [
-        "PENDIENTE"
+        "FL",
+        "OH",
+        "CO"
       ],
-      "image": "/agentes/nelson-lopez.webp"
+      "image": "/agentes/nelson-lopez.webp",
+      "carriers": [
+        "unitedhealthcare"
+      ]
     },
     {
       "name": "Alvorine Martin",
@@ -193,9 +289,19 @@
       "extension": "424",
       "email": "amartin@allcaremar.com",
       "licensed_states": [
-        "PENDIENTE"
+        "NJ",
+        "TX",
+        "SC",
+        "PA",
+        "NY",
+        "NC",
+        "FL"
       ],
-      "image": "/agentes/alvorine-martin.webp"
+      "image": "/agentes/alvorine-martin.webp",
+      "carriers": [
+        "unitedhealthcare",
+        "humana"
+      ]
     },
     {
       "name": "Maria Monsalve",
@@ -203,9 +309,17 @@
       "extension": "421",
       "email": "mmonsalve@allcaremar.com",
       "licensed_states": [
-        "PENDIENTE"
+        "NJ",
+        "NY",
+        "PA",
+        "FL",
+        "DE",
+        "CA"
       ],
-      "image": "/agentes/maria-monsalve.webp"
+      "image": "/agentes/maria-monsalve.webp",
+      "carriers": [
+        "unitedhealthcare"
+      ]
     },
     {
       "name": "Francia Munoz",
@@ -215,7 +329,10 @@
       "licensed_states": [
         "PENDIENTE"
       ],
-      "image": "/agentes/francia-munoz.webp"
+      "image": "/agentes/francia-munoz.webp",
+      "carriers": [
+        "unitedhealthcare"
+      ]
     },
     {
       "name": "Paola Peguero",
@@ -223,9 +340,18 @@
       "extension": "791",
       "email": "ppeguero@allcaremar.com",
       "licensed_states": [
-        "PENDIENTE"
+        "NJ",
+        "FL",
+        "TX",
+        "PA",
+        "DE",
+        "CA"
       ],
-      "image": "/agentes/paola-peguero.webp"
+      "image": "/agentes/paola-peguero.webp",
+      "carriers": [
+        "unitedhealthcare",
+        "humana"
+      ]
     },
     {
       "name": "Carlos Perez",
@@ -233,9 +359,19 @@
       "extension": "414",
       "email": "carloshealthagent@gmail.com",
       "licensed_states": [
-        "PENDIENTE"
+        "NJ",
+        "NY",
+        "TX",
+        "NC",
+        "SC",
+        "PA",
+        "FL",
+        "CA"
       ],
-      "image": "/agentes/carlos-perez.webp"
+      "image": "/agentes/carlos-perez.webp",
+      "carriers": [
+        "unitedhealthcare"
+      ]
     },
     {
       "name": "Luz Pujols",
@@ -243,9 +379,16 @@
       "extension": "4604",
       "email": "lpujols@allcaremar.com",
       "licensed_states": [
-        "PENDIENTE"
+        "NJ",
+        "PA",
+        "RI",
+        "FL"
       ],
-      "image": "/agentes/luz-pujols.webp"
+      "image": "/agentes/luz-pujols.webp",
+      "carriers": [
+        "unitedhealthcare",
+        "humana"
+      ]
     },
     {
       "name": "Cristian Quinones",
@@ -253,9 +396,23 @@
       "extension": "433",
       "email": "cquinones@allcaremar.com",
       "licensed_states": [
-        "PENDIENTE"
+        "NJ",
+        "FL",
+        "TX",
+        "SC",
+        "PA",
+        "NC",
+        "MI",
+        "VA",
+        "GA",
+        "CT",
+        "CO",
+        "AZ"
       ],
-      "image": "/agentes/cristian-quinones.webp"
+      "image": "/agentes/cristian-quinones.webp",
+      "carriers": [
+        "unitedhealthcare"
+      ]
     },
     {
       "name": "Mariela Read",
@@ -263,9 +420,14 @@
       "extension": "151",
       "email": "mread@allcaremar.com",
       "licensed_states": [
-        "PENDIENTE"
+        "NJ",
+        "FL"
       ],
-      "image": "/agentes/mariela-read.webp"
+      "image": "/agentes/mariela-read.webp",
+      "carriers": [
+        "unitedhealthcare",
+        "humana"
+      ]
     },
     {
       "name": "Sixto Rodriguez",
@@ -273,9 +435,12 @@
       "extension": "9496",
       "email": "sirodriguez@allcaremar.com",
       "licensed_states": [
-        "PENDIENTE"
+        "NJ"
       ],
-      "image": "/agentes/sixto-rodriguez.webp"
+      "image": "/agentes/sixto-rodriguez.webp",
+      "carriers": [
+        "unitedhealthcare"
+      ]
     },
     {
       "name": "Marcos Rodriguez-Martinez",
@@ -307,7 +472,13 @@
         "AZ",
         "AL"
       ],
-      "image": "/agentes/marcos-rodriguez-martinez.webp"
+      "image": "/agentes/marcos-rodriguez-martinez.webp",
+      "carriers": [
+        "unitedhealthcare",
+        "aetna",
+        "humana",
+        "devoted-health"
+      ]
     },
     {
       "name": "Jorge Rodriguez",
@@ -317,7 +488,10 @@
       "licensed_states": [
         "PENDIENTE"
       ],
-      "image": "/agentes/jorge-rodriguez.webp"
+      "image": "/agentes/jorge-rodriguez.webp",
+      "carriers": [
+        "unitedhealthcare"
+      ]
     },
     {
       "name": "Maria Rosario",
@@ -325,9 +499,13 @@
       "extension": "244",
       "email": "mrosario@allcaremar.com",
       "licensed_states": [
-        "PENDIENTE"
+        "NJ",
+        "FL"
       ],
-      "image": "/agentes/maria-rosario.webp"
+      "image": "/agentes/maria-rosario.webp",
+      "carriers": [
+        "unitedhealthcare"
+      ]
     },
     {
       "name": "Carlos Sanchez",
@@ -335,9 +513,34 @@
       "extension": "469",
       "email": "csanchez@allcaremar.com",
       "licensed_states": [
-        "PENDIENTE"
+        "NJ",
+        "FL",
+        "TN",
+        "TX",
+        "PA",
+        "NC",
+        "MI",
+        "VA",
+        "GA",
+        "CA"
       ],
-      "image": "/agentes/carlos-sanchez.webp"
+      "image": "/agentes/carlos-sanchez.webp",
+      "carriers": [
+        "unitedhealthcare"
+      ]
+    },
+    {
+      "name": "Patricia Sanchez",
+      "phone": "(407) 908-7180",
+      "extension": "7180",
+      "email": "psanchez@allcaremar.com",
+      "licensed_states": [
+        "FL"
+      ],
+      "carriers": [
+        "unitedhealthcare"
+      ],
+      "image": "/agentes/patricia-sanchez.webp"
     },
     {
       "name": "Maria Santiago",
@@ -360,7 +563,11 @@
         "GA",
         "LA"
       ],
-      "image": "/agentes/maria-santiago.webp"
+      "image": "/agentes/maria-santiago.webp",
+      "carriers": [
+        "unitedhealthcare",
+        "humana"
+      ]
     },
     {
       "name": "Yissela Velazquez",
@@ -370,7 +577,24 @@
       "licensed_states": [
         "PENDIENTE"
       ],
-      "image": "/agentes/yissela-velazquez.webp"
+      "image": "/agentes/yissela-velazquez.webp",
+      "carriers": [
+        "unitedhealthcare"
+      ]
+    },
+    {
+      "name": "Diego Zetina",
+      "phone": "(956) 462-1262",
+      "extension": "1262",
+      "email": "dzetina@allcaremar.com",
+      "licensed_states": [
+        "TX"
+      ],
+      "carriers": [
+        "unitedhealthcare",
+        "humana"
+      ],
+      "image": "/agentes/diego-zetina.webp"
     }
   ],
   "partner_agencies": [
@@ -387,7 +611,23 @@
           "licensed_states": [
             "NJ"
           ],
-          "image": "/agentes/karitssa-barry.webp"
+          "image": "/agentes/karitssa-barry.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
+        },
+        {
+          "name": "Glorie Alicea",
+          "phone": "(786) 765-4288",
+          "extension": "4288",
+          "email": "galicea@allcaremar.com",
+          "licensed_states": [
+            "FL"
+          ],
+          "carriers": [
+            "unitedhealthcare"
+          ],
+          "image": "/agentes/glorie-alicea.webp"
         },
         {
           "name": "Patricia Sixon",
@@ -401,7 +641,10 @@
             "DE",
             "AL"
           ],
-          "image": "/agentes/patricia-sixon.webp"
+          "image": "/agentes/patricia-sixon.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Yisel Rosario",
@@ -412,7 +655,10 @@
             "NJ",
             "PA"
           ],
-          "image": "/agentes/yisel-rosario.webp"
+          "image": "/agentes/yisel-rosario.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Julian Vega",
@@ -428,7 +674,10 @@
             "DE",
             "AL"
           ],
-          "image": "/agentes/julian-vega.webp"
+          "image": "/agentes/julian-vega.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         }
       ]
     },
@@ -445,7 +694,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/christopher-barry.webp"
+          "image": "/agentes/christopher-barry.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Carlos Colon",
@@ -455,7 +707,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/carlos-colon.webp"
+          "image": "/agentes/carlos-colon.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Glenda Colon",
@@ -465,7 +720,11 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/glenda-colon.webp"
+          "image": "/agentes/glenda-colon.webp",
+          "carriers": [
+            "unitedhealthcare",
+            "humana"
+          ]
         },
         {
           "name": "Johnny De Los Angeles",
@@ -475,7 +734,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/johnny-de-los-angeles.webp"
+          "image": "/agentes/johnny-de-los-angeles.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Marilyn Gamboa",
@@ -485,7 +747,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/marilyn-gamboa.webp"
+          "image": "/agentes/marilyn-gamboa.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Alison Rodriguez",
@@ -495,7 +760,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/alison-rodriguez.webp"
+          "image": "/agentes/alison-rodriguez.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         }
       ]
     },
@@ -513,7 +781,10 @@
             "NJ",
             "PA"
           ],
-          "image": "/agentes/gabriela-brito.webp"
+          "image": "/agentes/gabriela-brito.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Jose Fernandez",
@@ -523,7 +794,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/jose-fernandez.webp"
+          "image": "/agentes/jose-fernandez.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Glorivette Giunto",
@@ -533,7 +807,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/glorivette-giunto.webp"
+          "image": "/agentes/glorivette-giunto.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Ana Martell",
@@ -543,7 +820,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/ana-martell.webp"
+          "image": "/agentes/ana-martell.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Julissa Padilla",
@@ -553,7 +833,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/julissa-padilla.webp"
+          "image": "/agentes/julissa-padilla.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Sergio Ramirez",
@@ -563,7 +846,10 @@
           "licensed_states": [
             "NJ"
           ],
-          "image": "/agentes/sergio-ramirez.webp"
+          "image": "/agentes/sergio-ramirez.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Gisela Uribe",
@@ -575,7 +861,10 @@
             "NY",
             "FL"
           ],
-          "image": "/agentes/gisela-uribe.webp"
+          "image": "/agentes/gisela-uribe.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         }
       ]
     },
@@ -592,7 +881,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/melissa-acosta.webp"
+          "image": "/agentes/melissa-acosta.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Brittany Gibbs",
@@ -602,7 +894,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/brittany-gibbs.webp"
+          "image": "/agentes/brittany-gibbs.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Amanda Ortiz",
@@ -612,7 +907,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/amanda-ortiz.webp"
+          "image": "/agentes/amanda-ortiz.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Roland Pinzon",
@@ -622,7 +920,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/roland-pinzon.webp"
+          "image": "/agentes/roland-pinzon.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Carol Quinones",
@@ -632,7 +933,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/carol-quinones.webp"
+          "image": "/agentes/carol-quinones.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Olga Reyes",
@@ -642,7 +946,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/olga-reyes.webp"
+          "image": "/agentes/olga-reyes.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Samir Sanchez",
@@ -652,7 +959,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/samir-sanchez.webp"
+          "image": "/agentes/samir-sanchez.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Tammy Tanksley",
@@ -662,7 +972,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/tammy-tanksley.webp"
+          "image": "/agentes/tammy-tanksley.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         }
       ]
     },
@@ -679,7 +992,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/margot-flores.webp"
+          "image": "/agentes/margot-flores.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Priscilla Galarza",
@@ -689,7 +1005,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/priscilla-galarza.webp"
+          "image": "/agentes/priscilla-galarza.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Joshua Munoz",
@@ -699,7 +1018,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/joshua-munoz.webp"
+          "image": "/agentes/joshua-munoz.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Jocelyn Rodriguez",
@@ -709,7 +1031,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/jocelyn-rodriguez.webp"
+          "image": "/agentes/jocelyn-rodriguez.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         }
       ]
     },
@@ -726,7 +1051,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/gary-chicnes.webp"
+          "image": "/agentes/gary-chicnes.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Ana Michelle Christopher",
@@ -736,7 +1064,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/ana-michelle-christopher.webp"
+          "image": "/agentes/ana-michelle-christopher.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Emanuel Cruz",
@@ -746,7 +1077,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/emanuel-cruz.webp"
+          "image": "/agentes/emanuel-cruz.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Michael Ocasio",
@@ -756,7 +1090,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/michael-ocasio.webp"
+          "image": "/agentes/michael-ocasio.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Carlos Ortega",
@@ -766,7 +1103,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/carlos-ortega.webp"
+          "image": "/agentes/carlos-ortega.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         },
         {
           "name": "Keylin Pagan",
@@ -776,7 +1116,10 @@
           "licensed_states": [
             "PENDIENTE"
           ],
-          "image": "/agentes/keylin-pagan.webp"
+          "image": "/agentes/keylin-pagan.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         }
       ]
     }

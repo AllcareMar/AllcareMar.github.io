@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Allcare Mar Insurance Advisors — Medicare Made Simple</title>
-<meta name="description" content="Allcare Mar Insurance Advisors — Independent Medicare specialists helping seniors find the best Medicare Advantage, Supplement, and Prescription Drug plans. Free consultation. Licensed in multiple states."/>
+<title>Allcare Mar Insurance Agents — Medicare Made Simple</title>
+<meta name="description" content="Allcare Mar Insurance Agents — Independent Medicare specialists helping seniors find the best Medicare Advantage, Supplement, and Prescription Drug plans. Free consultation. Licensed in multiple states."/>
 <meta name="robots" content="index, follow"/>
 <link rel="canonical" href="https://www.allcaremar.com/"/>
 <meta name="theme-color" content="#1a2fd4"/>
@@ -17,15 +17,15 @@
 
 <!-- Open Graph / Social -->
 <meta property="og:type" content="website"/>
-<meta property="og:site_name" content="Allcare Mar Insurance Advisors"/>
-<meta property="og:title" content="Allcare Mar Insurance Advisors — Medicare Made Simple"/>
+<meta property="og:site_name" content="Allcare Mar Insurance Agents"/>
+<meta property="og:title" content="Allcare Mar Insurance Agents — Medicare Made Simple"/>
 <meta property="og:description" content="Independent Medicare specialists helping seniors find the best Medicare Advantage, Supplement, and Prescription Drug plans. Free consultation. Licensed in multiple states."/>
 <meta property="og:url" content="https://www.allcaremar.com/"/>
 <meta property="og:image" content="https://www.allcaremar.com/assets/img/hero-senior-couple.jpg"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:locale:alternate" content="es_ES"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="Allcare Mar Insurance Advisors — Medicare Made Simple"/>
+<meta name="twitter:title" content="Allcare Mar Insurance Agents — Medicare Made Simple"/>
 <meta name="twitter:description" content="Independent Medicare specialists helping seniors find the best Medicare plans. Free consultation."/>
 <meta name="twitter:image" content="https://www.allcaremar.com/assets/img/hero-senior-couple.jpg"/>
 
@@ -194,22 +194,13 @@ section{padding:88px 0}
 
 /* ── CARRIERS ── */
 .carriers-section{background:#fff}
-.carriers-scroll{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:2.5rem}
-.carrier-tile{background:#fff;border:1.5px solid var(--gray-200);border-radius:var(--r);padding:22px 16px;text-align:center;transition:var(--t);cursor:default;display:flex;flex-direction:column;align-items:center;gap:10px}
+.carriers-scroll{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-top:2.5rem}
+.carrier-tile{background:#fff;border:1.5px solid var(--gray-200);border-radius:var(--r);padding:18px 14px;text-align:center;transition:var(--t);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:118px}
 .carrier-tile:hover{border-color:var(--blue);transform:translateY(-4px);box-shadow:var(--sh)}
-.ct-logo{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:900;letter-spacing:-.3px;flex-shrink:0}
-.ct-uhc{background:#e6f0ff;color:#002677}
-.ct-aetna{background:#f4e9f7;color:#7d3f98}
-.ct-humana{background:#e3f2e9;color:#00833e}
-.ct-devoted{background:#fde8ef;color:#cc1d5a}
-.ct-clover{background:#f0e6f5;color:#673399}
-.ct-hf{background:#e8f4fb;color:#0066a4}
-.ct-emblem{background:#eef0fb;color:#3b3e8f}
-.ct-jefferson{background:#e8eef5;color:#13294b}
-.ct-anthem{background:#e8f2ec;color:#00543c}
-.ct-more{background:var(--gray-100);color:var(--gray-600)}
-.ct-name{font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:var(--gray-800)}
+.carrier-tile:hover .ct-cta{color:var(--red)}
+.ct-logo-img{max-width:100%;width:auto;height:auto;max-height:52px;object-fit:contain;flex-shrink:0}
 .ct-type{font-size:11px;color:var(--gray-400)}
+.ct-cta{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;gap:4px;transition:var(--t)}
 /* Scrolling carrier ticker */
 .carrier-ticker-wrap{overflow:hidden;margin-top:2rem;position:relative}
 .carrier-ticker-wrap::before,.carrier-ticker-wrap::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2}
@@ -490,7 +481,8 @@ footer{background:#0a1340;padding:60px 0 0}
 
 /* ── RESPONSIVE ── */
 @media(max-width:1024px){
-  .plans-grid,.carriers-scroll,.leader-grid{grid-template-columns:repeat(2,1fr)}
+  .plans-grid,.leader-grid{grid-template-columns:repeat(2,1fr)}
+  .carriers-scroll{grid-template-columns:repeat(3,1fr)}
   .hiw-grid,.portal-inner,.map-grid,.cf-grid{grid-template-columns:1fr}
   .hiw-img-wrap{display:none}
   .cta-inner{flex-direction:column;text-align:center}
@@ -517,6 +509,8 @@ footer{background:#0a1340;padding:60px 0 0}
 @media(max-width:480px){
   .staff-grid{grid-template-columns:1fr}
   .stats-bar-inner{grid-template-columns:repeat(2,1fr)}
+  .carrier-tile{min-height:96px;padding:14px 10px}
+  .ct-logo-img{max-height:40px}
 }
 </style>
 </head>
@@ -527,9 +521,9 @@ footer{background:#0a1340;padding:60px 0 0}
 const T={
   en:{
     topbar:"📞 Call Toll-Free: <a href='tel:8006975631'>800.697.5631</a> &nbsp;|&nbsp; Mon–Fri 9AM–5:30PM, Sat 9AM–2PM &nbsp;|&nbsp; 100% Free Service for Medicare Beneficiaries &nbsp;|&nbsp; <a href='#contact'>Se Habla Español</a>",
-    hero_eyebrow:"Licensed Medicare Advisors · No Cost to You",
+    hero_eyebrow:"Licensed Medicare Agents · No Cost to You",
     hero_h1:"Local, Trusted Guidance on <em>Medicare</em> Plans",
-    hero_desc:"We are independent insurance advisors helping seniors across the country find the best Medicare Advantage, Supplement, and Prescription Drug plans — from the top carriers.",
+    hero_desc:"We are independent insurance representatives helping seniors across the country find the best Medicare Advantage, Supplement, and Prescription Drug plans — from the top carriers.",
     hero_btn1:"Get a Free Consultation",hero_btn2:"Explore Plans",
     nav_medicare:"Medicare",nav_resources:"Resources",nav_team:"Our Team",nav_contact:"Contact",
     hero_badge_members:"Members & Families",hero_badge_free:"Free Service",
@@ -545,7 +539,7 @@ const T={
     p2t:"Medicare Supplement",p2d:"Help cover out-of-pocket costs not covered by Original Medicare (Parts A & B).",
     p3t:"Prescription Drug Plans",p3d:"Compare Part D plans to find the best coverage for your medications at the lowest cost.",
     p4t:"Dual Eligible (DSNP)",p4d:"Special plans for those with both Medicare & Medicaid offering enhanced benefits.",
-    carriers_ey:"Our Carrier Partners",carriers_title:"We Work With <em>Top Carriers</em>",carriers_sub:"As independent advisors, we are contracted with the nation's leading Medicare insurance carriers — giving you unbiased options.",
+    carriers_ey:"Our Carrier Partners",carriers_title:"We Work With <em>Top Carriers</em>",carriers_sub:"As independent insurance professionals, we are contracted with the nation's leading Medicare insurance carriers — giving you unbiased options.",ct_view_agents:"View Agents",
     hiw_ey:"How It Works",hiw_title:"From Confusion to <em>Confidence</em><br>in 4 Simple Steps",
     s1t:"Schedule a Free Call",s1d:"Tell us about your health needs, your doctors, your medications and your budget. No pressure, no obligations.",s1tag:"15-min consult",
     s2t:"We Review Your Options",s2d:"We compare all available plans in your area across multiple carriers to find what fits you best.",s2tag:"Unbiased comparison",
@@ -565,7 +559,7 @@ const T={
     usmap_loading:"Loading map…",
     staff_subtitle:"Office Staff",
     view_agents_btn:"View All Agents & Partner Agencies",
-    portal_ey:"Agent & Agency Portal",portal_title:"Your Success,<br>Our Priority",portal_desc:"Our exclusive portal gives licensed agents and agency partners the tools, training, and support they need to grow their Medicare business.",
+    portal_ey:"Agent & Agency Portal",portal_title:"Your Success,<br>Our Priority",portal_desc:"Our exclusive portal gives licensed insurance professionals and agency partners the tools, training, and support they need to grow their Medicare business.",
     pf1:"Manage clients & enrollments",pf2:"Access training & certifications",pf3:"Track commissions & performance reports",pf4:"Download marketing materials",pf5:"Real-time carrier updates & tools",
     login_title:"Agent Login",login_sub:"Sign in with your Allcare Mar Google Workspace account",
     btn_portal:"Agent & Agency Login",google_cta:"Sign in with Google",
@@ -573,11 +567,11 @@ const T={
     testi_ey:"Member Testimonials",testi_title:"What Our Members Say",
     t1:'"Allcare Mar made Medicare simple for me. They explained everything, answered every question I had and found the perfect plan. I couldn\'t have done it without them."',
     t1n:"Carmen R.",t1l:"Secaucus, NJ",
-    t2:'"I switched plans during open enrollment and saved over $140 a month. The agent verified all my doctors were in network before I even signed anything. Outstanding service."',
+    t2:'"I switched plans during open enrollment and saved over $140 a month. The representative verified all my doctors were in network before I even signed anything. Outstanding service."',
     t2n:"Roberto M.",t2l:"Orlando, FL",
     t3:'"They helped my entire family understand Medicare. Bilingual, professional, patient. We now refer all our friends and neighbors to Allcare Mar."',
     t3n:"María L.",t3l:"Miami, FL",
-    cta_h:"Let\'s Find the Right Plan for You",cta_p:"Our licensed advisors are ready to help you make the best choice for your health and your budget.",cta_btn:"Get Started Today",
+    cta_h:"Let\'s Find the Right Plan for You",cta_p:"Our licensed agents are ready to help you make the best choice for your health and your budget.",cta_btn:"Get Started Today",
     map_ey:"Find Us",map_title:"Visit Us or Call — We\'re Here for You",map_desc:"We serve clients in-person, by phone, or by video call — wherever is most convenient for you.",
     lbl_addr:"Address",lbl_phone:"Phone",lbl_email:"Email",lbl_hours:"Business Hours",
     addr_val:"546 Avenue C, Bayonne, NJ 07002",ph_val:"<a href='tel:8006975631'>800.697.5631</a> (Toll-Free)",em_val:"<a href='mailto:info@allcaremar.com'>info@allcaremar.com</a>",
@@ -590,24 +584,24 @@ const T={
     btn_sub:"Send My Request",form_note:"🔒 Your information is private and never shared with third parties.",
     faq_ey:"FAQ",faq_title:"Frequently Asked <em>Questions</em>",
     faqs:[
-      {q:"Is Allcare Mar\'s service really free?",a:"Yes, completely. We are compensated by the insurance carriers, not by you. The price of your plan is exactly the same with or without an agent — but with us you have a licensed expert who guides and advocates for you at no additional cost."},
+      {q:"Is Allcare Mar\'s service really free?",a:"Yes, completely. We are compensated by the insurance carriers, not by you. The price of your plan is exactly the same with or without a representative — but with us you have a licensed expert who guides and advocates for you at no additional cost."},
       {q:"When can I enroll in Medicare?",a:"Your Initial Enrollment Period begins 3 months before your 65th birthday and ends 3 months after. The Annual Open Enrollment Period runs October 15 – December 7 each year. Special Enrollment Periods exist for qualifying life events. Contact us to review your specific situation."},
       {q:"Can I keep my current doctors?",a:"That's one of the most important things we verify for you before recommending any plan. We check every plan's network to make sure your existing doctors and specialists are covered."},
-      {q:"Do you offer services in Spanish?",a:"Absolutely. All our agents are bilingual. You can communicate with us in Spanish or English — whichever is most comfortable for you."},
+      {q:"Do you offer services in Spanish?",a:"Absolutely. All our insurance professionals are bilingual. You can communicate with us in Spanish or English — whichever is most comfortable for you."},
       {q:"What if I already have a plan and want to change?",a:"We can review your current plan and compare it against available options. If we find something better for you, we guide you through the switch during the next enrollment period. Many clients save hundreds of dollars simply by reviewing their options each year."}
     ],
     disc_title:"Important Disclosures",
-    disc:"Allcare Mar Insurance Advisors is an independent insurance agency. We are not affiliated with or endorsed by the Centers for Medicare & Medicaid Services (CMS) or any government agency. We do not offer every plan available in your area — we represent a select portfolio of carriers. The information on this website is for educational purposes and does not constitute legal, financial, or medical advice. Medicare has neither reviewed nor endorsed this information. Contact Medicare.gov or call 1-800-MEDICARE (1-800-633-4227) for official information. Plans may vary by location. Not all plans available in all areas. Limitations, copayments, and restrictions may apply.",
+    disc:"Allcare Mar Insurance Agents is an independent insurance agency. We are not affiliated with or endorsed by the Centers for Medicare & Medicaid Services (CMS) or any government agency. We do not offer every plan available in your area — we represent a select portfolio of carriers. The information on this website is for educational purposes and does not constitute legal, financial, or medical advice. Medicare has neither reviewed nor endorsed this information. Contact Medicare.gov or call 1-800-MEDICARE (1-800-633-4227) for official information. Plans may vary by location. Not all plans available in all areas. Limitations, copayments, and restrictions may apply.",
     footer_tagline:"Helping seniors make confident Medicare decisions with care, integrity, and expertise.",
     fn_med:"Medicare",fl_ma:"Medicare Advantage",fl_ms:"Medicare Supplement",fl_pd:"Prescription Drug Plans",fl_dsnp:"DSNP Plans",
     fn_res:"Resources",fl_comp:"Plan Comparisons",fl_bas:"Medicare Basics",fl_faq:"FAQs",fl_ev:"Events",
     fn_co:"Company",fl_ab:"About Us",fl_team:"Our Team",fl_car:"Careers",fl_con:"Contact",
     fn_sup:"Support",fl_p1:"800.697.5631",fl_p2:"info@allcaremar.com",fl_p3:"Mon–Fri 9AM–5:30PM",fl_p4:"Se Habla Español",
-    copy:"© 2026 Allcare Mar Insurance Advisors. All Rights Reserved.",
+    copy:"© 2026 Allcare Mar Insurance Agents. All Rights Reserved.",
     priv:"Privacy Policy",terms:"Terms of Use",cms_disc:"CMS Disclaimer",access:"Accessibility",
     privsum_ey:"HIPAA & HITECH Compliance",
     privsum_title:"Your Privacy & Security Policy — Summary",
-    privsum_p1:"We only collect information you voluntarily provide (name, contact info, basic Medicare status) to connect you with a licensed agent.",
+    privsum_p1:"We only collect information you voluntarily provide (name, contact info, basic Medicare status) to connect you with a licensed representative.",
     privsum_p2:"We never sell, rent, or share your data with third parties outside our organization, under any circumstance.",
     privsum_p3:"All form data travels encrypted end-to-end (SSL/HTTPS); access is restricted and protected with multi-factor authentication.",
     privsum_p4:"Text \"STOP\" to any of our messages to opt out of SMS at any time. You may request access, correction, or deletion of your data at no cost.",
@@ -616,9 +610,9 @@ const T={
   },
   es:{
     topbar:"📞 Llamada Gratuita: <a href='tel:8006975631'>800.697.5631</a> &nbsp;|&nbsp; Lun–Vie 9AM–5:30PM, Sáb 9AM–2PM &nbsp;|&nbsp; Servicio 100% Gratuito · Se Habla Español &nbsp;|&nbsp; <a href='#contact'>Contáctenos</a>",
-    hero_eyebrow:"Asesores Certificados de Medicare · Sin Costo para Ti",
-    hero_h1:"Asesoría Local y de Confianza en Planes <em>Medicare</em>",
-    hero_desc:"Somos asesores independientes de seguros que ayudamos a personas mayores en todo el país a encontrar los mejores planes de Medicare Advantage, Suplementario y Medicamentos — con las aseguradoras líderes.",
+    hero_eyebrow:"Agentes Certificados de Medicare · Sin Costo para Ti",
+    hero_h1:"Agentes Locales y de Confianza en Planes <em>Medicare</em>",
+    hero_desc:"Somos representantes independientes de seguros que ayudamos a personas mayores en todo el país a encontrar los mejores planes de Medicare Advantage, Suplementario y Medicamentos — con las aseguradoras líderes.",
     hero_btn1:"Consulta Gratis",hero_btn2:"Ver Planes",
     nav_medicare:"Medicare",nav_resources:"Recursos",nav_team:"Nuestro Equipo",nav_contact:"Contacto",
     hero_badge_members:"Miembros y Familias",hero_badge_free:"Servicio Gratis",
@@ -634,7 +628,7 @@ const T={
     p2t:"Medicare Suplementario",p2d:"Cubren los gastos de bolsillo que el Medicare Original no cubre (Partes A y B).",
     p3t:"Planes de Medicamentos",p3d:"Compara planes Parte D para encontrar la mejor cobertura para tus medicamentos al menor costo.",
     p4t:"Doble Elegible (DSNP)",p4d:"Planes especiales para quienes tienen Medicare y Medicaid con beneficios mejorados.",
-    carriers_ey:"Nuestras Aseguradoras",carriers_title:"Trabajamos con las <em>Mejores Aseguradoras</em>",carriers_sub:"Como asesores independientes, estamos contratados con las principales aseguradoras de Medicare del país — para darte opciones sin sesgo.",
+    carriers_ey:"Nuestras Aseguradoras",carriers_title:"Trabajamos con las <em>Mejores Aseguradoras</em>",carriers_sub:"Como profesionales de seguros independientes, estamos contratados con las principales aseguradoras de Medicare del país — para darte opciones sin sesgo.",ct_view_agents:"Ver Agentes",
     hiw_ey:"Cómo Funciona",hiw_title:"De la Confusión a la <em>Confianza</em><br>en 4 Simples Pasos",
     s1t:"Agenda una Llamada Gratuita",s1d:"Cuéntanos sobre tu salud, tus médicos, tus medicamentos y tu presupuesto. Sin presión ni compromiso.",s1tag:"Consulta 15 min",
     s2t:"Revisamos Tus Opciones",s2d:"Comparamos todos los planes disponibles en tu área entre múltiples aseguradoras para encontrar lo mejor para ti.",s2tag:"Comparación imparcial",
@@ -654,7 +648,7 @@ const T={
     usmap_loading:"Cargando mapa…",
     staff_subtitle:"Personal de Oficina",
     view_agents_btn:"Ver Todos los Agentes y Agencias Asociadas",
-    portal_ey:"Portal de Agentes y Agencias",portal_title:"Tu Éxito,<br>Nuestra Prioridad",portal_desc:"Nuestro portal exclusivo brinda a los agentes certificados y socios de agencias las herramientas, capacitación y apoyo que necesitan para hacer crecer su negocio de Medicare.",
+    portal_ey:"Portal de Agentes y Agencias",portal_title:"Tu Éxito,<br>Nuestra Prioridad",portal_desc:"Nuestro portal exclusivo brinda a nuestros profesionales de seguros certificados y socios de agencias las herramientas, capacitación y apoyo que necesitan para hacer crecer su negocio de Medicare.",
     pf1:"Gestionar clientes e inscripciones",pf2:"Acceder a capacitaciones y certificaciones",pf3:"Rastrear comisiones y reportes",pf4:"Descargar materiales de marketing",pf5:"Actualizaciones de aseguradoras en tiempo real",
     login_title:"Inicio de Sesión de Agente",login_sub:"Inicia sesión con tu cuenta de Google Workspace de Allcare Mar",
     btn_portal:"Portal de Agentes y Agencias",google_cta:"Iniciar sesión con Google",
@@ -662,11 +656,11 @@ const T={
     testi_ey:"Testimonios",testi_title:"Lo Que Dicen Nuestros Miembros",
     t1:'"Allcare Mar me hizo Medicare simple. Me explicaron todo, respondieron cada pregunta y encontraron el plan perfecto. No podría haberlo hecho sin ellos."',
     t1n:"Carmen R.",t1l:"Secaucus, NJ",
-    t2:'"Cambié de plan en la temporada abierta y ahorré más de $140 al mes. El agente verificó que mis médicos estaban en la red antes de firmar nada. Servicio excepcional."',
+    t2:'"Cambié de plan en la temporada abierta y ahorré más de $140 al mes. El representante verificó que mis médicos estaban en la red antes de firmar nada. Servicio excepcional."',
     t2n:"Roberto M.",t2l:"Orlando, FL",
     t3:'"Ayudaron a toda mi familia a entender Medicare. Bilingüe, profesional, paciente. Referimos a todos nuestros amigos y vecinos a Allcare Mar."',
     t3n:"María L.",t3l:"Miami, FL",
-    cta_h:"Encontremos el Plan Ideal para Ti",cta_p:"Nuestros asesores certificados están listos para ayudarte a tomar la mejor decisión para tu salud y tu presupuesto.",cta_btn:"Comenzar Hoy",
+    cta_h:"Encontremos el Plan Ideal para Ti",cta_p:"Nuestros agentes certificados están listos para ayudarte a tomar la mejor decisión para tu salud y tu presupuesto.",cta_btn:"Comenzar Hoy",
     map_ey:"Encuéntranos",map_title:"Visítanos o Llama — Estamos Aquí para Ti",map_desc:"Atendemos en persona, por teléfono o videollamada — donde sea más cómodo para ti.",
     lbl_addr:"Dirección",lbl_phone:"Teléfono",lbl_email:"Correo",lbl_hours:"Horario de Atención",
     addr_val:"546 Avenue C, Bayonne, NJ 07002",ph_val:"<a href='tel:8006975631'>800.697.5631</a> (Sin Costo)",em_val:"<a href='mailto:info@allcaremar.com'>info@allcaremar.com</a>",
@@ -679,24 +673,24 @@ const T={
     btn_sub:"Enviar Solicitud",form_note:"🔒 Tu información es privada y nunca se comparte con terceros.",
     faq_ey:"Preguntas Frecuentes",faq_title:"Respuestas a tus <em>Preguntas</em>",
     faqs:[
-      {q:"¿El servicio de Allcare Mar es realmente gratuito?",a:"Sí, completamente. Somos compensados por las aseguradoras, no por ti. El precio de tu plan es exactamente el mismo con o sin agente — pero con nosotros tienes un experto certificado que te orienta y defiende sin costo adicional."},
+      {q:"¿El servicio de Allcare Mar es realmente gratuito?",a:"Sí, completamente. Somos compensados por las aseguradoras, no por ti. El precio de tu plan es exactamente el mismo con o sin representante — pero con nosotros tienes un experto certificado que te orienta y defiende sin costo adicional."},
       {q:"¿Cuándo puedo inscribirme en Medicare?",a:"Tu Período de Inscripción Inicial comienza 3 meses antes de tu cumpleaños 65 y termina 3 meses después. La Temporada Abierta Anual va del 15 de octubre al 7 de diciembre cada año. Existen períodos especiales por cambios de vida. Contáctanos para revisar tu caso específico."},
       {q:"¿Puedo mantener a mis médicos actuales?",a:"Esa es una de las cosas más importantes que verificamos antes de recomendarte cualquier plan. Revisamos la red de cada plan para asegurarnos de que tus médicos y especialistas actuales estén cubiertos."},
-      {q:"¿Ofrecen servicios en español?",a:"Absolutamente. Todos nuestros agentes son bilingües. Puedes comunicarte con nosotros en español o inglés — como te sea más cómodo."},
+      {q:"¿Ofrecen servicios en español?",a:"Absolutamente. Todos nuestros profesionales de seguros son bilingües. Puedes comunicarte con nosotros en español o inglés — como te sea más cómodo."},
       {q:"¿Qué pasa si ya tengo un plan y quiero cambiarlo?",a:"Podemos revisar tu plan actual y compararlo con las opciones disponibles. Si encontramos algo mejor para ti, te guiamos en el cambio durante la próxima temporada de inscripción. Muchos clientes ahorran cientos de dólares simplemente revisando sus opciones cada año."}
     ],
     disc_title:"Divulgaciones Importantes",
-    disc:"Allcare Mar Insurance Advisors es una agencia de seguros independiente. No estamos afiliados ni respaldados por los Centros de Servicios de Medicare y Medicaid (CMS) ni ninguna agencia gubernamental. No ofrecemos todos los planes disponibles en su área. La información en este sitio web es educativa y no constituye asesoramiento legal, financiero ni médico. Medicare no ha revisado ni respaldado esta información. Contacte Medicare.gov o llame al 1-800-MEDICARE (1-800-633-4227) para información oficial. Los planes pueden variar por ubicación. Se aplican limitaciones, copagos y restricciones.",
+    disc:"Allcare Mar Insurance Agents es una agencia de seguros independiente. No estamos afiliados ni respaldados por los Centros de Servicios de Medicare y Medicaid (CMS) ni ninguna agencia gubernamental. No ofrecemos todos los planes disponibles en su área. La información en este sitio web es educativa y no constituye asesoramiento legal, financiero ni médico. Medicare no ha revisado ni respaldado esta información. Contacte Medicare.gov o llame al 1-800-MEDICARE (1-800-633-4227) para información oficial. Los planes pueden variar por ubicación. Se aplican limitaciones, copagos y restricciones.",
     footer_tagline:"Ayudamos a personas mayores a tomar decisiones informadas de Medicare con cuidado, integridad y experiencia.",
     fn_med:"Medicare",fl_ma:"Medicare Advantage",fl_ms:"Medicare Suplementario",fl_pd:"Planes de Medicamentos",fl_dsnp:"Planes DSNP",
     fn_res:"Recursos",fl_comp:"Comparación de Planes",fl_bas:"Conceptos Básicos",fl_faq:"Preguntas Frecuentes",fl_ev:"Eventos",
     fn_co:"Compañía",fl_ab:"Sobre Nosotros",fl_team:"Nuestro Equipo",fl_car:"Empleo",fl_con:"Contacto",
     fn_sup:"Soporte",fl_p1:"800.697.5631",fl_p2:"info@allcaremar.com",fl_p3:"Lun–Vie 9AM–5:30PM",fl_p4:"Se Habla Español",
-    copy:"© 2026 Allcare Mar Insurance Advisors. Todos los derechos reservados.",
+    copy:"© 2026 Allcare Mar Insurance Agents. Todos los derechos reservados.",
     priv:"Política de Privacidad",terms:"Términos de Uso",cms_disc:"Divulgación CMS",access:"Accesibilidad",
     privsum_ey:"Cumplimiento HIPAA y HITECH",
     privsum_title:"Política de Privacidad y Seguridad — Resumen",
-    privsum_p1:"Solo recopilamos la información que nos proporcionas voluntariamente (nombre, contacto, situación básica con Medicare) para conectarte con un agente licenciado.",
+    privsum_p1:"Solo recopilamos la información que nos proporcionas voluntariamente (nombre, contacto, situación básica con Medicare) para conectarte con un representante licenciado.",
     privsum_p2:"Nunca vendemos, alquilamos ni compartimos tus datos con terceros fuera de nuestra organización, bajo ninguna circunstancia.",
     privsum_p3:"Los datos de los formularios viajan cifrados de extremo a extremo (SSL/HTTPS); el acceso está restringido y protegido con autenticación multifactor.",
     privsum_p4:"Envía \"STOP\" a cualquier mensaje nuestro para cancelar los SMS en cualquier momento. Puedes solicitar acceso, corrección o eliminación de tus datos sin costo.",
@@ -759,6 +753,7 @@ function setLang(l){
   document.getElementById('carriers-ey').textContent=t.carriers_ey;
   document.getElementById('carriers-title').innerHTML=t.carriers_title;
   document.getElementById('carriers-sub').textContent=t.carriers_sub;
+  document.querySelectorAll('.ct-cta-txt').forEach(el=>el.textContent=t.ct_view_agents);
   // hiw
   document.getElementById('hiw-ey').textContent=t.hiw_ey;
   document.getElementById('hiw-title').innerHTML=t.hiw_title;
@@ -876,13 +871,13 @@ function setLang(l){
 <nav>
   <div class="nav-wrap">
     <a href="#" class="nav-logo">
-      <img src="assets/img/logo-allcaremar.png" alt="Allcare Mar Insurance Advisors" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/>
+      <img src="assets/img/logo-allcaremar.png" alt="Allcare Mar Insurance Agents" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/>
       <div style="display:none;align-items:center;gap:10px">
         <div style="width:42px;height:42px;background:var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center">
           <span style="font-family:Montserrat,sans-serif;font-size:20px;font-weight:900;color:#fff">A</span>
         </div>
         <div><strong style="font-family:Montserrat,sans-serif;font-size:15px;font-weight:900;color:var(--blue)">ALLCARE MAR</strong><br>
-        <span style="font-size:10px;font-family:Montserrat,sans-serif;font-weight:700;color:var(--red);letter-spacing:.06em;text-transform:uppercase">Insurance Advisors</span></div>
+        <span style="font-size:10px;font-family:Montserrat,sans-serif;font-weight:700;color:var(--red);letter-spacing:.06em;text-transform:uppercase">Insurance Agents</span></div>
       </div>
     </a>
     <div class="nav-links">
@@ -1027,11 +1022,12 @@ function setLang(l){
       <p class="s-sub center reveal" id="carriers-sub" style="transition-delay:.1s;margin-top:.5rem"></p>
     </div>
     <div class="carriers-scroll reveal" style="transition-delay:.1s">
-      <div class="carrier-tile"><div class="ct-logo ct-uhc">UHC</div><div class="ct-name">UnitedHealthcare</div><div class="ct-type">Medicare Advantage · Supplement</div></div>
-      <div class="carrier-tile"><div class="ct-logo ct-aetna">AET</div><div class="ct-name">Aetna</div><div class="ct-type">Medicare Advantage · Part D</div></div>
-      <div class="carrier-tile"><div class="ct-logo ct-humana">HUM</div><div class="ct-name">Humana</div><div class="ct-type">Medicare Advantage · DSNP</div></div>
-      <div class="carrier-tile"><div class="ct-logo ct-devoted">DEV</div><div class="ct-name">Devoted Health</div><div class="ct-type">Medicare Advantage · 5★ CMS</div></div>
-      <div class="carrier-tile"><div class="ct-logo ct-clover">CLO</div><div class="ct-name">Clover Health</div><div class="ct-type">Medicare Advantage</div></div>
+      <a class="carrier-tile" href="agents.html?carrier=unitedhealthcare" aria-label="View agents licensed to sell UnitedHealthcare"><img class="ct-logo-img" src="assets/img/carriers/unitedhealthcare.webp" alt="UnitedHealthcare" loading="lazy"/><div class="ct-type">Medicare Advantage · Supplement</div><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
+      <a class="carrier-tile" href="agents.html?carrier=aetna" aria-label="View agents licensed to sell Aetna"><img class="ct-logo-img" src="assets/img/carriers/aetna.webp" alt="Aetna" loading="lazy"/><div class="ct-type">Medicare Advantage · Part D</div><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
+      <a class="carrier-tile" href="agents.html?carrier=humana" aria-label="View agents licensed to sell Humana"><img class="ct-logo-img" src="assets/img/carriers/humana.webp" alt="Humana" loading="lazy"/><div class="ct-type">Medicare Advantage · DSNP</div><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
+      <a class="carrier-tile" href="agents.html?carrier=devoted-health" aria-label="View agents licensed to sell Devoted Health"><img class="ct-logo-img" src="assets/img/carriers/devoted-health.webp" alt="Devoted Health" loading="lazy"/><div class="ct-type">Medicare Advantage · 5★ CMS</div><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
+      <a class="carrier-tile" href="agents.html?carrier=jefferson-health" aria-label="View agents licensed to sell Jefferson Health Plans"><img class="ct-logo-img" src="assets/img/carriers/jefferson-health.webp" alt="Jefferson Health Plans" loading="lazy"/><div class="ct-type">Medicare Advantage</div><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
+      <a class="carrier-tile" href="agents.html?carrier=horizon" aria-label="View agents licensed to sell Horizon BCBSNJ"><img class="ct-logo-img" src="assets/img/carriers/horizon.webp" alt="Horizon BCBSNJ" loading="lazy"/><div class="ct-type">Medicare Advantage · Supplement</div><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
     </div>
     <!-- Scrolling ticker -->
     <div class="carrier-ticker-wrap reveal" style="transition-delay:.2s">
@@ -1117,7 +1113,7 @@ function setLang(l){
         <img src="assets/img/community-caregiver-daughter.jpg" alt="Woman lovingly caring for her senior mother" loading="lazy"/>
       </div>
       <div class="pm3">
-        <img src="assets/img/how-it-works-agent.jpg" alt="Insurance advisor" loading="lazy"/>
+        <img src="assets/img/how-it-works-agent.jpg" alt="Insurance agent" loading="lazy"/>
       </div>
       <div class="pm4 pm-label" data-label="Active Seniors">
         <img src="assets/img/community-thumbs-up.jpg" alt="Happy senior couple giving thumbs up" loading="lazy"/>
@@ -1390,7 +1386,7 @@ function setLang(l){
       <img class="footer-logo" src="assets/img/logo-allcaremar.png" alt="Allcare Mar" onerror="this.style.filter='invert(1)'"/>
       <p id="footer-tagline"></p>
       <div class="social-row">
-        <a href="https://www.facebook.com/Allcaremedicare" target="_blank" class="soc-btn"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.facebook.com/Allcaremar/" target="_blank" class="soc-btn"><i class="fab fa-facebook-f"></i></a>
         <a href="https://www.instagram.com/allcare_mar/" target="_blank" class="soc-btn"><i class="fab fa-instagram"></i></a>
         <a href="https://www.linkedin.com/company/allcare-mar-agency/" target="_blank" class="soc-btn"><i class="fab fa-linkedin-in"></i></a>
         <a href="tel:8006975631" class="soc-btn"><i class="fas fa-phone-alt"></i></a>
@@ -1677,8 +1673,8 @@ async function handleContactSubmit(){
 
     noteEl.className='form-msg form-msg-success';
     noteEl.textContent=lang==='en'
-      ?'Thank you! An Allcare Mar agent will contact you shortly.'
-      :'¡Gracias! Un agente de Allcare Mar te contactará en breve.';
+      ?'Thank you! A licensed Allcare Mar representative will contact you shortly.'
+      :'¡Gracias! Un representante certificado de Allcare Mar te contactará en breve.';
     noteEl.style.display='block';
   }catch(err){
     noteEl.className='form-msg form-msg-error';
