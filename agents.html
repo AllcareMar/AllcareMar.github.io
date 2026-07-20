@@ -472,12 +472,9 @@ async function loadDirectory(){
   }
 }
 
-// Agentes con landing page de inscripción propia (PlanEnroll) — al hacer clic en la
-// tarjeta se abre en pestaña nueva para que el visitante nunca pierda el sitio principal.
-const AGENT_ENROLL_URLS={
-  'Marcos Rodriguez-Martinez':'https://www.planenroll.com/?purl=Marcos-Rodriguez-Martinez'
-};
-
+// Link de PlanEnroll por agente — viene de staff.json (campo "planenroll", columna
+// "Link Plan Enroll" del Excel). Al hacer clic se abre en pestaña nueva para que el
+// visitante nunca pierda el sitio principal.
 function agentCardHTML(a){
   const t=T[lang];
   const initials=a.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
@@ -488,7 +485,7 @@ function agentCardHTML(a){
   const phoneDigits=(a.phone||'').replace(/\D/g,'');
   const phoneText=hasPhone?(a.phone+(hasExt?' · Ext. '+a.extension:'')):'—';
   const hasEmail=a.email&&a.email!=='PENDIENTE';
-  const enrollUrl=AGENT_ENROLL_URLS[a.name];
+  const enrollUrl=a.planenroll;
   const carriers=(a.carriers||[]).join(',');
   const callBtn=hasPhone
     ? '<a href="tel:+1'+phoneDigits+'" class="icon-btn icon-call" aria-label="Call '+a.name+'"><i class="fas fa-phone-alt"></i></a>'
@@ -528,7 +525,10 @@ function filterAgents(query){ applySearchFilter(query); }
 
 const CARRIER_NAMES={
   unitedhealthcare:'UnitedHealthcare',aetna:'Aetna',humana:'Humana',
-  'devoted-health':'Devoted Health','jefferson-health':'Jefferson Health Plans',horizon:'Horizon BCBSNJ'
+  'devoted-health':'Devoted Health','jefferson-health':'Jefferson Health Plans',horizon:'Horizon BCBSNJ',
+  anthem:'Anthem',cigna:'Cigna',emblemhealth:'EmblemHealth',fidelis:'Fidelis Care',
+  healthfirst:'Healthfirst','molina-healthcare':'Molina Healthcare',scanhealth:'SCAN Health Plan',
+  wellcare:'Wellcare',wellpoint:'Wellpoint'
 };
 function currentCarrier(){
   const p=new URLSearchParams(location.search).get('carrier');

@@ -1,5 +1,5 @@
 {
-  "_readme": "Fuente única de datos para el directorio de agentes de Allcare Mar. Usado por index.html (solo office_staff) y agents.html (independent_agents + partner_agencies). Datos actualizados desde Agent-Contact-Website.xlsx (fuente autoritativa, 2026-07-09). licensed_states usa códigos de 2 letras (ej. 'FL', 'NJ', 'TX'); ['PENDIENTE'] indica que el agente aún no tiene estados licenciados registrados en la hoja de cálculo — no inventar datos de licencia. Campo 'carriers' (array de slugs: unitedhealthcare, aetna, humana, devoted-health, jefferson-health, horizon) indica qué carriers vende cada agente — todos tienen 'unitedhealthcare' por defecto; los demás se llenan según la columna 'Carriers' de Agent-Contact-Website.xlsx. Usado por agents.html para el filtro ?carrier=<slug> desde las tarjetas clicables de Top Carriers en index.html.",
+  "_readme": "Fuente única de datos para el directorio de agentes de Allcare Mar. Usado por index.html (solo office_staff) y agents.html (independent_agents + partner_agencies). Datos actualizados desde Agent-Contact-Website.xlsx (fuente autoritativa, 2026-07-20). licensed_states usa códigos de 2 letras (ej. 'FL', 'NJ', 'TX'); ['PENDIENTE'] indica que el agente aún no tiene estados licenciados registrados en la hoja de cálculo — no inventar datos de licencia. Campo 'carriers' (array de slugs: unitedhealthcare, aetna, humana, devoted-health, jefferson-health, horizon — más 9 nuevos en el carrusel: anthem, cigna, emblemhealth, fidelis, healthfirst, molina-healthcare, scanhealth, wellcare, wellpoint) indica qué carriers vende cada agente — todos tienen 'unitedhealthcare' por defecto; los demás se llenan según la columna 'Carriers' (F) de Agent-Contact-Website.xlsx (los 9 nuevos carriers aún no tienen agentes asignados en la hoja — 0 resultados hasta que Jesus los llene). Usado por agents.html para el filtro ?carrier=<slug> desde las tarjetas clicables de Top Carriers en index.html. Campo opcional 'planenroll' (URL) viene de la columna 'Link Plan Enroll' (G) del Excel — cuando existe, el botón de perfil en la tarjeta del agente en agents.html abre esa URL en pestaña nueva; si no existe, el botón queda deshabilitado ('Coming soon').",
   "office_staff": [
     {
       "name": "Mariel Capellan",
@@ -70,7 +70,8 @@
       "image": "/agentes/nicole-arratia.webp",
       "carriers": [
         "unitedhealthcare"
-      ]
+      ],
+      "planenroll": "https://www.planenroll.com/?purl=Nicole-Arratia-Araneda"
     },
     {
       "name": "Adriana Ayala",
@@ -143,7 +144,8 @@
       "image": "/agentes/jonathan-fernandez.webp",
       "carriers": [
         "unitedhealthcare"
-      ]
+      ],
+      "planenroll": "https://www.planenroll.com/?purl=Jonathan-Fernandez-2"
     },
     {
       "name": "Jesus Garcia",
@@ -197,7 +199,8 @@
       "image": "/agentes/tayler-gray.webp",
       "carriers": [
         "unitedhealthcare"
-      ]
+      ],
+      "planenroll": "https://www.planenroll.com/?purl=Tayler-Gray"
     },
     {
       "name": "Ulysses Hyman",
@@ -327,7 +330,17 @@
       "extension": "418",
       "email": "fmunoz@allcaremar.com",
       "licensed_states": [
-        "PENDIENTE"
+        "NJ",
+        "OH",
+        "PA",
+        "NY",
+        "NC",
+        "VA",
+        "MD",
+        "FL",
+        "DE",
+        "CO",
+        "AL"
       ],
       "image": "/agentes/francia-munoz.webp",
       "carriers": [
@@ -371,7 +384,8 @@
       "image": "/agentes/carlos-perez.webp",
       "carriers": [
         "unitedhealthcare"
-      ]
+      ],
+      "planenroll": "https://www.planenroll.com/?purl=Carlos-Perez-Ferreira"
     },
     {
       "name": "Luz Pujols",
@@ -440,7 +454,8 @@
       "image": "/agentes/sixto-rodriguez.webp",
       "carriers": [
         "unitedhealthcare"
-      ]
+      ],
+      "planenroll": "https://www.planenroll.com/?purl=Sixto-Rodriguez"
     },
     {
       "name": "Marcos Rodriguez-Martinez",
@@ -477,8 +492,10 @@
         "unitedhealthcare",
         "aetna",
         "humana",
-        "devoted-health"
-      ]
+        "devoted-health",
+        "jefferson-health"
+      ],
+      "planenroll": "https://www.planenroll.com/?purl=Marcos-Rodriguez-Martinez"
     },
     {
       "name": "Jorge Rodriguez",
@@ -486,7 +503,7 @@
       "extension": "1434",
       "email": "jirodriguez@allcaremar.com",
       "licensed_states": [
-        "PENDIENTE"
+        "FL"
       ],
       "image": "/agentes/jorge-rodriguez.webp",
       "carriers": [
@@ -567,19 +584,6 @@
       "carriers": [
         "unitedhealthcare",
         "humana"
-      ]
-    },
-    {
-      "name": "Yissela Velazquez",
-      "phone": "(773) 977-7442",
-      "extension": "7442",
-      "email": "yvelazquez@allcaremar.com",
-      "licensed_states": [
-        "PENDIENTE"
-      ],
-      "image": "/agentes/yissela-velazquez.webp",
-      "carriers": [
-        "unitedhealthcare"
       ]
     },
     {
@@ -692,7 +696,7 @@
           "extension": "142",
           "email": "cbarry@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ"
           ],
           "image": "/agentes/christopher-barry.webp",
           "carriers": [
@@ -705,12 +709,19 @@
           "extension": "388",
           "email": "ccolon@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "NC",
+            "OH",
+            "TX",
+            "PA",
+            "FL",
+            "AZ"
           ],
           "image": "/agentes/carlos-colon.webp",
           "carriers": [
             "unitedhealthcare"
-          ]
+          ],
+          "planenroll": "https://www.planenroll.com/?purl=Carlos-Colon-1"
         },
         {
           "name": "Glenda Colon",
@@ -718,13 +729,26 @@
           "extension": "417",
           "email": "glendahealthagent@gmail.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "NY",
+            "TX",
+            "SC",
+            "PA",
+            "OH",
+            "NC",
+            "VA",
+            "RI",
+            "FL",
+            "DE",
+            "CT",
+            "AZ"
           ],
           "image": "/agentes/glenda-colon.webp",
           "carriers": [
             "unitedhealthcare",
             "humana"
-          ]
+          ],
+          "planenroll": "https://www.planenroll.com/?purl=Glenda-Colon"
         },
         {
           "name": "Johnny De Los Angeles",
@@ -732,12 +756,18 @@
           "extension": "624",
           "email": "jdelosangeles@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "CT",
+            "NY",
+            "PA",
+            "FL",
+            "DE"
           ],
           "image": "/agentes/johnny-de-los-angeles.webp",
           "carriers": [
             "unitedhealthcare"
-          ]
+          ],
+          "planenroll": "https://www.planenroll.com/?purl=Johnny-De-Los-Abgeles"
         },
         {
           "name": "Marilyn Gamboa",
@@ -745,7 +775,11 @@
           "extension": "137",
           "email": "mgamboa@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "TX",
+            "OH",
+            "NC",
+            "FL"
           ],
           "image": "/agentes/marilyn-gamboa.webp",
           "carriers": [
@@ -758,12 +792,25 @@
           "extension": "445",
           "email": "alisonrodriguez@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "TX",
+            "SC",
+            "PA",
+            "OH",
+            "NY",
+            "NC",
+            "VA",
+            "RI",
+            "FL",
+            "DE",
+            "CT",
+            "AZ"
           ],
           "image": "/agentes/alison-rodriguez.webp",
           "carriers": [
             "unitedhealthcare"
-          ]
+          ],
+          "planenroll": "https://www.planenroll.com/?purl=Alison-Rodriguez-Benitez"
         }
       ]
     },
@@ -784,7 +831,8 @@
           "image": "/agentes/gabriela-brito.webp",
           "carriers": [
             "unitedhealthcare"
-          ]
+          ],
+          "planenroll": "https://www.planenroll.com/?purl=Gabriela-Brito-Uribe"
         },
         {
           "name": "Jose Fernandez",
@@ -792,7 +840,10 @@
           "extension": "745",
           "email": "jofernandez@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "TX",
+            "PA",
+            "DE"
           ],
           "image": "/agentes/jose-fernandez.webp",
           "carriers": [
@@ -805,12 +856,16 @@
           "extension": "439",
           "email": "egiunto@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "NY",
+            "FL",
+            "PA"
           ],
           "image": "/agentes/glorivette-giunto.webp",
           "carriers": [
             "unitedhealthcare"
-          ]
+          ],
+          "planenroll": "https://www.planenroll.com/?purl=Glorivette-Giunto"
         },
         {
           "name": "Ana Martell",
@@ -823,7 +878,8 @@
           "image": "/agentes/ana-martell.webp",
           "carriers": [
             "unitedhealthcare"
-          ]
+          ],
+          "planenroll": "https://www.planenroll.com/?purl=Ana-Martell"
         },
         {
           "name": "Julissa Padilla",
@@ -831,7 +887,8 @@
           "extension": "128",
           "email": "jpadilla@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "PA"
           ],
           "image": "/agentes/julissa-padilla.webp",
           "carriers": [
@@ -864,7 +921,8 @@
           "image": "/agentes/gisela-uribe.webp",
           "carriers": [
             "unitedhealthcare"
-          ]
+          ],
+          "planenroll": "https://www.planenroll.com/?purl=GISELA-Uribe"
         }
       ]
     },
@@ -879,7 +937,10 @@
           "extension": "175",
           "email": "macosta@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "FL",
+            "PA",
+            "SC"
           ],
           "image": "/agentes/melissa-acosta.webp",
           "carriers": [
@@ -892,7 +953,10 @@
           "extension": "980",
           "email": "brittany.gibbs@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "PA",
+            "FL",
+            "DE"
           ],
           "image": "/agentes/brittany-gibbs.webp",
           "carriers": [
@@ -905,7 +969,8 @@
           "extension": "1476",
           "email": "aortiz@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "PA"
           ],
           "image": "/agentes/amanda-ortiz.webp",
           "carriers": [
@@ -918,7 +983,14 @@
           "extension": "954",
           "email": "rpinzon@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "TX",
+            "SC",
+            "PA",
+            "NC",
+            "MD",
+            "FL",
+            "DE"
           ],
           "image": "/agentes/roland-pinzon.webp",
           "carriers": [
@@ -931,7 +1003,10 @@
           "extension": "6051",
           "email": "cmquinones@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "MD",
+            "PA",
+            "FL"
           ],
           "image": "/agentes/carol-quinones.webp",
           "carriers": [
@@ -957,7 +1032,7 @@
           "extension": "3190",
           "email": "ssanchez@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ"
           ],
           "image": "/agentes/samir-sanchez.webp",
           "carriers": [
@@ -970,7 +1045,7 @@
           "extension": "264",
           "email": "ttanksley@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ"
           ],
           "image": "/agentes/tammy-tanksley.webp",
           "carriers": [
@@ -990,7 +1065,7 @@
           "extension": "9040",
           "email": "mflores@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ"
           ],
           "image": "/agentes/margot-flores.webp",
           "carriers": [
@@ -1003,7 +1078,11 @@
           "extension": "441",
           "email": "pgalarza@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "NY",
+            "PA",
+            "FL",
+            "DE"
           ],
           "image": "/agentes/priscilla-galarza.webp",
           "carriers": [
@@ -1016,7 +1095,11 @@
           "extension": "413",
           "email": "j.munoz@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "NY",
+            "FL",
+            "DE",
+            "PA"
           ],
           "image": "/agentes/joshua-munoz.webp",
           "carriers": [
@@ -1029,7 +1112,10 @@
           "extension": "412",
           "email": "jocelyn.rod@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "NY",
+            "DE",
+            "FL"
           ],
           "image": "/agentes/jocelyn-rodriguez.webp",
           "carriers": [
@@ -1049,7 +1135,9 @@
           "extension": "1088",
           "email": "gchicnes@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "TX",
+            "NC"
           ],
           "image": "/agentes/gary-chicnes.webp",
           "carriers": [
@@ -1062,12 +1150,34 @@
           "extension": "428",
           "email": "anamichelle@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "FL",
+            "WI",
+            "TN",
+            "TX",
+            "SC",
+            "PA",
+            "OH",
+            "NY",
+            "NC",
+            "MI",
+            "VA",
+            "RI",
+            "MD",
+            "LA",
+            "GA",
+            "DE",
+            "CT",
+            "CO",
+            "CA",
+            "AZ",
+            "AL"
           ],
           "image": "/agentes/ana-michelle-christopher.webp",
           "carriers": [
             "unitedhealthcare"
-          ]
+          ],
+          "planenroll": "https://www.planenroll.com/?purl=Ana-Michelle-Christopher"
         },
         {
           "name": "Emanuel Cruz",
@@ -1075,22 +1185,13 @@
           "extension": "122",
           "email": "ecruz@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "NY",
+            "TX",
+            "NC",
+            "MI"
           ],
           "image": "/agentes/emanuel-cruz.webp",
-          "carriers": [
-            "unitedhealthcare"
-          ]
-        },
-        {
-          "name": "Michael Ocasio",
-          "phone": "(321) 335-6105",
-          "extension": "6105",
-          "email": "mocasio@allcaremar.com",
-          "licensed_states": [
-            "PENDIENTE"
-          ],
-          "image": "/agentes/michael-ocasio.webp",
           "carriers": [
             "unitedhealthcare"
           ]
@@ -1101,7 +1202,25 @@
           "extension": "427",
           "email": "cortega@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "FL",
+            "WI",
+            "TN",
+            "TX",
+            "SC",
+            "PA",
+            "OH",
+            "NY",
+            "NC",
+            "MI",
+            "VA",
+            "LA",
+            "DE",
+            "CT",
+            "CO",
+            "CA",
+            "AZ",
+            "AL"
           ],
           "image": "/agentes/carlos-ortega.webp",
           "carriers": [
@@ -1114,7 +1233,13 @@
           "extension": "217",
           "email": "kpagan@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "NY",
+            "TX",
+            "PA",
+            "NC",
+            "FL",
+            "AL"
           ],
           "image": "/agentes/keylin-pagan.webp",
           "carriers": [
