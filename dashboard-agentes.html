@@ -64,18 +64,16 @@ img{display:block;max-width:100%}
 .section-head h2{font-size:18px;font-weight:800;color:var(--gray-800)}
 .section-head p{font-size:12.5px;color:var(--gray-600);margin-top:2px}
 
-.tool-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
-.tool-card{background:#fff;border:1.5px solid var(--gray-200);border-radius:var(--r-lg);padding:26px 20px;text-align:center;transition:var(--t);cursor:pointer}
+.tool-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.tool-card{background:#fff;border:1.5px solid var(--gray-200);border-radius:var(--r-lg);padding:32px 22px;text-align:center;transition:var(--t);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;min-height:130px}
 .tool-card:hover{border-color:var(--blue);transform:translateY(-4px);box-shadow:var(--sh-lg)}
-.tool-card .ti{width:54px;height:54px;border-radius:50%;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:21px;margin:0 auto 14px}
-.tool-card .tn{font-family:'Montserrat',sans-serif;font-weight:800;font-size:13.5px;color:var(--gray-800);margin-bottom:4px}
-.tool-card .tx{font-size:11px;color:var(--gray-400);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.tool-card .ti-img{width:64px;height:64px;object-fit:contain}
+.tool-card .tn{font-family:'Montserrat',sans-serif;font-weight:800;font-size:13.5px;color:var(--gray-800)}
 
 .carrier-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-.carrier-card{background:var(--warm-card);border:1.5px solid var(--gray-200);border-radius:var(--r-lg);padding:30px 18px;text-align:center;transition:var(--t);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:12px}
+.carrier-card{background:var(--warm-card);border:1.5px solid var(--gray-200);border-radius:var(--r-lg);padding:34px 18px;text-align:center;transition:var(--t);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;min-height:120px}
 .carrier-card:hover{border-color:var(--red);transform:translateY(-4px);box-shadow:var(--sh-lg)}
-.carrier-card .ci{width:58px;height:58px;border-radius:50%;background:var(--red-light);color:var(--red);display:flex;align-items:center;justify-content:center;font-size:22px}
-.carrier-card .cn{font-family:'Montserrat',sans-serif;font-weight:800;font-size:14px;color:var(--gray-800)}
+.carrier-card .clogo{max-width:100%;width:auto;height:auto;max-height:68px;object-fit:contain}
 .carrier-card .cx{font-size:10.5px;color:var(--gray-400);font-weight:700;text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;gap:4px}
 
 footer.auth-mini-footer{padding:22px 20px;text-align:center;font-size:11.5px;color:var(--gray-400);background:#fff;border-top:1px solid var(--gray-200);margin-left:var(--sidebar-w)}
@@ -134,59 +132,52 @@ footer.auth-mini-footer a{color:var(--gray-600);font-weight:700;margin-left:6px}
       <div class="si"><i class="fas fa-briefcase"></i></div>
       <div>
         <h2 id="sec1Title"></h2>
-        <p id="sec1Sub"></p>
       </div>
     </div>
     <div class="tool-grid">
-      <a class="tool-card" href="https://calendar.app.google/eYGK81gqAonoFSkY6" target="_blank" rel="noopener">
-        <div class="ti"><i class="fas fa-door-open"></i></div>
+      <a class="tool-card" href="#">
+        <img class="ti-img" src="assets/img/dashboard/daily-sales-report.webp" alt="Daily Sales Report"/>
         <div class="tn" id="tool1"></div>
-        <div class="tx" id="toolx1"></div>
+      </a>
+      <a class="tool-card" href="https://calendar.app.google/eYGK81gqAonoFSkY6" target="_blank" rel="noopener">
+        <img class="ti-img" src="assets/img/dashboard/conference-room.webp" alt="Conference Room"/>
+        <div class="tn" id="tool2"></div>
       </a>
       <a class="tool-card" href="https://form.jotform.com/250776977609173" target="_blank" rel="noopener">
-        <div class="ti"><i class="fas fa-headset"></i></div>
-        <div class="tn" id="tool2"></div>
-        <div class="tx" id="toolx2"></div>
+        <img class="ti-img" src="assets/img/dashboard/it-ticket.webp" alt="IT Ticket"/>
+        <div class="tn" id="tool3"></div>
       </a>
       <a class="tool-card" href="https://calendar.app.google/tsgeZzUyYEaUzfTdA" target="_blank" rel="noopener">
-        <div class="ti"><i class="fas fa-shuttle-van"></i></div>
-        <div class="tn" id="tool3"></div>
-        <div class="tx" id="toolx3"></div>
+        <img class="ti-img" src="assets/img/dashboard/sprinter-van.webp" alt="Sprinter / Van Reservations"/>
+        <div class="tn" id="tool4"></div>
       </a>
       <a class="tool-card" href="https://drive.google.com/file/d/1WABdj0wHak0uXmtOo0DrNL4xvYpzwoAj/view?usp=drive_link" target="_blank" rel="noopener">
-        <div class="ti"><i class="fas fa-address-book"></i></div>
-        <div class="tn" id="tool4"></div>
-        <div class="tx" id="toolx4"></div>
+        <img class="ti-img" src="assets/img/dashboard/agents-contact-list.webp" alt="Agents Contact List"/>
+        <div class="tn" id="tool5"></div>
       </a>
       <a class="tool-card" href="https://sites.google.com/allcaremar.com/allcaremaragency/agents-portal/training-videos" target="_blank" rel="noopener">
-        <div class="ti"><i class="fas fa-video"></i></div>
-        <div class="tn" id="tool5"></div>
-        <div class="tx" id="toolx5"></div>
+        <img class="ti-img" src="assets/img/dashboard/training-videos.webp" alt="Training Videos"/>
+        <div class="tn" id="tool6"></div>
       </a>
       <a class="tool-card" href="https://sites.google.com/allcaremar.com/allcaremaragency/agents-portal/support-library" target="_blank" rel="noopener">
-        <div class="ti"><i class="fas fa-folder-open"></i></div>
-        <div class="tn" id="tool6"></div>
-        <div class="tx" id="toolx6"></div>
+        <img class="ti-img" src="assets/img/dashboard/support-materials.webp" alt="Support Materials"/>
+        <div class="tn" id="tool7"></div>
       </a>
       <a class="tool-card" href="https://berwickinsurance.com/login/" target="_blank" rel="noopener">
-        <div class="ti"><i class="fas fa-building-shield"></i></div>
-        <div class="tn" id="tool7"></div>
-        <div class="tx" id="toolx7"></div>
+        <img class="ti-img" src="assets/img/dashboard/berwick-insurance.webp" alt="Berwick Insurance"/>
+        <div class="tn" id="tool8"></div>
       </a>
       <a class="tool-card" href="https://integrity.com/integrityconnect/" target="_blank" rel="noopener">
-        <div class="ti"><i class="fas fa-diagram-project"></i></div>
-        <div class="tn" id="tool8"></div>
-        <div class="tx" id="toolx8"></div>
+        <img class="ti-img" src="assets/img/dashboard/integrity-connect.webp" alt="Integrity Connect"/>
+        <div class="tn" id="tool9"></div>
       </a>
       <a class="tool-card" href="https://integrity.com/leads/" target="_blank" rel="noopener">
-        <div class="ti"><i class="fas fa-user-plus"></i></div>
-        <div class="tn" id="tool9"></div>
-        <div class="tx" id="toolx9"></div>
+        <img class="ti-img" src="assets/img/dashboard/integrity-connect-leads.webp" alt="Integrity Connect Leads"/>
+        <div class="tn" id="tool10"></div>
       </a>
       <a class="tool-card" href="https://t65.app/login.php?req=&No%20Cookie" target="_blank" rel="noopener">
-        <div class="ti"><i class="fas fa-mobile-screen-button"></i></div>
-        <div class="tn" id="tool10"></div>
-        <div class="tx" id="toolx10"></div>
+        <img class="ti-img" src="assets/img/dashboard/t65-app.webp" alt="T65.app"/>
+        <div class="tn" id="tool11"></div>
       </a>
     </div>
   </div>
@@ -196,48 +187,67 @@ footer.auth-mini-footer a{color:var(--gray-600);font-weight:700;margin-left:6px}
       <div class="si"><i class="fas fa-notes-medical"></i></div>
       <div>
         <h2 id="sec2Title"></h2>
-        <p id="sec2Sub"></p>
       </div>
     </div>
     <div class="carrier-grid">
       <a class="carrier-card" href="https://www.uhcjarvis.com/" target="_blank" rel="noopener">
-        <div class="ci"><i class="fas fa-shield-heart"></i></div>
-        <div class="cn">UnitedHealthcare</div>
+        <img class="clogo" src="assets/img/carriers/unitedhealthcare.webp" alt="UnitedHealthcare" loading="lazy"/>
         <div class="cx" id="carx"></div>
       </a>
-      <a class="carrier-card" href="https://www.humana.com/agent/humana-agent-portal" target="_blank" rel="noopener">
-        <div class="ci"><i class="fas fa-shield-heart"></i></div>
-        <div class="cn">Humana</div>
-        <div class="cx"></div>
-      </a>
-      <a class="carrier-card" href="https://www.wellcare.com/en/broker-resources/broker-resources" target="_blank" rel="noopener">
-        <div class="ci"><i class="fas fa-shield-heart"></i></div>
-        <div class="cn">Wellcare</div>
-        <div class="cx"></div>
-      </a>
       <a class="carrier-card" href="https://www.aetna.com/producer_public/login.fcc" target="_blank" rel="noopener">
-        <div class="ci"><i class="fas fa-shield-heart"></i></div>
-        <div class="cn">Aetna</div>
+        <img class="clogo" src="assets/img/carriers/aetna.webp" alt="Aetna" loading="lazy"/>
         <div class="cx"></div>
       </a>
-      <a class="carrier-card" href="https://jeffersonhealthplans.com/medicare/broker-resources.html" target="_blank" rel="noopener">
-        <div class="ci"><i class="fas fa-shield-heart"></i></div>
-        <div class="cn">Jefferson Health Plans</div>
+      <a class="carrier-card" href="https://www.humana.com/agent/humana-agent-portal" target="_blank" rel="noopener">
+        <img class="clogo" src="assets/img/carriers/humana.webp" alt="Humana" loading="lazy"/>
         <div class="cx"></div>
       </a>
       <a class="carrier-card" href="https://agent.devoted.com/" target="_blank" rel="noopener">
-        <div class="ci"><i class="fas fa-shield-heart"></i></div>
-        <div class="cn">Devoted</div>
+        <img class="clogo" src="assets/img/carriers/devoted-health.webp" alt="Devoted Health" loading="lazy"/>
+        <div class="cx"></div>
+      </a>
+      <a class="carrier-card" href="https://jeffersonhealthplans.com/medicare/broker-resources.html" target="_blank" rel="noopener">
+        <img class="clogo" src="assets/img/carriers/jefferson-health.webp" alt="Jefferson Health Plans" loading="lazy"/>
         <div class="cx"></div>
       </a>
       <a class="carrier-card" href="https://www.horizonblue.com/brokers/" target="_blank" rel="noopener">
-        <div class="ci"><i class="fas fa-shield-heart"></i></div>
-        <div class="cn">Horizon</div>
+        <img class="clogo" src="assets/img/carriers/horizon.webp" alt="Horizon BCBSNJ" loading="lazy"/>
+        <div class="cx"></div>
+      </a>
+      <a class="carrier-card" href="https://www.anthem.com/producer" target="_blank" rel="noopener">
+        <img class="clogo" src="assets/img/carriers/anthem.webp" alt="Anthem" loading="lazy"/>
+        <div class="cx"></div>
+      </a>
+      <a class="carrier-card" href="https://www.cigna.com/brokers" target="_blank" rel="noopener">
+        <img class="clogo" src="assets/img/carriers/cigna.webp" alt="Cigna" loading="lazy"/>
+        <div class="cx"></div>
+      </a>
+      <a class="carrier-card" href="https://broker.emblemhealth.com/Broker/s/login/" target="_blank" rel="noopener">
+        <img class="clogo" src="assets/img/carriers/emblemhealth.webp" alt="EmblemHealth" loading="lazy"/>
+        <div class="cx"></div>
+      </a>
+      <a class="carrier-card" href="https://www.fideliscare.org/brokers" target="_blank" rel="noopener">
+        <img class="clogo" src="assets/img/carriers/fidelis.webp" alt="Fidelis Care" loading="lazy"/>
         <div class="cx"></div>
       </a>
       <a class="carrier-card" href="https://healthfirst.org/brokers" target="_blank" rel="noopener">
-        <div class="ci"><i class="fas fa-shield-heart"></i></div>
-        <div class="cn">Healthfirst</div>
+        <img class="clogo" src="assets/img/carriers/healthfirst.webp" alt="Healthfirst" loading="lazy"/>
+        <div class="cx"></div>
+      </a>
+      <a class="carrier-card" href="https://molinaagentcenter.com/" target="_blank" rel="noopener">
+        <img class="clogo" src="assets/img/carriers/molina-healthcare.webp" alt="Molina Healthcare" loading="lazy"/>
+        <div class="cx"></div>
+      </a>
+      <a class="carrier-card" href="https://www.scanproducerportal.com/" target="_blank" rel="noopener">
+        <img class="clogo" src="assets/img/carriers/scanhealth.webp" alt="SCAN Health Plan" loading="lazy"/>
+        <div class="cx"></div>
+      </a>
+      <a class="carrier-card" href="https://www.wellcare.com/en/broker-resources/broker-resources" target="_blank" rel="noopener">
+        <img class="clogo" src="assets/img/carriers/wellcare.webp" alt="Wellcare" loading="lazy"/>
+        <div class="cx"></div>
+      </a>
+      <a class="carrier-card" href="https://www.wellpoint.com/broker" target="_blank" rel="noopener">
+        <img class="clogo" src="assets/img/carriers/wellpoint.webp" alt="Wellpoint" loading="lazy"/>
         <div class="cx"></div>
       </a>
     </div>
@@ -256,21 +266,21 @@ const I18N = {
   en:{ welcome:'Signed in as', logout:'Logout',
     dashTitle:'Agent Tools', dashSub:'Access your corporate resources and Medicare carrier portals below.',
     nav1:'Agency & Logistics', nav2:'Medicare Portals',
-    sec1Title:'Agency & Logistics', sec1Sub:'Internal tools and shared resources.',
-    sec2Title:'Medicare Portals', sec2Sub:'Direct access to carrier broker/agent portals — opens in a new tab.',
+    sec1Title:'Agency & Logistics',
+    sec2Title:'Medicare Portals',
     linkTag:'Open link',
-    t1:'Conference Room - 546 Office', t2:'IT - Ticket', t3:'Sprinter / Van Reservations',
-    t4:'Agents Contact List', t5:'Training Videos', t6:'Support Materials',
-    t7:'Berwick Insurance', t8:'Integrity Connect', t9:'Integrity Connect Leads', t10:'T65.app' },
+    t1:'Daily Sales Report', t2:'Conference Room - 546 Office', t3:'IT - Ticket', t4:'Sprinter / Van Reservations',
+    t5:'Agents Contact List', t6:'Training Videos', t7:'Support Materials',
+    t8:'Berwick Insurance', t9:'Integrity Connect', t10:'Integrity Connect Leads', t11:'T65.app' },
   es:{ welcome:'Sesión iniciada como', logout:'Cerrar Sesión',
     dashTitle:'Herramientas del Agente', dashSub:'Accede a tus recursos corporativos y a los portales de las aseguradoras de Medicare.',
     nav1:'Agencia y Logística', nav2:'Portales de Medicare',
-    sec1Title:'Agencia y Logística', sec1Sub:'Herramientas internas y recursos compartidos.',
-    sec2Title:'Portales de Medicare', sec2Sub:'Acceso directo a los portales de las aseguradoras — se abre en una pestaña nueva.',
+    sec1Title:'Agencia y Logística',
+    sec2Title:'Portales de Medicare',
     linkTag:'Abrir enlace',
-    t1:'Sala de Conferencias - Oficina 546', t2:'Ticket de TI', t3:'Reservas de Sprinter/Van',
-    t4:'Directorio de Agentes', t5:'Videos de Capacitación', t6:'Materiales de Apoyo',
-    t7:'Berwick Insurance', t8:'Integrity Connect', t9:'Integrity Connect Leads', t10:'T65.app' }
+    t1:'Reporte Diario de Ventas', t2:'Sala de Conferencias - Oficina 546', t3:'Ticket de TI', t4:'Reservas de Sprinter/Van',
+    t5:'Directorio de Agentes', t6:'Videos de Capacitación', t7:'Materiales de Apoyo',
+    t8:'Berwick Insurance', t9:'Integrity Connect', t10:'Integrity Connect Leads', t11:'T65.app' }
 };
 function applyLang(){
   const t = I18N[curLang];
@@ -283,9 +293,7 @@ function applyLang(){
   document.getElementById('nav1').textContent=t.nav1;
   document.getElementById('nav2').textContent=t.nav2;
   document.getElementById('sec1Title').textContent=t.sec1Title;
-  document.getElementById('sec1Sub').textContent=t.sec1Sub;
   document.getElementById('sec2Title').textContent=t.sec2Title;
-  document.getElementById('sec2Sub').textContent=t.sec2Sub;
   document.getElementById('tool1').textContent=t.t1;
   document.getElementById('tool2').textContent=t.t2;
   document.getElementById('tool3').textContent=t.t3;
@@ -296,7 +304,7 @@ function applyLang(){
   document.getElementById('tool8').textContent=t.t8;
   document.getElementById('tool9').textContent=t.t9;
   document.getElementById('tool10').textContent=t.t10;
-  for(let i=1;i<=10;i++){ document.getElementById('toolx'+i).textContent=t.linkTag; }
+  document.getElementById('tool11').textContent=t.t11;
   document.querySelectorAll('.carrier-card .cx').forEach(el=>el.textContent=t.linkTag);
   applyMiniFooter();
 }
