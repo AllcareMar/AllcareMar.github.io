@@ -258,6 +258,15 @@ footer{background:var(--gray-800);color:#d8d3cc;padding:60px 5vw 0}
   </div>
 </section>
 
+<!-- RESULTADOS FILTRADOS (búsqueda por nombre y/o carrier) — junta agentes
+     independientes y de cualquier agencia socia en una sola grilla, uno al
+     lado del otro, en vez de una caja separada por agencia -->
+<section class="agents-section" id="filtered-results-section" style="display:none">
+  <div class="container">
+    <div class="agent-grid reveal" id="filteredResultsGrid"></div>
+  </div>
+</section>
+
 <!-- INDEPENDENT AGENTS -->
 <section class="agents-section" id="independent-section">
   <div class="container">
@@ -536,53 +545,42 @@ function currentCarrier(){
 }
 function applySearchFilter(query){
   const q=(query||'').trim().toLowerCase();
-  const isSearching=q.length>0;
   const carrier=currentCarrier();
-  const cards=document.querySelectorAll('.agent-card');
-  let visible=0;
-  cards.forEach(c=>{
-    const nameMatch=c.dataset.name.includes(q);
-    const carrierList=(c.dataset.carriers||'').split(',').filter(Boolean);
-    const carrierMatch=!carrier||carrierList.includes(carrier);
-    const match=nameMatch&&carrierMatch;
-    c.classList.toggle('hide',!match);
-    if(match)visible++;
-  });
+  const filtering=q.length>0||!!carrier;
 
-  // Mientras se busca por nombre, solo debe verse la info del agente que
-  // matchea — sin el título "Our Independent Agents" ni el nombre de las
-  // agencias socias, para no distraer del resultado puntual.
-  document.querySelectorAll('.agency-block-header').forEach(h=>{
-    h.style.display=isSearching?'none':'';
-  });
-  const indepHeader=document.getElementById('independent-section-header');
-  const indepSub=document.getElementById('section-independent-sub');
-  if(indepHeader)indepHeader.style.display=isSearching?'none':'';
-  if(indepSub)indepSub.style.display=isSearching?'none':'';
-  const partnersHeader=document.getElementById('partners-section-header');
-  const partnersSub=document.getElementById('section-partners-sub');
-  if(partnersHeader)partnersHeader.style.display=isSearching?'none':'';
-  if(partnersSub)partnersSub.style.display=isSearching?'none':'';
-
-  let indepVisible=0;
-  document.querySelectorAll('#independentAgentsGrid .agent-card').forEach(c=>{
-    if(!c.classList.contains('hide'))indepVisible++;
-  });
   const indepSection=document.getElementById('independent-section');
-  if(indepSection)indepSection.style.display=(isSearching&&indepVisible===0)?'none':'';
-
-  document.querySelectorAll('.agency-block').forEach(block=>{
-    const anyVisible=Array.prototype.some.call(block.querySelectorAll('.agent-card'),c=>!c.classList.contains('hide'));
-    block.style.display=anyVisible?'':'none';
-  });
-  let partnersVisible=0;
-  document.querySelectorAll('#partnerAgenciesContainer .agent-card').forEach(c=>{
-    if(!c.classList.contains('hide'))partnersVisible++;
-  });
   const partnersSection=document.getElementById('partners-section');
-  if(partnersSection)partnersSection.style.display=(isSearching&&partnersVisible===0)?'none':'';
+  const filteredSection=document.getElementById('filtered-results-section');
+  const filteredGrid=document.getElementById('filteredResultsGrid');
+  let visible=0;
 
-  document.getElementById('agentsNoResults').style.display=(visible===0)?'block':'none';
+  if(filtering){
+    // Búsqueda por nombre y/o filtro por carrier: los resultados pueden venir
+    // de agentes independientes Y de varias agencias socias distintas — en vez
+    // de dejar cada agencia en su propia caja apilada (una debajo de la otra,
+    // difícil de escanear), se juntan TODOS los que matchean en una sola
+    // grilla, uno al lado del otro, sin título de sección ni nombre de agencia.
+    const all=(directoryData&&directoryData.independent_agents||[]).concat(
+      (directoryData&&directoryData.partner_agencies||[]).flatMap(ag=>ag.agents||[])
+    );
+    const matches=all.filter(a=>{
+      const nameMatch=a.name.toLowerCase().includes(q);
+      const carrierMatch=!carrier||(a.carriers||[]).includes(carrier);
+      return nameMatch&&carrierMatch;
+    });
+    visible=matches.length;
+    if(filteredGrid)filteredGrid.innerHTML=matches.map(agentCardHTML).join('');
+    if(indepSection)indepSection.style.display='none';
+    if(partnersSection)partnersSection.style.display='none';
+    if(filteredSection)filteredSection.style.display='';
+  } else {
+    if(indepSection)indepSection.style.display='';
+    if(partnersSection)partnersSection.style.display='';
+    if(filteredSection)filteredSection.style.display='none';
+    visible=document.querySelectorAll('#independentAgentsGrid .agent-card, #partnerAgenciesContainer .agent-card').length;
+  }
+
+  document.getElementById('agentsNoResults').style.display=(filtering&&visible===0)?'block':'none';
   renderCarrierBanner(carrier,visible);
 }
 function renderCarrierBanner(carrier,visibleCount){
