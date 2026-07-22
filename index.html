@@ -242,7 +242,7 @@ section{padding:88px 0}
 
 /* ── TEAM SECTION ── */
 .team-section{background:var(--gray-50)}
-.leader-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:2.8rem;margin-bottom:3rem}
+.leader-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin:2.8rem auto 3rem;max-width:640px}
 .leader-card{background:var(--warm-card);border-radius:var(--r-lg);padding:30px 26px;text-align:center;border:1.5px solid var(--gray-200);transition:var(--t)}
 .leader-card:hover{transform:translateY(-5px);box-shadow:var(--sh-lg)}
 .leader-avatar{position:relative;width:84px;height:84px;border-radius:50%;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:28px;font-weight:900;margin:0 auto 16px;overflow:hidden}
@@ -545,7 +545,6 @@ const T={
     team_ey:"Meet Our Team",team_title:"The People Behind <em>Allcare Mar</em>",team_sub:"Licensed, bilingual professionals dedicated to guiding you through every Medicare decision — backed by a full office team that supports you year-round.",
     lead1_role:"Chief Executive Officer & Founder",lead1_lang:"English, Spanish",
     lead2_role:"Chief Operating Officer",lead2_lang:"English, Spanish",
-    lead3_role:"Training Manager",lead3_lang:"English, Spanish",
     leader_states_label:"Licensed States",
     usmap_title:"States We're Licensed In",
     usmap_sub:"Our agency's licensed coverage area across the United States.",
@@ -634,7 +633,6 @@ const T={
     team_ey:"Conoce a Nuestro Equipo",team_title:"Las Personas Detrás de <em>Allcare Mar</em>",team_sub:"Profesionales certificados y bilingües dedicados a guiarte en cada decisión de Medicare — respaldados por un equipo de oficina completo que te apoya todo el año.",
     lead1_role:"Director Ejecutivo y Fundador",lead1_lang:"Inglés, Español",
     lead2_role:"Directora de Operaciones",lead2_lang:"Inglés, Español",
-    lead3_role:"Gerente de Capacitación",lead3_lang:"Inglés, Español",
     leader_states_label:"Estados con Licencia",
     usmap_title:"Estados Donde Tenemos Licencia",
     usmap_sub:"Nuestra cobertura de licencia como agencia en todo Estados Unidos.",
@@ -762,7 +760,6 @@ function setLang(l){
   document.getElementById('team-sub').textContent=t.team_sub;
   document.getElementById('lead1-role').textContent=t.lead1_role;
   document.getElementById('lead2-role').textContent=t.lead2_role;
-  document.getElementById('lead3-role').textContent=t.lead3_role;
   document.querySelectorAll('.leader-states-label').forEach(function(el){el.textContent=t.leader_states_label;});
   document.getElementById('staff-subtitle').textContent=t.staff_subtitle;
   document.getElementById('view-agents-label').textContent=t.view_agents_btn;
@@ -1151,18 +1148,6 @@ function setLang(l){
         <div class="leader-icon-row">
           <a href="tel:+12019871079" class="leader-icon-btn icon-call" aria-label="Call Maria Santiago"><i class="fas fa-phone-alt"></i></a>
           <a href="mailto:msanti@allcaremar.com" class="leader-icon-btn icon-email" aria-label="Email Maria Santiago"><i class="fas fa-envelope"></i></a>
-          <span class="leader-icon-btn icon-profile disabled" aria-hidden="true" title="Coming soon"><i class="fas fa-arrow-up-right-from-square"></i></span>
-        </div>
-      </div>
-      <div class="leader-card reveal" style="transition-delay:.15s">
-        <div class="leader-avatar"><img src="/agentes/julian-vega.webp" alt="Julian Vega" loading="lazy" onerror="this.style.display='none'"><span>JV</span></div>
-        <div class="leader-name">Julian Vega</div>
-        <div class="leader-role" id="lead3-role"></div>
-        <div class="leader-states"><span class="leader-states-label"></span>: <em>NJ, NY, TX, PA, FL, DE, AL</em></div>
-        <div class="leader-phone-text">(201) 710-7752 · Ext. 400</div>
-        <div class="leader-icon-row">
-          <a href="tel:+12017107752" class="leader-icon-btn icon-call" aria-label="Call Julian Vega"><i class="fas fa-phone-alt"></i></a>
-          <a href="mailto:julian_vega@allcaremar.com" class="leader-icon-btn icon-email" aria-label="Email Julian Vega"><i class="fas fa-envelope"></i></a>
           <span class="leader-icon-btn icon-profile disabled" aria-hidden="true" title="Coming soon"><i class="fas fa-arrow-up-right-from-square"></i></span>
         </div>
       </div>
