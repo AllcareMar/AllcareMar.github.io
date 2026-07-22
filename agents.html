@@ -489,10 +489,9 @@ function agentCardHTML(a){
   const initials=a.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
   const isPending=a.licensed_states&&a.licensed_states.length===1&&a.licensed_states[0]==='PENDIENTE';
   const states=isPending?t.pending_states:(a.licensed_states&&a.licensed_states.length?a.licensed_states.join(', '):'—');
-  const hasExt=a.extension&&a.extension!=='PENDIENTE';
   const hasPhone=a.phone&&a.phone!=='PENDIENTE';
   const phoneDigits=(a.phone||'').replace(/\D/g,'');
-  const phoneText=hasPhone?(a.phone+(hasExt?' · Ext. '+a.extension:'')):'—';
+  const phoneText=hasPhone?a.phone:'—';
   const hasEmail=a.email&&a.email!=='PENDIENTE';
   const enrollUrl=a.planenroll;
   const carriers=(a.carriers||[]).join(',');
@@ -535,7 +534,7 @@ function filterAgents(query){ applySearchFilter(query); }
 const CARRIER_NAMES={
   unitedhealthcare:'UnitedHealthcare',aetna:'Aetna',humana:'Humana',
   'devoted-health':'Devoted Health','jefferson-health':'Jefferson Health Plans',horizon:'Horizon BCBSNJ',
-  anthem:'Anthem',cigna:'Cigna',emblemhealth:'EmblemHealth',fidelis:'Fidelis Care',
+  anthem:'Anthem',hs:'HealthSpring',emblemhealth:'EmblemHealth',fidelis:'Fidelis Care',
   healthfirst:'Healthfirst','molina-healthcare':'Molina Healthcare',scanhealth:'SCAN Health Plan',
   wellcare:'Wellcare',wellpoint:'Wellpoint'
 };

@@ -1,6 +1,23 @@
 {
-  "_readme": "Fuente única de datos para el directorio de agentes de Allcare Mar. Usado por index.html (solo office_staff) y agents.html (independent_agents + partner_agencies). Datos actualizados desde Agent-Contact-Website.xlsx (fuente autoritativa, 2026-07-20). licensed_states usa códigos de 2 letras (ej. 'FL', 'NJ', 'TX'); ['PENDIENTE'] indica que el agente aún no tiene estados licenciados registrados en la hoja de cálculo — no inventar datos de licencia. Campo 'carriers' (array de slugs: unitedhealthcare, aetna, humana, devoted-health, jefferson-health, horizon — más 9 nuevos en el carrusel: anthem, cigna, emblemhealth, fidelis, healthfirst, molina-healthcare, scanhealth, wellcare, wellpoint) indica qué carriers vende cada agente — todos tienen 'unitedhealthcare' por defecto; los demás se llenan según la columna 'Carriers' (F) de Agent-Contact-Website.xlsx (los 9 nuevos carriers aún no tienen agentes asignados en la hoja — 0 resultados hasta que Jesus los llene). Usado por agents.html para el filtro ?carrier=<slug> desde las tarjetas clicables de Top Carriers en index.html. Campo opcional 'planenroll' (URL) viene de la columna 'Link Plan Enroll' (G) del Excel — cuando existe, el botón de perfil en la tarjeta del agente en agents.html abre esa URL en pestaña nueva; si no existe, el botón queda deshabilitado ('Coming soon').",
+  "_readme": "Fuente única de datos para el directorio de agentes de Allcare Mar. Usado por index.html (solo office_staff) y agents.html (independent_agents + partner_agencies). Datos actualizados desde Agent-Contact-Website.xlsx (fuente autoritativa, 2026-07-20). licensed_states usa códigos de 2 letras (ej. 'FL', 'NJ', 'TX'); ['PENDIENTE'] indica que el agente aún no tiene estados licenciados registrados en la hoja de cálculo — no inventar datos de licencia. Campo 'carriers' (array de slugs: unitedhealthcare, aetna, humana, devoted-health, jefferson-health, horizon — más 9 nuevos en el carrusel: anthem, hs (HealthSpring), emblemhealth, fidelis, healthfirst, molina-healthcare, scanhealth, wellcare, wellpoint) indica qué carriers vende cada agente — todos tienen 'unitedhealthcare' por defecto; los demás se llenan según la columna 'Carriers' (F) de Agent-Contact-Website.xlsx (los 9 nuevos carriers aún no tienen agentes asignados en la hoja — 0 resultados hasta que Jesus los llene). Usado por agents.html para el filtro ?carrier=<slug> desde las tarjetas clicables de Top Carriers en index.html. Campo opcional 'planenroll' (URL) viene de la columna 'Link Plan Enroll' (G) del Excel — cuando existe, el botón de perfil en la tarjeta del agente en agents.html abre esa URL en pestaña nueva; si no existe, el botón queda deshabilitado ('Coming soon').",
   "office_staff": [
+    {
+      "name": "Waldo Martinez",
+      "position_en": "Operations",
+      "position_es": "Operaciones",
+      "phone": "(973) 665-2100",
+      "extension": "2100",
+      "email": "wmartinez@allcaremar.com",
+      "image": "/agentes/waldo-martinez.webp"
+    },
+    {
+      "name": "Julian Vega",
+      "position_en": "Training Manager",
+      "position_es": "Gerente de Capacitación",
+      "extension": "400",
+      "email": "julian_vega@allcaremar.com",
+      "image": "/agentes/julian-vega.webp"
+    },
     {
       "name": "Mariel Capellan",
       "position_en": "Office Team Leader",
@@ -9,6 +26,15 @@
       "extension": "435",
       "email": "mcapellan@allcaremar.com",
       "image": "/agentes/mariel-capellan.webp"
+    },
+    {
+      "name": "Aurelyn Castillo",
+      "position_en": "CEO Assistant",
+      "position_es": "Asistente del CEO",
+      "phone": "(551) 233-7115",
+      "extension": "7115",
+      "email": "acastillo@allcaremar.com",
+      "image": "/agentes/aurelyn-castillo.webp"
     },
     {
       "name": "Jessica Dominguez",
@@ -27,24 +53,6 @@
       "extension": "2235",
       "email": "kperez@allcaremar.com",
       "image": "/agentes/karen-perez.webp"
-    },
-    {
-      "name": "Waldo Martinez",
-      "position_en": "Operations",
-      "position_es": "Operaciones",
-      "phone": "(973) 665-2100",
-      "extension": "2100",
-      "email": "wmartinez@allcaremar.com",
-      "image": "/agentes/waldo-martinez.webp"
-    },
-    {
-      "name": "Aurelyn Castillo",
-      "position_en": "CEO Assistant",
-      "position_es": "Asistente del CEO",
-      "phone": "(551) 233-7115",
-      "extension": "7115",
-      "email": "acastillo@allcaremar.com",
-      "image": "/agentes/aurelyn-castillo.webp"
     },
     {
       "name": "Jesus Cabreja",
@@ -223,9 +231,20 @@
       "name": "Oliver Jimenez",
       "phone": "(201) 809-9079",
       "extension": "419",
-      "email": "oliver.j@allcaremar.com",
+      "email": "oliver.j@nxhealthagency.com",
       "licensed_states": [
-        "PENDIENTE"
+        "NJ",
+        "CA",
+        "CT",
+        "DE",
+        "FL",
+        "LA",
+        "MD",
+        "NY",
+        "NC",
+        "PA",
+        "SC",
+        "TN"
       ],
       "image": "/agentes/oliver-jimenez.webp",
       "carriers": [
@@ -493,7 +512,9 @@
         "aetna",
         "humana",
         "devoted-health",
-        "jefferson-health"
+        "jefferson-health",
+        "hs",
+        "healthfirst"
       ],
       "planenroll": "https://www.planenroll.com/?purl=Marcos-Rodriguez-Martinez"
     },
@@ -873,7 +894,14 @@
           "extension": "770",
           "email": "amartell@allcaremar.com",
           "licensed_states": [
-            "PENDIENTE"
+            "NJ",
+            "NY",
+            "GA",
+            "DE",
+            "OH",
+            "PA",
+            "TX",
+            "FL"
           ],
           "image": "/agentes/ana-martell.webp",
           "carriers": [
@@ -1014,19 +1042,6 @@
           ]
         },
         {
-          "name": "Olga Reyes",
-          "phone": "(973) 475-5595",
-          "extension": "5595",
-          "email": "oreyes@allcaremar.com",
-          "licensed_states": [
-            "PENDIENTE"
-          ],
-          "image": "/agentes/olga-reyes.webp",
-          "carriers": [
-            "unitedhealthcare"
-          ]
-        },
-        {
           "name": "Samir Sanchez",
           "phone": "(551) 273-3190",
           "extension": "3190",
@@ -1087,7 +1102,8 @@
           "image": "/agentes/priscilla-galarza.webp",
           "carriers": [
             "unitedhealthcare"
-          ]
+          ],
+          "planenroll": "https://www.planenroll.com/?purl=Priscilla-Galarza"
         },
         {
           "name": "Joshua Munoz",
