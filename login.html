@@ -192,6 +192,31 @@ function notifyUnauthorized(email){
   window.location.href = 'mailto:info@allcaremar.com,jcabreja@allcaremar.com?subject='+subject+'&body='+body;
 }
 
+// "Recordar este navegador" — una vez verificado el dominio @allcaremar.com,
+// no volvemos a pedir login en este mismo navegador durante este tiempo.
+// Ajustar aquí si Jesus quiere otra duración (ej. 8*60*60*1000 = 8 horas por turno).
+const SESSION_DURATION_MS = 15*24*60*60*1000; // 15 días
+
+function saveSession(payload){
+  localStorage.setItem('acm_gsession', JSON.stringify({
+    email: payload.email, name: payload.name || '', picture: payload.picture || '',
+    localExp: Date.now() + SESSION_DURATION_MS
+  }));
+}
+
+function getValidSession(){
+  const raw = localStorage.getItem('acm_gsession');
+  if(!raw) return null;
+  let session;
+  try{ session = JSON.parse(raw); }catch(e){ localStorage.removeItem('acm_gsession'); return null; }
+  const domain = (session.email||'').split('@')[1] || '';
+  if(domain.toLowerCase() !== WORKSPACE_DOMAIN.toLowerCase() || !session.localExp || Date.now() > session.localExp){
+    localStorage.removeItem('acm_gsession');
+    return null;
+  }
+  return session;
+}
+
 function handleCredentialResponse(response){
   let payload;
   try{ payload = decodeJwt(response.credential); }
@@ -202,9 +227,7 @@ function handleCredentialResponse(response){
   const verified = payload.email_verified === true;
 
   if(verified && domain.toLowerCase() === WORKSPACE_DOMAIN.toLowerCase()){
-    sessionStorage.setItem('acm_gsession', JSON.stringify({
-      email: payload.email, name: payload.name || '', picture: payload.picture || '', exp: payload.exp
-    }));
+    saveSession(payload);
     window.location.href = 'dashboard-agentes.html';
   } else {
     showDenied(email);
@@ -222,7 +245,9 @@ function renderGoogleButton(){
   google.accounts.id.initialize({
     client_id: GOOGLE_CLIENT_ID,
     callback: handleCredentialResponse,
-    hd: WORKSPACE_DOMAIN
+    hd: WORKSPACE_DOMAIN,
+    auto_select: true,
+    cancel_on_tap_outside: false
   });
   const wrap = document.getElementById('gsiBtn');
   wrap.innerHTML = '';
@@ -230,9 +255,16 @@ function renderGoogleButton(){
     type: 'standard', theme: 'filled_blue', size: 'large', shape: 'pill',
     text: 'signin_with', logo_alignment: 'left', locale: curLang, width: 300
   });
+  // One Tap: si este navegador ya tiene sesión de Google activa con la cuenta
+  // @allcaremar.com que se usó la última vez, entra directo sin click ni popup.
+  google.accounts.id.prompt();
 }
 
-window.onload = function(){ applyLang(); };
+window.onload = function(){
+  // Si ya hay sesión válida guardada en este navegador, ni mostramos el login.
+  if(getValidSession()){ window.location.href = 'dashboard-agentes.html'; return; }
+  applyLang();
+};
 </script>
 </body>
 </html>
