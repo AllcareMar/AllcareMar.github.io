@@ -35,17 +35,25 @@ img{display:block;max-width:100%}
   color:#fff;display:flex;flex-direction:column;z-index:100;
   box-shadow:var(--sh-lg);
 }
-.sidebar-brand{padding:26px 24px 20px;border-bottom:1px solid rgba(255,255,255,.15);display:flex;align-items:center;gap:12px}
-.sidebar-brand img{height:34px;width:auto;filter:brightness(0) invert(1)}
-.sidebar-brand .name{font-family:'Montserrat',sans-serif;font-weight:800;font-size:14px;letter-spacing:.02em}
+.sidebar-brand{padding:30px 24px;border-bottom:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center}
+.sidebar-brand img{height:auto;width:100%;max-width:200px;filter:brightness(0) invert(1)}
 .sidebar-user{padding:20px 24px;border-bottom:1px solid rgba(255,255,255,.15)}
 .sidebar-user .hi{font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;opacity:.75;font-family:'Montserrat',sans-serif;font-weight:700;margin-bottom:6px}
 .sidebar-user .agent-name{font-family:'Montserrat',sans-serif;font-weight:800;font-size:15.5px;line-height:1.3;word-break:break-word}
 .sidebar-user .agent-email{font-size:12px;opacity:.75;margin-top:4px;word-break:break-word}
 .sidebar-nav{flex:1;padding:18px 14px;overflow-y:auto}
-.sidebar-nav a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:13.5px;color:#fff;opacity:.85;transition:var(--t);margin-bottom:4px}
-.sidebar-nav a i{width:18px;text-align:center;font-size:14px}
-.sidebar-nav a:hover{background:rgba(255,255,255,.14);opacity:1}
+.nav-group{margin-bottom:4px}
+.nav-group-toggle{width:100%;display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:13.5px;color:#fff;opacity:.9;background:transparent;border:none;cursor:pointer;transition:var(--t)}
+.nav-group-toggle i:first-child{width:18px;text-align:center;font-size:14px}
+.nav-group-toggle .chev{margin-left:auto;font-size:11px;transition:transform .2s ease}
+.nav-group-toggle:hover{background:rgba(255,255,255,.14);opacity:1}
+.nav-group.open .nav-group-toggle{background:rgba(255,255,255,.1);opacity:1}
+.nav-group.open .nav-group-toggle .chev{transform:rotate(180deg)}
+.nav-sublist{display:none;flex-direction:column;padding:2px 6px 10px 40px}
+.nav-group.open .nav-sublist{display:flex}
+.nav-sub-link{display:block;padding:7px 8px;font-size:12px;color:#fff;opacity:.72;border-radius:6px;transition:var(--t);line-height:1.3}
+.nav-sub-link:hover{opacity:1;background:rgba(255,255,255,.12)}
+.nav-sub-link.disabled{opacity:.35;cursor:default}
 .sidebar-foot{padding:18px 14px;border-top:1px solid rgba(255,255,255,.15)}
 .lang-toggle{width:100%;background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:20px;padding:9px 16px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:12px;cursor:pointer;letter-spacing:.03em;margin-bottom:10px}
 .lang-toggle:hover{background:rgba(255,255,255,.26)}
@@ -64,21 +72,23 @@ img{display:block;max-width:100%}
 .section-head h2{font-size:18px;font-weight:800;color:var(--gray-800)}
 .section-head p{font-size:12.5px;color:var(--gray-600);margin-top:2px}
 
-.tool-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-.tool-card{background:#fff;border:1.5px solid var(--gray-200);border-radius:var(--r-lg);padding:22px 18px 18px;text-align:center;transition:var(--t);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:6px;min-height:190px}
-.tool-card:hover{border-color:var(--blue);transform:translateY(-4px);box-shadow:var(--sh-lg)}
-.tool-card .ti-img{width:128px;height:128px;object-fit:contain;margin-bottom:2px}
-.tool-card .tn{font-family:'Montserrat',sans-serif;font-weight:800;font-size:12.5px;color:var(--gray-800);margin-top:auto}
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:12px}
+.tool-card{aspect-ratio:1/1;background:#fff;border:1.5px solid var(--gray-200);border-radius:var(--r);padding:10px 8px;text-align:center;transition:var(--t);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.tool-card:hover{border-color:var(--blue);transform:translateY(-3px);box-shadow:var(--sh-lg)}
+.tool-card.disabled{cursor:default;opacity:.55}
+.tool-card.disabled:hover{transform:none;box-shadow:none;border-color:var(--gray-200)}
+.tool-card .ti-img{width:52px;height:52px;object-fit:contain}
+.tool-card .ti-icon{width:52px;height:52px;border-radius:50%;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:20px}
+.tool-card .tn{font-family:'Montserrat',sans-serif;font-weight:800;font-size:10.5px;color:var(--gray-800);line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 
-.carrier-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-.carrier-card{background:var(--warm-card);border:1.5px solid var(--gray-200);border-radius:var(--r-lg);padding:22px 16px;text-align:center;transition:var(--t);cursor:pointer;display:flex;align-items:center;justify-content:center;min-height:120px}
-.carrier-card:hover{border-color:var(--red);transform:translateY(-4px);box-shadow:var(--sh-lg)}
-.carrier-card .clogo{max-width:100%;width:auto;height:auto;max-height:100px;object-fit:contain}
+.carrier-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:12px}
+.carrier-card{aspect-ratio:1/1;background:var(--warm-card);border:1.5px solid var(--gray-200);border-radius:var(--r);padding:14px 10px;text-align:center;transition:var(--t);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.carrier-card:hover{border-color:var(--red);transform:translateY(-3px);box-shadow:var(--sh-lg)}
+.carrier-card .clogo{max-width:100%;width:auto;height:auto;max-height:56px;object-fit:contain}
 
 footer.auth-mini-footer{padding:22px 20px;text-align:center;font-size:11.5px;color:var(--gray-400);background:#fff;border-top:1px solid var(--gray-200);margin-left:var(--sidebar-w)}
 footer.auth-mini-footer a{color:var(--gray-600);font-weight:700;margin-left:6px}
 
-@media(max-width:1100px){.carrier-grid{grid-template-columns:repeat(3,1fr)}.tool-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:900px){
   :root{--sidebar-w:0px}
   .sidebar{position:relative;width:100%;height:auto;flex-direction:row;flex-wrap:wrap;padding:14px 5vw}
@@ -89,12 +99,9 @@ footer.auth-mini-footer a{color:var(--gray-600);font-weight:700;margin-left:6px}
   .btn-logout{width:auto;flex:0 0 auto}
   .main-content{margin-left:0;padding:32px 5vw 50px}
   footer.auth-mini-footer{margin-left:0}
-  .tool-grid{grid-template-columns:repeat(2,1fr)}
-  .carrier-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:480px){
-  .tool-grid{grid-template-columns:1fr}
-  .carrier-grid{grid-template-columns:1fr}
+  .tool-grid,.carrier-grid{grid-template-columns:repeat(auto-fill,minmax(92px,1fr))}
   .sidebar{flex-direction:column;align-items:stretch}
   .sidebar-foot{flex-direction:column}
 }
@@ -104,8 +111,7 @@ footer.auth-mini-footer a{color:var(--gray-600);font-weight:700;margin-left:6px}
 
 <aside class="sidebar">
   <div class="sidebar-brand">
-    <img src="assets/img/logo-allcaremar.png" alt="Allcare Mar"/>
-    <div class="name">Allcare Mar<br/>Agency</div>
+    <img src="assets/img/logo-allcaremar.png" alt="Allcare Mar Agency"/>
   </div>
   <div class="sidebar-user">
     <div class="hi" id="welcome-label"></div>
@@ -113,8 +119,14 @@ footer.auth-mini-footer a{color:var(--gray-600);font-weight:700;margin-left:6px}
     <div class="agent-email" id="agentMeta"></div>
   </div>
   <nav class="sidebar-nav">
-    <a href="#agencia-logistica"><i class="fas fa-briefcase"></i> <span id="nav1"></span></a>
-    <a href="#medicare-portals"><i class="fas fa-notes-medical"></i> <span id="nav2"></span></a>
+    <div class="nav-group" id="navGroupTools">
+      <button class="nav-group-toggle" type="button"><i class="fas fa-briefcase"></i> <span id="nav1"></span> <i class="fas fa-chevron-down chev"></i></button>
+      <div class="nav-sublist" id="navToolsList"></div>
+    </div>
+    <div class="nav-group" id="navGroupCarriers">
+      <button class="nav-group-toggle" type="button"><i class="fas fa-notes-medical"></i> <span id="nav2"></span> <i class="fas fa-chevron-down chev"></i></button>
+      <div class="nav-sublist" id="navCarriersList"></div>
+    </div>
   </nav>
   <div class="sidebar-foot">
     <button class="lang-toggle" id="langBtn"><span id="lang-label">ES</span></button>
@@ -133,52 +145,7 @@ footer.auth-mini-footer a{color:var(--gray-600);font-weight:700;margin-left:6px}
         <h2 id="sec1Title"></h2>
       </div>
     </div>
-    <div class="tool-grid">
-      <a class="tool-card" href="https://server-bayonne.tailed39b8.ts.net:10000" target="_blank" rel="noopener">
-        <img class="ti-img" src="assets/img/dashboard/daily-sales-report.webp" alt="Daily Sales Report"/>
-        <div class="tn" id="tool1"></div>
-      </a>
-      <a class="tool-card" href="https://calendar.app.google/eYGK81gqAonoFSkY6" target="_blank" rel="noopener">
-        <img class="ti-img" src="assets/img/dashboard/conference-room.webp" alt="Conference Room"/>
-        <div class="tn" id="tool2"></div>
-      </a>
-      <a class="tool-card" href="https://form.jotform.com/250776977609173" target="_blank" rel="noopener">
-        <img class="ti-img" src="assets/img/dashboard/it-ticket.webp" alt="IT Ticket"/>
-        <div class="tn" id="tool3"></div>
-      </a>
-      <a class="tool-card" href="https://calendar.app.google/tsgeZzUyYEaUzfTdA" target="_blank" rel="noopener">
-        <img class="ti-img" src="assets/img/dashboard/sprinter-van.webp" alt="Sprinter / Van Reservations"/>
-        <div class="tn" id="tool4"></div>
-      </a>
-      <a class="tool-card" href="https://drive.google.com/file/d/1WABdj0wHak0uXmtOo0DrNL4xvYpzwoAj/view?usp=drive_link" target="_blank" rel="noopener">
-        <img class="ti-img" src="assets/img/dashboard/agents-contact-list.webp" alt="Agents Contact List"/>
-        <div class="tn" id="tool5"></div>
-      </a>
-      <a class="tool-card" href="https://sites.google.com/allcaremar.com/allcaremaragency/agents-portal/training-videos" target="_blank" rel="noopener">
-        <img class="ti-img" src="assets/img/dashboard/training-videos.webp" alt="Training Videos"/>
-        <div class="tn" id="tool6"></div>
-      </a>
-      <a class="tool-card" href="https://sites.google.com/allcaremar.com/allcaremaragency/agents-portal/support-library" target="_blank" rel="noopener">
-        <img class="ti-img" src="assets/img/dashboard/support-materials.webp" alt="Support Materials"/>
-        <div class="tn" id="tool7"></div>
-      </a>
-      <a class="tool-card" href="https://berwickinsurance.com/login/" target="_blank" rel="noopener">
-        <img class="ti-img" src="assets/img/dashboard/berwick-insurance.webp" alt="Berwick Insurance"/>
-        <div class="tn" id="tool8"></div>
-      </a>
-      <a class="tool-card" href="https://integrity.com/integrityconnect/" target="_blank" rel="noopener">
-        <img class="ti-img" src="assets/img/dashboard/integrity-connect.webp" alt="Integrity Connect"/>
-        <div class="tn" id="tool9"></div>
-      </a>
-      <a class="tool-card" href="https://integrity.com/leads/" target="_blank" rel="noopener">
-        <img class="ti-img" src="assets/img/dashboard/integrity-connect-leads.webp" alt="Integrity Connect Leads"/>
-        <div class="tn" id="tool10"></div>
-      </a>
-      <a class="tool-card" href="https://t65.app/login.php?req=&No%20Cookie" target="_blank" rel="noopener">
-        <img class="ti-img" src="assets/img/dashboard/t65-app.webp" alt="T65.app"/>
-        <div class="tn" id="tool11"></div>
-      </a>
-    </div>
+    <div class="tool-grid" id="toolGrid"></div>
   </div>
 
   <div class="section-block" id="medicare-portals">
@@ -188,56 +155,7 @@ footer.auth-mini-footer a{color:var(--gray-600);font-weight:700;margin-left:6px}
         <h2 id="sec2Title"></h2>
       </div>
     </div>
-    <div class="carrier-grid">
-      <a class="carrier-card" href="https://www.uhcjarvis.com/" target="_blank" rel="noopener">
-        <img class="clogo" src="assets/img/carriers/uhc-jarvis.webp" alt="UnitedHealthcare Jarvis" loading="lazy"/>
-      </a>
-      <a class="carrier-card" href="https://uhcmira.my.site.com/PartnerLoginPage?ec=302&startURL=%2Fs%2F" target="_blank" rel="noopener">
-        <img class="clogo" src="assets/img/carriers/mira.webp" alt="Mira" loading="lazy"/>
-      </a>
-      <a class="carrier-card" href="https://www.aetna.com/producer_public/login.fcc" target="_blank" rel="noopener">
-        <img class="clogo" src="assets/img/carriers/aetna.webp" alt="Aetna" loading="lazy"/>
-      </a>
-      <a class="carrier-card" href="https://www.humana.com/agent/humana-agent-portal" target="_blank" rel="noopener">
-        <img class="clogo" src="assets/img/carriers/humana.webp" alt="Humana" loading="lazy"/>
-      </a>
-      <a class="carrier-card" href="https://agent.devoted.com/" target="_blank" rel="noopener">
-        <img class="clogo" src="assets/img/carriers/devoted-health.webp" alt="Devoted Health" loading="lazy"/>
-      </a>
-      <a class="carrier-card" href="https://jeffersonhealthplans.com/medicare/broker-resources.html" target="_blank" rel="noopener">
-        <img class="clogo" src="assets/img/carriers/jefferson-health.webp" alt="Jefferson Health Plans" loading="lazy"/>
-      </a>
-      <a class="carrier-card" href="https://www.horizonblue.com/brokers/" target="_blank" rel="noopener">
-        <img class="clogo" src="assets/img/carriers/horizon.webp" alt="Horizon BCBSNJ" loading="lazy"/>
-      </a>
-      <a class="carrier-card" href="https://www.anthem.com/producer" target="_blank" rel="noopener">
-        <img class="clogo" src="assets/img/carriers/anthem.webp" alt="Anthem" loading="lazy"/>
-      </a>
-      <a class="carrier-card" href="https://healthspringforbrokers.zilverton.com/public/login" target="_blank" rel="noopener">
-        <img class="clogo" src="assets/img/carriers/healthspring.webp" alt="HealthSpring" loading="lazy"/>
-      </a>
-      <a class="carrier-card" href="https://broker.emblemhealth.com/Broker/s/login/" target="_blank" rel="noopener">
-        <img class="clogo" src="assets/img/carriers/emblemhealth.webp" alt="EmblemHealth" loading="lazy"/>
-      </a>
-      <a class="carrier-card" href="https://www.fideliscare.org/brokers" target="_blank" rel="noopener">
-        <img class="clogo" src="assets/img/carriers/fidelis.webp" alt="Fidelis Care" loading="lazy"/>
-      </a>
-      <a class="carrier-card" href="https://healthfirst.org/brokers" target="_blank" rel="noopener">
-        <img class="clogo" src="assets/img/carriers/healthfirst.webp" alt="Healthfirst" loading="lazy"/>
-      </a>
-      <a class="carrier-card" href="https://molinaagentcenter.com/" target="_blank" rel="noopener">
-        <img class="clogo" src="assets/img/carriers/molina-healthcare.webp" alt="Molina Healthcare" loading="lazy"/>
-      </a>
-      <a class="carrier-card" href="https://www.scanproducerportal.com/" target="_blank" rel="noopener">
-        <img class="clogo" src="assets/img/carriers/scanhealth.webp" alt="SCAN Health Plan" loading="lazy"/>
-      </a>
-      <a class="carrier-card" href="https://www.wellcare.com/en/broker-resources/broker-resources" target="_blank" rel="noopener">
-        <img class="clogo" src="assets/img/carriers/wellcare.webp" alt="Wellcare" loading="lazy"/>
-      </a>
-      <a class="carrier-card" href="https://www.wellpoint.com/broker" target="_blank" rel="noopener">
-        <img class="clogo" src="assets/img/carriers/wellpoint.webp" alt="Wellpoint" loading="lazy"/>
-      </a>
-    </div>
+    <div class="carrier-grid" id="carrierGrid"></div>
   </div>
 </main>
 
@@ -249,24 +167,89 @@ footer.auth-mini-footer a{color:var(--gray-600);font-weight:700;margin-left:6px}
 import { WORKSPACE_DOMAIN } from "./google-config.js";
 
 let curLang='en';
+
+// Fuente única de los accesos de Agency & Logistics — se usa para pintar tanto
+// las tarjetas del panel principal como los links del menú lateral. Para
+// agregar un acceso nuevo en el futuro, solo hay que agregar un objeto aquí
+// (respetando el orden = orden en que aparece en ambos lugares).
+const TOOLS = [
+  { img:'assets/img/dashboard/daily-sales-report.webp', href:'https://server-bayonne.tailed39b8.ts.net:10000', en:'Daily Sales Report', es:'Reporte Diario de Ventas' },
+  { img:'assets/img/dashboard/it-ticket.webp', href:'https://form.jotform.com/250776977609173', en:'IT Ticket', es:'Ticket de TI' },
+  { icon:'fa-calendar-check', comingSoon:true, en:'Appointment Request', es:'Solicitud de Cita' },
+  { img:'assets/img/dashboard/agents-contact-list.webp', href:'https://drive.google.com/file/d/1WABdj0wHak0uXmtOo0DrNL4xvYpzwoAj/view?usp=drive_link', en:'Agents Contact List', es:'Directorio de Agentes' },
+  { img:'assets/img/dashboard/training-videos.webp', href:'https://sites.google.com/allcaremar.com/allcaremaragency/agents-portal/training-videos', en:'Training Videos', es:'Videos de Capacitación' },
+  { img:'assets/img/dashboard/support-materials.webp', href:'https://sites.google.com/allcaremar.com/allcaremaragency/agents-portal/support-library', en:'Support Materials', es:'Materiales de Apoyo' },
+  { img:'assets/img/dashboard/berwick-insurance.webp', href:'https://berwickinsurance.com/login/', en:'Berwick Insurance', es:'Berwick Insurance' },
+  { img:'assets/img/dashboard/integrity-connect.webp', href:'https://integrity.com/integrityconnect/', en:'Integrity Connect', es:'Integrity Connect' },
+  { img:'assets/img/dashboard/integrity-connect-leads.webp', href:'https://integrity.com/leads/', en:'Integrity Connect Leads', es:'Integrity Connect Leads' },
+  { img:'assets/img/dashboard/t65-app.webp', href:'https://t65.app/login.php?req=&No%20Cookie', en:'T65.app', es:'T65.app' },
+  { img:'assets/img/dashboard/conference-room.webp', href:'https://calendar.app.google/eYGK81gqAonoFSkY6', en:'Conference Room - 546 Office', es:'Sala de Conferencias - Oficina 546' },
+  { img:'assets/img/dashboard/sprinter-van.webp', href:'https://calendar.app.google/tsgeZzUyYEaUzfTdA', en:'Sprinter / Van Reservations', es:'Reservas de Sprinter/Van' }
+];
+
+// Misma idea para los portales de Medicare — agregar un carrier nuevo es un
+// objeto más en este array (aparece automáticamente en la grilla y el menú).
+const CARRIERS = [
+  { img:'uhc-jarvis.webp', href:'https://www.uhcjarvis.com/', en:'UnitedHealthcare Jarvis', es:'UnitedHealthcare Jarvis' },
+  { img:'mira.webp', href:'https://uhcmira.my.site.com/PartnerLoginPage?ec=302&startURL=%2Fs%2F', en:'Mira', es:'Mira' },
+  { img:'aetna.webp', href:'https://www.aetna.com/producer_public/login.fcc', en:'Aetna', es:'Aetna' },
+  { img:'humana.webp', href:'https://www.humana.com/agent/humana-agent-portal', en:'Humana', es:'Humana' },
+  { img:'devoted-health.webp', href:'https://agent.devoted.com/', en:'Devoted Health', es:'Devoted Health' },
+  { img:'jefferson-health.webp', href:'https://jeffersonhealthplans.com/medicare/broker-resources.html', en:'Jefferson Health Plans', es:'Jefferson Health Plans' },
+  { img:'horizon.webp', href:'https://www.horizonblue.com/brokers/', en:'Horizon BCBSNJ', es:'Horizon BCBSNJ' },
+  { img:'anthem.webp', href:'https://www.anthem.com/producer', en:'Anthem', es:'Anthem' },
+  { img:'healthspring.webp', href:'https://healthspringforbrokers.zilverton.com/public/login', en:'HealthSpring', es:'HealthSpring' },
+  { img:'emblemhealth.webp', href:'https://broker.emblemhealth.com/Broker/s/login/', en:'EmblemHealth', es:'EmblemHealth' },
+  { img:'fidelis.webp', href:'https://www.fideliscare.org/brokers', en:'Fidelis Care', es:'Fidelis Care' },
+  { img:'healthfirst.webp', href:'https://healthfirst.org/brokers', en:'Healthfirst', es:'Healthfirst' },
+  { img:'molina-healthcare.webp', href:'https://molinaagentcenter.com/', en:'Molina Healthcare', es:'Molina Healthcare' },
+  { img:'scanhealth.webp', href:'https://www.scanproducerportal.com/', en:'SCAN Health Plan', es:'SCAN Health Plan' },
+  { img:'wellcare.webp', href:'https://www.wellcare.com/en/broker-resources/broker-resources', en:'Wellcare', es:'Wellcare' },
+  { img:'wellpoint.webp', href:'https://www.wellpoint.com/broker', en:'Wellpoint', es:'Wellpoint' }
+];
+
 const I18N = {
   en:{ welcome:'Signed in as', logout:'Logout',
     dashTitle:'Agent Tools', dashSub:'Access your corporate resources and Medicare carrier portals below.',
     nav1:'Agency & Logistics', nav2:'Medicare Portals',
-    sec1Title:'Agency & Logistics',
-    sec2Title:'Medicare Portals',
-    t1:'Daily Sales Report', t2:'Conference Room - 546 Office', t3:'IT - Ticket', t4:'Sprinter / Van Reservations',
-    t5:'Agents Contact List', t6:'Training Videos', t7:'Support Materials',
-    t8:'Berwick Insurance', t9:'Integrity Connect', t10:'Integrity Connect Leads', t11:'T65.app' },
+    sec1Title:'Agency & Logistics', sec2Title:'Medicare Portals',
+    comingSoon:'Coming soon' },
   es:{ welcome:'Sesión iniciada como', logout:'Cerrar Sesión',
     dashTitle:'Herramientas del Agente', dashSub:'Accede a tus recursos corporativos y a los portales de las aseguradoras de Medicare.',
     nav1:'Agencia y Logística', nav2:'Portales de Medicare',
-    sec1Title:'Agencia y Logística',
-    sec2Title:'Portales de Medicare',
-    t1:'Reporte Diario de Ventas', t2:'Sala de Conferencias - Oficina 546', t3:'Ticket de TI', t4:'Reservas de Sprinter/Van',
-    t5:'Directorio de Agentes', t6:'Videos de Capacitación', t7:'Materiales de Apoyo',
-    t8:'Berwick Insurance', t9:'Integrity Connect', t10:'Integrity Connect Leads', t11:'T65.app' }
+    sec1Title:'Agencia y Logística', sec2Title:'Portales de Medicare',
+    comingSoon:'Próximamente' }
 };
+
+function label(x){ return curLang==='es' ? x.es : x.en; }
+
+function renderTools(){
+  const t = I18N[curLang];
+  document.getElementById('toolGrid').innerHTML = TOOLS.map(x=>{
+    const body = (x.icon
+      ? '<div class="ti-icon"><i class="fas '+x.icon+'"></i></div>'
+      : '<img class="ti-img" src="'+x.img+'" alt="'+label(x)+'" loading="lazy"/>')
+      + '<div class="tn">'+label(x)+'</div>';
+    return x.comingSoon
+      ? '<span class="tool-card disabled" title="'+t.comingSoon+'">'+body+'</span>'
+      : '<a class="tool-card" href="'+x.href+'" target="_blank" rel="noopener">'+body+'</a>';
+  }).join('');
+  document.getElementById('navToolsList').innerHTML = TOOLS.map(x=>
+    x.comingSoon
+      ? '<span class="nav-sub-link disabled" title="'+t.comingSoon+'">'+label(x)+'</span>'
+      : '<a class="nav-sub-link" href="'+x.href+'" target="_blank" rel="noopener">'+label(x)+'</a>'
+  ).join('');
+}
+
+function renderCarriers(){
+  document.getElementById('carrierGrid').innerHTML = CARRIERS.map(c=>
+    '<a class="carrier-card" href="'+c.href+'" target="_blank" rel="noopener"><img class="clogo" src="assets/img/carriers/'+c.img+'" alt="'+label(c)+'" loading="lazy"/></a>'
+  ).join('');
+  document.getElementById('navCarriersList').innerHTML = CARRIERS.map(c=>
+    '<a class="nav-sub-link" href="'+c.href+'" target="_blank" rel="noopener">'+label(c)+'</a>'
+  ).join('');
+}
+
 function applyLang(){
   const t = I18N[curLang];
   document.documentElement.lang = curLang; document.documentElement.setAttribute('data-lang',curLang);
@@ -279,21 +262,16 @@ function applyLang(){
   document.getElementById('nav2').textContent=t.nav2;
   document.getElementById('sec1Title').textContent=t.sec1Title;
   document.getElementById('sec2Title').textContent=t.sec2Title;
-  document.getElementById('tool1').textContent=t.t1;
-  document.getElementById('tool2').textContent=t.t2;
-  document.getElementById('tool3').textContent=t.t3;
-  document.getElementById('tool4').textContent=t.t4;
-  document.getElementById('tool5').textContent=t.t5;
-  document.getElementById('tool6').textContent=t.t6;
-  document.getElementById('tool7').textContent=t.t7;
-  document.getElementById('tool8').textContent=t.t8;
-  document.getElementById('tool9').textContent=t.t9;
-  document.getElementById('tool10').textContent=t.t10;
-  document.getElementById('tool11').textContent=t.t11;
+  renderTools();
+  renderCarriers();
   applyMiniFooter();
 }
 function toggleLang(){ curLang = curLang==='en'?'es':'en'; applyLang(); }
 document.getElementById('langBtn').addEventListener('click', toggleLang);
+
+document.querySelectorAll('.nav-group-toggle').forEach(btn=>{
+  btn.addEventListener('click', ()=> btn.parentElement.classList.toggle('open'));
+});
 
 function applyMiniFooter(){
   document.getElementById('mini-copy').textContent = curLang==='en' ? '© 2026 Allcare Mar Insurance Agents. All Rights Reserved.' : '© 2026 Allcare Mar Insurance Agents. Todos los derechos reservados.';
