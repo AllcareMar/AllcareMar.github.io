@@ -312,7 +312,9 @@ function applyMiniFooter(){
 
 document.getElementById('logoutBtn').addEventListener('click', function(){
   localStorage.removeItem('acm_gsession');
-  localStorage.removeItem('acm_signed');
+  // acm_signed NO se borra: haber firmado no depende de la sesión de login,
+  // es permanente. Borrarlo forzaría a re-verificar contra Jotform (con el
+  // "flash" del gate) cada vez que alguien vuelve a entrar tras cerrar sesión.
   if(typeof google !== 'undefined' && google.accounts){ try{ google.accounts.id.disableAutoSelect(); }catch(e){} }
   window.location.href='index.html';
 });
@@ -343,8 +345,13 @@ function getCachedSigned(email){
 function cacheSigned(email, signedAt){
   localStorage.setItem('acm_signed', JSON.stringify({ email, signed:true, signedAt: signedAt || null }));
 }
-function showGate(){
+// showBlur: estado neutro de "verificando" (solo difumina, sin mostrar el
+// modal todavía) — evita el flash de ver el botón de firma aparecer y
+// desaparecer para alguien que en realidad ya había firmado.
+function showBlur(){
   document.getElementById('appShell').classList.add('gated');
+}
+function revealSignModal(){
   document.getElementById('signOverlay').classList.add('show');
 }
 function hideGate(){
@@ -364,7 +371,10 @@ async function runSignatureGate(session){
   if(EXEMPT_GATE_ACTIVE && EXEMPT_EMAILS.includes(email.toLowerCase())){ hideGate(); return; }
   if(getCachedSigned(email)){ hideGate(); return; }
 
-  showGate();
+  // No sabemos todavía si ya firmó (sin cache local — primera vez, otro
+  // dispositivo, o el navegador se limpió) — solo difuminamos mientras se
+  // verifica, sin mostrar el botón de firma hasta confirmar que hace falta.
+  showBlur();
   document.getElementById('signBtn').onclick = function(){
     window.location.href = 'firma-requerida.html';
   };
@@ -378,7 +388,7 @@ async function runSignatureGate(session){
   const delayMs = 2500;
 
   for(let i=0; i<maxTries; i++){
-    if(justSigned) checkingEl.style.display = 'block';
+    if(justSigned){ revealSignModal(); checkingEl.style.display = 'block'; }
     try{
       const data = await checkSignatureRemote(email, justSigned);
       if(data && data.signed){
@@ -394,6 +404,9 @@ async function runSignatureGate(session){
     }catch(e){ /* deja el gate visible; se reintenta en la próxima carga */ }
     if(i < maxTries - 1) await new Promise(r=>setTimeout(r, delayMs));
   }
+  // Confirmado (o se agotaron los reintentos post-firma): recién ahora se
+  // revela el modal con el botón — no antes, para no mostrarlo de más.
+  revealSignModal();
   if(justSigned) checkingEl.style.display = 'none';
 }
 
