@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Signature Required — Allcare Mar Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<script src="https://cdn.jotfor.ms/s/umd/latest/for-form-embed-handler.js"></script>
+<style>
+:root{
+  --blue:#1a2fd4; --blue-dark:#0f1e9a; --blue-light:#e8ecff;
+  --red:#e8001d; --red-dark:#b50016; --red-light:#fff0f2;
+  --white:#ffffff; --gray-50:#faf8f5; --gray-100:#f3efe9; --gray-200:#e6e0d6;
+  --gray-400:#8b8377; --gray-600:#544f47; --gray-800:#2b2723;
+  --green:#00a86b; --warm-card:#fffdfa;
+  --r:12px; --r-lg:20px; --r-xl:28px;
+  --sh:0 4px 24px rgba(58,53,48,.08); --sh-lg:0 16px 56px rgba(58,53,48,.14);
+  --t:.25s ease;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px;overflow-x:hidden}
+body{font-family:'Open Sans',sans-serif;color:var(--gray-800);background:var(--gray-50);min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+h1,h2,h3{font-family:'Montserrat',sans-serif;line-height:1.2}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+
+.auth-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 5vw;background:#fff;border-bottom:1px solid var(--gray-200)}
+.auth-logo img{height:38px;width:auto}
+.auth-nav-right{display:flex;align-items:center;gap:18px}
+.auth-phone{font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;color:var(--blue-dark);display:flex;align-items:center;gap:6px}
+.lang-toggle{background:var(--blue-light);color:var(--blue-dark);border:none;border-radius:20px;padding:7px 16px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:12px;cursor:pointer;letter-spacing:.03em}
+.lang-toggle:hover{background:var(--blue);color:#fff}
+
+.auth-wrap{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:40px 20px;background:radial-gradient(circle at 20% 20%,var(--blue-light) 0%,var(--gray-50) 55%)}
+.auth-card{background:#fff;border-radius:var(--r-xl);box-shadow:var(--sh-lg);padding:40px;width:100%;max-width:760px;border:1px solid var(--gray-200)}
+.auth-eyebrow{font-family:'Montserrat',sans-serif;font-size:11.5px;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.auth-card h1{font-size:24px;font-weight:800;color:var(--blue-dark);margin-bottom:8px}
+.auth-sub{font-size:13.5px;color:var(--gray-600);margin-bottom:24px;line-height:1.6}
+
+.shield-icon{width:56px;height:56px;border-radius:50%;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px}
+.jotform-wrap{border:1.5px solid var(--gray-200);border-radius:var(--r-lg);overflow:hidden;background:var(--gray-50)}
+.jotform-wrap iframe{width:100%;min-height:900px;border:none;display:block}
+
+.note-row{display:flex;align-items:flex-start;gap:10px;background:var(--blue-light);border-radius:var(--r);padding:12px 14px;margin-bottom:20px;font-size:12.5px;color:var(--blue-dark);line-height:1.6}
+.note-row i{margin-top:2px}
+
+.btn-logout-link{display:inline-flex;align-items:center;gap:6px;margin-top:18px;font-size:12.5px;color:var(--gray-600);font-weight:700;cursor:pointer}
+.btn-logout-link:hover{color:var(--red)}
+
+.auth-mini-footer{padding:22px 20px;text-align:center;font-size:11.5px;color:var(--gray-400);background:#fff;border-top:1px solid var(--gray-200)}
+.auth-mini-footer a{color:var(--gray-600);font-weight:700;margin-left:6px}
+
+@media(max-width:480px){.auth-card{padding:26px 20px}.jotform-wrap iframe{min-height:1100px}}
+</style>
+</head>
+<body>
+<nav class="auth-nav">
+  <a href="index.html" class="auth-logo"><img src="assets/img/logo-allcaremar.png" alt="Allcare Mar Insurance Agents"/></a>
+  <div class="auth-nav-right">
+    <a href="tel:8006975631" class="auth-phone"><i class="fas fa-phone-alt"></i> 800.697.5631</a>
+    <button class="lang-toggle" id="langBtn"><span id="lang-label">ES</span></button>
+  </div>
+</nav>
+<main class="auth-wrap">
+  <div class="auth-card">
+    <div class="shield-icon"><i class="fas fa-file-signature"></i></div>
+    <div class="auth-eyebrow" id="ey"></div>
+    <h1 id="h1"></h1>
+    <p class="auth-sub" id="sub"></p>
+
+    <div class="note-row"><i class="fas fa-circle-info"></i><span id="note"></span></div>
+
+    <div class="jotform-wrap">
+      <iframe id="jotformIframe" title="Confidentiality and Release Agreement"></iframe>
+    </div>
+
+    <div class="btn-logout-link" id="logoutLink"><i class="fas fa-sign-out-alt"></i> <span id="logoutLabel"></span></div>
+  </div>
+</main>
+<footer class="auth-mini-footer">
+  <span id="mini-copy"></span><a href="privacy-security-policy.pdf" target="_blank" rel="noopener" id="mini-priv"></a>
+</footer>
+<script type="module">
+import { WORKSPACE_DOMAIN } from "./google-config.js";
+
+let curLang = 'en';
+const I18N = {
+  en:{ ey:'Action Required', h1:'Sign Confidentiality Agreement',
+    sub:'Before accessing the Agent Portal, you must review and sign the Confidentiality and Release Agreement below. This is a one-time step.',
+    note:'Your email is pre-filled automatically from your Google Workspace session and cannot be edited. Once you submit the form, you will be redirected back to the portal.',
+    logoutLabel:'Sign out' },
+  es:{ ey:'Acción Requerida', h1:'Firmar Acuerdo de Confidencialidad',
+    sub:'Antes de acceder al Portal de Agentes, debes revisar y firmar el Acuerdo de Confidencialidad a continuación. Este paso se hace una sola vez.',
+    note:'Tu email se completa automáticamente desde tu sesión de Google Workspace y no puede editarse. Al enviar el formulario, serás redirigido de vuelta al portal.',
+    logoutLabel:'Cerrar sesión' }
+};
+
+function applyLang(){
+  const t = I18N[curLang];
+  document.documentElement.lang = curLang; document.documentElement.setAttribute('data-lang',curLang);
+  document.getElementById('lang-label').textContent = curLang==='en' ? 'ES' : 'EN';
+  document.getElementById('ey').textContent = t.ey;
+  document.getElementById('h1').textContent = t.h1;
+  document.getElementById('sub').textContent = t.sub;
+  document.getElementById('note').textContent = t.note;
+  document.getElementById('logoutLabel').textContent = t.logoutLabel;
+  applyMiniFooter();
+}
+function toggleLang(){ curLang = curLang==='en' ? 'es' : 'en'; applyLang(); }
+document.getElementById('langBtn').addEventListener('click', toggleLang);
+
+function applyMiniFooter(){
+  document.getElementById('mini-copy').textContent = curLang==='en' ? '© 2026 Allcare Mar Insurance Agents. All Rights Reserved.' : '© 2026 Allcare Mar Insurance Agents. Todos los derechos reservados.';
+  document.getElementById('mini-priv').textContent = curLang==='en' ? 'Privacy & Security Policy (PDF)' : 'Politica de Privacidad y Seguridad (PDF)';
+}
+
+document.getElementById('logoutLink').addEventListener('click', function(){
+  localStorage.removeItem('acm_gsession');
+  localStorage.removeItem('acm_signed');
+  if(typeof google !== 'undefined' && google.accounts){ try{ google.accounts.id.disableAutoSelect(); }catch(e){} }
+  window.location.href = 'index.html';
+});
+
+(function guard(){
+  const raw = localStorage.getItem('acm_gsession');
+  if(!raw){ window.location.href = 'login.html'; return; }
+  let session;
+  try{ session = JSON.parse(raw); }catch(e){ localStorage.removeItem('acm_gsession'); window.location.href = 'login.html'; return; }
+
+  const domain = (session.email||'').split('@')[1] || '';
+  if(domain.toLowerCase() !== WORKSPACE_DOMAIN.toLowerCase() || !session.localExp || Date.now() > session.localExp){
+    localStorage.removeItem('acm_gsession');
+    window.location.href = 'login.html';
+    return;
+  }
+
+  // Si ya hay firma cacheada para este email, no hace falta mostrar el form de nuevo.
+  try{
+    const signedRaw = localStorage.getItem('acm_signed');
+    if(signedRaw){
+      const signedData = JSON.parse(signedRaw);
+      if(signedData && signedData.email === session.email && signedData.signed === true){
+        window.location.href = 'dashboard-agentes.html';
+        return;
+      }
+    }
+  }catch(e){ localStorage.removeItem('acm_signed'); }
+
+  const iframe = document.getElementById('jotformIframe');
+  iframe.id = 'JotFormIFrame-262074897196068';
+  iframe.src = 'https://form.jotform.com/262074897196068?emailAddress=' + encodeURIComponent(session.email);
+
+  if(window.jotformEmbedHandler){
+    window.jotformEmbedHandler("iframe[id='JotFormIFrame-262074897196068']", "https://form.jotform.com/");
+  }
+})();
+applyLang();
+</script>
+</body>
+</html>

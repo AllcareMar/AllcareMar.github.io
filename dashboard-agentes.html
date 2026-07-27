@@ -89,6 +89,18 @@ img{display:block;max-width:100%}
 footer.auth-mini-footer{padding:22px 20px;text-align:center;font-size:11.5px;color:var(--gray-400);background:#fff;border-top:1px solid var(--gray-200);margin-left:var(--sidebar-w)}
 footer.auth-mini-footer a{color:var(--gray-600);font-weight:700;margin-left:6px}
 
+/* ---------- Gate de Firma — Confidentiality Agreement ---------- */
+#appShell.gated{filter:blur(6px);pointer-events:none;user-select:none;transition:filter .3s ease}
+.sign-overlay{position:fixed;inset:0;background:rgba(43,39,35,.5);display:none;align-items:center;justify-content:center;z-index:500;padding:20px}
+.sign-overlay.show{display:flex}
+.sign-modal{background:#fff;border-radius:var(--r-xl);box-shadow:var(--sh-lg);padding:40px 36px;max-width:440px;width:100%;text-align:center;border:1px solid var(--gray-200)}
+.sign-modal .shield-icon{width:64px;height:64px;border-radius:50%;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 18px}
+.sign-modal h2{font-size:19px;font-weight:800;color:var(--blue-dark);margin-bottom:10px}
+.sign-modal p{font-size:13.5px;color:var(--gray-600);line-height:1.6;margin-bottom:24px}
+.sign-modal .btn-sign{width:100%;background:var(--red);color:#fff;border:none;padding:14px;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:14.5px;font-weight:800;cursor:pointer;transition:var(--t);display:flex;align-items:center;justify-content:center;gap:8px}
+.sign-modal .btn-sign:hover{background:var(--red-dark);transform:translateY(-1px)}
+.sign-modal .checking{font-size:12px;color:var(--gray-400);margin-top:14px}
+
 @media(max-width:900px){
   :root{--sidebar-w:0px}
   .sidebar{position:relative;width:100%;height:auto;flex-direction:row;flex-wrap:wrap;padding:14px 5vw}
@@ -109,6 +121,7 @@ footer.auth-mini-footer a{color:var(--gray-600);font-weight:700;margin-left:6px}
 </head>
 <body>
 
+<div id="appShell">
 <aside class="sidebar">
   <div class="sidebar-brand">
     <img src="assets/img/logo-allcaremar.png" alt="Allcare Mar Agency"/>
@@ -162,6 +175,17 @@ footer.auth-mini-footer a{color:var(--gray-600);font-weight:700;margin-left:6px}
 <footer class="auth-mini-footer">
   <span id="mini-copy"></span><a href="privacy-security-policy.pdf" target="_blank" rel="noopener" id="mini-priv"></a>
 </footer>
+</div>
+
+<div class="sign-overlay" id="signOverlay">
+  <div class="sign-modal">
+    <div class="shield-icon"><i class="fas fa-file-signature"></i></div>
+    <h2 id="signTitle"></h2>
+    <p id="signText"></p>
+    <button class="btn-sign" id="signBtn"><i class="fas fa-pen-nib"></i> <span id="signBtnLabel"></span></button>
+    <div class="checking" id="signChecking" style="display:none"></div>
+  </div>
+</div>
 
 <script type="module">
 import { WORKSPACE_DOMAIN } from "./google-config.js";
@@ -213,12 +237,16 @@ const I18N = {
     dashTitle:'Agent Tools', dashSub:'Access your corporate resources and Medicare carrier portals below.',
     nav1:'Agency & Logistics', nav2:'Medicare Portals',
     sec1Title:'Agency & Logistics', sec2Title:'Medicare Portals',
-    comingSoon:'Coming soon' },
+    comingSoon:'Coming soon',
+    signTitle:'Action Required', signText:'You must sign the Confidentiality Agreement before accessing the Agent Portal. This is a one-time step.',
+    signBtnLabel:'Sign Confidentiality Agreement', signChecking:'Verifying signature status…' },
   es:{ welcome:'Sesión iniciada como', logout:'Cerrar Sesión',
     dashTitle:'Herramientas del Agente', dashSub:'Accede a tus recursos corporativos y a los portales de las aseguradoras de Medicare.',
     nav1:'Agencia y Logística', nav2:'Portales de Medicare',
     sec1Title:'Agencia y Logística', sec2Title:'Portales de Medicare',
-    comingSoon:'Próximamente' }
+    comingSoon:'Próximamente',
+    signTitle:'Acción Requerida', signText:'Debes firmar el Acuerdo de Confidencialidad antes de acceder al Portal de Agentes. Este paso se hace una sola vez.',
+    signBtnLabel:'Firmar Acuerdo de Confidencialidad', signChecking:'Verificando estado de firma…' }
 };
 
 function label(x){ return curLang==='es' ? x.es : x.en; }
@@ -262,6 +290,10 @@ function applyLang(){
   document.getElementById('nav2').textContent=t.nav2;
   document.getElementById('sec1Title').textContent=t.sec1Title;
   document.getElementById('sec2Title').textContent=t.sec2Title;
+  document.getElementById('signTitle').textContent=t.signTitle;
+  document.getElementById('signText').textContent=t.signText;
+  document.getElementById('signBtnLabel').textContent=t.signBtnLabel;
+  document.getElementById('signChecking').textContent=t.signChecking;
   renderTools();
   renderCarriers();
   applyMiniFooter();
@@ -280,25 +312,110 @@ function applyMiniFooter(){
 
 document.getElementById('logoutBtn').addEventListener('click', function(){
   localStorage.removeItem('acm_gsession');
+  localStorage.removeItem('acm_signed');
   if(typeof google !== 'undefined' && google.accounts){ try{ google.accounts.id.disableAutoSelect(); }catch(e){} }
   window.location.href='index.html';
 });
 
-(function guard(){
+// Mismo Web App que ya usa el formulario "Tell Us About You" (Codigo.gs) —
+// se le agregó la acción checkSignature (doGet) sin tocar el doPost existente.
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxax1NwoYg81Tp2yQjUo-gYUOE187xAIZU0bGnqmGoi9UHlEPgm7JOiUYrDvZL5dAE/exec";
+
+// ---- Gate de Firma — Confidentiality Agreement ----
+// Fuente de verdad: siempre Jotform (vía checkSignature). acm_signed en
+// localStorage es solo un cache para no re-consultar una vez confirmado.
+
+// Cuentas de la agencia exentas del gate (no son agentes que deban firmar
+// el Confidentiality Agreement). EXEMPT_GATE_ACTIVE queda en false mientras
+// se está probando el flujo completo (para poder testear como jcabreja@) —
+// ⚠️ CAMBIAR A true antes de subir esta versión a GitHub / producción.
+const EXEMPT_EMAILS = ['info@allcaremar.com', 'jcabreja@allcaremar.com'];
+const EXEMPT_GATE_ACTIVE = false;
+
+function getCachedSigned(email){
+  try{
+    const raw = localStorage.getItem('acm_signed');
+    if(!raw) return false;
+    const data = JSON.parse(raw);
+    return !!(data && data.email === email && data.signed === true);
+  }catch(e){ return false; }
+}
+function cacheSigned(email, signedAt){
+  localStorage.setItem('acm_signed', JSON.stringify({ email, signed:true, signedAt: signedAt || null }));
+}
+function showGate(){
+  document.getElementById('appShell').classList.add('gated');
+  document.getElementById('signOverlay').classList.add('show');
+}
+function hideGate(){
+  document.getElementById('appShell').classList.remove('gated');
+  document.getElementById('signOverlay').classList.remove('show');
+}
+async function checkSignatureRemote(email, force){
+  let url = GOOGLE_SCRIPT_URL + '?action=checkSignature&email=' + encodeURIComponent(email);
+  if(force) url += '&force=1';
+  const res = await fetch(url);
+  return res.json();
+}
+
+async function runSignatureGate(session){
+  const email = session.email;
+
+  if(EXEMPT_GATE_ACTIVE && EXEMPT_EMAILS.includes(email.toLowerCase())){ hideGate(); return; }
+  if(getCachedSigned(email)){ hideGate(); return; }
+
+  showGate();
+  document.getElementById('signBtn').onclick = function(){
+    window.location.href = 'firma-requerida.html';
+  };
+
+  // Si venimos de vuelta de Jotform (?justSigned=1), reintentamos unas veces
+  // por si el submission todavía no terminó de indexarse del lado de Jotform.
+  const params = new URLSearchParams(window.location.search);
+  const justSigned = params.get('justSigned') === '1';
+  const checkingEl = document.getElementById('signChecking');
+  const maxTries = justSigned ? 4 : 1;
+  const delayMs = 2500;
+
+  for(let i=0; i<maxTries; i++){
+    if(justSigned) checkingEl.style.display = 'block';
+    try{
+      const data = await checkSignatureRemote(email, justSigned);
+      if(data && data.signed){
+        cacheSigned(email, data.signedAt);
+        hideGate();
+        if(justSigned){
+          params.delete('justSigned');
+          const clean = window.location.pathname + (params.toString() ? '?'+params.toString() : '');
+          window.history.replaceState({}, '', clean);
+        }
+        return;
+      }
+    }catch(e){ /* deja el gate visible; se reintenta en la próxima carga */ }
+    if(i < maxTries - 1) await new Promise(r=>setTimeout(r, delayMs));
+  }
+  if(justSigned) checkingEl.style.display = 'none';
+}
+
+function guard(){
   const raw = localStorage.getItem('acm_gsession');
-  if(!raw){ window.location.href='login.html'; return; }
+  if(!raw){ window.location.href='login.html'; return null; }
   let session;
-  try{ session = JSON.parse(raw); }catch(e){ localStorage.removeItem('acm_gsession'); window.location.href='login.html'; return; }
+  try{ session = JSON.parse(raw); }catch(e){ localStorage.removeItem('acm_gsession'); window.location.href='login.html'; return null; }
 
   const domain = (session.email||'').split('@')[1] || '';
   if(domain.toLowerCase() !== WORKSPACE_DOMAIN.toLowerCase() || !session.localExp || Date.now() > session.localExp){
     localStorage.removeItem('acm_gsession');
     window.location.href='login.html';
-    return;
+    return null;
   }
   document.getElementById('agentName').textContent = session.name || session.email;
   document.getElementById('agentMeta').textContent = session.email;
-})();
+  return session;
+}
+
+const __session = guard();
+if(__session) runSignatureGate(__session);
 applyLang();
 </script>
 </body>
