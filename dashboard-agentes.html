@@ -86,6 +86,13 @@ img{display:block;max-width:100%}
 .carrier-card:hover{border-color:var(--red);transform:translateY(-3px);box-shadow:var(--sh-lg)}
 .carrier-card .clogo{max-width:100%;width:auto;height:auto;max-height:56px;object-fit:contain}
 
+.gsearch{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--gray-200);border-radius:24px;padding:6px 8px 6px 18px;max-width:460px;margin-bottom:36px;transition:var(--t)}
+.gsearch:focus-within{border-color:var(--blue)}
+.gsearch i.gicon{color:var(--gray-400);font-size:14px}
+.gsearch input{flex:1;border:none;outline:none;font-size:13.5px;font-family:'Open Sans',sans-serif;color:var(--gray-800);background:transparent}
+.gsearch button{background:var(--blue);color:#fff;border:none;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;flex-shrink:0;transition:var(--t)}
+.gsearch button:hover{background:var(--blue-dark)}
+
 footer.auth-mini-footer{padding:22px 20px;text-align:center;font-size:11.5px;color:var(--gray-400);background:#fff;border-top:1px solid var(--gray-200);margin-left:var(--sidebar-w)}
 footer.auth-mini-footer a{color:var(--gray-600);font-weight:700;margin-left:6px}
 
@@ -132,12 +139,16 @@ footer.auth-mini-footer a{color:var(--gray-600);font-weight:700;margin-left:6px}
     <div class="agent-email" id="agentMeta"></div>
   </div>
   <nav class="sidebar-nav">
-    <div class="nav-group" id="navGroupTools">
-      <button class="nav-group-toggle" type="button"><i class="fas fa-briefcase"></i> <span id="nav1"></span> <i class="fas fa-chevron-down chev"></i></button>
-      <div class="nav-sublist" id="navToolsList"></div>
+    <div class="nav-group" id="navGroupSupport">
+      <button class="nav-group-toggle" type="button"><i class="fas fa-headset"></i> <span id="nav1"></span> <i class="fas fa-chevron-down chev"></i></button>
+      <div class="nav-sublist" id="navSupportList"></div>
+    </div>
+    <div class="nav-group" id="navGroupLinks">
+      <button class="nav-group-toggle" type="button"><i class="fas fa-link"></i> <span id="nav2"></span> <i class="fas fa-chevron-down chev"></i></button>
+      <div class="nav-sublist" id="navLinksList"></div>
     </div>
     <div class="nav-group" id="navGroupCarriers">
-      <button class="nav-group-toggle" type="button"><i class="fas fa-notes-medical"></i> <span id="nav2"></span> <i class="fas fa-chevron-down chev"></i></button>
+      <button class="nav-group-toggle" type="button"><i class="fas fa-notes-medical"></i> <span id="nav3"></span> <i class="fas fa-chevron-down chev"></i></button>
       <div class="nav-sublist" id="navCarriersList"></div>
     </div>
   </nav>
@@ -151,21 +162,37 @@ footer.auth-mini-footer a{color:var(--gray-600);font-weight:700;margin-left:6px}
   <div class="dash-title" id="dashTitle"></div>
   <div class="dash-sub" id="dashSub"></div>
 
-  <div class="section-block" id="agencia-logistica">
+  <form class="gsearch" id="gsearchForm" action="https://www.google.com/search" method="GET" target="_blank">
+    <i class="fas fa-magnifying-glass gicon"></i>
+    <input type="text" name="q" id="gsearchInput" autocomplete="off"/>
+    <button type="submit" aria-label="Search Google"><i class="fas fa-arrow-right"></i></button>
+  </form>
+
+  <div class="section-block" id="agents-support">
     <div class="section-head">
-      <div class="si"><i class="fas fa-briefcase"></i></div>
+      <div class="si"><i class="fas fa-headset"></i></div>
       <div>
         <h2 id="sec1Title"></h2>
       </div>
     </div>
-    <div class="tool-grid" id="toolGrid"></div>
+    <div class="tool-grid" id="toolGridSupport"></div>
+  </div>
+
+  <div class="section-block" id="important-links">
+    <div class="section-head">
+      <div class="si"><i class="fas fa-link"></i></div>
+      <div>
+        <h2 id="sec2Title"></h2>
+      </div>
+    </div>
+    <div class="tool-grid" id="toolGridLinks"></div>
   </div>
 
   <div class="section-block" id="medicare-portals">
     <div class="section-head red">
       <div class="si"><i class="fas fa-notes-medical"></i></div>
       <div>
-        <h2 id="sec2Title"></h2>
+        <h2 id="sec3Title"></h2>
       </div>
     </div>
     <div class="carrier-grid" id="carrierGrid"></div>
@@ -188,27 +215,44 @@ footer.auth-mini-footer a{color:var(--gray-600);font-weight:700;margin-left:6px}
 </div>
 
 <script type="module">
-import { WORKSPACE_DOMAIN } from "./google-config.js";
+import { isEmailAllowed } from "./google-config.js";
 
 let curLang='en';
 
-// Fuente única de los accesos de Agency & Logistics — se usa para pintar tanto
-// las tarjetas del panel principal como los links del menú lateral. Para
-// agregar un acceso nuevo en el futuro, solo hay que agregar un objeto aquí
-// (respetando el orden = orden en que aparece en ambos lugares).
-const TOOLS = [
+// Fuente única de las tarjetas — se usa para pintar tanto las tarjetas del
+// panel principal como los links del menú lateral. Para agregar un acceso
+// nuevo en el futuro, solo hay que agregar un objeto aquí (respetando el
+// orden = orden en que aparece en ambos lugares). Tarjetas con `icon` (en vez
+// de `img`) pintan un ícono de Font Awesome sobre un círculo de color — `bg`/
+// `fg` son opcionales (si no se ponen, usan el azul de marca por default);
+// `gradient` (solo Gemini) pinta un degradé en vez de un color sólido.
+// `dynamic:'gmail'|'gemini'` arma el link en vivo con el email de la sesión
+// activa (ver resolveHref) — no hace falta `href` en esos casos.
+const AGENTS_SUPPORT = [
   { img:'assets/img/dashboard/daily-sales-report.webp', href:'https://server-bayonne.tailed39b8.ts.net:10000', en:'Daily Sales Report', es:'Reporte Diario de Ventas' },
   { img:'assets/img/dashboard/it-ticket.webp', href:'https://form.jotform.com/250776977609173', en:'IT Ticket', es:'Ticket de TI' },
-  { icon:'fa-calendar-check', comingSoon:true, en:'Appointment Request', es:'Solicitud de Cita' },
+  { img:'assets/img/dashboard/appointment-request.webp', comingSoon:true, en:'Appointment Request', es:'Solicitud de Cita' },
   { img:'assets/img/dashboard/agents-contact-list.webp', href:'https://drive.google.com/file/d/1WABdj0wHak0uXmtOo0DrNL4xvYpzwoAj/view?usp=drive_link', en:'Agents Contact List', es:'Directorio de Agentes' },
-  { img:'assets/img/dashboard/training-videos.webp', href:'https://sites.google.com/allcaremar.com/allcaremaragency/agents-portal/training-videos', en:'Training Videos', es:'Videos de Capacitación' },
-  { img:'assets/img/dashboard/support-materials.webp', href:'https://sites.google.com/allcaremar.com/allcaremaragency/agents-portal/support-library', en:'Support Materials', es:'Materiales de Apoyo' },
+  { img:'assets/img/dashboard/resources.webp', href:'resources.html', en:'Resources', es:'Recursos' },
+  { img:'assets/img/dashboard/whatsapp-web.webp', href:'https://web.whatsapp.com', en:'WhatsApp Web', es:'WhatsApp Web' },
+  { img:'assets/img/dashboard/zoom.webp', href:'https://zoom.us/google', en:'Zoom App', es:'Zoom App' },
+  { img:'assets/img/dashboard/gmail.webp', dynamic:'gmail', en:'Gmail', es:'Gmail' },
+  { img:'assets/img/dashboard/gemini.webp', dynamic:'gemini', en:'Gemini', es:'Gemini' },
+  { img:'assets/img/dashboard/medicaid-nj.webp', href:'https://njfamilycare.dhs.state.nj.us/', en:'Medicaid NJ', es:'Medicaid NJ' },
+  { img:'assets/img/dashboard/conference-room.webp', href:'https://calendar.app.google/eYGK81gqAonoFSkY6', en:'Conference Room - 546 Office', es:'Sala de Conferencias - Oficina 546' },
+  { img:'assets/img/dashboard/sprinter-van.webp', href:'https://calendar.app.google/tsgeZzUyYEaUzfTdA', en:'Sprinter / Van Reservations', es:'Reservas de Sprinter/Van' }
+];
+
+const IMPORTANT_LINKS = [
   { img:'assets/img/dashboard/berwick-insurance.webp', href:'https://berwickinsurance.com/login/', en:'Berwick Insurance', es:'Berwick Insurance' },
   { img:'assets/img/dashboard/integrity-connect.webp', href:'https://integrity.com/integrityconnect/', en:'Integrity Connect', es:'Integrity Connect' },
   { img:'assets/img/dashboard/integrity-connect-leads.webp', href:'https://integrity.com/leads/', en:'Integrity Connect Leads', es:'Integrity Connect Leads' },
   { img:'assets/img/dashboard/t65-app.webp', href:'https://t65.app/login.php?req=&No%20Cookie', en:'T65.app', es:'T65.app' },
-  { img:'assets/img/dashboard/conference-room.webp', href:'https://calendar.app.google/eYGK81gqAonoFSkY6', en:'Conference Room - 546 Office', es:'Sala de Conferencias - Oficina 546' },
-  { img:'assets/img/dashboard/sprinter-van.webp', href:'https://calendar.app.google/tsgeZzUyYEaUzfTdA', en:'Sprinter / Van Reservations', es:'Reservas de Sprinter/Van' }
+  { img:'assets/img/dashboard/ssa-lis.webp', href:'https://secure.ssa.gov/i1020/start', en:'SSA - LIS', es:'SSA - LIS' },
+  { icon:'fas fa-heart-pulse', bg:'#eaf1fb', fg:'#0b5ed7', href:'https://www.medicare.gov', en:'Medicare', es:'Medicare' },
+  { icon:'fas fa-id-card', bg:'#eafbf6', fg:'#0f7a5c', href:'https://nipr.com', en:'NIPR', es:'NIPR' },
+  { img:'assets/img/dashboard/sircon.webp', href:'https://www.sircon.com', en:'Sircon', es:'Sircon' },
+  { img:'assets/img/dashboard/sircon.webp', href:'https://www.sircon.com/products/agencies/agencyLogin.jsp', en:'Sircon - Agencies', es:'Sircon - Agencies' }
 ];
 
 // Misma idea para los portales de Medicare — agregar un carrier nuevo es un
@@ -235,15 +279,17 @@ const CARRIERS = [
 const I18N = {
   en:{ welcome:'Signed in as', logout:'Logout',
     dashTitle:'Agent Tools', dashSub:'Access your corporate resources and Medicare carrier portals below.',
-    nav1:'Agency & Logistics', nav2:'Medicare Portals',
-    sec1Title:'Agency & Logistics', sec2Title:'Medicare Portals',
+    gsearchPlaceholder:'Search Google…',
+    nav1:'Agents Support', nav2:'Important Links', nav3:'Medicare Portals',
+    sec1Title:'Agents Support', sec2Title:'Important Links', sec3Title:'Medicare Portals',
     comingSoon:'Coming soon',
     signTitle:'Action Required', signText:'You must sign the Confidentiality Agreement before accessing the Agent Portal. This is a one-time step.',
     signBtnLabel:'Sign Confidentiality Agreement', signChecking:'Verifying signature status…' },
   es:{ welcome:'Sesión iniciada como', logout:'Cerrar Sesión',
     dashTitle:'Herramientas del Agente', dashSub:'Accede a tus recursos corporativos y a los portales de las aseguradoras de Medicare.',
-    nav1:'Agencia y Logística', nav2:'Portales de Medicare',
-    sec1Title:'Agencia y Logística', sec2Title:'Portales de Medicare',
+    gsearchPlaceholder:'Buscar en Google…',
+    nav1:'Soporte de Agentes', nav2:'Enlaces Importantes', nav3:'Portales de Medicare',
+    sec1Title:'Soporte de Agentes', sec2Title:'Enlaces Importantes', sec3Title:'Portales de Medicare',
     comingSoon:'Próximamente',
     signTitle:'Acción Requerida', signText:'Debes firmar el Acuerdo de Confidencialidad antes de acceder al Portal de Agentes. Este paso se hace una sola vez.',
     signBtnLabel:'Firmar Acuerdo de Confidencialidad', signChecking:'Verificando estado de firma…' }
@@ -251,21 +297,39 @@ const I18N = {
 
 function label(x){ return curLang==='es' ? x.es : x.en; }
 
-function renderTools(){
+// El email de la sesión activa — se llena en guard() apenas se valida el
+// login, y se usa para armar los links de Gmail/Gemini en vivo (ver
+// resolveHref) para que abran directo con la cuenta de Workspace del agente.
+let AGENT_EMAIL = '';
+function resolveHref(x){
+  if(x.dynamic === 'gmail') return 'https://mail.google.com/mail/?authuser=' + encodeURIComponent(AGENT_EMAIL);
+  if(x.dynamic === 'gemini') return 'https://gemini.google.com/app?authuser=' + encodeURIComponent(AGENT_EMAIL);
+  return x.href;
+}
+
+function iconStyleOf(x){
+  if(x.gradient) return 'background:'+x.gradient+';color:#fff';
+  return 'background:'+(x.bg||'var(--blue-light)')+';color:'+(x.fg||'var(--blue)');
+}
+
+// Función genérica de render — la usan tanto Agents Support como Important
+// Links (mismo formato de tarjeta, distinta lista de datos y distintos ids
+// de destino en el DOM).
+function renderToolGroup(list, gridId, navId){
   const t = I18N[curLang];
-  document.getElementById('toolGrid').innerHTML = TOOLS.map(x=>{
+  document.getElementById(gridId).innerHTML = list.map(x=>{
     const body = (x.icon
-      ? '<div class="ti-icon"><i class="fas '+x.icon+'"></i></div>'
+      ? '<div class="ti-icon" style="'+iconStyleOf(x)+'"><i class="'+x.icon+'"></i></div>'
       : '<img class="ti-img" src="'+x.img+'" alt="'+label(x)+'" loading="lazy"/>')
       + '<div class="tn">'+label(x)+'</div>';
     return x.comingSoon
       ? '<span class="tool-card disabled" title="'+t.comingSoon+'">'+body+'</span>'
-      : '<a class="tool-card" href="'+x.href+'" target="_blank" rel="noopener">'+body+'</a>';
+      : '<a class="tool-card" href="'+resolveHref(x)+'" target="_blank" rel="noopener">'+body+'</a>';
   }).join('');
-  document.getElementById('navToolsList').innerHTML = TOOLS.map(x=>
+  document.getElementById(navId).innerHTML = list.map(x=>
     x.comingSoon
       ? '<span class="nav-sub-link disabled" title="'+t.comingSoon+'">'+label(x)+'</span>'
-      : '<a class="nav-sub-link" href="'+x.href+'" target="_blank" rel="noopener">'+label(x)+'</a>'
+      : '<a class="nav-sub-link" href="'+resolveHref(x)+'" target="_blank" rel="noopener">'+label(x)+'</a>'
   ).join('');
 }
 
@@ -288,13 +352,17 @@ function applyLang(){
   document.getElementById('dashSub').textContent=t.dashSub;
   document.getElementById('nav1').textContent=t.nav1;
   document.getElementById('nav2').textContent=t.nav2;
+  document.getElementById('nav3').textContent=t.nav3;
   document.getElementById('sec1Title').textContent=t.sec1Title;
   document.getElementById('sec2Title').textContent=t.sec2Title;
+  document.getElementById('sec3Title').textContent=t.sec3Title;
+  document.getElementById('gsearchInput').placeholder=t.gsearchPlaceholder;
   document.getElementById('signTitle').textContent=t.signTitle;
   document.getElementById('signText').textContent=t.signText;
   document.getElementById('signBtnLabel').textContent=t.signBtnLabel;
   document.getElementById('signChecking').textContent=t.signChecking;
-  renderTools();
+  renderToolGroup(AGENTS_SUPPORT, 'toolGridSupport', 'navSupportList');
+  renderToolGroup(IMPORTANT_LINKS, 'toolGridLinks', 'navLinksList');
   renderCarriers();
   applyMiniFooter();
 }
@@ -416,14 +484,14 @@ function guard(){
   let session;
   try{ session = JSON.parse(raw); }catch(e){ localStorage.removeItem('acm_gsession'); window.location.href='login.html'; return null; }
 
-  const domain = (session.email||'').split('@')[1] || '';
-  if(domain.toLowerCase() !== WORKSPACE_DOMAIN.toLowerCase() || !session.localExp || Date.now() > session.localExp){
+  if(!isEmailAllowed(session.email) || !session.localExp || Date.now() > session.localExp){
     localStorage.removeItem('acm_gsession');
     window.location.href='login.html';
     return null;
   }
   document.getElementById('agentName').textContent = session.name || session.email;
   document.getElementById('agentMeta').textContent = session.email;
+  AGENT_EMAIL = session.email;
   return session;
 }
 

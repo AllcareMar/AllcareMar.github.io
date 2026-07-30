@@ -84,7 +84,7 @@ img{display:block;max-width:100%}
   <span id="mini-copy"></span><a href="privacy-security-policy.pdf" target="_blank" rel="noopener" id="mini-priv"></a>
 </footer>
 <script type="module">
-import { WORKSPACE_DOMAIN } from "./google-config.js";
+import { isEmailAllowed } from "./google-config.js";
 
 let curLang = 'en';
 const I18N = {
@@ -130,8 +130,7 @@ document.getElementById('logoutLink').addEventListener('click', function(){
   let session;
   try{ session = JSON.parse(raw); }catch(e){ localStorage.removeItem('acm_gsession'); window.location.href = 'login.html'; return; }
 
-  const domain = (session.email||'').split('@')[1] || '';
-  if(domain.toLowerCase() !== WORKSPACE_DOMAIN.toLowerCase() || !session.localExp || Date.now() > session.localExp){
+  if(!isEmailAllowed(session.email) || !session.localExp || Date.now() > session.localExp){
     localStorage.removeItem('acm_gsession');
     window.location.href = 'login.html';
     return;

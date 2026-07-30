@@ -132,7 +132,7 @@ img{display:block;max-width:100%}
   <span id="mini-copy"></span><a href="privacy-security-policy.pdf" target="_blank" rel="noopener" id="mini-priv"></a>
 </footer>
 <script type="module">
-import { GOOGLE_CLIENT_ID, WORKSPACE_DOMAIN } from "./google-config.js";
+import { GOOGLE_CLIENT_ID, WORKSPACE_DOMAIN, isEmailAllowed } from "./google-config.js";
 
 let curLang = 'en';
 const I18N = {
@@ -209,8 +209,7 @@ function getValidSession(){
   if(!raw) return null;
   let session;
   try{ session = JSON.parse(raw); }catch(e){ localStorage.removeItem('acm_gsession'); return null; }
-  const domain = (session.email||'').split('@')[1] || '';
-  if(domain.toLowerCase() !== WORKSPACE_DOMAIN.toLowerCase() || !session.localExp || Date.now() > session.localExp){
+  if(!isEmailAllowed(session.email) || !session.localExp || Date.now() > session.localExp){
     localStorage.removeItem('acm_gsession');
     return null;
   }
@@ -223,10 +222,9 @@ function handleCredentialResponse(response){
   catch(e){ showDenied('unknown'); return; }
 
   const email = payload.email || 'unknown';
-  const domain = email.split('@')[1] || '';
   const verified = payload.email_verified === true;
 
-  if(verified && domain.toLowerCase() === WORKSPACE_DOMAIN.toLowerCase()){
+  if(verified && isEmailAllowed(email)){
     saveSession(payload);
     window.location.href = 'dashboard-agentes.html';
   } else {
@@ -245,7 +243,10 @@ function renderGoogleButton(){
   google.accounts.id.initialize({
     client_id: GOOGLE_CLIENT_ID,
     callback: handleCredentialResponse,
-    hd: WORKSPACE_DOMAIN,
+    // Sin "hd": bloquearia a Carlos (excepcion fuera del dominio) en el propio
+    // selector de cuentas de Google, antes de que isEmailAllowed() pueda
+    // evaluarlo. La restriccion de dominio (con su excepcion) la maneja
+    // nuestro codigo, no Google.
     auto_select: true,
     cancel_on_tap_outside: false
   });
