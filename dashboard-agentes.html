@@ -45,6 +45,7 @@ img{display:block;max-width:100%}
 .nav-group{margin-bottom:4px}
 .nav-group-toggle{width:100%;display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:13.5px;color:#fff;opacity:.9;background:transparent;border:none;cursor:pointer;transition:var(--t)}
 .nav-group-toggle i:first-child{width:18px;text-align:center;font-size:14px}
+.nav-group-toggle img.nav-icon{width:20px;height:20px;object-fit:contain;border-radius:50%;flex-shrink:0}
 .nav-group-toggle .chev{margin-left:auto;font-size:11px;transition:transform .2s ease}
 .nav-group-toggle:hover{background:rgba(255,255,255,.14);opacity:1}
 .nav-group.open .nav-group-toggle{background:rgba(255,255,255,.1);opacity:1}
@@ -67,8 +68,9 @@ img{display:block;max-width:100%}
 
 .section-block{margin-bottom:48px}
 .section-head{display:flex;align-items:center;gap:12px;margin-bottom:20px}
-.section-head .si{width:40px;height:40px;border-radius:12px;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.section-head .si{width:40px;height:40px;border-radius:12px;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;overflow:hidden}
 .section-head.red .si{background:var(--red-light);color:var(--red)}
+.section-head .si img{width:100%;height:100%;object-fit:contain}
 .section-head h2{font-size:18px;font-weight:800;color:var(--gray-800)}
 .section-head p{font-size:12.5px;color:var(--gray-600);margin-top:2px}
 
@@ -140,15 +142,15 @@ footer.auth-mini-footer a{color:var(--gray-600);font-weight:700;margin-left:6px}
   </div>
   <nav class="sidebar-nav">
     <div class="nav-group" id="navGroupSupport">
-      <button class="nav-group-toggle" type="button"><i class="fas fa-headset"></i> <span id="nav1"></span> <i class="fas fa-chevron-down chev"></i></button>
+      <button class="nav-group-toggle" type="button"><img class="nav-icon" src="assets/img/dashboard/cat-agents-support.webp" alt=""> <span id="nav1"></span> <i class="fas fa-chevron-down chev"></i></button>
       <div class="nav-sublist" id="navSupportList"></div>
     </div>
     <div class="nav-group" id="navGroupLinks">
-      <button class="nav-group-toggle" type="button"><i class="fas fa-link"></i> <span id="nav2"></span> <i class="fas fa-chevron-down chev"></i></button>
+      <button class="nav-group-toggle" type="button"><img class="nav-icon" src="assets/img/dashboard/cat-important-links.webp" alt=""> <span id="nav2"></span> <i class="fas fa-chevron-down chev"></i></button>
       <div class="nav-sublist" id="navLinksList"></div>
     </div>
     <div class="nav-group" id="navGroupCarriers">
-      <button class="nav-group-toggle" type="button"><i class="fas fa-notes-medical"></i> <span id="nav3"></span> <i class="fas fa-chevron-down chev"></i></button>
+      <button class="nav-group-toggle" type="button"><img class="nav-icon" src="assets/img/dashboard/cat-medicare-portals.webp" alt=""> <span id="nav3"></span> <i class="fas fa-chevron-down chev"></i></button>
       <div class="nav-sublist" id="navCarriersList"></div>
     </div>
   </nav>
@@ -170,7 +172,7 @@ footer.auth-mini-footer a{color:var(--gray-600);font-weight:700;margin-left:6px}
 
   <div class="section-block" id="agents-support">
     <div class="section-head">
-      <div class="si"><i class="fas fa-headset"></i></div>
+      <div class="si"><img src="assets/img/dashboard/cat-agents-support.webp" alt=""></div>
       <div>
         <h2 id="sec1Title"></h2>
       </div>
@@ -180,7 +182,7 @@ footer.auth-mini-footer a{color:var(--gray-600);font-weight:700;margin-left:6px}
 
   <div class="section-block" id="important-links">
     <div class="section-head">
-      <div class="si"><i class="fas fa-link"></i></div>
+      <div class="si"><img src="assets/img/dashboard/cat-important-links.webp" alt=""></div>
       <div>
         <h2 id="sec2Title"></h2>
       </div>
@@ -190,7 +192,7 @@ footer.auth-mini-footer a{color:var(--gray-600);font-weight:700;margin-left:6px}
 
   <div class="section-block" id="medicare-portals">
     <div class="section-head red">
-      <div class="si"><i class="fas fa-notes-medical"></i></div>
+      <div class="si"><img src="assets/img/dashboard/cat-medicare-portals.webp" alt=""></div>
       <div>
         <h2 id="sec3Title"></h2>
       </div>
@@ -239,6 +241,7 @@ const AGENTS_SUPPORT = [
   { img:'assets/img/dashboard/gmail.webp', dynamic:'gmail', en:'Gmail', es:'Gmail' },
   { img:'assets/img/dashboard/gemini.webp', dynamic:'gemini', en:'Gemini', es:'Gemini' },
   { img:'assets/img/dashboard/medicaid-nj.webp', href:'https://njfamilycare.dhs.state.nj.us/', en:'Medicaid NJ', es:'Medicaid NJ' },
+  { img:'assets/img/dashboard/paad-nj.webp', href:'https://nj-dhsas.my.site.com/njsave/quickstart', en:'PAAD-NJ', es:'PAAD-NJ' },
   { img:'assets/img/dashboard/conference-room.webp', href:'https://calendar.app.google/eYGK81gqAonoFSkY6', en:'Conference Room - 546 Office', es:'Sala de Conferencias - Oficina 546' },
   { img:'assets/img/dashboard/sprinter-van.webp', href:'https://calendar.app.google/tsgeZzUyYEaUzfTdA', en:'Sprinter / Van Reservations', es:'Reservas de Sprinter/Van' }
 ];
@@ -249,10 +252,10 @@ const IMPORTANT_LINKS = [
   { img:'assets/img/dashboard/integrity-connect-leads.webp', href:'https://integrity.com/leads/', en:'Integrity Connect Leads', es:'Integrity Connect Leads' },
   { img:'assets/img/dashboard/t65-app.webp', href:'https://t65.app/login.php?req=&No%20Cookie', en:'T65.app', es:'T65.app' },
   { img:'assets/img/dashboard/ssa-lis.webp', href:'https://secure.ssa.gov/i1020/start', en:'SSA - LIS', es:'SSA - LIS' },
-  { icon:'fas fa-heart-pulse', bg:'#eaf1fb', fg:'#0b5ed7', href:'https://www.medicare.gov', en:'Medicare', es:'Medicare' },
-  { icon:'fas fa-id-card', bg:'#eafbf6', fg:'#0f7a5c', href:'https://nipr.com', en:'NIPR', es:'NIPR' },
-  { img:'assets/img/dashboard/sircon.webp', href:'https://www.sircon.com', en:'Sircon', es:'Sircon' },
-  { img:'assets/img/dashboard/sircon.webp', href:'https://www.sircon.com/products/agencies/agencyLogin.jsp', en:'Sircon - Agencies', es:'Sircon - Agencies' }
+  { img:'assets/img/dashboard/medicare.webp', href:'https://www.medicare.gov', en:'Medicare', es:'Medicare' },
+  { img:'assets/img/dashboard/nipr.webp', href:'https://nipr.com', en:'NIPR', es:'NIPR' },
+  { img:'assets/img/dashboard/sircon.webp', href:'https://www.sircon.com/login.jsp', en:'Sircon', es:'Sircon' },
+  { img:'assets/img/dashboard/sircon.webp', href:'https://www.sircon.com/login.jsp?accountType=business', en:'Sircon - Agencies', es:'Sircon - Agencies' }
 ];
 
 // Misma idea para los portales de Medicare — agregar un carrier nuevo es un

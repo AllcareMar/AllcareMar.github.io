@@ -38,8 +38,9 @@ img{display:block;max-width:100%}
 
 .res-section{margin-bottom:40px}
 .res-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-.res-head .si{width:40px;height:40px;border-radius:12px;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.res-head .si{width:40px;height:40px;border-radius:12px;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;overflow:hidden}
 .res-head.red .si{background:var(--red-light);color:var(--red)}
+.res-head .si img{width:100%;height:100%;object-fit:contain}
 .res-head h2{font-size:17px;font-weight:800;color:var(--gray-800)}
 .res-head p{font-size:12px;color:var(--gray-600);margin-top:2px}
 
@@ -75,7 +76,7 @@ img{display:block;max-width:100%}
 
   <div class="res-section">
     <div class="res-head">
-      <div class="si"><i class="fas fa-video"></i></div>
+      <div class="si"><img src="assets/img/dashboard/resources.webp" alt=""></div>
       <div>
         <h2 id="sec1Title"></h2>
         <p id="sec1Sub"></p>
@@ -86,7 +87,7 @@ img{display:block;max-width:100%}
 
   <div class="res-section">
     <div class="res-head red">
-      <div class="si"><i class="fas fa-file-lines"></i></div>
+      <div class="si"><img src="assets/img/dashboard/resources.webp" alt=""></div>
       <div>
         <h2 id="sec2Title"></h2>
         <p id="sec2Sub"></p>
