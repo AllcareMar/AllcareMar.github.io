@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Reports — Contracting &amp; Onboarding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+.login-gate{position:fixed;inset:0;background:var(--gray-50);z-index:1000;display:none;align-items:center;justify-content:center;flex-direction:column;gap:18px;padding:20px;text-align:center}
+.login-gate.show{display:flex}
+.login-gate img{height:52px}
+.login-gate h2{font-size:18px;font-weight:800;color:var(--gray-800)}
+.login-gate p{font-size:13px;color:var(--gray-600);max-width:360px}
+.login-gate .err{color:var(--red);font-size:12.5px;font-weight:700}
+.login-gate .config-pending{font-size:12px;color:var(--amber);background:var(--amber-light);padding:10px 16px;border-radius:10px;max-width:360px}
+.data-error{position:fixed;inset:0;background:var(--gray-50);z-index:999;display:none;align-items:center;justify-content:center;padding:20px;text-align:center}
+.data-error.show{display:flex}
+.data-error .box{background:#fff;border-radius:var(--r-lg);box-shadow:var(--sh);padding:28px;max-width:420px}
+.data-error .box .t{font-weight:800;color:var(--red);margin-bottom:8px}
+</style>
+:root{
+  --blue:#1a2fd4; --blue-dark:#0f1e9a; --blue-light:#e8ecff;
+  --red:#e8001d; --red-dark:#b50016; --red-light:#fff0f2;
+  --white:#ffffff; --gray-50:#faf8f5; --gray-100:#f3efe9; --gray-200:#e6e0d6;
+  --gray-400:#8b8377; --gray-600:#544f47; --gray-800:#2b2723;
+  --green:#00a86b; --amber:#c9820a; --amber-light:#fff6e5; --green-light:#e8f9f2;
+  --r:12px; --r-lg:20px; --r-xl:28px;
+  --sh:0 4px 24px rgba(58,53,48,.08); --sh-lg:0 16px 56px rgba(58,53,48,.14);
+  --t:.2s ease;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Open Sans',sans-serif;color:var(--gray-800);background:var(--gray-50);min-height:100vh}
+h1,h2,h3{font-family:'Montserrat',sans-serif;line-height:1.2}
+.banner{background:var(--blue);color:#fff;padding:10px 20px;text-align:center;font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;letter-spacing:.02em}
+.wrap{max-width:1500px;margin:0 auto;padding:32px 20px 80px}
+.topbar{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+.topbar h1{font-size:22px;font-weight:800;color:var(--gray-800)}
+.topbar .sub{font-size:13px;color:var(--gray-400);font-weight:600}
+.logo-img{height:44px;width:auto;flex-shrink:0}
+.lang-toggle{margin-left:auto;background:var(--gray-100);color:var(--gray-800);border:1.5px solid var(--gray-200);border-radius:20px;padding:8px 16px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:12px;cursor:pointer;letter-spacing:.03em;flex-shrink:0}
+.lang-toggle:hover{background:var(--gray-200)}
+
+.summary-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:22px}
+.summary-card{background:var(--white);border-radius:var(--r-lg);box-shadow:var(--sh);padding:16px 18px}
+.summary-card .num{font-family:'Montserrat',sans-serif;font-weight:900;font-size:26px;color:var(--blue-dark)}
+.summary-card .lbl{font-size:11.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.03em;margin-top:2px}
+.summary-card.sc-completed .num{color:var(--green)}
+.summary-card.sc-progress .num{color:var(--amber)}
+.summary-card.sc-locked .num{color:var(--gray-400)}
+
+.card{background:var(--white);border-radius:var(--r-lg);box-shadow:var(--sh);padding:22px;margin-bottom:20px}
+
+.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-bottom:4px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:200px}
+.field label{font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--gray-600)}
+.field select, .field input{padding:10px 12px;border-radius:10px;border:1.5px solid var(--gray-200);font-family:'Open Sans',sans-serif;font-size:13.5px;color:var(--gray-800);background:#fff}
+.field select:focus, .field input:focus{outline:none;border-color:var(--blue)}
+.spacer{flex:1}
+.btn{font-family:'Montserrat',sans-serif;font-weight:800;font-size:12.5px;border:none;border-radius:10px;padding:10px 18px;cursor:pointer;transition:var(--t);display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.btn-csv{background:var(--gray-100);color:var(--gray-800)}
+.btn-csv:hover{background:var(--gray-200)}
+.btn-xlsx{background:var(--green);color:#fff}
+.btn-xlsx:hover{background:#00895a}
+
+.table-scroll{overflow-x:auto;border-radius:var(--r-lg);border:1px solid var(--gray-100)}
+table.report{border-collapse:collapse;width:100%;font-size:12px;white-space:nowrap}
+table.report thead th{position:sticky;top:0;background:var(--gray-800);color:#fff;font-family:'Montserrat',sans-serif;font-weight:700;font-size:10.5px;text-transform:uppercase;letter-spacing:.03em;padding:10px 10px;text-align:left;z-index:3}
+table.report th.col-sticky, table.report td.col-sticky{position:sticky;background:#fff;z-index:2}
+table.report thead th.col-sticky{background:var(--gray-800);z-index:4}
+table.report th.sticky-agency, table.report td.sticky-agency{left:0;min-width:190px}
+table.report th.sticky-role, table.report td.sticky-role{left:190px;min-width:64px}
+table.report th.sticky-agent, table.report td.sticky-agent{left:254px;min-width:190px;box-shadow:2px 0 4px rgba(0,0,0,.06)}
+table.report tbody td{padding:8px 10px;border-bottom:1px solid var(--gray-100);vertical-align:middle}
+table.report tbody tr:hover td{background:var(--blue-light)!important}
+table.report tr.agency-header td{background:var(--blue-dark);color:#fff;font-family:'Montserrat',sans-serif;font-weight:800;font-size:12.5px;padding:10px 10px}
+table.report tr.leader-row td{background:var(--amber-light)}
+table.report tr.leader-row td.sticky-agent{background:var(--amber-light)}
+.leader-star{color:var(--amber);margin-left:4px}
+.role-pill{font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:20px;text-transform:uppercase;letter-spacing:.02em}
+.role-leader{background:var(--amber-light);color:var(--amber)}
+.role-agent{background:var(--gray-100);color:var(--gray-600)}
+.status-cell{display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:11px;padding:3px 8px;border-radius:20px}
+.status-completed{background:var(--green-light);color:var(--green)}
+.status-in-progress{background:var(--amber-light);color:var(--amber)}
+.status-not-started{background:var(--gray-100);color:var(--gray-600)}
+.status-locked{background:var(--gray-50);color:var(--gray-400)}
+.summary-cell{font-weight:800;font-family:'Montserrat',sans-serif}
+.no-data{padding:30px;text-align:center;color:var(--gray-400);font-size:13px}
+.legend-bar{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:16px;padding:10px 14px;background:var(--gray-50);border-radius:10px}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:var(--gray-600);font-family:'Montserrat',sans-serif}
+.legend-dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+</style>
+</head>
+<body>
+
+<div class="login-gate" id="loginGate">
+  <img src="assets/img/logo.png" alt="Allcare Mar Agency"/>
+  <h2 id="loginGateTitle">Sign in to continue</h2>
+  <p id="loginGateDesc">This tool is restricted to authorized Allcare Mar staff. Sign in with your Google Workspace account.</p>
+  <div id="googleSignInBtn"></div>
+  <div class="err" id="loginGateError" style="display:none"></div>
+  <div class="config-pending" id="loginGateConfigPending" style="display:none">Google Sign-In isn't configured yet on this deployment (missing Client ID) — this screen will start working once that's set.</div>
+</div>
+
+<div class="data-error" id="dataErrorScreen">
+  <div class="box">
+    <div class="t" id="dataErrorTitle">Couldn't load data</div>
+    <div id="dataErrorMsg" style="font-size:13px;color:var(--gray-600)"></div>
+  </div>
+</div>
+
+<div class="banner"><i class="fa-solid fa-chart-column"></i>&nbsp; <span id="bannerText">PREVIEW — reporting mockup, no real backend yet. Data taken from Tracker.xlsx + staff.json snapshots.</span></div>
+<div class="wrap" id="mainWrap">
+
+  <div class="topbar">
+    <img class="logo-img" src="assets/img/logo.png" alt="Allcare Mar Agency"/>
+    <div>
+      <h1 id="pageTitle">Contracting Reports</h1>
+      <div class="sub" id="topSub">All agencies and agents — carrier contracting status</div>
+    </div>
+    <button class="lang-toggle" id="langBtn"><span id="lang-label">ES</span></button>
+  </div>
+
+  <div class="summary-row" id="summaryRow"></div>
+
+  <div class="card">
+    <div class="controls">
+      <div class="field">
+        <label id="lblAgency">Agency</label>
+        <select id="agencyFilter"></select>
+      </div>
+      <div class="field">
+        <label id="lblSearch">Search agent</label>
+        <input type="text" id="searchInput" placeholder="Type a name…"/>
+      </div>
+      <div class="spacer"></div>
+      <button class="btn btn-csv" id="btnCsv"><i class="fa-solid fa-file-csv"></i> <span id="lblCsv">Download CSV</span></button>
+      <button class="btn btn-xlsx" id="btnXlsx"><i class="fa-solid fa-file-excel"></i> <span id="lblXlsx">Download XLSX</span></button>
+    </div>
+  </div>
+
+  <div class="legend-bar">
+    <span class="legend-item"><span class="legend-dot" style="background:var(--green)"></span> <span id="legendCompleted">Completed</span></span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--amber)"></span> <span id="legendInProgress">In progress</span></span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--gray-600)"></span> <span id="legendNotStarted">Not started</span></span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--gray-200)"></span> <span id="legendLocked">Locked</span></span>
+    <span class="legend-item"><i class="fa-solid fa-star" style="color:var(--amber)"></i> <span id="legendLeader">Agency leader</span></span>
+  </div>
+
+  <div class="table-scroll">
+    <table class="report" id="reportTable"></table>
+  </div>
+
+</div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/shared-data.js"></script>
+<script>
+// ============================================================================
+// Reports dashboard — builds one row per agent (leader-first within each
+// agency), one column per carrier, using the exact same gating/status logic
+// as preview-contracting.html (both read assets/js/shared-data.js). Supports
+// filtering by agency, searching by name, and exporting to CSV/XLSX.
+// ============================================================================
+
+const I18N = {
+  en:{
+    banner:'PREVIEW — reporting mockup, no real backend yet. Data taken from Tracker.xlsx + staff.json snapshots.',
+    pageTitle:'Contracting Reports', topSub:'All agencies and agents — carrier contracting status',
+    lblAgency:'Agency', allAgencies:'All Agencies (everyone together)', lblSearch:'Search agent', searchPlaceholder:'Type a name…',
+    lblCsv:'Download CSV', lblXlsx:'Download XLSX',
+    legendCompleted:'Completed', legendInProgress:'In progress', legendNotStarted:'Not started', legendLocked:'Locked', legendLeader:'Agency leader',
+    colAgency:'Agency', colRole:'Role', colAgent:'Agent', colEmail:'Email', colStates:'Licensed States',
+    colCompleted:'# Completed', colInProgress:'# In Progress', colLocked:'# Locked',
+    roleLeader:'Leader', roleAgent:'Agent',
+    statusCompleted:'Completed', statusInProgress:'In Progress', statusNotStarted:'Not Started',
+    lockedGating:'Locked (Leader)', lockedLicense:'Locked (License',
+    noStates:'—', noEmail:'—', noData:'No agents match this filter.',
+    sumAgencies:'Agencies', sumAgents:'Agents', sumCarriers:'Active carriers',
+    sumCompletedCells:'Completed slots', sumInProgressCells:'In-progress slots', sumLockedCells:'Locked slots',
+    masterTag:'(Master)', masterBadge:'★ MASTER',
+    loginTitle:'Sign in to continue', loginDesc:'This tool is restricted to authorized Allcare Mar staff. Sign in with your Google Workspace account.',
+    loginConfigPending:'Google Sign-In isn\'t configured yet on this deployment (missing Client ID) — this screen will start working once that\'s set.',
+    loginNotAuthorized:'This Google account is not authorized to use this tool.',
+    dataErrorTitle:'Couldn\'t load data',
+  },
+  es:{
+    banner:'PREVIEW — mockup de reportes, sin backend real todavía. Datos tomados de Tracker.xlsx + snapshot de staff.json.',
+    pageTitle:'Reportes de Contratación', topSub:'Todas las agencias y agentes — estado de contratación por carrier',
+    lblAgency:'Agencia', allAgencies:'Todas las Agencias (todos juntos)', lblSearch:'Buscar agente', searchPlaceholder:'Escribe un nombre…',
+    lblCsv:'Descargar CSV', lblXlsx:'Descargar XLSX',
+    legendCompleted:'Completado', legendInProgress:'En proceso', legendNotStarted:'Sin iniciar', legendLocked:'Bloqueado', legendLeader:'Líder de agencia',
+    colAgency:'Agencia', colRole:'Rol', colAgent:'Agente', colEmail:'Email', colStates:'Estados Licenciados',
+    colCompleted:'# Completados', colInProgress:'# En Proceso', colLocked:'# Bloqueados',
+    roleLeader:'Líder', roleAgent:'Agente',
+    statusCompleted:'Completado', statusInProgress:'En Proceso', statusNotStarted:'Sin Iniciar',
+    lockedGating:'Bloqueado (Líder)', lockedLicense:'Bloqueado (Licencia',
+    noStates:'—', noEmail:'—', noData:'Ningún agente coincide con este filtro.',
+    sumAgencies:'Agencias', sumAgents:'Agentes', sumCarriers:'Carriers activos',
+    sumCompletedCells:'Casillas completadas', sumInProgressCells:'Casillas en proceso', sumLockedCells:'Casillas bloqueadas',
+    masterTag:'(Master)', masterBadge:'★ MASTER',
+    loginTitle:'Inicia sesión para continuar', loginDesc:'Esta herramienta es solo para staff autorizado de Allcare Mar. Inicia sesión con tu cuenta de Google Workspace.',
+    loginConfigPending:'El inicio de sesión con Google aún no está configurado en este despliegue (falta el Client ID) — esta pantalla empezará a funcionar cuando eso quede listo.',
+    loginNotAuthorized:'Esta cuenta de Google no está autorizada para usar esta herramienta.',
+    dataErrorTitle:'No se pudieron cargar los datos',
+  }
+};
+
+let curLang = 'en';
+function t(){ return I18N[curLang]; }
+
+let agencyFilterValue = 'all';
+let searchValue = '';
+
+// ---- Build the flat row list: one row per agent, leader first within each agency ----
+function buildRows(){
+  const rows = [];
+  Object.keys(AGENCIES).forEach(agencyId=>{
+    const agencyAgents = Object.entries(AGENTS).filter(([id,a]) => a.agency === agencyId);
+    agencyAgents.sort((a,b) => (b[1].isLeader?1:0) - (a[1].isLeader?0:1) || a[1].name.localeCompare(b[1].name));
+    // leader first: put leader entries before non-leaders
+    agencyAgents.sort((a,b) => (a[1].isLeader ? -1 : 0) - (b[1].isLeader ? -1 : 0));
+    agencyAgents.forEach(([agentId, agent])=>{
+      const cells = {};
+      let completedCount = 0, inProgressCount = 0, lockedCount = 0;
+      CARRIERS.forEach(carrier=>{
+        const info = getCarrierEnabled('agent', agentId, carrier);
+        if(!info.enabled){
+          const label = info.reason === 'license'
+            ? `${t().lockedLicense}: ${info.requiredStates.join('/')})`
+            : t().lockedGating;
+          cells[carrier] = {status:'locked', label, info};
+          lockedCount++;
+        } else {
+          const status = getCarrierStatus('agent', agentId, carrier);
+          const label = status === 'completed' ? t().statusCompleted : status === 'in_progress' ? t().statusInProgress : t().statusNotStarted;
+          cells[carrier] = {status: status.replace('_','-'), label, info};
+          if(status === 'completed') completedCount++;
+          else if(status === 'in_progress') inProgressCount++;
+        }
+      });
+      rows.push({
+        agencyId, agencyName: AGENCIES[agencyId].name, isMaster: AGENCIES[agencyId].isMaster,
+        agentId, agentName: agent.name, isLeader: !!agent.isLeader, email: agent.email || null,
+        states: AGENT_STATES[agentId] || [],
+        cells, completedCount, inProgressCount, lockedCount,
+      });
+    });
+  });
+  return rows;
+}
+
+function filteredRows(allRows){
+  return allRows.filter(r=>{
+    if(agencyFilterValue !== 'all' && r.agencyId !== agencyFilterValue) return false;
+    if(searchValue && !r.agentName.toLowerCase().includes(searchValue.toLowerCase())) return false;
+    return true;
+  });
+}
+
+function populateAgencyFilter(){
+  const x = t();
+  const sel = document.getElementById('agencyFilter');
+  const prev = agencyFilterValue;
+  sel.innerHTML = `<option value="all">${x.allAgencies}</option>` +
+    Object.entries(AGENCIES).map(([id,a])=>`<option value="${id}">${a.name}${a.isMaster?' '+x.masterTag:''}</option>`).join('');
+  sel.value = prev;
+}
+
+function renderSummary(rows){
+  const x = t();
+  const agenciesCount = new Set(rows.map(r=>r.agencyId)).size;
+  const agentsCount = rows.length;
+  let completedCells=0, inProgressCells=0, lockedCells=0;
+  rows.forEach(r=>{ completedCells+=r.completedCount; inProgressCells+=r.inProgressCount; lockedCells+=r.lockedCount; });
+  const cards = [
+    {num:agenciesCount, lbl:x.sumAgencies, cls:''},
+    {num:agentsCount, lbl:x.sumAgents, cls:''},
+    {num:CARRIERS.length, lbl:x.sumCarriers, cls:''},
+    {num:completedCells, lbl:x.sumCompletedCells, cls:'sc-completed'},
+    {num:inProgressCells, lbl:x.sumInProgressCells, cls:'sc-progress'},
+    {num:lockedCells, lbl:x.sumLockedCells, cls:'sc-locked'},
+  ];
+  document.getElementById('summaryRow').innerHTML = cards.map(c=>
+    `<div class="summary-card ${c.cls}"><div class="num">${c.num}</div><div class="lbl">${c.lbl}</div></div>`
+  ).join('');
+}
+
+function renderTable(rows){
+  const x = t();
+  const table = document.getElementById('reportTable');
+  if(rows.length === 0){
+    table.innerHTML = `<tbody><tr><td class="no-data">${x.noData}</td></tr></tbody>`;
+    return;
+  }
+
+  const headCells = [
+    `<th class="col-sticky sticky-agency">${x.colAgency}</th>`,
+    `<th class="col-sticky sticky-role">${x.colRole}</th>`,
+    `<th class="col-sticky sticky-agent">${x.colAgent}</th>`,
+    `<th>${x.colEmail}</th>`,
+    `<th>${x.colStates}</th>`,
+    `<th>${x.colCompleted}</th>`,
+    `<th>${x.colInProgress}</th>`,
+    `<th>${x.colLocked}</th>`,
+    ...CARRIERS.map(c=>`<th>${c}</th>`),
+  ].join('');
+
+  let bodyHtml = '';
+  let lastAgency = null;
+  rows.forEach(r=>{
+    if(agencyFilterValue === 'all' && r.agencyId !== lastAgency){
+      lastAgency = r.agencyId;
+      bodyHtml += `<tr class="agency-header"><td colspan="${8 + CARRIERS.length}">${r.agencyName}${r.isMaster?' '+x.masterBadge:''}</td></tr>`;
+    }
+    const rolePill = r.isLeader
+      ? `<span class="role-pill role-leader">${x.roleLeader}</span>`
+      : `<span class="role-pill role-agent">${x.roleAgent}</span>`;
+    const carrierCells = CARRIERS.map(c=>{
+      const cell = r.cells[c];
+      return `<td><span class="status-cell status-${cell.status}">${cell.label}</span></td>`;
+    }).join('');
+    bodyHtml += `<tr class="${r.isLeader?'leader-row':''}">
+      <td class="col-sticky sticky-agency">${r.agencyName}</td>
+      <td class="col-sticky sticky-role">${rolePill}</td>
+      <td class="col-sticky sticky-agent">${r.agentName}${r.isLeader?' <i class=\"fa-solid fa-star leader-star\"></i>':''}</td>
+      <td>${r.email || x.noEmail}</td>
+      <td>${r.states.length ? r.states.join(', ') : x.noStates}</td>
+      <td class="summary-cell" style="color:var(--green)">${r.completedCount}</td>
+      <td class="summary-cell" style="color:var(--amber)">${r.inProgressCount}</td>
+      <td class="summary-cell" style="color:var(--gray-400)">${r.lockedCount}</td>
+      ${carrierCells}
+    </tr>`;
+  });
+
+  table.innerHTML = `<thead><tr>${headCells}</tr></thead><tbody>${bodyHtml}</tbody>`;
+}
+
+function refresh(){
+  const all = buildRows();
+  const rows = filteredRows(all);
+  renderSummary(rows);
+  renderTable(rows);
+  return rows;
+}
+
+// ---- Export ----
+function currentExportData(){
+  const x = t();
+  const rows = filteredRows(buildRows());
+  const header = [x.colAgency, x.colRole, x.colAgent, x.colEmail, x.colStates, x.colCompleted, x.colInProgress, x.colLocked, ...CARRIERS];
+  const body = rows.map(r => [
+    r.agencyName,
+    r.isLeader ? x.roleLeader : x.roleAgent,
+    r.agentName,
+    r.email || '',
+    r.states.join(', '),
+    r.completedCount,
+    r.inProgressCount,
+    r.lockedCount,
+    ...CARRIERS.map(c => r.cells[c].label),
+  ]);
+  return [header, ...body];
+}
+
+function downloadCsv(){
+  const aoa = currentExportData();
+  const csv = aoa.map(row => row.map(cell=>{
+    const s = String(cell ?? '');
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s;
+  }).join(',')).join('\r\n');
+  const blob = new Blob(["﻿"+csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'contracting-report.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function downloadXlsx(){
+  const aoa = currentExportData();
+  const ws = XLSX.utils.aoa_to_sheet(aoa);
+  ws['!freeze'] = {xSplit:3, ySplit:1};
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Contracting Report');
+  XLSX.writeFile(wb, 'contracting-report.xlsx');
+}
+
+function applyLang(){
+  const x = t();
+  document.documentElement.lang = curLang; document.documentElement.setAttribute('data-lang',curLang);
+  document.getElementById('lang-label').textContent = curLang==='en' ? 'ES' : 'EN';
+  document.getElementById('bannerText').textContent = x.banner;
+  document.getElementById('pageTitle').textContent = x.pageTitle;
+  document.getElementById('topSub').textContent = x.topSub;
+  document.getElementById('lblAgency').textContent = x.lblAgency;
+  document.getElementById('lblSearch').textContent = x.lblSearch;
+  document.getElementById('searchInput').placeholder = x.searchPlaceholder;
+  document.getElementById('lblCsv').textContent = x.lblCsv;
+  document.getElementById('lblXlsx').textContent = x.lblXlsx;
+  document.getElementById('legendCompleted').textContent = x.legendCompleted;
+  document.getElementById('legendInProgress').textContent = x.legendInProgress;
+  document.getElementById('legendNotStarted').textContent = x.legendNotStarted;
+  document.getElementById('legendLocked').textContent = x.legendLocked;
+  document.getElementById('legendLeader').textContent = x.legendLeader;
+  document.getElementById('loginGateTitle').textContent = x.loginTitle;
+  document.getElementById('loginGateDesc').textContent = x.loginDesc;
+  document.getElementById('loginGateConfigPending').textContent = x.loginConfigPending;
+  document.getElementById('dataErrorTitle').textContent = x.dataErrorTitle;
+  populateAgencyFilter();
+  refresh();
+}
+
+function toggleLang(){ curLang = curLang==='en'?'es':'en'; applyLang(); }
+document.getElementById('langBtn').addEventListener('click', toggleLang);
+
+document.getElementById('agencyFilter').addEventListener('change', (e)=>{
+  agencyFilterValue = e.target.value;
+  refresh();
+});
+document.getElementById('searchInput').addEventListener('input', (e)=>{
+  searchValue = e.target.value;
+  refresh();
+});
+document.getElementById('btnCsv').addEventListener('click', downloadCsv);
+document.getElementById('btnXlsx').addEventListener('click', downloadXlsx);
+
+// ============================================================================
+// Boot sequence (2026-08-04) — same pattern as preview-contracting.html:
+// static data by default (ENDPOINT_URL empty), or Google Sign-In gate + live
+// data from Code.gs once the backend is fully configured. See
+// assets/js/shared-data.js and estado-proyecto.md for details/caveats.
+// ============================================================================
+
+function showLoginGate(errorMsg){
+  document.getElementById('mainWrap').style.display = 'none';
+  document.getElementById('loginGate').classList.add('show');
+  const errEl = document.getElementById('loginGateError');
+  if(errorMsg){ errEl.textContent = errorMsg; errEl.style.display = 'block'; }
+  else { errEl.style.display = 'none'; }
+
+  if(typeof GOOGLE_CLIENT_ID === 'undefined' || !GOOGLE_CLIENT_ID){
+    document.getElementById('loginGateConfigPending').style.display = 'block';
+    return;
+  }
+  document.getElementById('loginGateConfigPending').style.display = 'none';
+  if(!window.google || !google.accounts || !google.accounts.id){
+    setTimeout(()=>showLoginGate(errorMsg), 300);
+    return;
+  }
+  google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: onGoogleCredential });
+  google.accounts.id.renderButton(document.getElementById('googleSignInBtn'), {theme:'outline', size:'large'});
+}
+
+async function onGoogleCredential(response){
+  setStoredIdToken(response.credential);
+  const status = await initData();
+  if(status.mode === 'live'){
+    document.getElementById('loginGate').classList.remove('show');
+    document.getElementById('mainWrap').style.display = 'block';
+    applyLang(); // applyLang() itself calls populateAgencyFilter() + refresh()
+  } else {
+    showLoginGate(status.error || t().loginNotAuthorized);
+  }
+}
+
+async function boot(){
+  const status = await initData();
+  if(status.mode === 'live' || status.mode === 'static'){
+    document.getElementById('loginGate').classList.remove('show');
+    document.getElementById('mainWrap').style.display = 'block';
+    applyLang(); // applyLang() itself calls populateAgencyFilter() + refresh()
+  } else if(status.mode === 'needs-login'){
+    applyLang(); // so login gate text is translated even before data loads
+    showLoginGate(status.error);
+  } else {
+    document.getElementById('mainWrap').style.display = 'none';
+    document.getElementById('dataErrorMsg').textContent = status.error;
+    document.getElementById('dataErrorScreen').classList.add('show');
+  }
+}
+
+boot();
+</script>
+</body>
+</html>
