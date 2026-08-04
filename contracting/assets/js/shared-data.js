@@ -34,14 +34,12 @@ const STEPS = [
 const EMAIL_RECIPIENTS = ['info@allcaremar.com', 'acastillo@allcaremar.com'];
 
 // ---- Who is authorized to open preview-contracting.html / reports.html
-// (Google Workspace login gate, 2026-08-04) ----
-const AUTHORIZED_REPORT_EMAILS = [
-  'mrodriguez@allcaremar.com',
-  'info@allcaremar.com',
-  'jcabreja@allcaremar.com',
-  'epeguero@allcaremar.com',
-  'acastillo@allcaremar.com',
-];
+// (Google Workspace login gate) — declared in assets/js/config.js instead
+// (loaded before this file), NOT here. Having it in both files used to throw
+// "Identifier 'AUTHORIZED_REPORT_EMAILS' has already been declared" and
+// silently broke this entire file in production (2026-08-04, caught live by
+// Jesus — see estado-proyecto.md). Keep this comment as a guardrail: do not
+// re-add this const here. ----
 
 // ---- Agencies + their designated leader (leaderAgentId represents the whole
 // agency for hierarchy-gating purposes, per Jesus 2026-08-03) ----
