@@ -94,6 +94,15 @@ table.report tr.leader-row td.sticky-agent{background:var(--amber-light)}
 .legend-bar{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:16px;padding:10px 14px;background:var(--gray-50);border-radius:10px}
 .legend-item{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:var(--gray-600);font-family:'Montserrat',sans-serif}
 .legend-dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+.pager{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:14px}
+.pager .spacer{flex:1}
+.pager-info{font-size:12px;color:var(--gray-600);font-weight:600}
+.pager-btns{display:flex;gap:6px}
+.pager-btn{font-family:'Montserrat',sans-serif;font-weight:800;font-size:12px;border:1.5px solid var(--gray-200);background:#fff;color:var(--gray-800);padding:7px 12px;border-radius:8px;cursor:pointer;transition:var(--t)}
+.pager-btn:hover:not(:disabled){border-color:var(--blue);color:var(--blue-dark)}
+.pager-btn:disabled{opacity:.4;cursor:not-allowed}
+.pager-size{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--gray-600);font-weight:600}
+.pager-size select{padding:7px 10px;border-radius:8px;border:1.5px solid var(--gray-200);font-family:'Open Sans',sans-serif;font-size:12.5px;color:var(--gray-800);background:#fff}
 </style>
 </head>
 <body>
@@ -138,6 +147,16 @@ table.report tr.leader-row td.sticky-agent{background:var(--amber-light)}
         <label id="lblSearch">Search agent</label>
         <input type="text" id="searchInput" placeholder="Type a name…"/>
       </div>
+      <div class="field" style="min-width:140px">
+        <label id="lblPageSize">Rows per page</label>
+        <select id="pageSizeSelect">
+          <option value="10">10</option>
+          <option value="15" selected>15</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="all" id="pageSizeAllOpt">All</option>
+        </select>
+      </div>
       <div class="spacer"></div>
       <button class="btn btn-csv" id="btnCsv"><i class="fa-solid fa-file-csv"></i> <span id="lblCsv">Download CSV</span></button>
       <button class="btn btn-xlsx" id="btnXlsx"><i class="fa-solid fa-file-excel"></i> <span id="lblXlsx">Download XLSX</span></button>
@@ -154,6 +173,18 @@ table.report tr.leader-row td.sticky-agent{background:var(--amber-light)}
 
   <div class="table-scroll">
     <table class="report" id="reportTable"></table>
+  </div>
+
+  <div class="pager" id="pagerBar">
+    <span class="pager-info" id="pagerInfo"></span>
+    <div class="spacer"></div>
+    <div class="pager-btns">
+      <button class="pager-btn" id="pagerFirst" title="First page"><i class="fa-solid fa-angles-left"></i></button>
+      <button class="pager-btn" id="pagerPrev" title="Previous page"><i class="fa-solid fa-angle-left"></i></button>
+      <span class="pager-info" id="pagerPageLabel"></span>
+      <button class="pager-btn" id="pagerNext" title="Next page"><i class="fa-solid fa-angle-right"></i></button>
+      <button class="pager-btn" id="pagerLast" title="Last page"><i class="fa-solid fa-angles-right"></i></button>
+    </div>
   </div>
 
 </div>
@@ -173,6 +204,8 @@ const I18N = {
     banner:'PREVIEW — reporting mockup, no real backend yet. Data taken from Tracker.xlsx + staff.json snapshots.',
     pageTitle:'Contracting Reports', topSub:'All agencies and agents — carrier contracting status',
     lblAgency:'Agency', allAgencies:'All Agencies (everyone together)', lblSearch:'Search agent', searchPlaceholder:'Type a name…',
+    lblPageSize:'Rows per page', pageSizeAll:'All',
+    pagerShowing:'Showing {a}–{b} of {n}', pagerPage:'Page {p} of {t}', pagerNoData:'No rows',
     lblCsv:'Download CSV', lblXlsx:'Download XLSX',
     legendCompleted:'Completed', legendInProgress:'In progress', legendNotStarted:'Not started', legendLocked:'Locked', legendLeader:'Agency leader',
     colAgency:'Agency', colRole:'Role', colAgent:'Agent', colEmail:'Email', colStates:'Licensed States',
@@ -193,6 +226,8 @@ const I18N = {
     banner:'PREVIEW — mockup de reportes, sin backend real todavía. Datos tomados de Tracker.xlsx + snapshot de staff.json.',
     pageTitle:'Reportes de Contratación', topSub:'Todas las agencias y agentes — estado de contratación por carrier',
     lblAgency:'Agencia', allAgencies:'Todas las Agencias (todos juntos)', lblSearch:'Buscar agente', searchPlaceholder:'Escribe un nombre…',
+    lblPageSize:'Filas por página', pageSizeAll:'Todas',
+    pagerShowing:'Mostrando {a}–{b} de {n}', pagerPage:'Página {p} de {t}', pagerNoData:'Sin filas',
     lblCsv:'Descargar CSV', lblXlsx:'Descargar XLSX',
     legendCompleted:'Completado', legendInProgress:'En proceso', legendNotStarted:'Sin iniciar', legendLocked:'Bloqueado', legendLeader:'Líder de agencia',
     colAgency:'Agencia', colRole:'Rol', colAgent:'Agente', colEmail:'Email', colStates:'Estados Licenciados',
@@ -217,14 +252,41 @@ function t(){ return I18N[curLang]; }
 let agencyFilterValue = 'all';
 let searchValue = '';
 
-// ---- Build the flat row list: one row per agent, leader first within each agency ----
+// Agent names are stored "Last, First" everywhere in shared-data.js (needed
+// for splitAgentName_/bulk-file columns elsewhere) — this converts to
+// "First Last" for DISPLAY ONLY in this dashboard, per Jesus (2026-08-04).
+// Sorting/grouping still uses the raw stored name (unaffected); search
+// matches against both forms so typing either order works.
+function formatAgentDisplayName_(fullName){
+  const s = String(fullName || '');
+  const idx = s.indexOf(',');
+  if(idx === -1) return s.trim();
+  const last = s.slice(0, idx).trim();
+  const first = s.slice(idx + 1).trim();
+  return first ? (first + ' ' + last) : last;
+}
+
+// ---- Pagination (2026-08-04, per Jesus) — the reports table can have 15+
+// agencies / 80+ agents, so it's paginated client-side instead of showing
+// everything at once. pageSize is a row count (or 'all' to disable paging);
+// currentPage is 1-based and gets clamped/reset whenever the filtered row
+// count changes (agency filter, search, or page size itself). ----
+let pageSize = 15;
+let currentPage = 1;
+
+// ---- Build the flat row list: one row per agent, LEADER FIRST then A-Z
+// within each agency (2026-08-04, per Jesus — confirmed leader stays pinned
+// to the top). A-Z is by the DISPLAYED name ("First Last", see
+// formatAgentDisplayName_ above) so the on-screen order actually matches
+// what's printed, not the underlying "Last, First" storage format. ----
 function buildRows(){
   const rows = [];
   Object.keys(AGENCIES).forEach(agencyId=>{
     const agencyAgents = Object.entries(AGENTS).filter(([id,a]) => a.agency === agencyId);
-    agencyAgents.sort((a,b) => (b[1].isLeader?1:0) - (a[1].isLeader?0:1) || a[1].name.localeCompare(b[1].name));
-    // leader first: put leader entries before non-leaders
-    agencyAgents.sort((a,b) => (a[1].isLeader ? -1 : 0) - (b[1].isLeader ? -1 : 0));
+    agencyAgents.sort((a,b) =>
+      (b[1].isLeader?1:0) - (a[1].isLeader?1:0) ||
+      formatAgentDisplayName_(a[1].name).localeCompare(formatAgentDisplayName_(b[1].name))
+    );
     agencyAgents.forEach(([agentId, agent])=>{
       const cells = {};
       let completedCount = 0, inProgressCount = 0, lockedCount = 0;
@@ -258,7 +320,12 @@ function buildRows(){
 function filteredRows(allRows){
   return allRows.filter(r=>{
     if(agencyFilterValue !== 'all' && r.agencyId !== agencyFilterValue) return false;
-    if(searchValue && !r.agentName.toLowerCase().includes(searchValue.toLowerCase())) return false;
+    if(searchValue){
+      const q = searchValue.toLowerCase();
+      const matchesRaw = r.agentName.toLowerCase().includes(q);
+      const matchesDisplay = formatAgentDisplayName_(r.agentName).toLowerCase().includes(q);
+      if(!matchesRaw && !matchesDisplay) return false;
+    }
     return true;
   });
 }
@@ -328,7 +395,7 @@ function renderTable(rows){
     bodyHtml += `<tr class="${r.isLeader?'leader-row':''}">
       <td class="col-sticky sticky-agency">${r.agencyName}</td>
       <td class="col-sticky sticky-role">${rolePill}</td>
-      <td class="col-sticky sticky-agent">${r.agentName}${r.isLeader?' <i class=\"fa-solid fa-star leader-star\"></i>':''}</td>
+      <td class="col-sticky sticky-agent">${formatAgentDisplayName_(r.agentName)}${r.isLeader?' <i class=\"fa-solid fa-star leader-star\"></i>':''}</td>
       <td>${r.email || x.noEmail}</td>
       <td>${r.states.length ? r.states.join(', ') : x.noStates}</td>
       <td class="summary-cell" style="color:var(--green)">${r.completedCount}</td>
@@ -341,11 +408,53 @@ function renderTable(rows){
   table.innerHTML = `<thead><tr>${headCells}</tr></thead><tbody>${bodyHtml}</tbody>`;
 }
 
-function refresh(){
+// Returns just the slice of `rows` for the current page, clamping
+// currentPage into range first (handles the filter/search/page-size changing
+// out from under a page number that's no longer valid, e.g. going from
+// "All Agencies" on page 6 down to one agency that only has 2 pages).
+function paginate(rows){
+  if(pageSize === 'all' || !rows.length) return rows;
+  const totalPages = Math.max(1, Math.ceil(rows.length / pageSize));
+  if(currentPage > totalPages) currentPage = totalPages;
+  if(currentPage < 1) currentPage = 1;
+  const start = (currentPage - 1) * pageSize;
+  return rows.slice(start, start + pageSize);
+}
+
+function renderPager(totalCount){
+  const x = t();
+  const bar = document.getElementById('pagerBar');
+  if(totalCount === 0){
+    document.getElementById('pagerInfo').textContent = x.pagerNoData;
+    document.getElementById('pagerPageLabel').textContent = '';
+    ['pagerFirst','pagerPrev','pagerNext','pagerLast'].forEach(id => document.getElementById(id).disabled = true);
+    return;
+  }
+  if(pageSize === 'all'){
+    document.getElementById('pagerInfo').textContent = x.pagerShowing.replace('{a}','1').replace('{b}',totalCount).replace('{n}',totalCount);
+    document.getElementById('pagerPageLabel').textContent = '';
+    ['pagerFirst','pagerPrev','pagerNext','pagerLast'].forEach(id => document.getElementById(id).disabled = true);
+    return;
+  }
+  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
+  const start = (currentPage - 1) * pageSize + 1;
+  const end = Math.min(totalCount, currentPage * pageSize);
+  document.getElementById('pagerInfo').textContent = x.pagerShowing.replace('{a}',start).replace('{b}',end).replace('{n}',totalCount);
+  document.getElementById('pagerPageLabel').textContent = x.pagerPage.replace('{p}',currentPage).replace('{t}',totalPages);
+  document.getElementById('pagerFirst').disabled = currentPage <= 1;
+  document.getElementById('pagerPrev').disabled = currentPage <= 1;
+  document.getElementById('pagerNext').disabled = currentPage >= totalPages;
+  document.getElementById('pagerLast').disabled = currentPage >= totalPages;
+}
+
+function refresh(resetPage){
+  if(resetPage) currentPage = 1;
   const all = buildRows();
   const rows = filteredRows(all);
   renderSummary(rows);
-  renderTable(rows);
+  const pageRows = paginate(rows);
+  renderTable(pageRows);
+  renderPager(rows.length);
   return rows;
 }
 
@@ -357,7 +466,7 @@ function currentExportData(){
   const body = rows.map(r => [
     r.agencyName,
     r.isLeader ? x.roleLeader : x.roleAgent,
-    r.agentName,
+    formatAgentDisplayName_(r.agentName),
     r.email || '',
     r.states.join(', '),
     r.completedCount,
@@ -401,6 +510,8 @@ function applyLang(){
   document.getElementById('lblAgency').textContent = x.lblAgency;
   document.getElementById('lblSearch').textContent = x.lblSearch;
   document.getElementById('searchInput').placeholder = x.searchPlaceholder;
+  document.getElementById('lblPageSize').textContent = x.lblPageSize;
+  document.getElementById('pageSizeAllOpt').textContent = x.pageSizeAll;
   document.getElementById('lblCsv').textContent = x.lblCsv;
   document.getElementById('lblXlsx').textContent = x.lblXlsx;
   document.getElementById('legendCompleted').textContent = x.legendCompleted;
@@ -421,12 +532,20 @@ document.getElementById('langBtn').addEventListener('click', toggleLang);
 
 document.getElementById('agencyFilter').addEventListener('change', (e)=>{
   agencyFilterValue = e.target.value;
-  refresh();
+  refresh(true);
 });
 document.getElementById('searchInput').addEventListener('input', (e)=>{
   searchValue = e.target.value;
-  refresh();
+  refresh(true);
 });
+document.getElementById('pageSizeSelect').addEventListener('change', (e)=>{
+  pageSize = e.target.value === 'all' ? 'all' : parseInt(e.target.value, 10);
+  refresh(true);
+});
+document.getElementById('pagerFirst').addEventListener('click', ()=>{ currentPage = 1; refresh(); });
+document.getElementById('pagerPrev').addEventListener('click', ()=>{ currentPage -= 1; refresh(); });
+document.getElementById('pagerNext').addEventListener('click', ()=>{ currentPage += 1; refresh(); });
+document.getElementById('pagerLast').addEventListener('click', ()=>{ currentPage = Infinity; refresh(); }); // clamped inside paginate()
 document.getElementById('btnCsv').addEventListener('click', downloadCsv);
 document.getElementById('btnXlsx').addEventListener('click', downloadXlsx);
 
