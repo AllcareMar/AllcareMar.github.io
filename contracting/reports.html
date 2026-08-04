@@ -457,6 +457,14 @@ function showLoginGate(errorMsg){
   google.accounts.id.renderButton(document.getElementById('googleSignInBtn'), {theme:'outline', size:'large'});
 }
 
+// Hides the "PREVIEW — reporting mockup" banner once real live data is
+// loaded (2026-08-04) — was being shown unconditionally regardless of mode.
+// Only called when status.mode === 'live'; static mode keeps showing it.
+function hidePreviewNotices_(){
+  const banner = document.querySelector('.banner');
+  if(banner) banner.style.display = 'none';
+}
+
 async function onGoogleCredential(response){
   setStoredIdToken(response.credential);
   const status = await initData();
@@ -464,6 +472,7 @@ async function onGoogleCredential(response){
     document.getElementById('loginGate').classList.remove('show');
     document.getElementById('mainWrap').style.display = 'block';
     applyLang(); // applyLang() itself calls populateAgencyFilter() + refresh()
+    hidePreviewNotices_();
   } else {
     showLoginGate(status.error || t().loginNotAuthorized);
   }
@@ -475,6 +484,7 @@ async function boot(){
     document.getElementById('loginGate').classList.remove('show');
     document.getElementById('mainWrap').style.display = 'block';
     applyLang(); // applyLang() itself calls populateAgencyFilter() + refresh()
+    if(status.mode === 'live') hidePreviewNotices_();
   } else if(status.mode === 'needs-login'){
     applyLang(); // so login gate text is translated even before data loads
     showLoginGate(status.error);

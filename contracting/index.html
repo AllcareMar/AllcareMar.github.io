@@ -854,6 +854,19 @@ function showLoginGate(errorMsg){
   google.accounts.id.renderButton(document.getElementById('googleSignInBtn'), {theme:'outline', size:'large'});
 }
 
+// Hides the "PREVIEW — visual mockup" banner + the yellow "this is only the
+// visual/UX side" note once real live data is loaded (2026-08-04) — both
+// were being shown unconditionally regardless of mode, which was misleading
+// after the backend actually went live (Jesus caught this in production).
+// Only called when status.mode === 'live'; static mode keeps showing both,
+// same as always.
+function hidePreviewNotices_(){
+  const banner = document.querySelector('.banner');
+  if(banner) banner.style.display = 'none';
+  const mockNote = document.querySelector('.mock-note');
+  if(mockNote) mockNote.style.display = 'none';
+}
+
 async function onGoogleCredential(response){
   setStoredIdToken(response.credential);
   const status = await initData();
@@ -861,6 +874,7 @@ async function onGoogleCredential(response){
     document.getElementById('loginGate').classList.remove('show');
     document.getElementById('mainWrap').style.display = 'block';
     applyLang();
+    hidePreviewNotices_();
     goStep(1);
   } else {
     showLoginGate(status.error || t().loginNotAuthorized);
@@ -873,6 +887,7 @@ async function boot(){
   if(status.mode === 'live' || status.mode === 'static'){
     document.getElementById('loginGate').classList.remove('show');
     document.getElementById('mainWrap').style.display = 'block';
+    if(status.mode === 'live') hidePreviewNotices_();
     goStep(1);
   } else if(status.mode === 'needs-login'){
     showLoginGate(status.error);
