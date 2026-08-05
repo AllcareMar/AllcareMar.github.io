@@ -402,11 +402,40 @@ function licensePersonFor(type, entityId){
   return type === 'agency' ? AGENCIES[entityId].leaderAgentId : entityId;
 }
 
+// Exceptions to the normal "agent is gated by their OWN agency leader
+// completing the carrier first" rule (per Jesus, 2026-08-05): some agencies
+// can never get a given carrier contracted at the AGENCY level themselves
+// (e.g. KMRA Group LLC can't be contracted with Humana as an entity), but
+// their individual AGENTS still can be, on their own. Without this
+// exception, those agents would be permanently locked out of that carrier
+// forever, since their own agency leader's completion can never happen.
+// Listed agents fall back to being gated by the MASTER leader's completion
+// instead (same treatment a normal agency LEADER already gets) — everything
+// else about the carrier (state license, etc.) still applies as normal.
+// Only affects regular agents, never the agency/leader-level view itself —
+// KMRA's own agency card stays locked for Humana, exactly as intended.
+//
+// `let`, not `const` (2026-08-05, per Jesus: he wants to be able to add
+// future cases like this himself, for other agencies, without asking for a
+// code change each time): once live, `applyLiveData_()` below overwrites
+// this with whatever is in Config!carrier_gating_exceptions on the Sheet,
+// if that row has a value. This hardcoded entry stays as the fallback for
+// static/mock mode, and for live mode too until Jesus actually fills in
+// that Config row — see Code.gs's getCarrierGatingExceptions_() for the
+// exact row format ("agencyId|Carrier Name; agencyId2|Other Carrier").
+let CARRIER_GATING_EXCEPTIONS = [
+  {agencyId:'kmra-group-llc', carrierName:'Humana + CarePlus'},
+];
+function hasCarrierGatingException_(agencyId, carrierName){
+  return CARRIER_GATING_EXCEPTIONS.some(e => e.agencyId === agencyId && e.carrierName === carrierName);
+}
+
 // Carrier-level filter (per Jesus, 2026-08-03 + follow-ups):
 // TWO independent conditions must both pass, or the carrier stays locked:
 //   1) HIERARCHY GATING — master leader (Marcos) unrestricted; other agency
 //      leaders gated by Marcos completing the carrier; regular agents gated
-//      by their OWN agency leader completing the carrier.
+//      by their OWN agency leader completing the carrier (unless a gating
+//      exception applies, see CARRIER_GATING_EXCEPTIONS above).
 //   2) STATE LICENSE — if the carrier is restricted to specific states, the
 //      person must be licensed in at least one of them (unrestricted carriers
 //      are unaffected by license, per Jesus 2026-08-03).
@@ -426,6 +455,7 @@ function getCarrierEnabled(type, entityId, carrierName){
   let gatingOk;
   if(agencyId === masterAgencyId && isThisTheLeader) gatingOk = true;
   else if(isThisTheLeader) gatingOk = isCarrierDoneFor(masterLeaderId, carrierName);
+  else if(hasCarrierGatingException_(agencyId, carrierName)) gatingOk = isCarrierDoneFor(masterLeaderId, carrierName);
   else gatingOk = isCarrierDoneFor(AGENCIES[agencyId].leaderAgentId, carrierName);
 
   if(!gatingOk) return {enabled:false, reason:'gating', requiredStates:[]};
@@ -541,6 +571,15 @@ function applyLiveData_(data){
     if(!newProgress[row.agent_id]) newProgress[row.agent_id] = {};
     const steps = {};
     STEPS.forEach(s=>{ if(row['step_'+s.key]) steps[s.key] = row['step_'+s.key]; });
+    // Carry the uploaded certificate's link through too (2026-08-05, per
+    // Jesus: agents need to be able to replace a wrongly-uploaded file, and
+    // staff need to see WHICH file is currently on file before/after doing
+    // that). Previously dropped entirely — the checklist UI had no way to
+    // know a file already existed, so it always showed "No file selected
+    // yet" even when one was attached. `file_url_g` is not a per-step key,
+    // it belongs to the whole agent+carrier row, so it's not looped through
+    // STEPS above — attached directly instead.
+    if(row.file_url_g) steps.fileUrl = row.file_url_g;
     newProgress[row.agent_id][row.carrier_name] = steps;
   });
 
@@ -550,6 +589,13 @@ function applyLiveData_(data){
   CARRIERS = newCarriers;
   CARRIER_STATES = newCarrierStates;
   PROGRESS = newProgress;
+
+  // Config!carrier_gating_exceptions override (2026-08-05, per Jesus — see
+  // CARRIER_GATING_EXCEPTIONS above): only replaces the hardcoded default
+  // when Code.gs actually found a non-empty row in Config. Until Jesus fills
+  // that row in, KMRA/Humana (the hardcoded default) keeps working exactly
+  // as before — this is additive, not a breaking change.
+  if(data.carrierGatingExceptions) CARRIER_GATING_EXCEPTIONS = data.carrierGatingExceptions;
 }
 
 // Fetches getAllData from the deployed Web App using the given Google
