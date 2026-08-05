@@ -29,9 +29,14 @@ const STEPS = [
   {key:'j', label:'Trainings'},
 ];
 
-// ---- Who receives the automatic contracting emails, per step (2026-08-04) ----
-// Every step's "Send Email" button sends to BOTH addresses below (per Jesus).
-const EMAIL_RECIPIENTS = ['info@allcaremar.com', 'acastillo@allcaremar.com'];
+// ---- Who receives the automatic contracting emails, per step (updated
+// 2026-08-05, per Jesus) — used only for the STATIC/mock preview's
+// on-screen "sent to" confirmation text (see sendStepEmail() in
+// preview-contracting.html); the real send in live mode reads from
+// Code.gs's DEFAULT_EMAIL_RECIPIENTS / the Config sheet instead, which must
+// be kept in sync with this manually since they're two separate files. CC
+// (mrodriguez/acastillo/epeguero/info) isn't shown here, only the TO. ----
+const EMAIL_RECIPIENTS = ['contracts@berwickinsurance.com', 'nicole.bojorquez@berwickinsurance.com', 'Adriana.Audino@berwickinsurance.com'];
 
 // ---- Who is authorized to open preview-contracting.html / reports.html
 // (Google Workspace login gate) — declared in assets/js/config.js instead
@@ -477,14 +482,23 @@ function liveModeReady(){
   return hasLiveBackend() && typeof GOOGLE_CLIENT_ID !== 'undefined' && !!GOOGLE_CLIENT_ID;
 }
 
+// Switched from sessionStorage to localStorage (2026-08-05, per Jesus:
+// login wasn't "sticking" — sessionStorage clears on every tab/browser
+// close, forcing a fresh Google login each time). localStorage persists
+// across tab/browser restarts, so a valid session now survives reloads.
+// Note: this does NOT make login last forever — Google's idToken itself
+// expires (~1 hour), and initData() already calls clearStoredIdToken() +
+// shows the login gate again the moment the stored token is rejected as
+// invalid/expired. That re-login prompt after ~1hr of inactivity is
+// expected Google security behavior, not a bug.
 function getStoredIdToken(){
-  try{ return sessionStorage.getItem(ID_TOKEN_STORAGE_KEY) || null; } catch(e){ return null; }
+  try{ return localStorage.getItem(ID_TOKEN_STORAGE_KEY) || null; } catch(e){ return null; }
 }
 function setStoredIdToken(token){
-  try{ sessionStorage.setItem(ID_TOKEN_STORAGE_KEY, token); } catch(e){}
+  try{ localStorage.setItem(ID_TOKEN_STORAGE_KEY, token); } catch(e){}
 }
 function clearStoredIdToken(){
-  try{ sessionStorage.removeItem(ID_TOKEN_STORAGE_KEY); } catch(e){}
+  try{ localStorage.removeItem(ID_TOKEN_STORAGE_KEY); } catch(e){}
 }
 
 // Converts the flat rows returned by Code.gs (getAllData_) into the same
