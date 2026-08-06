@@ -13,17 +13,17 @@
 // request, never trusting whatever localStorage claims.
 // ============================================================================
 
-import { GOOGLE_CLIENT_ID, isEmailAllowed } from "../../google-config.js";
+import { GOOGLE_CLIENT_ID, isEmailAllowed } from "../../../google-config.js";
 
 export function guard() {
   const raw = localStorage.getItem('acm_gsession');
-  if (!raw) { window.location.href = '../login.html'; return null; }
+  if (!raw) { window.location.href = '../../../login.html'; return null; }
   let session;
   try { session = JSON.parse(raw); }
-  catch (e) { localStorage.removeItem('acm_gsession'); window.location.href = '../login.html'; return null; }
+  catch (e) { localStorage.removeItem('acm_gsession'); window.location.href = '../../../login.html'; return null; }
   if (!isEmailAllowed(session.email) || !session.localExp || Date.now() > session.localExp) {
     localStorage.removeItem('acm_gsession');
-    window.location.href = '../login.html';
+    window.location.href = '../../../login.html';
     return null;
   }
   return session;
@@ -57,7 +57,7 @@ export function getFreshIdToken() {
 export async function apiFetch(apiBase, path, options = {}) {
   let token;
   try { token = await getFreshIdToken(); }
-  catch (e) { window.location.href = '../login.html'; throw e; }
+  catch (e) { window.location.href = '../../../login.html'; throw e; }
 
   const resp = await fetch(apiBase + path, {
     ...options,
@@ -67,7 +67,7 @@ export async function apiFetch(apiBase, path, options = {}) {
       ...(options.body && !(options.body instanceof Blob) ? { 'Content-Type': 'application/json' } : {})
     }
   });
-  if (resp.status === 401) { window.location.href = '../login.html'; throw new Error('unauthorized'); }
+  if (resp.status === 401) { window.location.href = '../../../login.html'; throw new Error('unauthorized'); }
   return resp;
 }
 
