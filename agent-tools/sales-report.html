@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Daily Sales Report — Allcare Mar Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+:root{
+  --blue:#1a2fd4; --blue-dark:#0f1e9a; --blue-light:#e8ecff;
+  --red:#e8001d; --red-dark:#b50016; --red-light:#fff0f2;
+  --white:#ffffff; --gray-50:#faf8f5; --gray-100:#f3efe9; --gray-200:#e6e0d6;
+  --gray-400:#8b8377; --gray-600:#544f47; --gray-800:#2b2723;
+  --green:#00a86b;
+  --r:12px; --r-lg:20px;
+  --sh:0 4px 24px rgba(58,53,48,.08); --sh-lg:0 16px 56px rgba(58,53,48,.14);
+  --t:.25s ease;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Open Sans',sans-serif;color:var(--gray-800);background:var(--gray-50);min-height:100vh}
+h1,h2,h3{font-family:'Montserrat',sans-serif;line-height:1.2}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+
+.rv-header{display:flex;align-items:center;justify-content:space-between;padding:18px 5vw;background:linear-gradient(135deg,var(--blue-dark),var(--blue));color:#fff;flex-wrap:wrap;gap:12px}
+.rv-header .brand{display:flex;align-items:center;gap:14px}
+.rv-header .brand img{height:30px;filter:brightness(0) invert(1)}
+.rv-header h1{font-size:16px;font-weight:800}
+.rv-header .sub{font-size:11.5px;opacity:.8}
+.rv-header-right{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.rv-who{text-align:right;font-size:12px}
+.rv-who b{font-family:'Montserrat',sans-serif;font-weight:800;display:block;font-size:13px}
+.lang-toggle{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:20px;padding:8px 14px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:11.5px;cursor:pointer}
+.lang-toggle:hover{background:rgba(255,255,255,.26)}
+.btn-logout{background:var(--red);border:none;color:#fff;padding:9px 16px;border-radius:20px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:12px;cursor:pointer}
+.btn-logout:hover{background:var(--red-dark)}
+
+.rv-wrap{max-width:900px;margin:0 auto;padding:32px 5vw 80px}
+.rv-banner{background:#fff3cd;border:1px solid #ffe08a;color:#7a5b00;font-size:13px;padding:14px 18px;border-radius:10px;margin-bottom:22px;line-height:1.6;display:none}
+.rv-banner.show{display:block}
+.rv-tabs{display:flex;gap:4px;margin-bottom:0}
+.rv-tab{padding:11px 18px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;border:1.5px solid var(--gray-200);border-bottom:none;border-radius:12px 12px 0 0;cursor:pointer;background:var(--gray-100);color:var(--gray-600)}
+.rv-tab.on{background:#fff;color:var(--blue-dark);border-color:var(--gray-200)}
+.rv-panel{border:1.5px solid var(--gray-200);border-radius:0 var(--r-lg) var(--r-lg) var(--r-lg);padding:24px;background:#fff;box-shadow:var(--sh)}
+.rv-panel[hidden]{display:none}
+
+.frm-lbl{display:block;font-size:12.5px;font-weight:700;color:var(--gray-800);margin-bottom:6px;font-family:'Montserrat',sans-serif}
+.frm-hint{font-size:12px;color:var(--gray-600);margin-bottom:16px}
+select,input[type=number],input[type=date],input[type=text]{width:100%;padding:11px 13px;border:1.5px solid var(--gray-200);border-radius:10px;font-size:14px;font-family:'Open Sans',sans-serif;background:#fff;color:var(--gray-800)}
+select:focus,input:focus{outline:none;border-color:var(--blue)}
+
+.sale-card{border:1.5px solid var(--gray-200);border-radius:var(--r);padding:16px;margin-bottom:14px;background:var(--gray-50)}
+.sale-card h4{font-size:13.5px;margin-bottom:12px;color:var(--blue-dark)}
+.carrier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.carrier-card{border:1.5px solid var(--gray-200);border-radius:10px;padding:8px 6px;text-align:center;font-size:11px;font-weight:700;cursor:pointer;background:#fff;font-family:'Montserrat',sans-serif;color:var(--gray-800);height:64px;display:flex;align-items:center;justify-content:center}
+.carrier-card:hover{border-color:var(--blue)}
+.carrier-card img{max-height:100%;max-width:100%;object-fit:contain}
+.carrier-chip{display:flex;align-items:center;gap:10px;border:1.5px solid var(--blue);background:var(--blue-light);border-radius:10px;padding:8px 14px;margin-bottom:14px}
+.carrier-chip img{height:26px;max-width:60px;object-fit:contain}
+.carrier-chip b{color:var(--blue-dark);font-family:'Montserrat',sans-serif;flex:1}
+.carrier-chip button{background:none;border:1px solid var(--blue);color:var(--blue-dark);border-radius:8px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.btn-primary{width:100%;background:var(--blue);color:#fff;border:none;padding:13px;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:14.5px;font-weight:800;cursor:pointer;margin-top:8px}
+.btn-primary:hover{background:var(--blue-dark)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-sec{background:#fff;border:1.5px solid var(--blue);color:var(--blue-dark);padding:9px 14px;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:12.5px;font-weight:700;cursor:pointer}
+
+table.rv-table{width:100%;border-collapse:collapse;font-size:12.5px}
+table.rv-table th{background:var(--blue-dark);color:#fff;font-family:'Montserrat',sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:.04em;padding:9px 10px;text-align:left}
+table.rv-table td{padding:9px 10px;border-bottom:1px solid var(--gray-200)}
+
+.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px}
+.metric-card{background:var(--gray-50);border-radius:var(--r);padding:14px;text-align:center}
+.metric-card b{display:block;font-family:'Montserrat',sans-serif;font-size:22px;font-weight:800;color:var(--blue-dark)}
+.metric-card span{font-size:11.5px;color:var(--gray-600)}
+.rv-divider{border-top:1.5px solid var(--gray-200);margin:26px 0}
+.rv-h4{font-size:14.5px;font-weight:800;color:var(--blue-dark);margin-bottom:10px}
+.filter-row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.filter-row>*{flex:1;min-width:130px}
+.export-row{display:flex;gap:10px;margin-top:14px}
+.export-row button{flex:1}
+.agent-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--gray-200);font-size:13px}
+.agent-row .status-active{color:var(--green);font-weight:700}
+.agent-row .status-inactive{color:var(--red);font-weight:700}
+
+.floating-counter{position:fixed;bottom:22px;right:22px;z-index:999;background:var(--blue-dark);color:#fff;border-radius:30px;padding:10px 18px 10px 14px;box-shadow:var(--sh-lg);font-size:13px;display:flex;align-items:center;gap:8px}
+.floating-counter b{font-size:16px}
+@media(max-width:700px){.metric-grid,.carrier-grid,.grid3{grid-template-columns:repeat(2,1fr)}.filter-row>*{min-width:100%}}
+</style>
+</head>
+<body>
+<header class="rv-header">
+  <div class="brand">
+    <img src="../assets/img/logo-allcaremar.png" alt="Allcare Mar"/>
+    <div><h1 id="hTitle"></h1><div class="sub" id="hSub"></div></div>
+  </div>
+  <div class="rv-header-right">
+    <div class="rv-who"><b id="whoName"></b><span id="whoEmail"></span></div>
+    <button class="lang-toggle" id="langBtn">ES</button>
+    <button class="btn-logout" id="logoutBtn"></button>
+  </div>
+</header>
+
+<main class="rv-wrap">
+  <div class="rv-banner" id="apiBanner"></div>
+
+  <div class="rv-tabs" id="tabs">
+    <div class="rv-tab on" data-t="reg" id="tabReg"></div>
+    <div class="rv-tab" data-t="hist" id="tabHist"></div>
+    <div class="rv-tab" data-t="admin" id="tabAdmin" style="display:none"></div>
+  </div>
+
+  <div class="rv-panel" id="p-reg">
+    <label class="frm-lbl" id="lblLine"></label>
+    <select id="insuranceLine" style="max-width:280px;margin-bottom:16px">
+      <option value="health" id="optHealth"></option>
+      <option value="life" disabled id="optLife"></option>
+      <option value="aca" disabled id="optAca"></option>
+    </select>
+
+    <label class="frm-lbl" id="lblNum"></label>
+    <input type="number" id="numSales" min="0" max="15" value="0" style="max-width:120px;margin-bottom:6px">
+    <p class="frm-hint" id="hintNum"></p>
+
+    <div id="dateRow" style="display:none;margin-bottom:6px">
+      <label class="frm-lbl" id="lblDate"></label>
+      <input type="date" id="saleDate" style="max-width:220px">
+      <p class="frm-hint" id="hintDate"></p>
+    </div>
+
+    <div id="saleBlocks"></div>
+    <p class="frm-hint" id="hintComplete" style="display:none"></p>
+    <button class="btn-primary" id="submitBtn" disabled></button>
+    <div id="regSuccess" style="display:none;margin-top:14px;color:var(--green);font-weight:700;font-size:13.5px"></div>
+  </div>
+
+  <div class="rv-panel" id="p-hist" hidden>
+    <label class="frm-lbl" id="lblFilterCarrier"></label>
+    <select id="histCarrierFilter" style="max-width:260px;margin-bottom:16px"></select>
+    <div id="histTableWrap"></div>
+    <p class="frm-hint" id="histTotal" style="margin-top:12px"></p>
+  </div>
+
+  <div class="rv-panel" id="p-admin" hidden>
+    <div class="metric-grid" id="metricGrid"></div>
+
+    <div class="rv-h4" id="hChart"></div>
+    <p class="frm-hint" id="hintChart"></p>
+    <div class="filter-row">
+      <select id="ptCarrier"></select>
+      <select id="ptPlan"></select>
+      <input type="date" id="ptFrom">
+      <input type="date" id="ptTo">
+    </div>
+    <div id="ptChart" style="margin-bottom:6px"></div>
+    <div class="export-row">
+      <button class="btn-sec" id="ptExportCsv"></button>
+      <button class="btn-sec" id="ptExportXlsx"></button>
+    </div>
+
+    <div class="rv-divider"></div>
+    <div class="rv-h4" id="hFullHist"></div>
+    <div class="filter-row">
+      <input type="date" id="histFrom">
+      <input type="date" id="histTo">
+      <select id="histAgent"></select>
+    </div>
+    <div id="fullHistWrap"></div>
+    <div class="export-row">
+      <button class="btn-sec" id="fullExportCsv"></button>
+      <button class="btn-sec" id="fullExportXlsx"></button>
+    </div>
+
+    <div class="rv-divider"></div>
+    <p class="frm-hint" id="backupStatus"></p>
+    <button class="btn-sec" id="backupNowBtn"></button>
+
+    <div class="rv-divider"></div>
+    <div class="rv-h4" id="hAgents"></div>
+    <div id="agentsList"></div>
+  </div>
+</main>
+
+<div class="floating-counter" id="floatCounter" style="display:none">
+  <i class="fas fa-shopping-bag"></i><span><b id="floatN">0</b> <span id="floatLbl"></span></span>
+</div>
+
+<script type="module">
+import { API_BASE, apiReady } from "./assets/js/api-config.js";
+import { guard, apiJson, apiDownload } from "./assets/js/agent-api-session.js";
+
+const session = guard();
+let curLang = 'en';
+let ME = null;
+
+const CARRIERS_FALLBACK = [
+  {name:"UnitedHealthcare", logo:"unitedhealthcare.png"}, {name:"Humana", logo:"humana.png"},
+  {name:"Devoted", logo:"devoted.png"}, {name:"Scan Health", logo:"scan_health.png"},
+  {name:"Aetna", logo:"aetna.png"}, {name:"HealthFirst", logo:"healthfirst.png"},
+  {name:"Anthem BCBS", logo:"anthem_bcbs.png"}, {name:"Wellcare", logo:"wellcare.png"},
+  {name:"Wellpoint", logo:"wellpoint.png"}, {name:"Jefferson Health", logo:"jefferson_health.png"},
+  {name:"Horizon", logo:"horizon.png"}, {name:"Fidelis", logo:"fidelis.png"},
+  {name:"Molina Healthcare", logo:"molina.png"}, {name:"Cigna", logo:"cigna.png"},
+  {name:"Emblem Health", logo:"emblem_health.png"}
+];
+let OPTIONS = { carriers: CARRIERS_FALLBACK, plan_types: ["PPO","HMO","DSNP","CSNP Chronic Plans","Medicare Supplement","PDP"], enrollment_types:["IEP","AEP","OEP","SEP","Plan Change","Carrier Change"], lead_sources:["MIRA Lead","Allcare Mar Lead","Event Lead","Referral Lead","Carrier Leads","Integrity Leads"] };
+
+const I18N = {
+en:{
+  title:"Daily Sales Report", sub:"Allcare Mar Agency", logout:"Sign out",
+  apiPending:"This tool is being connected to the server — check back soon.",
+  tabReg:"Register Sale", tabHist:"My History", tabAdmin:"Administration",
+  lblLine:"Insurance Line", optHealth:"Health Insurance", optLife:"Life Insurance (coming soon)", optAca:"ACA (coming soon)",
+  lblNum:"How many sales are you registering?", hintNum:"Enter how many sales you're logging above to open the fields.",
+  lblDate:"Date of these sales", hintDate:"You can change this if you're logging a sale from a previous day. Applies to the whole batch below.",
+  saleNum:n=>"Sale #"+n, carrierLbl:"Carrier", change:"Change",
+  planLbl:"Plan Type", enrollLbl:"Enrollment Type", leadLbl:"Lead Source", selectPh:"— Select option —",
+  hintComplete:"Complete every field on every sale to enable the button.",
+  submit:n=>"Register "+n+" sale(s)", success:(n,d)=>"✓ "+n+" sale(s) registered for "+d+".",
+  filterCarrier:"Carrier", allCarriers:"All carriers",
+  colDate:"Date", colCarrier:"Carrier", colLine:"Line", colPlan:"Plan", colEnroll:"Enrollment", colLead:"Lead Source", colRegAt:"Registered at",
+  histEmpty:"No sales logged in the last 30 days yet.", histTotal:n=>"Total sales (last 30 days): "+n,
+  mToday:"Sales Today", mMonth:"Sales This Month", mAgents:"Active Agents", mTop:"Top Carrier (month)",
+  hChart:"Sales by Plan Type", hintChart:"Filter by carrier, plan type, and/or a date range — shows the current year by default.",
+  exportCsv:"Download CSV", exportXlsx:"Download Excel",
+  hFullHist:"Full history", allAgents:"All agents",
+  backupBtn:"Run backup now", backupStatus:ts=>ts?("✓ Last backup: "+ts):"No backup yet.",
+  hAgents:"Agent management", active:"Active", inactive:"Deactivated", deactivate:"Deactivate", activate:"Activate",
+  floatLbl:"sales today", allPlans:"All plan types",
+},
+es:{
+  title:"Reporte de Ventas Diario", sub:"Allcare Mar Agency", logout:"Cerrar sesión",
+  apiPending:"Esta herramienta se está conectando al servidor — vuelve pronto.",
+  tabReg:"Registrar Venta", tabHist:"Mi Historial", tabAdmin:"Administración",
+  lblLine:"Línea de Seguro", optHealth:"Seguro de Salud", optLife:"Seguro de Vida (próximamente)", optAca:"ACA (próximamente)",
+  lblNum:"¿Cuántas ventas vas a registrar?", hintNum:"Escribe arriba cuántas ventas vas a registrar para que aparezcan los campos.",
+  lblDate:"Fecha de estas ventas", hintDate:"Cámbiala si estás registrando una venta de un día anterior. Aplica a todo el lote de abajo.",
+  saleNum:n=>"Venta #"+n, carrierLbl:"Carrier", change:"Cambiar",
+  planLbl:"Tipo de Plan", enrollLbl:"Tipo de Inscripción", leadLbl:"Fuente del Lead", selectPh:"— Selecciona una opción —",
+  hintComplete:"Completa todos los campos de cada venta para habilitar el botón.",
+  submit:n=>"Registrar "+n+" venta(s)", success:(n,d)=>"✓ "+n+" venta(s) registrada(s) para el "+d+".",
+  filterCarrier:"Carrier", allCarriers:"Todos los carriers",
+  colDate:"Fecha", colCarrier:"Carrier", colLine:"Línea", colPlan:"Plan", colEnroll:"Inscripción", colLead:"Fuente de Lead", colRegAt:"Registrado el",
+  histEmpty:"Todavía no has registrado ventas en los últimos 30 días.", histTotal:n=>"Total de ventas (últimos 30 días): "+n,
+  mToday:"Ventas Hoy", mMonth:"Ventas Este Mes", mAgents:"Agentes Activos", mTop:"Carrier Líder (mes)",
+  hChart:"Ventas por Tipo de Plan", hintChart:"Filtra por carrier, tipo de plan y/o un rango de fechas — muestra el año actual por defecto.",
+  exportCsv:"Descargar CSV", exportXlsx:"Descargar Excel",
+  hFullHist:"Historial completo", allAgents:"Todos los agentes",
+  backupBtn:"Generar backup ahora", backupStatus:ts=>ts?("✓ Último backup: "+ts):"Sin backups todavía.",
+  hAgents:"Gestión de agentes", active:"Activo", inactive:"De baja", deactivate:"Desactivar", activate:"Activar",
+  floatLbl:"ventas hoy", allPlans:"Todos los tipos de plan",
+}
+};
+function t(k){ return I18N[curLang][k]; }
+
+function applyStaticText(){
+  document.getElementById('hTitle').textContent = t('title');
+  document.getElementById('hSub').textContent = t('sub');
+  document.getElementById('logoutBtn').textContent = t('logout');
+  document.getElementById('tabReg').textContent = t('tabReg');
+  document.getElementById('tabHist').textContent = t('tabHist');
+  document.getElementById('tabAdmin').textContent = t('tabAdmin');
+  document.getElementById('lblLine').textContent = t('lblLine');
+  document.getElementById('optHealth').textContent = t('optHealth');
+  document.getElementById('optLife').textContent = t('optLife');
+  document.getElementById('optAca').textContent = t('optAca');
+  document.getElementById('lblNum').textContent = t('lblNum');
+  document.getElementById('hintNum').textContent = t('hintNum');
+  document.getElementById('lblDate').textContent = t('lblDate');
+  document.getElementById('hintDate').textContent = t('hintDate');
+  document.getElementById('hintComplete').textContent = t('hintComplete');
+  document.getElementById('lblFilterCarrier').textContent = t('filterCarrier');
+  document.getElementById('hChart').textContent = t('hChart');
+  document.getElementById('hintChart').textContent = t('hintChart');
+  document.getElementById('ptExportCsv').textContent = t('exportCsv');
+  document.getElementById('ptExportXlsx').textContent = t('exportXlsx');
+  document.getElementById('hFullHist').textContent = t('hFullHist');
+  document.getElementById('fullExportCsv').textContent = t('exportCsv');
+  document.getElementById('fullExportXlsx').textContent = t('exportXlsx');
+  document.getElementById('backupNowBtn').textContent = t('backupBtn');
+  document.getElementById('hAgents').textContent = t('hAgents');
+  document.getElementById('floatLbl').textContent = t('floatLbl');
+  renderNumSalesUI();
+  fillSelectOptions();
+}
+
+document.getElementById('langBtn').addEventListener('click', ()=>{
+  curLang = curLang === 'en' ? 'es' : 'en';
+  document.getElementById('langBtn').textContent = curLang === 'en' ? 'ES' : 'EN';
+  applyStaticText();
+});
+
+document.getElementById('logoutBtn').addEventListener('click', ()=>{
+  localStorage.removeItem('acm_gsession');
+  if (typeof google !== 'undefined' && google.accounts) { try { google.accounts.id.disableAutoSelect(); } catch(e){} }
+  window.location.href = '../login.html';
+});
+
+if (session) {
+  document.getElementById('whoName').textContent = session.name || session.email;
+  document.getElementById('whoEmail').textContent = session.email;
+}
+
+document.querySelectorAll('.rv-tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.rv-tab').forEach(x=>x.classList.remove('on'));
+    tab.classList.add('on');
+    ['reg','hist','admin'].forEach(k=>{
+      document.getElementById('p-'+k).hidden = (k !== tab.dataset.t);
+    });
+    if (tab.dataset.t === 'hist') loadHistory();
+    if (tab.dataset.t === 'admin') loadAdmin();
+  });
+});
+
+function fillSelectOptions(){
+  const cf = document.getElementById('histCarrierFilter');
+  cf.innerHTML = '<option value="">'+t('allCarriers')+'</option>' + OPTIONS.carriers.map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
+  const ptC = document.getElementById('ptCarrier');
+  ptC.innerHTML = '<option value="">'+t('allCarriers')+'</option>' + OPTIONS.carriers.map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
+  const ptP = document.getElementById('ptPlan');
+  ptP.innerHTML = '<option value="">'+t('allPlans')+'</option>' + OPTIONS.plan_types.map(p=>`<option value="${p}">${p}</option>`).join('');
+}
+
+// ---------------- Tab 1: Register ----------------
+
+let saleState = [];
+
+function renderNumSalesUI(){
+  const n = parseInt(document.getElementById('numSales').value || '0', 10);
+  document.getElementById('dateRow').style.display = n > 0 ? 'block' : 'none';
+  const wrap = document.getElementById('saleBlocks');
+  wrap.innerHTML = '';
+  if (saleState.length !== n) saleState = Array.from({length:n}, () => ({carrier:''}));
+  for (let i = 0; i < n; i++) {
+    const div = document.createElement('div');
+    div.className = 'sale-card';
+    div.innerHTML = `<h4>${t('saleNum')(i+1)}</h4><div class="carrierZone" data-i="${i}"></div>
+      <div class="grid3">
+        <select data-role="plan" data-i="${i}"><option value="">${t('selectPh')}</option>${OPTIONS.plan_types.map(p=>`<option value="${p}">${p}</option>`).join('')}</select>
+        <select data-role="enroll" data-i="${i}"><option value="">${t('selectPh')}</option>${OPTIONS.enrollment_types.map(p=>`<option value="${p}">${p}</option>`).join('')}</select>
+        <select data-role="lead" data-i="${i}"><option value="">${t('selectPh')}</option>${OPTIONS.lead_sources.map(p=>`<option value="${p}">${p}</option>`).join('')}</select>
+      </div>`;
+    wrap.appendChild(div);
+    renderCarrierZone(i);
+    div.querySelectorAll('select[data-role]').forEach(sel=>{
+      sel.addEventListener('change', checkComplete);
+    });
+  }
+  checkComplete();
+}
+document.getElementById('numSales').addEventListener('input', renderNumSalesUI);
+
+function renderCarrierZone(i){
+  const zone = document.querySelector(`.carrierZone[data-i="${i}"]`);
+  const picked = saleState[i].carrier;
+  if (picked) {
+    const pickedOpt = OPTIONS.carriers.find(c=>c.name===picked);
+    zone.innerHTML = `<div class="carrier-chip">${pickedOpt && pickedOpt.logo ? `<img src="../assets/img/carriers-sales/${pickedOpt.logo}" alt="${picked}">` : ''}<b>${picked}</b><button type="button" data-i="${i}">${t('change')}</button></div>`;
+    zone.querySelector('button').addEventListener('click', ()=>{ saleState[i].carrier=''; renderCarrierZone(i); checkComplete(); });
+  } else {
+    zone.innerHTML = `<label class="frm-lbl">${t('carrierLbl')}</label><div class="carrier-grid">` +
+      OPTIONS.carriers.map(c=>`<div class="carrier-card" data-i="${i}" data-c="${c.name}" title="${c.name}">${c.logo ? `<img src="../assets/img/carriers-sales/${c.logo}" alt="${c.name}">` : c.name}</div>`).join('') + `</div>`;
+    zone.querySelectorAll('.carrier-card').forEach(card=>{
+      card.addEventListener('click', ()=>{ saleState[i].carrier = card.dataset.c; renderCarrierZone(i); checkComplete(); });
+    });
+  }
+}
+
+function checkComplete(){
+  const n = saleState.length;
+  const btn = document.getElementById('submitBtn');
+  btn.textContent = t('submit')(n);
+  if (n === 0) { btn.disabled = true; document.getElementById('hintComplete').style.display='none'; return; }
+  let complete = true;
+  for (let i = 0; i < n; i++) {
+    const plan = document.querySelector(`select[data-role="plan"][data-i="${i}"]`)?.value;
+    const enroll = document.querySelector(`select[data-role="enroll"][data-i="${i}"]`)?.value;
+    const lead = document.querySelector(`select[data-role="lead"][data-i="${i}"]`)?.value;
+    if (!saleState[i].carrier || !plan || !enroll || !lead) complete = false;
+  }
+  btn.disabled = !complete;
+  document.getElementById('hintComplete').style.display = complete ? 'none' : 'block';
+}
+
+document.getElementById('submitBtn').addEventListener('click', async ()=>{
+  const n = saleState.length;
+  const sales = [];
+  for (let i = 0; i < n; i++) {
+    sales.push({
+      carrier: saleState[i].carrier,
+      plan_type: document.querySelector(`select[data-role="plan"][data-i="${i}"]`).value,
+      enrollment_type: document.querySelector(`select[data-role="enroll"][data-i="${i}"]`).value,
+      lead_source: document.querySelector(`select[data-role="lead"][data-i="${i}"]`).value,
+    });
+  }
+  const sale_date = document.getElementById('saleDate').value || new Date().toISOString().slice(0,10);
+  try {
+    await apiJson(API_BASE, '/sales/batch', { method:'POST', body: JSON.stringify({ insurance_line:'health', sale_date, sales }) });
+    document.getElementById('regSuccess').style.display = 'block';
+    document.getElementById('regSuccess').textContent = t('success')(n, sale_date);
+    document.getElementById('numSales').value = 0;
+    renderNumSalesUI();
+    loadFloatingCounter();
+  } catch(e) { alert(e.message); }
+});
+
+// ---------------- Tab 2: My history ----------------
+
+async function loadHistory(){
+  const carrier = document.getElementById('histCarrierFilter').value;
+  const rows = await apiJson(API_BASE, '/sales/history/mine' + (carrier ? '?carrier='+encodeURIComponent(carrier) : ''));
+  const wrap = document.getElementById('histTableWrap');
+  if (!rows.length) { wrap.innerHTML = `<p class="frm-hint">${t('histEmpty')}</p>`; document.getElementById('histTotal').textContent=''; return; }
+  wrap.innerHTML = `<table class="rv-table"><tr><th>${t('colDate')}</th><th>${t('colCarrier')}</th><th>${t('colPlan')}</th><th>${t('colEnroll')}</th><th>${t('colLead')}</th></tr>` +
+    rows.map(r=>`<tr><td>${r.sale_date}</td><td>${r.carrier}</td><td>${r.plan_type}</td><td>${r.enrollment_type}</td><td>${r.lead_source}</td></tr>`).join('') + `</table>`;
+  document.getElementById('histTotal').textContent = t('histTotal')(rows.length);
+}
+document.getElementById('histCarrierFilter').addEventListener('change', loadHistory);
+
+// ---------------- Tab 3: Admin ----------------
+
+async function loadAdmin(){
+  const m = await apiJson(API_BASE, '/sales/admin/metrics');
+  document.getElementById('metricGrid').innerHTML = `
+    <div class="metric-card"><b>${m.today}</b><span>${t('mToday')}</span></div>
+    <div class="metric-card"><b>${m.this_month}</b><span>${t('mMonth')}</span></div>
+    <div class="metric-card"><b>${m.active_agents}</b><span>${t('mAgents')}</span></div>
+    <div class="metric-card"><b>${m.top_carrier}</b><span>${t('mTop')}</span></div>`;
+
+  const agents = await apiJson(API_BASE, '/sales/admin/agents');
+  const agentSel = document.getElementById('histAgent');
+  agentSel.innerHTML = `<option value="">${t('allAgents')}</option>` + agents.map(a=>`<option value="${a.email}">${a.agent_name}</option>`).join('');
+
+  document.getElementById('agentsList').innerHTML = agents.map(a=>`
+    <div class="agent-row"><div><b>${a.agent_name}</b> — ${a.email}<br><span class="${a.active?'status-active':'status-inactive'}">${a.active?t('active'):t('inactive')}</span></div>
+    <button class="btn-sec" data-id="${a.id}" data-active="${a.active}">${a.active?t('deactivate'):t('activate')}</button></div>`).join('');
+  document.querySelectorAll('#agentsList button').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      await apiJson(API_BASE, `/sales/admin/agents/${btn.dataset.id}/toggle`, {method:'POST'});
+      loadAdmin();
+    });
+  });
+
+  const bs = await apiJson(API_BASE, '/sales/admin/backup-status');
+  document.getElementById('backupStatus').textContent = t('backupStatus')(bs.last_backup);
+
+  await loadPlanTypeChart();
+  await loadFullHistory();
+}
+
+async function loadPlanTypeChart(){
+  const params = new URLSearchParams();
+  if (document.getElementById('ptCarrier').value) params.set('carrier', document.getElementById('ptCarrier').value);
+  if (document.getElementById('ptPlan').value) params.set('plan_type', document.getElementById('ptPlan').value);
+  if (document.getElementById('ptFrom').value) params.set('date_from', document.getElementById('ptFrom').value);
+  if (document.getElementById('ptTo').value) params.set('date_to', document.getElementById('ptTo').value);
+  const data = await apiJson(API_BASE, '/sales/admin/plan-type-chart?' + params.toString());
+  const entries = Object.entries(data.by_plan_type).sort((a,b)=>b[1]-a[1]);
+  const max = entries.length ? entries[0][1] : 1;
+  document.getElementById('ptChart').innerHTML = entries.map(([k,v])=>
+    `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12.5px">
+      <span style="width:150px">${k}</span>
+      <div style="flex:1;background:var(--gray-100);border-radius:6px;overflow:hidden;height:16px">
+        <div style="width:${(v/max*100)}%;background:var(--blue);height:100%"></div>
+      </div><b>${v}</b></div>`).join('') || `<p class="frm-hint">—</p>`;
+}
+['ptCarrier','ptPlan','ptFrom','ptTo'].forEach(id=>document.getElementById(id).addEventListener('change', loadPlanTypeChart));
+document.getElementById('ptExportCsv').addEventListener('click', ()=>exportFiltered('csv','sales_by_plan_type_filtered.csv'));
+document.getElementById('ptExportXlsx').addEventListener('click', ()=>exportFiltered('xlsx','sales_by_plan_type_filtered.xlsx'));
+async function exportFiltered(fmt, filename){
+  const params = new URLSearchParams();
+  if (document.getElementById('ptFrom').value) params.set('date_from', document.getElementById('ptFrom').value);
+  if (document.getElementById('ptTo').value) params.set('date_to', document.getElementById('ptTo').value);
+  params.set('fmt', fmt);
+  await apiDownload(API_BASE, '/sales/admin/export?' + params.toString(), filename);
+}
+
+async function loadFullHistory(){
+  const params = new URLSearchParams();
+  if (document.getElementById('histFrom').value) params.set('date_from', document.getElementById('histFrom').value);
+  if (document.getElementById('histTo').value) params.set('date_to', document.getElementById('histTo').value);
+  if (document.getElementById('histAgent').value) params.set('agent', document.getElementById('histAgent').value);
+  const rows = await apiJson(API_BASE, '/sales/admin/history?' + params.toString());
+  document.getElementById('fullHistWrap').innerHTML = rows.length ? `<table class="rv-table"><tr><th>${t('colDate')}</th><th>Agent</th><th>${t('colCarrier')}</th><th>${t('colPlan')}</th><th>${t('colEnroll')}</th></tr>` +
+    rows.map(r=>`<tr><td>${r.sale_date}</td><td>${r.agent}</td><td>${r.carrier}</td><td>${r.plan_type}</td><td>${r.enrollment_type}</td></tr>`).join('') + `</table>` : `<p class="frm-hint">—</p>`;
+}
+['histFrom','histTo','histAgent'].forEach(id=>document.getElementById(id).addEventListener('change', loadFullHistory));
+document.getElementById('fullExportCsv').addEventListener('click', ()=>exportFullHistory('csv','sales.csv'));
+document.getElementById('fullExportXlsx').addEventListener('click', ()=>exportFullHistory('xlsx','sales.xlsx'));
+async function exportFullHistory(fmt, filename){
+  const params = new URLSearchParams();
+  if (document.getElementById('histFrom').value) params.set('date_from', document.getElementById('histFrom').value);
+  if (document.getElementById('histTo').value) params.set('date_to', document.getElementById('histTo').value);
+  if (document.getElementById('histAgent').value) params.set('agent', document.getElementById('histAgent').value);
+  params.set('fmt', fmt);
+  await apiDownload(API_BASE, '/sales/admin/export?' + params.toString(), filename);
+}
+document.getElementById('backupNowBtn').addEventListener('click', async ()=>{
+  await apiJson(API_BASE, '/sales/admin/backup', {method:'POST'});
+  loadAdmin();
+});
+
+// ---------------- Floating counter ----------------
+
+async function loadFloatingCounter(){
+  try {
+    const m = await apiJson(API_BASE, '/sales/admin/metrics').catch(()=>null);
+  } catch(e) {}
+}
+
+// ---------------- Init ----------------
+
+async function init(){
+  if (!session) return;
+  if (!apiReady()) {
+    document.getElementById('apiBanner').classList.add('show');
+    applyStaticText();
+    document.getElementById('apiBanner').textContent = t('apiPending');
+    return;
+  }
+  applyStaticText();
+  try {
+    const opts = await apiJson(API_BASE, '/sales/options');
+    OPTIONS = opts;
+    fillSelectOptions();
+    renderNumSalesUI();
+  } catch(e) {}
+  try {
+    ME = await apiJson(API_BASE, '/sales/me');
+    if (ME.is_admin) document.getElementById('tabAdmin').style.display = 'block';
+  } catch(e) {
+    document.getElementById('apiBanner').classList.add('show');
+    document.getElementById('apiBanner').textContent = e.message;
+  }
+}
+init();
+</script>
+</body>
+</html>

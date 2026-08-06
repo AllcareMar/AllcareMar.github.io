@@ -231,11 +231,12 @@ let curLang='en';
 // `dynamic:'gmail'|'gemini'` arma el link en vivo con el email de la sesión
 // activa (ver resolveHref) — no hace falta `href` en esos casos.
 const AGENTS_SUPPORT = [
-  { img:'assets/img/dashboard/daily-sales-report.webp', href:'https://server-bayonne.tailed39b8.ts.net:10000', en:'Daily Sales Report', es:'Reporte Diario de Ventas' },
+  { img:'assets/img/dashboard/daily-sales-report.webp', href:'agent-tools/sales-report.html', en:'Daily Sales Report', es:'Reporte Diario de Ventas' },
   { img:'assets/img/dashboard/it-ticket.webp', href:'https://form.jotform.com/250776977609173', en:'IT Ticket', es:'Ticket de TI' },
   { img:'assets/img/dashboard/appointment-request.webp', comingSoon:true, en:'Appointment Request', es:'Solicitud de Cita' },
   { img:'assets/img/dashboard/agents-contact-list.webp', href:'https://drive.google.com/file/d/1WABdj0wHak0uXmtOo0DrNL4xvYpzwoAj/view?usp=drive_link', en:'Agents Contact List', es:'Directorio de Agentes' },
   { img:'assets/img/dashboard/resources.webp', href:'resources.html', en:'Resources', es:'Recursos' },
+  { icon:'fas fa-calendar-days', bg:'var(--red-light)', fg:'var(--red)', href:'agent-tools/events.html', en:'Events', es:'Eventos' },
   { img:'assets/img/dashboard/whatsapp-web.webp', href:'https://web.whatsapp.com', en:'WhatsApp Web', es:'WhatsApp Web' },
   { img:'assets/img/dashboard/zoom.webp', href:'https://zoom.us/google', en:'Zoom App', es:'Zoom App' },
   { img:'assets/img/dashboard/gmail.webp', dynamic:'gmail', en:'Gmail', es:'Gmail' },
