@@ -197,10 +197,20 @@ function notifyUnauthorized(email){
 // Ajustar aquí si Jesus quiere otra duración (ej. 8*60*60*1000 = 8 horas por turno).
 const SESSION_DURATION_MS = 15*24*60*60*1000; // 15 días
 
-function saveSession(payload){
+function saveSession(payload, rawIdToken){
   localStorage.setItem('acm_gsession', JSON.stringify({
     email: payload.email, name: payload.name || '', picture: payload.picture || '',
-    localExp: Date.now() + SESSION_DURATION_MS
+    localExp: Date.now() + SESSION_DURATION_MS,
+    // Real Google id_token from this login (JWT string) + its real expiry
+    // (payload.exp, seconds since epoch -> ms). Pages that call the backend
+    // API (agent-tools/assets/js/agent-api-session.js) reuse this token
+    // directly while it's still valid instead of silently re-prompting
+    // Google on every click — Google's One Tap suppresses repeated silent
+    // prompts after the first use in a browser, which was causing agents to
+    // get bounced back to the dashboard right after opening Sales
+    // Report/Events.
+    idToken: rawIdToken || null,
+    idTokenExp: payload.exp ? payload.exp * 1000 : 0
   }));
 }
 
@@ -225,7 +235,7 @@ function handleCredentialResponse(response){
   const verified = payload.email_verified === true;
 
   if(verified && isEmailAllowed(email)){
-    saveSession(payload);
+    saveSession(payload, response.credential);
     window.location.href = 'dashboard-agentes.html';
   } else {
     showDenied(email);
