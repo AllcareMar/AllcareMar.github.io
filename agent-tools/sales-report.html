@@ -156,11 +156,16 @@ table.rv-table td{padding:9px 10px;border-bottom:1px solid var(--gray-200)}
       <select id="ptPlan"></select>
       <input type="date" id="ptFrom">
       <input type="date" id="ptTo">
+      <select id="ptGroupBy">
+        <option value="plan" id="ptGroupByPlan"></option>
+        <option value="agent" id="ptGroupByAgent"></option>
+      </select>
     </div>
     <div id="ptChart" style="margin-bottom:6px"></div>
     <div class="export-row">
       <button class="btn-sec" id="ptExportCsv"></button>
       <button class="btn-sec" id="ptExportXlsx"></button>
+      <button class="btn-sec" id="ptDownloadChart"></button>
     </div>
 
     <div class="rv-divider"></div>
@@ -231,8 +236,10 @@ en:{
   mToday:"Sales Today", mMonth:"Sales This Month", mAgents:"Active Agents", mTop:"Top Carrier (month)",
   hChart:"Sales by Plan Type", hintChart:"Filter by carrier, plan type, and/or a date range — shows the current year by default.",
   exportCsv:"Download CSV", exportXlsx:"Download Excel",
+  groupByPlan:"Group: Plan Type", groupByAgent:"Group: Agent", downloadChart:"Download Chart", chartEmpty:"No data for these filters.",
   hFullHist:"Full history", allAgents:"All agents",
   backupBtn:"Run backup now", backupStatus:ts=>ts?("✓ Last backup: "+ts):"No backup yet.",
+  backupDone:"✓ Backup saved on the server (data/backups) as CSV and Excel.",
   hAgents:"Agent management", active:"Active", inactive:"Deactivated", deactivate:"Deactivate", activate:"Activate",
   floatLbl:"sales today", allPlans:"All plan types",
   showingOf:(a,b)=>`Showing ${a} of ${b}`, showMore:n=>`Show ${n} more`,
@@ -255,8 +262,10 @@ es:{
   mToday:"Ventas Hoy", mMonth:"Ventas Este Mes", mAgents:"Agentes Activos", mTop:"Carrier Líder (mes)",
   hChart:"Ventas por Tipo de Plan", hintChart:"Filtra por carrier, tipo de plan y/o un rango de fechas — muestra el año actual por defecto.",
   exportCsv:"Descargar CSV", exportXlsx:"Descargar Excel",
+  groupByPlan:"Agrupar: Tipo de Plan", groupByAgent:"Agrupar: Agente", downloadChart:"Descargar Gráfica", chartEmpty:"No hay datos para estos filtros.",
   hFullHist:"Historial completo", allAgents:"Todos los agentes",
   backupBtn:"Generar backup ahora", backupStatus:ts=>ts?("✓ Último backup: "+ts):"Sin backups todavía.",
+  backupDone:"✓ Backup guardado en el servidor (data/backups) en CSV y Excel.",
   hAgents:"Gestión de agentes", active:"Activo", inactive:"De baja", deactivate:"Desactivar", activate:"Activar",
   floatLbl:"ventas hoy", allPlans:"Todos los tipos de plan",
   showingOf:(a,b)=>`Mostrando ${a} de ${b}`, showMore:n=>`Mostrar ${n} más`,
@@ -285,6 +294,9 @@ function applyStaticText(){
   document.getElementById('hintChart').textContent = t('hintChart');
   document.getElementById('ptExportCsv').textContent = t('exportCsv');
   document.getElementById('ptExportXlsx').textContent = t('exportXlsx');
+  document.getElementById('ptGroupByPlan').textContent = t('groupByPlan');
+  document.getElementById('ptGroupByAgent').textContent = t('groupByAgent');
+  document.getElementById('ptDownloadChart').textContent = t('downloadChart');
   document.getElementById('hFullHist').textContent = t('hFullHist');
   document.getElementById('fullExportCsv').textContent = t('exportCsv');
   document.getElementById('fullExportXlsx').textContent = t('exportXlsx');
@@ -473,23 +485,94 @@ async function loadAdmin(){
   await loadFullHistory();
 }
 
+const CHART_COLORS = ["#1a2fd4","#e8001d","#00a86b","#f5a623","#9b59b6","#17a2b8","#e91e8c","#6c5ce7","#2ecc71","#ff6b6b"];
+
+let ptRawData = null; // last fetch from the API (has both by_plan_type and raw rows)
+let ptEntries = [];   // last rendered [label, value] pairs - used by the download button
+
 async function loadPlanTypeChart(){
   const params = new URLSearchParams();
   if (document.getElementById('ptCarrier').value) params.set('carrier', document.getElementById('ptCarrier').value);
   if (document.getElementById('ptPlan').value) params.set('plan_type', document.getElementById('ptPlan').value);
   if (document.getElementById('ptFrom').value) params.set('date_from', document.getElementById('ptFrom').value);
   if (document.getElementById('ptTo').value) params.set('date_to', document.getElementById('ptTo').value);
-  const data = await apiJson(API_BASE, '/sales/admin/plan-type-chart?' + params.toString());
-  const entries = Object.entries(data.by_plan_type).sort((a,b)=>b[1]-a[1]);
+  ptRawData = await apiJson(API_BASE, '/sales/admin/plan-type-chart?' + params.toString());
+  renderPlanTypeChart();
+}
+
+function renderPlanTypeChart(){
+  if (!ptRawData) return;
+  const groupBy = document.getElementById('ptGroupBy').value;
+  let counts = {};
+  if (groupBy === 'agent') {
+    // /admin/plan-type-chart already returns the raw filtered rows (agent_email
+    // included) alongside the plan-type totals - group those client-side
+    // instead of adding a second endpoint. agentsAll (loaded once per Admin
+    // tab visit) maps email -> display name.
+    const nameByEmail = {};
+    agentsAll.forEach(a=>{ nameByEmail[(a.email||'').toLowerCase()] = a.agent_name; });
+    (ptRawData.rows || []).forEach(r=>{
+      const key = nameByEmail[(r.agent_email||'').toLowerCase()] || r.agent_email;
+      counts[key] = (counts[key] || 0) + 1;
+    });
+  } else {
+    counts = ptRawData.by_plan_type || {};
+  }
+  const entries = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  ptEntries = entries;
   const max = entries.length ? entries[0][1] : 1;
-  document.getElementById('ptChart').innerHTML = entries.map(([k,v])=>
+  document.getElementById('ptChart').innerHTML = entries.length ? entries.map(([k,v],i)=>
     `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12.5px">
-      <span style="width:150px">${k}</span>
+      <span style="width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${k}">${k}</span>
       <div style="flex:1;background:var(--gray-100);border-radius:6px;overflow:hidden;height:16px">
-        <div style="width:${(v/max*100)}%;background:var(--blue);height:100%"></div>
-      </div><b>${v}</b></div>`).join('') || `<p class="frm-hint">—</p>`;
+        <div style="width:${(v/max*100)}%;background:${CHART_COLORS[i % CHART_COLORS.length]};height:100%"></div>
+      </div><b>${v}</b></div>`).join('') : `<p class="frm-hint">—</p>`;
 }
 ['ptCarrier','ptPlan','ptFrom','ptTo'].forEach(id=>document.getElementById(id).addEventListener('change', loadPlanTypeChart));
+document.getElementById('ptGroupBy').addEventListener('change', renderPlanTypeChart); // no refetch - just regroups what we already have
+
+document.getElementById('ptDownloadChart').addEventListener('click', ()=>{
+  if (!ptEntries.length) { alert(t('chartEmpty')); return; }
+  const rowH = 32, padTop = 56, padBottom = 24, padLeft = 24, labelW = 190;
+  const W = 820, H = padTop + ptEntries.length * rowH + padBottom;
+  const canvas = document.createElement('canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = '#0f1e9a';
+  ctx.font = 'bold 18px Arial, sans-serif';
+  ctx.fillText(t('hChart'), padLeft, 28);
+  ctx.fillStyle = '#544f47';
+  ctx.font = '12px Arial, sans-serif';
+  const bits = [];
+  if (document.getElementById('ptCarrier').value) bits.push(document.getElementById('ptCarrier').value);
+  if (document.getElementById('ptPlan').value) bits.push(document.getElementById('ptPlan').value);
+  if (document.getElementById('ptFrom').value || document.getElementById('ptTo').value) bits.push((document.getElementById('ptFrom').value || '…') + ' → ' + (document.getElementById('ptTo').value || '…'));
+  ctx.fillText(bits.join('   |   ') || t('allCarriers'), padLeft, 46);
+
+  const max = ptEntries[0][1];
+  const barMaxW = W - padLeft - labelW - 60;
+  ptEntries.forEach(([k, v], i) => {
+    const y = padTop + i * rowH;
+    ctx.fillStyle = '#2b2723';
+    ctx.font = '13px Arial, sans-serif';
+    ctx.fillText(k.length > 24 ? k.slice(0, 23) + '…' : k, padLeft, y + rowH / 2 + 4);
+    const barW = Math.max(3, (v / max) * barMaxW);
+    ctx.fillStyle = CHART_COLORS[i % CHART_COLORS.length];
+    ctx.fillRect(padLeft + labelW, y + 5, barW, rowH - 12);
+    ctx.fillStyle = '#2b2723';
+    ctx.font = 'bold 13px Arial, sans-serif';
+    ctx.fillText(String(v), padLeft + labelW + barW + 8, y + rowH / 2 + 4);
+  });
+
+  canvas.toBlob(blob => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'sales_chart_' + new Date().toISOString().slice(0, 10) + '.png';
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+  });
+});
 document.getElementById('ptExportCsv').addEventListener('click', ()=>exportFiltered('csv','sales_by_plan_type_filtered.csv'));
 document.getElementById('ptExportXlsx').addEventListener('click', ()=>exportFiltered('xlsx','sales_by_plan_type_filtered.xlsx'));
 async function exportFiltered(fmt, filename){
@@ -538,6 +621,10 @@ async function exportFullHistory(fmt, filename){
 }
 document.getElementById('backupNowBtn').addEventListener('click', async ()=>{
   await apiJson(API_BASE, '/sales/admin/backup', {method:'POST'});
+  // The endpoint has no visible output on its own (it writes files on the
+  // server, nothing to show in the browser) - confirm explicitly so it
+  // doesn't look like nothing happened.
+  alert(t('backupDone'));
   loadAdmin();
 });
 
