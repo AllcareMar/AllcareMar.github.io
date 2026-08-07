@@ -219,6 +219,7 @@ en:{
   lblDate:"Date of these sales", hintDate:"You can change this if you're logging a sale from a previous day. Applies to the whole batch below.",
   saleNum:n=>"Sale #"+n, carrierLbl:"Carrier", change:"Change",
   planLbl:"Plan Type", enrollLbl:"Enrollment Type", leadLbl:"Lead Source", selectPh:"— Select option —",
+  enrollHelp:"IEP = Initial Enrollment Period · AEP = Annual Enrollment Period (Oct 15–Dec 7) · OEP = Open Enrollment Period (Jan 1–Mar 31) · SEP = Special Enrollment Period · Plan Change = same carrier, different plan · Carrier Change = switching to a different carrier",
   hintComplete:"Complete every field on every sale to enable the button.",
   submit:n=>"Register "+n+" sale(s)", success:(n,d)=>"✓ "+n+" sale(s) registered for "+d+".",
   filterCarrier:"Carrier", allCarriers:"All carriers",
@@ -241,6 +242,7 @@ es:{
   lblDate:"Fecha de estas ventas", hintDate:"Cámbiala si estás registrando una venta de un día anterior. Aplica a todo el lote de abajo.",
   saleNum:n=>"Venta #"+n, carrierLbl:"Carrier", change:"Cambiar",
   planLbl:"Tipo de Plan", enrollLbl:"Tipo de Inscripción", leadLbl:"Fuente del Lead", selectPh:"— Selecciona una opción —",
+  enrollHelp:"IEP = Período de Inscripción Inicial · AEP = Período de Inscripción Anual (15 oct–7 dic) · OEP = Período de Inscripción Abierta (1 ene–31 mar) · SEP = Período de Inscripción Especial · Plan Change = mismo carrier, otro plan · Carrier Change = cambio de carrier",
   hintComplete:"Completa todos los campos de cada venta para habilitar el botón.",
   submit:n=>"Registrar "+n+" venta(s)", success:(n,d)=>"✓ "+n+" venta(s) registrada(s) para el "+d+".",
   filterCarrier:"Carrier", allCarriers:"Todos los carriers",
@@ -342,7 +344,7 @@ function renderNumSalesUI(){
     div.innerHTML = `<h4>${t('saleNum')(i+1)}</h4><div class="carrierZone" data-i="${i}"></div>
       <div class="grid3">
         <div><label class="frm-lbl">${t('planLbl')}</label><select data-role="plan" data-i="${i}"><option value="">${t('selectPh')}</option>${OPTIONS.plan_types.map(p=>`<option value="${p}">${p}</option>`).join('')}</select></div>
-        <div><label class="frm-lbl">${t('enrollLbl')}</label><select data-role="enroll" data-i="${i}"><option value="">${t('selectPh')}</option>${OPTIONS.enrollment_types.map(p=>`<option value="${p}">${p}</option>`).join('')}</select></div>
+        <div><label class="frm-lbl">${t('enrollLbl')} <i class="fas fa-circle-info" title="${t('enrollHelp')}" style="color:var(--gray-500);font-size:11px;cursor:help;font-weight:400"></i></label><select data-role="enroll" data-i="${i}"><option value="">${t('selectPh')}</option>${OPTIONS.enrollment_types.map(p=>`<option value="${p}">${p}</option>`).join('')}</select></div>
         <div><label class="frm-lbl">${t('leadLbl')}</label><select data-role="lead" data-i="${i}"><option value="">${t('selectPh')}</option>${OPTIONS.lead_sources.map(p=>`<option value="${p}">${p}</option>`).join('')}</select></div>
       </div>`;
     wrap.appendChild(div);
