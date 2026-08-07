@@ -98,12 +98,16 @@ export async function apiFetch(apiBase, path, options = {}) {
   try { token = await getFreshIdToken(); }
   catch (e) { window.location.href = '../../../login.html'; throw e; }
 
+  // No Content-Type for FormData (file uploads) - the browser sets its own
+  // multipart boundary automatically, and only if we don't set the header
+  // ourselves first. Blob bodies (downloads) don't need it either.
+  const skipContentType = options.body instanceof Blob || options.body instanceof FormData;
   const resp = await fetch(apiBase + path, {
     ...options,
     headers: {
       ...(options.headers || {}),
       'Authorization': 'Bearer ' + token,
-      ...(options.body && !(options.body instanceof Blob) ? { 'Content-Type': 'application/json' } : {})
+      ...(options.body && !skipContentType ? { 'Content-Type': 'application/json' } : {})
     }
   });
   if (resp.status === 401) { window.location.href = '../../../login.html'; throw new Error('unauthorized'); }
