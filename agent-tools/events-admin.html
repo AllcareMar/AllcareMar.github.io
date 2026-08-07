@@ -65,8 +65,17 @@ select,input[type=text],input[type=date],input[type=datetime-local],input[type=n
 .badge-full{background:#ffe6cc;color:#8a4a00}
 .badge-closed{background:#e6f8f0;color:#046a45}
 .badge-canceled{background:var(--red-light);color:var(--red-dark)}
+.badge-published{background:#e6f8f0;color:#046a45}
+.badge-unpublished{background:var(--gray-100);color:var(--gray-600)}
 .reg-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--gray-200);font-size:13px}
 .reg-row label{display:flex;align-items:center;gap:8px;flex:1}
+.reg-row .btn-unassign{background:none;border:none;color:var(--red);cursor:pointer;font-size:16px;line-height:1;padding:2px 6px}
+.assign-row{display:flex;gap:8px;margin-top:10px}
+.assign-row input{flex:1}
+.checkbox-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.checkbox-row input{width:auto}
+.lookup-row{background:#fff;border:1.5px solid var(--gray-200);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:13px}
+.lookup-row b{color:var(--blue-dark)}
 @media(max-width:700px){.grid2{grid-template-columns:1fr}}
 </style>
 </head>
@@ -85,6 +94,16 @@ select,input[type=text],input[type=date],input[type=datetime-local],input[type=n
   <div class="ev-banner denied" id="deniedBanner"></div>
 
   <div id="adminContent" style="display:none">
+    <section class="ev-section">
+      <div class="ev-h2" id="hLookup"></div>
+      <p class="ev-hint" id="hintLookup"></p>
+      <div style="display:flex;gap:10px;margin-bottom:14px">
+        <input type="text" id="lookupQ">
+        <button class="btn-sec" id="lookupBtn" style="white-space:nowrap"></button>
+      </div>
+      <div id="lookupResults"></div>
+    </section>
+
     <section class="ev-section">
       <div class="ev-h2" id="hPending"></div>
       <p class="ev-hint" id="hintPending"></p>
@@ -105,9 +124,14 @@ select,input[type=text],input[type=date],input[type=datetime-local],input[type=n
           <div class="field"><label class="frm-lbl" id="lblOrganizer"></label><input type="text" id="fOrganizer"></div>
         </div>
         <div class="grid2">
-          <div class="field"><label class="frm-lbl" id="lblAddress"></label><input type="text" id="fAddress"></div>
+          <div class="field"><label class="frm-lbl" id="lblOrgContact"></label><input type="text" id="fOrgContact"></div>
+          <div class="field"><label class="frm-lbl" id="lblOrgEmail"></label><input type="text" id="fOrgEmail"></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label class="frm-lbl" id="lblOrgPhone"></label><input type="text" id="fOrgPhone"></div>
           <div class="field"><label class="frm-lbl" id="lblZip"></label><input type="text" id="fZip"></div>
         </div>
+        <div class="field"><label class="frm-lbl" id="lblAddress"></label><input type="text" id="fAddress"></div>
         <div class="grid2">
           <div class="field"><label class="frm-lbl" id="lblDate"></label><input type="date" id="fDate"></div>
           <div class="field"><label class="frm-lbl" id="lblTime"></label><input type="text" id="fTime" placeholder="10:00 AM - 4:00 PM"></div>
@@ -117,8 +141,19 @@ select,input[type=text],input[type=date],input[type=datetime-local],input[type=n
           <div class="field"><label class="frm-lbl" id="lblMaxSlots"></label><input type="number" id="fMaxSlots" value="4" min="1" max="10"></div>
         </div>
         <div class="field"><label class="frm-lbl" id="lblNotes"></label><textarea id="fNotes"></textarea></div>
+        <div class="checkbox-row"><input type="checkbox" id="fPublished" checked><label class="frm-lbl" id="lblPublished" style="margin:0"></label></div>
         <button class="btn-primary" id="createBtn"></button>
         <div id="createSuccess" style="display:none;margin-top:12px;color:var(--green);font-weight:700;font-size:13.5px"></div>
+      </div>
+    </section>
+
+    <section class="ev-section">
+      <div class="ev-h2" id="hImport"></div>
+      <p class="ev-hint" id="hintImport"></p>
+      <div class="form-card">
+        <input type="file" id="importFile" accept=".xlsx,.xls">
+        <button class="btn-primary" id="importBtn" style="margin-top:12px"></button>
+        <div id="importResult" style="margin-top:12px;font-size:12.5px;line-height:1.7"></div>
       </div>
     </section>
 
@@ -149,10 +184,21 @@ en:{
   registered:"Registered on", finalize:"Finalize attendees", cancel:"Cancel event",
   statusFull:"Full", statusOpen:"Open",
   hCreate:"Create a new event", lblTitle:"Event name", lblOrganizer:"Organizer", lblAddress:"Address", lblZip:"Zip code",
+  lblOrgContact:"Organizer contact name (optional)", lblOrgEmail:"Organizer email (optional)", lblOrgPhone:"Organizer phone (optional)",
   lblDate:"Event date", lblTime:"Time (optional)", lblDeadline:"Registration deadline", lblMaxSlots:"Max agents",
-  lblNotes:"Notes (optional)", createBtn:"Create event", createSuccess:"✓ Event created and open for registration.",
+  lblNotes:"Notes (optional)", lblPublished:"Publish now — agents can see it and self-register",
+  createBtn:"Create event", createSuccess:"✓ Event created.",
   hHistory:"Closed / canceled events", noHistory:"Nothing here yet.",
   statusClosedConfirmed:"Confirmed", statusClosedIncomplete:"Closed — incomplete", statusCanceled:"Canceled",
+  badgePublished:"Public", badgeUnpublished:"Internal", publishBtn:"Publish", unpublishBtn:"Make internal",
+  assignPh:"Agent email to add directly", assignBtn:"Add", assignedManually:"Added directly by admin",
+  hLookup:"Find an agent", hintLookup:"Search by name or email to see every event they're registered/assigned to.",
+  lookupBtn:"Search", lookupEmpty:"No matches.", lookupNoQuery:"Type a name or email above.",
+  regStatusRegistered:"Registered (awaiting decision)", regStatusApproved:"Approved / attending", regStatusRejected:"Not selected",
+  hImport:"Bulk import from Excel", hintImport:"Same format as the yearly street-fair calendar sheet (Date Event, Event Name, City, State, Zip Code, Event Organizer, Contact/Email/Phone Organizer, Notes). Imported events land as internal (unpublished) — publish each one when it's ready for agents.",
+  importBtn:"Import file", importing:"Importing…",
+  importOk:n=>`✓ ${n} event(s) imported (internal — not visible to agents yet).`,
+  importSkipped:n=>`${n} row(s) skipped:`, chooseFile:"Choose a file first.",
 },
 es:{
   title:"Eventos — Administración", sub:"Allcare Mar Agency", logout:"Cerrar sesión",
@@ -166,10 +212,21 @@ es:{
   registered:"Inscrito el", finalize:"Finalizar asistentes", cancel:"Cancelar evento",
   statusFull:"Lleno", statusOpen:"Abierto",
   hCreate:"Crear un evento nuevo", lblTitle:"Nombre del evento", lblOrganizer:"Organizador", lblAddress:"Dirección", lblZip:"Código postal",
+  lblOrgContact:"Nombre de contacto del organizador (opcional)", lblOrgEmail:"Email del organizador (opcional)", lblOrgPhone:"Teléfono del organizador (opcional)",
   lblDate:"Fecha del evento", lblTime:"Horario (opcional)", lblDeadline:"Fecha límite de inscripción", lblMaxSlots:"Máximo de agentes",
-  lblNotes:"Notas (opcional)", createBtn:"Crear evento", createSuccess:"✓ Evento creado y abierto para inscripción.",
+  lblNotes:"Notas (opcional)", lblPublished:"Publicar ahora — los agentes lo ven y pueden inscribirse",
+  createBtn:"Crear evento", createSuccess:"✓ Evento creado.",
   hHistory:"Eventos cerrados / cancelados", noHistory:"Todavía no hay nada aquí.",
   statusClosedConfirmed:"Confirmado", statusClosedIncomplete:"Cerrado — incompleto", statusCanceled:"Cancelado",
+  badgePublished:"Público", badgeUnpublished:"Interno", publishBtn:"Publicar", unpublishBtn:"Volver interno",
+  assignPh:"Email del agente a agregar directo", assignBtn:"Agregar", assignedManually:"Agregado directo por admin",
+  hLookup:"Buscar agente", hintLookup:"Busca por nombre o email para ver en qué eventos está inscrito/asignado.",
+  lookupBtn:"Buscar", lookupEmpty:"Sin resultados.", lookupNoQuery:"Escribe un nombre o email arriba.",
+  regStatusRegistered:"Inscrito (pendiente de decisión)", regStatusApproved:"Aprobado / asiste", regStatusRejected:"No seleccionado",
+  hImport:"Importación masiva desde Excel", hintImport:"Mismo formato de la hoja anual de street fairs (Date Event, Event Name, City, State, Zip Code, Event Organizer, Contact/Email/Phone Organizer, Notes). Los eventos importados quedan internos (no publicados) — publica cada uno cuando esté listo para los agentes.",
+  importBtn:"Importar archivo", importing:"Importando…",
+  importOk:n=>`✓ ${n} evento(s) importado(s) (internos — todavía no los ven los agentes).`,
+  importSkipped:n=>`${n} fila(s) omitida(s):`, chooseFile:"Elige un archivo primero.",
 }
 };
 function t(k){ return I18N[curLang][k]; }
@@ -185,6 +242,9 @@ function applyStaticText(){
   document.getElementById('hCreate').textContent = t('hCreate');
   document.getElementById('lblTitle').textContent = t('lblTitle');
   document.getElementById('lblOrganizer').textContent = t('lblOrganizer');
+  document.getElementById('lblOrgContact').textContent = t('lblOrgContact');
+  document.getElementById('lblOrgEmail').textContent = t('lblOrgEmail');
+  document.getElementById('lblOrgPhone').textContent = t('lblOrgPhone');
   document.getElementById('lblAddress').textContent = t('lblAddress');
   document.getElementById('lblZip').textContent = t('lblZip');
   document.getElementById('lblDate').textContent = t('lblDate');
@@ -192,8 +252,16 @@ function applyStaticText(){
   document.getElementById('lblDeadline').textContent = t('lblDeadline');
   document.getElementById('lblMaxSlots').textContent = t('lblMaxSlots');
   document.getElementById('lblNotes').textContent = t('lblNotes');
+  document.getElementById('lblPublished').textContent = t('lblPublished');
   document.getElementById('createBtn').textContent = t('createBtn');
   document.getElementById('hHistory').textContent = t('hHistory');
+  document.getElementById('hLookup').textContent = t('hLookup');
+  document.getElementById('hintLookup').textContent = t('hintLookup');
+  document.getElementById('lookupQ').placeholder = t('hintLookup');
+  document.getElementById('lookupBtn').textContent = t('lookupBtn');
+  document.getElementById('hImport').textContent = t('hImport');
+  document.getElementById('hintImport').textContent = t('hintImport');
+  document.getElementById('importBtn').textContent = t('importBtn');
 }
 
 document.getElementById('langBtn').addEventListener('click', ()=>{
@@ -248,16 +316,26 @@ async function loadOpen(){
   }));
   wrap.innerHTML = blocks.map(({e, regs}) => `
     <div class="event-card">
-      <h3>${e.title} <span class="badge ${e.status==='full'?'badge-full':'badge-open'}">${e.status==='full'?t('statusFull'):t('statusOpen')}</span></h3>
+      <h3>${e.title}
+        <span class="badge ${e.status==='full'?'badge-full':'badge-open'}">${e.status==='full'?t('statusFull'):t('statusOpen')}</span>
+        <span class="badge ${e.published?'badge-published':'badge-unpublished'}">${e.published?t('badgePublished'):t('badgeUnpublished')}</span>
+      </h3>
       <div class="event-meta">
         ${e.organizer} · ${e.event_date}${e.event_time ? ' · ' + e.event_time : ''} · ${e.address}, ${e.zipcode}<br>
         ${e.slots_taken}/${e.max_slots}
       </div>
       <div style="margin-top:10px">
-        ${regs.map(r => `<div class="reg-row"><label><input type="checkbox" class="attendCheck" data-event="${e.id}" value="${r.agent_email}" checked> ${r.agent_name} (${r.agent_email})</label><span class="ev-hint" style="margin:0">${t('registered')} ${new Date(r.registered_at).toLocaleString()}</span></div>`).join('')}
+        ${regs.map(r => `<div class="reg-row"><label><input type="checkbox" class="attendCheck" data-event="${e.id}" value="${r.agent_email}" checked> ${r.agent_name} (${r.agent_email})</label><span class="ev-hint" style="margin:0">${t('registered')} ${new Date(r.registered_at).toLocaleString()}</span><button type="button" class="btn-unassign" data-unassign="${e.id}" data-email="${r.agent_email}" title="${t('cancel')}">×</button></div>`).join('')}
+      </div>
+      <div class="assign-row">
+        <input type="text" class="assignInput" data-event="${e.id}" placeholder="${t('assignPh')}">
+        <button class="btn-sec" data-assign="${e.id}">${t('assignBtn')}</button>
       </div>
       <div class="event-foot">
-        <button class="btn-sec" data-cancel="${e.id}">${t('cancel')}</button>
+        <div style="display:flex;gap:8px">
+          <button class="btn-sec" data-cancel="${e.id}">${t('cancel')}</button>
+          <button class="btn-sec" data-toggle-publish="${e.id}">${e.published?t('unpublishBtn'):t('publishBtn')}</button>
+        </div>
         <button class="btn-primary" data-finalize="${e.id}">${t('finalize')}</button>
       </div>
     </div>`).join('');
@@ -270,7 +348,42 @@ async function loadOpen(){
   wrap.querySelectorAll('[data-cancel]').forEach(btn=>btn.addEventListener('click', async ()=>{
     await apiJson(API_BASE, `/events/admin/${btn.dataset.cancel}/cancel`, {method:'POST'}); loadAll();
   }));
+  wrap.querySelectorAll('[data-toggle-publish]').forEach(btn=>btn.addEventListener('click', async ()=>{
+    await apiJson(API_BASE, `/events/admin/${btn.dataset.togglePublish}/toggle-publish`, {method:'POST'}); loadAll();
+  }));
+  wrap.querySelectorAll('[data-unassign]').forEach(btn=>btn.addEventListener('click', async ()=>{
+    if (!confirm(curLang==='en' ? 'Remove this agent from the event?' : '¿Quitar a este agente del evento?')) return;
+    await apiJson(API_BASE, `/events/admin/${btn.dataset.unassign}/unassign`, {method:'POST', body: JSON.stringify({agent_email: btn.dataset.email})});
+    loadAll();
+  }));
+  wrap.querySelectorAll('[data-assign]').forEach(btn=>btn.addEventListener('click', async ()=>{
+    const eventId = btn.dataset.assign;
+    const input = wrap.querySelector(`.assignInput[data-event="${eventId}"]`);
+    const email = input.value.trim();
+    if (!email) return;
+    try {
+      await apiJson(API_BASE, `/events/admin/${eventId}/assign`, {method:'POST', body: JSON.stringify({agent_email: email})});
+      loadAll();
+    } catch(e) { alert(e.message); }
+  }));
 }
+
+async function loadLookup(){
+  const q = document.getElementById('lookupQ').value.trim();
+  const wrap = document.getElementById('lookupResults');
+  if (!q) { wrap.innerHTML = `<p class="ev-hint">${t('lookupNoQuery')}</p>`; return; }
+  const rows = await apiJson(API_BASE, '/events/admin/agent-lookup?q=' + encodeURIComponent(q));
+  if (!rows.length) { wrap.innerHTML = `<p class="ev-hint">${t('lookupEmpty')}</p>`; return; }
+  const statusLbl = {registered:'regStatusRegistered', approved:'regStatusApproved', rejected:'regStatusRejected'};
+  wrap.innerHTML = rows.map(r => `
+    <div class="lookup-row">
+      <b>${r.agent_name}</b> (${r.agent_email})<br>
+      ${r.title} — ${r.event_date} · ${t(statusLbl[r.registration_status] || 'regStatusRegistered')}
+      · <span class="badge ${r.published?'badge-published':'badge-unpublished'}">${r.published?t('badgePublished'):t('badgeUnpublished')}</span>
+    </div>`).join('');
+}
+document.getElementById('lookupBtn').addEventListener('click', loadLookup);
+document.getElementById('lookupQ').addEventListener('keydown', (e)=>{ if (e.key === 'Enter') loadLookup(); });
 
 async function loadHistory(){
   const statuses = ['closed_confirmed','closed_incomplete','canceled'];
@@ -290,6 +403,9 @@ document.getElementById('createBtn').addEventListener('click', async ()=>{
   const body = {
     title: document.getElementById('fTitle').value,
     organizer: document.getElementById('fOrganizer').value,
+    organizer_contact: document.getElementById('fOrgContact').value || null,
+    organizer_email: document.getElementById('fOrgEmail').value || null,
+    organizer_phone: document.getElementById('fOrgPhone').value || null,
     address: document.getElementById('fAddress').value,
     zipcode: document.getElementById('fZip').value,
     event_date: document.getElementById('fDate').value,
@@ -297,6 +413,7 @@ document.getElementById('createBtn').addEventListener('click', async ()=>{
     registration_deadline: document.getElementById('fDeadline').value,
     max_slots: parseInt(document.getElementById('fMaxSlots').value || '4', 10),
     notes: document.getElementById('fNotes').value || null,
+    published: document.getElementById('fPublished').checked,
   };
   if (!body.title || !body.organizer || !body.address || !body.zipcode || !body.event_date || !body.registration_deadline) {
     alert(curLang==='en' ? 'Please complete all required fields.' : 'Completa todos los campos requeridos.');
@@ -306,10 +423,41 @@ document.getElementById('createBtn').addEventListener('click', async ()=>{
     await apiJson(API_BASE, '/events/admin', {method:'POST', body: JSON.stringify(body)});
     document.getElementById('createSuccess').style.display = 'block';
     document.getElementById('createSuccess').textContent = t('createSuccess');
-    ['fTitle','fOrganizer','fAddress','fZip','fDate','fTime','fDeadline','fNotes'].forEach(id=>document.getElementById(id).value='');
+    ['fTitle','fOrganizer','fOrgContact','fOrgEmail','fOrgPhone','fAddress','fZip','fDate','fTime','fDeadline','fNotes'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('fMaxSlots').value = 4;
+    document.getElementById('fPublished').checked = true;
     loadAll();
   } catch(e) { alert(e.message); }
+});
+
+document.getElementById('importBtn').addEventListener('click', async ()=>{
+  const fileInput = document.getElementById('importFile');
+  const file = fileInput.files[0];
+  const resultDiv = document.getElementById('importResult');
+  if (!file) { alert(t('chooseFile')); return; }
+  const btn = document.getElementById('importBtn');
+  btn.disabled = true;
+  const originalText = btn.textContent;
+  btn.textContent = t('importing');
+  resultDiv.innerHTML = '';
+  try {
+    const fd = new FormData();
+    fd.append('file', file);
+    const r = await apiJson(API_BASE, '/events/admin/import', {method:'POST', body: fd});
+    let html = `<p style="color:var(--green);font-weight:700">${t('importOk')(r.imported)}</p>`;
+    if (r.skipped && r.skipped.length) {
+      html += `<p style="margin-top:8px">${t('importSkipped')(r.skipped.length)}</p><ul style="margin-left:18px">` +
+        r.skipped.map(s => `<li>${curLang==='en'?'Row':'Fila'} ${s.row}${s.event ? ' ("'+s.event+'")' : ''}: ${s.reason}</li>`).join('') + `</ul>`;
+    }
+    resultDiv.innerHTML = html;
+    fileInput.value = '';
+    loadAll();
+  } catch(e) {
+    resultDiv.innerHTML = `<p style="color:var(--red)">${e.message}</p>`;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = originalText;
+  }
 });
 
 async function loadAll(){
