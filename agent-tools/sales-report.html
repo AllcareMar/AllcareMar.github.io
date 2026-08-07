@@ -341,9 +341,9 @@ function renderNumSalesUI(){
     div.className = 'sale-card';
     div.innerHTML = `<h4>${t('saleNum')(i+1)}</h4><div class="carrierZone" data-i="${i}"></div>
       <div class="grid3">
-        <select data-role="plan" data-i="${i}"><option value="">${t('selectPh')}</option>${OPTIONS.plan_types.map(p=>`<option value="${p}">${p}</option>`).join('')}</select>
-        <select data-role="enroll" data-i="${i}"><option value="">${t('selectPh')}</option>${OPTIONS.enrollment_types.map(p=>`<option value="${p}">${p}</option>`).join('')}</select>
-        <select data-role="lead" data-i="${i}"><option value="">${t('selectPh')}</option>${OPTIONS.lead_sources.map(p=>`<option value="${p}">${p}</option>`).join('')}</select>
+        <div><label class="frm-lbl">${t('planLbl')}</label><select data-role="plan" data-i="${i}"><option value="">${t('selectPh')}</option>${OPTIONS.plan_types.map(p=>`<option value="${p}">${p}</option>`).join('')}</select></div>
+        <div><label class="frm-lbl">${t('enrollLbl')}</label><select data-role="enroll" data-i="${i}"><option value="">${t('selectPh')}</option>${OPTIONS.enrollment_types.map(p=>`<option value="${p}">${p}</option>`).join('')}</select></div>
+        <div><label class="frm-lbl">${t('leadLbl')}</label><select data-role="lead" data-i="${i}"><option value="">${t('selectPh')}</option>${OPTIONS.lead_sources.map(p=>`<option value="${p}">${p}</option>`).join('')}</select></div>
       </div>`;
     wrap.appendChild(div);
     renderCarrierZone(i);
