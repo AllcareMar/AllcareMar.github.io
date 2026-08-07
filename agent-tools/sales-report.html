@@ -206,10 +206,10 @@ const CARRIERS_FALLBACK = [
   {name:"Anthem BCBS", logo:"anthem_bcbs.png"}, {name:"Wellcare", logo:"wellcare.png"},
   {name:"Wellpoint", logo:"wellpoint.png"}, {name:"Jefferson Health", logo:"jefferson_health.png"},
   {name:"Horizon", logo:"horizon.png"}, {name:"Fidelis", logo:"fidelis.png"},
-  {name:"Molina Healthcare", logo:"molina.png"}, {name:"Cigna", logo:"cigna.png"},
+  {name:"Molina Healthcare", logo:"molina.png"}, {name:"HealthSpring", logo:"healthspring.png"},
   {name:"Emblem Health", logo:"emblem_health.png"}
 ];
-let OPTIONS = { carriers: CARRIERS_FALLBACK, plan_types: ["PPO","HMO","DSNP","CSNP Chronic Plans","Medicare Supplement","PDP"], enrollment_types:["IEP","AEP","OEP","SEP","Plan Change","Carrier Change"], lead_sources:["MIRA Lead","Allcare Mar Lead","Event Lead","Referral Lead","Carrier Leads","Integrity Leads"] };
+let OPTIONS = { carriers: CARRIERS_FALLBACK, plan_types: ["PPO","HMO","DSNP","CSNP Chronic Plans","Medicare Supplement","PDP"], enrollment_types:["New to Medicare","Same Carrier Plan Change","Same Carrier Transfer","New Carrier Switch","New Client & Carrier"], lead_sources:["MIRA Lead","Allcare Mar Lead","Event Lead","Referral Lead","Carrier Leads","Integrity Leads"] };
 
 const PAGE_SIZE = 15; // caps how many rows/agents render at once in Admin - keeps long lists readable
 
@@ -223,7 +223,7 @@ en:{
   lblDate:"Date of these sales", hintDate:"You can change this if you're logging a sale from a previous day. Applies to the whole batch below.",
   saleNum:n=>"Sale #"+n, carrierLbl:"Carrier", change:"Change",
   planLbl:"Plan Type", enrollLbl:"Enrollment Type", leadLbl:"Lead Source", selectPh:"— Select option —",
-  enrollHelp:"IEP = Initial Enrollment Period\nAEP = Annual Enrollment Period (Oct 15–Dec 7)\nOEP = Open Enrollment Period (Jan 1–Mar 31)\nSEP = Special Enrollment Period\nPlan Change = same carrier, different plan\nCarrier Change = switching to a different carrier",
+  enrollHelp:"New to Medicare = Brand new to Medicare / IEP\nSame Carrier Plan Change = Your existing client changing plans with the same carrier\nSame Carrier Transfer = New client to you, staying with their current carrier but changing plans\nNew Carrier Switch = Your existing client moving to a new carrier\nNew Client & Carrier = Brand new client coming from an outside carrier",
   hintComplete:"Complete every field on every sale to enable the button.",
   submit:n=>"Register "+n+" sale(s)", success:(n,d)=>"✓ "+n+" sale(s) registered for "+d+".",
   filterCarrier:"Carrier", allCarriers:"All carriers",
@@ -247,7 +247,7 @@ es:{
   lblDate:"Fecha de estas ventas", hintDate:"Cámbiala si estás registrando una venta de un día anterior. Aplica a todo el lote de abajo.",
   saleNum:n=>"Venta #"+n, carrierLbl:"Carrier", change:"Cambiar",
   planLbl:"Tipo de Plan", enrollLbl:"Tipo de Inscripción", leadLbl:"Fuente del Lead", selectPh:"— Selecciona una opción —",
-  enrollHelp:"IEP = Período de Inscripción Inicial\nAEP = Período de Inscripción Anual (15 oct–7 dic)\nOEP = Período de Inscripción Abierta (1 ene–31 mar)\nSEP = Período de Inscripción Especial\nPlan Change = mismo carrier, otro plan\nCarrier Change = cambio de carrier",
+  enrollHelp:"New to Medicare = Nuevo en Medicare / IEP\nSame Carrier Plan Change = Tu cliente existente cambia de plan con el mismo carrier\nSame Carrier Transfer = Cliente nuevo para ti, se queda con su carrier actual pero cambia de plan\nNew Carrier Switch = Tu cliente existente se cambia a un carrier nuevo\nNew Client & Carrier = Cliente totalmente nuevo que viene de un carrier externo",
   hintComplete:"Completa todos los campos de cada venta para habilitar el botón.",
   submit:n=>"Registrar "+n+" venta(s)", success:(n,d)=>"✓ "+n+" venta(s) registrada(s) para el "+d+".",
   filterCarrier:"Carrier", allCarriers:"Todos los carriers",
