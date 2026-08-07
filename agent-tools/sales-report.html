@@ -49,6 +49,8 @@ img{display:block;max-width:100%}
 .rv-panel[hidden]{display:none}
 
 .frm-lbl{display:block;font-size:12.5px;font-weight:700;color:var(--gray-800);margin-bottom:6px;font-family:'Montserrat',sans-serif}
+.info-ico{color:var(--blue);font-size:15px;cursor:help;font-weight:400;vertical-align:middle}
+.info-ico:hover{color:var(--blue-dark)}
 .frm-hint{font-size:12px;color:var(--gray-600);margin-bottom:16px}
 select,input[type=number],input[type=date],input[type=text]{width:100%;padding:11px 13px;border:1.5px solid var(--gray-200);border-radius:10px;font-size:14px;font-family:'Open Sans',sans-serif;background:#fff;color:var(--gray-800)}
 select:focus,input:focus{outline:none;border-color:var(--blue)}
@@ -209,6 +211,8 @@ const CARRIERS_FALLBACK = [
 ];
 let OPTIONS = { carriers: CARRIERS_FALLBACK, plan_types: ["PPO","HMO","DSNP","CSNP Chronic Plans","Medicare Supplement","PDP"], enrollment_types:["IEP","AEP","OEP","SEP","Plan Change","Carrier Change"], lead_sources:["MIRA Lead","Allcare Mar Lead","Event Lead","Referral Lead","Carrier Leads","Integrity Leads"] };
 
+const PAGE_SIZE = 15; // caps how many rows/agents render at once in Admin - keeps long lists readable
+
 const I18N = {
 en:{
   title:"Daily Sales Report", sub:"Allcare Mar Agency", logout:"Sign out",
@@ -219,7 +223,7 @@ en:{
   lblDate:"Date of these sales", hintDate:"You can change this if you're logging a sale from a previous day. Applies to the whole batch below.",
   saleNum:n=>"Sale #"+n, carrierLbl:"Carrier", change:"Change",
   planLbl:"Plan Type", enrollLbl:"Enrollment Type", leadLbl:"Lead Source", selectPh:"— Select option —",
-  enrollHelp:"IEP = Initial Enrollment Period · AEP = Annual Enrollment Period (Oct 15–Dec 7) · OEP = Open Enrollment Period (Jan 1–Mar 31) · SEP = Special Enrollment Period · Plan Change = same carrier, different plan · Carrier Change = switching to a different carrier",
+  enrollHelp:"IEP = Initial Enrollment Period\nAEP = Annual Enrollment Period (Oct 15–Dec 7)\nOEP = Open Enrollment Period (Jan 1–Mar 31)\nSEP = Special Enrollment Period\nPlan Change = same carrier, different plan\nCarrier Change = switching to a different carrier",
   hintComplete:"Complete every field on every sale to enable the button.",
   submit:n=>"Register "+n+" sale(s)", success:(n,d)=>"✓ "+n+" sale(s) registered for "+d+".",
   filterCarrier:"Carrier", allCarriers:"All carriers",
@@ -232,6 +236,7 @@ en:{
   backupBtn:"Run backup now", backupStatus:ts=>ts?("✓ Last backup: "+ts):"No backup yet.",
   hAgents:"Agent management", active:"Active", inactive:"Deactivated", deactivate:"Deactivate", activate:"Activate",
   floatLbl:"sales today", allPlans:"All plan types",
+  showingOf:(a,b)=>`Showing ${a} of ${b}`, showMore:n=>`Show ${n} more`,
 },
 es:{
   title:"Reporte de Ventas Diario", sub:"Allcare Mar Agency", logout:"Cerrar sesión",
@@ -242,7 +247,7 @@ es:{
   lblDate:"Fecha de estas ventas", hintDate:"Cámbiala si estás registrando una venta de un día anterior. Aplica a todo el lote de abajo.",
   saleNum:n=>"Venta #"+n, carrierLbl:"Carrier", change:"Cambiar",
   planLbl:"Tipo de Plan", enrollLbl:"Tipo de Inscripción", leadLbl:"Fuente del Lead", selectPh:"— Selecciona una opción —",
-  enrollHelp:"IEP = Período de Inscripción Inicial · AEP = Período de Inscripción Anual (15 oct–7 dic) · OEP = Período de Inscripción Abierta (1 ene–31 mar) · SEP = Período de Inscripción Especial · Plan Change = mismo carrier, otro plan · Carrier Change = cambio de carrier",
+  enrollHelp:"IEP = Período de Inscripción Inicial\nAEP = Período de Inscripción Anual (15 oct–7 dic)\nOEP = Período de Inscripción Abierta (1 ene–31 mar)\nSEP = Período de Inscripción Especial\nPlan Change = mismo carrier, otro plan\nCarrier Change = cambio de carrier",
   hintComplete:"Completa todos los campos de cada venta para habilitar el botón.",
   submit:n=>"Registrar "+n+" venta(s)", success:(n,d)=>"✓ "+n+" venta(s) registrada(s) para el "+d+".",
   filterCarrier:"Carrier", allCarriers:"Todos los carriers",
@@ -255,6 +260,7 @@ es:{
   backupBtn:"Generar backup ahora", backupStatus:ts=>ts?("✓ Último backup: "+ts):"Sin backups todavía.",
   hAgents:"Gestión de agentes", active:"Activo", inactive:"De baja", deactivate:"Desactivar", activate:"Activar",
   floatLbl:"ventas hoy", allPlans:"Todos los tipos de plan",
+  showingOf:(a,b)=>`Mostrando ${a} de ${b}`, showMore:n=>`Mostrar ${n} más`,
 }
 };
 function t(k){ return I18N[curLang][k]; }
@@ -344,7 +350,7 @@ function renderNumSalesUI(){
     div.innerHTML = `<h4>${t('saleNum')(i+1)}</h4><div class="carrierZone" data-i="${i}"></div>
       <div class="grid3">
         <div><label class="frm-lbl">${t('planLbl')}</label><select data-role="plan" data-i="${i}"><option value="">${t('selectPh')}</option>${OPTIONS.plan_types.map(p=>`<option value="${p}">${p}</option>`).join('')}</select></div>
-        <div><label class="frm-lbl">${t('enrollLbl')} <i class="fas fa-circle-info" title="${t('enrollHelp')}" style="color:var(--gray-500);font-size:11px;cursor:help;font-weight:400"></i></label><select data-role="enroll" data-i="${i}"><option value="">${t('selectPh')}</option>${OPTIONS.enrollment_types.map(p=>`<option value="${p}">${p}</option>`).join('')}</select></div>
+        <div><label class="frm-lbl">${t('enrollLbl')} <i class="fas fa-circle-info info-ico" title="${t('enrollHelp')}"></i></label><select data-role="enroll" data-i="${i}"><option value="">${t('selectPh')}</option>${OPTIONS.enrollment_types.map(p=>`<option value="${p}">${p}</option>`).join('')}</select></div>
         <div><label class="frm-lbl">${t('leadLbl')}</label><select data-role="lead" data-i="${i}"><option value="">${t('selectPh')}</option>${OPTIONS.lead_sources.map(p=>`<option value="${p}">${p}</option>`).join('')}</select></div>
       </div>`;
     wrap.appendChild(div);
@@ -426,6 +432,27 @@ document.getElementById('histCarrierFilter').addEventListener('change', loadHist
 
 // ---------------- Tab 3: Admin ----------------
 
+let agentsAll = [];
+let agentsShown = PAGE_SIZE;
+
+function renderAgentsList(){
+  const visible = agentsAll.slice(0, agentsShown);
+  const moreCount = agentsAll.length - visible.length;
+  document.getElementById('agentsList').innerHTML = visible.map(a=>`
+    <div class="agent-row"><div><b>${a.agent_name}</b> — ${a.email}<br><span class="${a.active?'status-active':'status-inactive'}">${a.active?t('active'):t('inactive')}</span></div>
+    <button class="btn-sec" data-id="${a.id}" data-active="${a.active}">${a.active?t('deactivate'):t('activate')}</button></div>`).join('') +
+    (agentsAll.length ? `<p class="frm-hint" style="margin-top:10px">${t('showingOf')(visible.length, agentsAll.length)}</p>` : '') +
+    (moreCount > 0 ? `<button class="btn-sec" id="agentsMoreBtn">${t('showMore')(Math.min(PAGE_SIZE, moreCount))}</button>` : '');
+  document.querySelectorAll('#agentsList button[data-id]').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      await apiJson(API_BASE, `/sales/admin/agents/${btn.dataset.id}/toggle`, {method:'POST'});
+      loadAdmin();
+    });
+  });
+  const moreBtn = document.getElementById('agentsMoreBtn');
+  if (moreBtn) moreBtn.addEventListener('click', ()=>{ agentsShown += PAGE_SIZE; renderAgentsList(); });
+}
+
 async function loadAdmin(){
   const m = await apiJson(API_BASE, '/sales/admin/metrics');
   document.getElementById('metricGrid').innerHTML = `
@@ -434,19 +461,11 @@ async function loadAdmin(){
     <div class="metric-card"><b>${m.active_agents}</b><span>${t('mAgents')}</span></div>
     <div class="metric-card"><b>${m.top_carrier}</b><span>${t('mTop')}</span></div>`;
 
-  const agents = await apiJson(API_BASE, '/sales/admin/agents');
+  agentsAll = await apiJson(API_BASE, '/sales/admin/agents');
+  agentsShown = PAGE_SIZE;
   const agentSel = document.getElementById('histAgent');
-  agentSel.innerHTML = `<option value="">${t('allAgents')}</option>` + agents.map(a=>`<option value="${a.email}">${a.agent_name}</option>`).join('');
-
-  document.getElementById('agentsList').innerHTML = agents.map(a=>`
-    <div class="agent-row"><div><b>${a.agent_name}</b> — ${a.email}<br><span class="${a.active?'status-active':'status-inactive'}">${a.active?t('active'):t('inactive')}</span></div>
-    <button class="btn-sec" data-id="${a.id}" data-active="${a.active}">${a.active?t('deactivate'):t('activate')}</button></div>`).join('');
-  document.querySelectorAll('#agentsList button').forEach(btn=>{
-    btn.addEventListener('click', async ()=>{
-      await apiJson(API_BASE, `/sales/admin/agents/${btn.dataset.id}/toggle`, {method:'POST'});
-      loadAdmin();
-    });
-  });
+  agentSel.innerHTML = `<option value="">${t('allAgents')}</option>` + agentsAll.map(a=>`<option value="${a.email}">${a.agent_name}</option>`).join('');
+  renderAgentsList();
 
   const bs = await apiJson(API_BASE, '/sales/admin/backup-status');
   document.getElementById('backupStatus').textContent = t('backupStatus')(bs.last_backup);
@@ -482,14 +501,30 @@ async function exportFiltered(fmt, filename){
   await apiDownload(API_BASE, '/sales/admin/export?' + params.toString(), filename);
 }
 
+let fullHistRows = [];
+let fullHistShown = PAGE_SIZE;
+
+function renderFullHistory(){
+  const rows = fullHistRows;
+  if (!rows.length) { document.getElementById('fullHistWrap').innerHTML = `<p class="frm-hint">—</p>`; return; }
+  const visible = rows.slice(0, fullHistShown);
+  const moreCount = rows.length - visible.length;
+  document.getElementById('fullHistWrap').innerHTML = `<table class="rv-table"><tr><th>${t('colDate')}</th><th>Agent</th><th>${t('colCarrier')}</th><th>${t('colPlan')}</th><th>${t('colEnroll')}</th></tr>` +
+    visible.map(r=>`<tr><td>${r.sale_date}</td><td>${r.agent}</td><td>${r.carrier}</td><td>${r.plan_type}</td><td>${r.enrollment_type}</td></tr>`).join('') + `</table>` +
+    `<p class="frm-hint" style="margin-top:10px">${t('showingOf')(visible.length, rows.length)}</p>` +
+    (moreCount > 0 ? `<button class="btn-sec" id="fullHistMoreBtn">${t('showMore')(Math.min(PAGE_SIZE, moreCount))}</button>` : '');
+  const moreBtn = document.getElementById('fullHistMoreBtn');
+  if (moreBtn) moreBtn.addEventListener('click', ()=>{ fullHistShown += PAGE_SIZE; renderFullHistory(); });
+}
+
 async function loadFullHistory(){
   const params = new URLSearchParams();
   if (document.getElementById('histFrom').value) params.set('date_from', document.getElementById('histFrom').value);
   if (document.getElementById('histTo').value) params.set('date_to', document.getElementById('histTo').value);
   if (document.getElementById('histAgent').value) params.set('agent', document.getElementById('histAgent').value);
-  const rows = await apiJson(API_BASE, '/sales/admin/history?' + params.toString());
-  document.getElementById('fullHistWrap').innerHTML = rows.length ? `<table class="rv-table"><tr><th>${t('colDate')}</th><th>Agent</th><th>${t('colCarrier')}</th><th>${t('colPlan')}</th><th>${t('colEnroll')}</th></tr>` +
-    rows.map(r=>`<tr><td>${r.sale_date}</td><td>${r.agent}</td><td>${r.carrier}</td><td>${r.plan_type}</td><td>${r.enrollment_type}</td></tr>`).join('') + `</table>` : `<p class="frm-hint">—</p>`;
+  fullHistRows = await apiJson(API_BASE, '/sales/admin/history?' + params.toString());
+  fullHistShown = PAGE_SIZE;
+  renderFullHistory();
 }
 ['histFrom','histTo','histAgent'].forEach(id=>document.getElementById(id).addEventListener('change', loadFullHistory));
 document.getElementById('fullExportCsv').addEventListener('click', ()=>exportFullHistory('csv','sales.csv'));
@@ -511,8 +546,25 @@ document.getElementById('backupNowBtn').addEventListener('click', async ()=>{
 
 async function loadFloatingCounter(){
   try {
-    const m = await apiJson(API_BASE, '/sales/admin/metrics').catch(()=>null);
-  } catch(e) {}
+    const r = await apiJson(API_BASE, '/sales/today-count');
+    document.getElementById('floatN').textContent = r.n;
+    document.getElementById('floatLbl').textContent = t('floatLbl');
+    document.getElementById('floatCounter').style.display = 'flex';
+  } catch(e) {
+    // Logged (not silent) so a broken counter is visible in DevTools console
+    // instead of just quietly never appearing.
+    console.error('floating counter failed to load:', e);
+  }
+}
+
+let _counterPollStarted = false;
+function startCounterPolling(){
+  if (_counterPollStarted) return;
+  _counterPollStarted = true;
+  // Company-wide count only refreshes on page load / after your own submit
+  // otherwise - poll every 30s so it reflects sales other agents register
+  // while you have the tab open.
+  setInterval(loadFloatingCounter, 30000);
 }
 
 // ---------------- Init ----------------
@@ -539,6 +591,8 @@ async function init(){
     document.getElementById('apiBanner').classList.add('show');
     document.getElementById('apiBanner').textContent = e.message;
   }
+  loadFloatingCounter();
+  startCounterPolling();
 }
 init();
 </script>
