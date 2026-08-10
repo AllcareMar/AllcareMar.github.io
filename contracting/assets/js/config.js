@@ -25,4 +25,5 @@ const AUTHORIZED_REPORT_EMAILS = [
   'jcabreja@allcaremar.com',
   'epeguero@allcaremar.com',
   'acastillo@allcaremar.com',
+  'wmartinez@allcaremar.com', // Waldo Martinez, acceso agregado 2026-08-10 por pedido de Jesus
 ];
