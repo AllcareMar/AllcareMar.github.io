@@ -5,21 +5,25 @@
 // The "UI session" is still the usual one (localStorage, see login.html /
 // dashboard-agentes.html: guard()) — that is NOT changed or duplicated here.
 //
-// Token strategy: login.html now stores the real Google id_token (JWT) it
-// received at login time, plus its real expiry (~1h, set by Google). We
-// reuse that same token for every API call while it's still valid, instead
-// of asking Google for a new one on every click via a silent
-// google.accounts.id.prompt(). That silent "One Tap" prompt is suppressed
-// by Google after it's been used once in a browser (anti-abuse behavior on
-// their end, not something we control) — calling it on every page load was
-// causing it to fail almost immediately after login, which redirected the
-// agent to login.html, which then saw the (still valid) local session and
-// bounced them straight back to the dashboard. Only once the cached token
-// actually expires (~1h since last login) do we fall back to the silent
-// prompt, and only if that also fails do we send the agent to log in again.
+// Token strategy (updated 2026-08-10): login.html mints a long-lived (15-day)
+// session token right at login time (POST /api/auth/session, see
+// api/auth.py) and stores it alongside the rest of the local session. Every
+// call to this API sends THAT token — not a raw Google id_token — so it
+// never depends on Google's silent one-tap refresh during the normal 15-day
+// window. That silent refresh (google.accounts.id.prompt()) is suppressed by
+// Google after it's been used once in a browser (anti-abuse behavior on
+// their end, not something we control); relying on it for every page load
+// was causing agents to get intermittently bounced back to the dashboard
+// right after opening Sales Report/Events, whenever it silently failed.
+//
+// The old Google-id_token-refresh dance is kept only as a rare fallback, for
+// sessions created before this fix (no cached api token yet) or if the
+// exchange in login.html happened to fail (API briefly unreachable at login
+// time).
 // ============================================================================
 
 import { GOOGLE_CLIENT_ID, isEmailAllowed } from "../../../google-config.js";
+import { API_BASE } from "./api-config.js";
 
 function _getRawSession() {
   const raw = localStorage.getItem('acm_gsession');
@@ -39,10 +43,17 @@ export function guard() {
   return session;
 }
 
-// 60s safety buffer before Google's real expiry.
+// 60s safety buffer before real expiry.
 const TOKEN_EXPIRY_BUFFER_MS = 60 * 1000;
 
-function _cachedToken() {
+function _cachedApiToken() {
+  const session = _getRawSession();
+  if (!session || !session.apiToken || !session.apiTokenExp) return null;
+  if (Date.now() > session.apiTokenExp - TOKEN_EXPIRY_BUFFER_MS) return null;
+  return session.apiToken;
+}
+
+function _cachedGoogleIdToken() {
   const session = _getRawSession();
   if (!session || !session.idToken || !session.idTokenExp) return null;
   if (Date.now() > session.idTokenExp - TOKEN_EXPIRY_BUFFER_MS) return null;
@@ -55,9 +66,10 @@ function _onCredential(response) {
   if (_tokenResolve) { _tokenResolve(response.credential); _tokenResolve = null; }
 }
 
-// Silent fallback for the rare case the cached token from login has expired
-// (agent has had the tab/session open for over an hour). Only called then —
-// see getFreshIdToken() below.
+// Silent fallback for the rare case there's no usable cached Google id_token
+// either (agent has had the tab/session open for over an hour AND doesn't
+// have a session token yet). Only called from _getGoogleIdTokenForExchange()
+// below.
 function _promptForFreshToken() {
   return new Promise((resolve, reject) => {
     if (typeof google === 'undefined' || !google.accounts) { reject(new Error('gis_not_loaded')); return; }
@@ -77,25 +89,45 @@ function _promptForFreshToken() {
   });
 }
 
-export async function getFreshIdToken() {
-  const cached = _cachedToken();
+async function _getGoogleIdTokenForExchange() {
+  const cached = _cachedGoogleIdToken();
   if (cached) return cached;
+  return _promptForFreshToken();
+}
 
-  const token = await _promptForFreshToken();
-  // Persist it so subsequent calls this same visit reuse it too, instead of
-  // prompting again for every single API call on the page.
+async function _exchangeForApiToken(googleIdToken) {
+  const resp = await fetch(API_BASE + '/auth/session', {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + googleIdToken }
+  });
+  if (!resp.ok) throw new Error('session_exchange_failed');
+  const data = await resp.json();
   const session = _getRawSession();
   if (session) {
-    session.idToken = token;
+    session.apiToken = data.session_token;
+    session.apiTokenExp = Date.now() + (data.expires_in * 1000);
+    session.idToken = googleIdToken;
     session.idTokenExp = Date.now() + 55 * 60 * 1000; // Google id_tokens last ~1h; 55min is a safe estimate.
     localStorage.setItem('acm_gsession', JSON.stringify(session));
   }
-  return token;
+  return data.session_token;
+}
+
+// Normal path (99% of calls): reuse the 15-day session token login.html
+// already minted. Only if that's missing/expired (old session from before
+// this fix, or login.html's own exchange failed) do we fall back to getting
+// a Google id_token and exchanging it here instead.
+export async function getApiSessionToken() {
+  const cached = _cachedApiToken();
+  if (cached) return cached;
+
+  const googleIdToken = await _getGoogleIdTokenForExchange();
+  return _exchangeForApiToken(googleIdToken);
 }
 
 export async function apiFetch(apiBase, path, options = {}) {
   let token;
-  try { token = await getFreshIdToken(); }
+  try { token = await getApiSessionToken(); }
   catch (e) { window.location.href = '../../../login.html'; throw e; }
 
   // No Content-Type for FormData (file uploads) - the browser sets its own
