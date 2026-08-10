@@ -133,6 +133,7 @@ img{display:block;max-width:100%}
 </footer>
 <script type="module">
 import { GOOGLE_CLIENT_ID, WORKSPACE_DOMAIN, isEmailAllowed } from "./google-config.js";
+import { API_BASE } from "./agent-tools/assets/js/api-config.js";
 
 let curLang = 'en';
 const I18N = {
@@ -197,21 +198,43 @@ function notifyUnauthorized(email){
 // Ajustar aquí si Jesus quiere otra duración (ej. 8*60*60*1000 = 8 horas por turno).
 const SESSION_DURATION_MS = 15*24*60*60*1000; // 15 días
 
-function saveSession(payload, rawIdToken){
+function saveSession(payload, rawIdToken, apiSessionToken){
   localStorage.setItem('acm_gsession', JSON.stringify({
     email: payload.email, name: payload.name || '', picture: payload.picture || '',
     localExp: Date.now() + SESSION_DURATION_MS,
     // Real Google id_token from this login (JWT string) + its real expiry
-    // (payload.exp, seconds since epoch -> ms). Pages that call the backend
-    // API (agent-tools/assets/js/agent-api-session.js) reuse this token
-    // directly while it's still valid instead of silently re-prompting
-    // Google on every click — Google's One Tap suppresses repeated silent
-    // prompts after the first use in a browser, which was causing agents to
-    // get bounced back to the dashboard right after opening Sales
-    // Report/Events.
+    // (payload.exp, seconds since epoch -> ms) — kept only as a fallback for
+    // agent-tools/assets/js/agent-api-session.js in case the exchange below
+    // failed.
     idToken: rawIdToken || null,
-    idTokenExp: payload.exp ? payload.exp * 1000 : 0
+    idTokenExp: payload.exp ? payload.exp * 1000 : 0,
+    // Our own long-lived (15-day) session token, minted below via
+    // POST /api/auth/session right while we know the Google id_token is
+    // genuinely fresh. This is what agent-tools/assets/js/agent-api-session.js
+    // actually sends to the API on every call — it's what lets Sales
+    // Report/Events stay logged in for the full 15 days without depending on
+    // Google's silent One Tap refresh (suppressed by Google after the first
+    // use in a browser), which was causing agents to get bounced back to the
+    // dashboard right after opening Sales Report/Events.
+    apiToken: apiSessionToken || null,
+    apiTokenExp: apiSessionToken ? Date.now() + SESSION_DURATION_MS : 0
   }));
+}
+
+// Best-effort exchange, called once right after a real Google login. If the
+// API happens to be unreachable, we don't block the agent from getting into
+// the dashboard — agent-api-session.js will just fall back to its own
+// (slower, less reliable) on-demand exchange the first time it's needed.
+async function exchangeForApiSessionToken(googleIdToken){
+  try{
+    const resp = await fetch(API_BASE + '/auth/session', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + googleIdToken }
+    });
+    if(!resp.ok) return null;
+    const data = await resp.json();
+    return data.session_token || null;
+  }catch(e){ return null; }
 }
 
 function getValidSession(){
@@ -226,7 +249,7 @@ function getValidSession(){
   return session;
 }
 
-function handleCredentialResponse(response){
+async function handleCredentialResponse(response){
   let payload;
   try{ payload = decodeJwt(response.credential); }
   catch(e){ showDenied('unknown'); return; }
@@ -235,7 +258,8 @@ function handleCredentialResponse(response){
   const verified = payload.email_verified === true;
 
   if(verified && isEmailAllowed(email)){
-    saveSession(payload, response.credential);
+    const apiSessionToken = await exchangeForApiSessionToken(response.credential);
+    saveSession(payload, response.credential, apiSessionToken);
     window.location.href = 'dashboard-agentes.html';
   } else {
     showDenied(email);
