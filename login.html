@@ -132,7 +132,7 @@ img{display:block;max-width:100%}
   <span id="mini-copy"></span><a href="privacy-security-policy.pdf" target="_blank" rel="noopener" id="mini-priv"></a>
 </footer>
 <script type="module">
-import { GOOGLE_CLIENT_ID, WORKSPACE_DOMAIN, isEmailAllowed } from "./google-config.js";
+import { GOOGLE_CLIENT_ID, WORKSPACE_DOMAIN, isEmailAllowed, isDashboardRosterAllowed } from "./google-config.js";
 import { API_BASE } from "./agent-tools/assets/js/api-config.js";
 
 let curLang = 'en';
@@ -140,12 +140,18 @@ const I18N = {
   en:{ ey:'Agent Portal', h1:'Agent Login', sub:'Sign in with your Allcare Mar Google Workspace account to access the Agent Intranet.',
     gsiNote:'Access is restricted to @'+WORKSPACE_DOMAIN+' Google Workspace accounts.',
     deniedTitle:'Access Denied.', deniedText:'This section is exclusive to authorized Allcare Mar personnel.',
+    deniedStaffTitle:'Access Denied.', deniedStaffText:'Your Allcare Mar account is valid, but this section is limited to active agents and office staff. If you believe this is a mistake, contact info@allcaremar.com.',
+    verifyErrorTitle:'Couldn\u2019t verify your access.', verifyErrorText:'We couldn\u2019t confirm your access right now. Please try again in a moment.',
     mailSubject:'Unauthorized Access Attempt - Allcare Mar Agent Intranet' },
   es:{ ey:'Portal de Agentes', h1:'Inicio de Sesi\u00F3n', sub:'Inicia sesi\u00F3n con tu cuenta de Google Workspace de Allcare Mar para acceder a la Intranet de Agentes.',
     gsiNote:'El acceso est\u00E1 restringido a cuentas de Google Workspace @'+WORKSPACE_DOMAIN+'.',
     deniedTitle:'Acceso denegado.', deniedText:'Secci\u00F3n exclusiva para personal autorizado de Allcare Mar.',
+    deniedStaffTitle:'Acceso denegado.', deniedStaffText:'Tu cuenta de Allcare Mar es v\u00E1lida, pero esta secci\u00F3n es solo para agentes activos y personal de oficina. Si crees que esto es un error, escribe a info@allcaremar.com.',
+    verifyErrorTitle:'No pudimos verificar tu acceso.', verifyErrorText:'No pudimos confirmar tu acceso en este momento. Intenta de nuevo en un momento.',
     mailSubject:'Intento de Acceso No Autorizado - Intranet de Agentes Allcare Mar' }
 };
+
+let lastDeniedKind = null;
 
 function applyLang(){
   const t = I18N[curLang];
@@ -155,8 +161,7 @@ function applyLang(){
   document.getElementById('h1').textContent = t.h1;
   document.getElementById('sub').textContent = t.sub;
   document.getElementById('gsiNote').textContent = t.gsiNote;
-  document.getElementById('deniedTitle').textContent = t.deniedTitle;
-  document.getElementById('deniedText').textContent = t.deniedText;
+  renderDeniedText(lastDeniedKind || 'domain');
   applyMiniFooter();
   renderGoogleButton();
 }
@@ -252,23 +257,48 @@ function getValidSession(){
 async function handleCredentialResponse(response){
   let payload;
   try{ payload = decodeJwt(response.credential); }
-  catch(e){ showDenied('unknown'); return; }
+  catch(e){ showDenied('domain'); return; }
 
   const email = payload.email || 'unknown';
   const verified = payload.email_verified === true;
 
-  if(verified && isEmailAllowed(email)){
-    const apiSessionToken = await exchangeForApiSessionToken(response.credential);
-    saveSession(payload, response.credential, apiSessionToken);
-    window.location.href = 'dashboard-agentes.html';
-  } else {
-    showDenied(email);
+  if(!verified || !isEmailAllowed(email)){
+    showDenied('domain');
     notifyUnauthorized(email);
+    return;
   }
+
+  // Passed the domain check (real @allcaremar.com account, or Carlos's
+  // exception) - now confirm they're actually on the roster (staff.json:
+  // office staff + active agents) or in the small admin-emails exception
+  // list, per Jesus (2026-08-10): a Workspace account from an unrelated
+  // department shouldn't get into the agent dashboard just by having an
+  // @allcaremar.com login.
+  const rosterOk = await isDashboardRosterAllowed(email);
+  if(rosterOk === false){ showDenied('staff'); return; }
+  if(rosterOk === null){ showDenied('error'); return; }
+
+  const apiSessionToken = await exchangeForApiSessionToken(response.credential);
+  saveSession(payload, response.credential, apiSessionToken);
+  window.location.href = 'dashboard-agentes.html';
 }
 window.handleCredentialResponse = handleCredentialResponse;
 
-function showDenied(email){
+function renderDeniedText(kind){
+  const t = I18N[curLang];
+  const map = {
+    domain: [t.deniedTitle, t.deniedText],
+    staff: [t.deniedStaffTitle, t.deniedStaffText],
+    error: [t.verifyErrorTitle, t.verifyErrorText]
+  };
+  const [title, text] = map[kind] || map.domain;
+  document.getElementById('deniedTitle').textContent = title;
+  document.getElementById('deniedText').textContent = text;
+}
+
+function showDenied(kind){
+  lastDeniedKind = kind || 'domain';
+  renderDeniedText(lastDeniedKind);
   document.getElementById('deniedBox').classList.add('show');
 }
 
