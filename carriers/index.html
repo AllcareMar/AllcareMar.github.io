@@ -609,9 +609,14 @@ const successDetail = document.getElementById('successDetail');
 const loginScreen = document.getElementById('loginScreen');
 const deniedBox = document.getElementById('deniedBox');
 
-// Unica excepcion al dominio @allcaremar.com: este correo externo tiene
+// Excepciones al dominio @allcaremar.com: estos correos externos tienen
 // permiso explicito de Jesus para llenar el formulario.
-const EXTRA_ALLOWED_EMAILS = ['carloshealthagent@gmail.com'];
+// - carloshealthagent@gmail.com: Carlos Perez, agente real con Gmail personal.
+// - glendahealthagent@gmail.com: Glenda Colon, lider de la agencia GW Ins
+//   Group LLC, agente real con Gmail personal (agregado 2026-08-10 - no
+//   podia entrar, "not registered as an agent", porque su cuenta real no
+//   estaba en esta lista).
+const EXTRA_ALLOWED_EMAILS = ['carloshealthagent@gmail.com', 'glendahealthagent@gmail.com'];
 
 // Mismos 5 correos de ALLOWED_DASHBOARD_EMAILS en Code.gs: tambien pueden
 // llenar el formulario y seleccionar carriers, aunque no tengan perfil en
