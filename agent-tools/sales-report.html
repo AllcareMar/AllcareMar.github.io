@@ -187,6 +187,12 @@ table.rv-table td{padding:9px 10px;border-bottom:1px solid var(--gray-200)}
 
     <div class="rv-divider"></div>
     <div class="rv-h4" id="hAgents"></div>
+    <div class="filter-row">
+      <input type="text" id="newAgentName">
+      <input type="email" id="newAgentEmail">
+      <input type="text" id="newAgentZoom">
+    </div>
+    <button class="btn-primary" id="addAgentBtn"></button>
     <div id="agentsList"></div>
   </div>
 </main>
@@ -241,6 +247,9 @@ en:{
   backupBtn:"Run backup now", backupStatus:ts=>ts?("✓ Last backup: "+ts):"No backup yet.",
   backupDone:"✓ Backup saved on the server (data/backups) as CSV and Excel.",
   hAgents:"Agent management", active:"Active", inactive:"Deactivated", deactivate:"Deactivate", activate:"Activate",
+  newAgentNamePh:"Full name", newAgentEmailPh:"Email", newAgentZoomPh:"Zoom ID (optional)",
+  addAgentBtn:"Add agent", addAgentNeedsFields:"Enter at least a name and an email.",
+  addAgentSuccess:"Agent saved.",
   floatLbl:"sales today", allPlans:"All plan types",
   showingOf:(a,b)=>`Showing ${a} of ${b}`, showMore:n=>`Show ${n} more`,
 },
@@ -267,6 +276,9 @@ es:{
   backupBtn:"Generar backup ahora", backupStatus:ts=>ts?("✓ Último backup: "+ts):"Sin backups todavía.",
   backupDone:"✓ Backup guardado en el servidor (data/backups) en CSV y Excel.",
   hAgents:"Gestión de agentes", active:"Activo", inactive:"De baja", deactivate:"Desactivar", activate:"Activar",
+  newAgentNamePh:"Nombre completo", newAgentEmailPh:"Email", newAgentZoomPh:"Zoom ID (opcional)",
+  addAgentBtn:"Agregar agente", addAgentNeedsFields:"Escribe al menos un nombre y un email.",
+  addAgentSuccess:"Agente guardado.",
   floatLbl:"ventas hoy", allPlans:"Todos los tipos de plan",
   showingOf:(a,b)=>`Mostrando ${a} de ${b}`, showMore:n=>`Mostrar ${n} más`,
 }
@@ -302,6 +314,10 @@ function applyStaticText(){
   document.getElementById('fullExportXlsx').textContent = t('exportXlsx');
   document.getElementById('backupNowBtn').textContent = t('backupBtn');
   document.getElementById('hAgents').textContent = t('hAgents');
+  document.getElementById('newAgentName').placeholder = t('newAgentNamePh');
+  document.getElementById('newAgentEmail').placeholder = t('newAgentEmailPh');
+  document.getElementById('newAgentZoom').placeholder = t('newAgentZoomPh');
+  document.getElementById('addAgentBtn').textContent = t('addAgentBtn');
   document.getElementById('floatLbl').textContent = t('floatLbl');
   renderNumSalesUI();
   fillSelectOptions();
@@ -463,6 +479,27 @@ function renderAgentsList(){
   const moreBtn = document.getElementById('agentsMoreBtn');
   if (moreBtn) moreBtn.addEventListener('click', ()=>{ agentsShown += PAGE_SIZE; renderAgentsList(); });
 }
+
+document.getElementById('addAgentBtn').addEventListener('click', async ()=>{
+  const agent_name = document.getElementById('newAgentName').value.trim();
+  const email = document.getElementById('newAgentEmail').value.trim();
+  const zoom_id = document.getElementById('newAgentZoom').value.trim();
+  if (!agent_name || !email) { alert(t('addAgentNeedsFields')); return; }
+  try {
+    // POST /sales/admin/agents already existed server-side (api/sales.py) -
+    // upserts by email (ON CONFLICT ... DO UPDATE), so re-adding an
+    // existing email just updates their name/zoom_id instead of erroring.
+    await apiJson(API_BASE, '/sales/admin/agents', {
+      method:'POST',
+      body: JSON.stringify({ agent_name, email, zoom_id: zoom_id || null })
+    });
+    document.getElementById('newAgentName').value = '';
+    document.getElementById('newAgentEmail').value = '';
+    document.getElementById('newAgentZoom').value = '';
+    alert(t('addAgentSuccess'));
+    loadAdmin();
+  } catch(e) { alert(e.message); }
+});
 
 async function loadAdmin(){
   const m = await apiJson(API_BASE, '/sales/admin/metrics');
