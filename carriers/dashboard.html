@@ -82,6 +82,7 @@
       <div class="actions">
         <span id="whoami" style="font-size:0.8rem;color:var(--muted);"></span>
         <button class="btn download-btn" id="downloadBtn">Download CSV</button>
+        <button class="btn download-btn" id="downloadJsonBtn" title="For the one-time Postgres backfill script - see scripts/import_carrier_requests_backfill.py">Download JSON (backfill)</button>
         <button class="btn refresh-btn" id="refreshBtn">Refresh</button>
         <button class="btn signout-btn" id="signoutBtn">Sign out</button>
       </div>
@@ -511,6 +512,7 @@ const I18N = {
     missingClientId: 'GOOGLE_CLIENT_ID is not configured in dashboard.html (see README).',
     dashTitle: 'Carrier Responses Dashboard - By Agent',
     downloadBtn: 'Download CSV',
+    downloadJsonBtn: 'Download JSON (backfill)',
     refreshBtn: 'Refresh',
     signoutBtn: 'Sign out',
     lblTotal: 'Total agents',
@@ -538,6 +540,7 @@ const I18N = {
     missingClientId: 'Falta configurar GOOGLE_CLIENT_ID en dashboard.html (ver README).',
     dashTitle: 'Dashboard de Respuestas - Carriers por Agente',
     downloadBtn: 'Descargar CSV',
+    downloadJsonBtn: 'Descargar JSON (backfill)',
     refreshBtn: 'Actualizar',
     signoutBtn: 'Cerrar sesion',
     lblTotal: 'Agentes totales',
@@ -569,6 +572,7 @@ function applyLang() {
   document.getElementById('deniedMsg').textContent = t.deniedMsg;
   document.getElementById('dashTitle').textContent = t.dashTitle;
   document.getElementById('downloadBtn').textContent = t.downloadBtn;
+  document.getElementById('downloadJsonBtn').textContent = t.downloadJsonBtn;
   document.getElementById('refreshBtn').textContent = t.refreshBtn;
   document.getElementById('signoutBtn').textContent = t.signoutBtn;
   document.getElementById('lblTotal').textContent = t.lblTotal;
@@ -774,10 +778,33 @@ function downloadCsv() {
   URL.revokeObjectURL(url);
 }
 
+// Descarga TODAS las submissions (sin filtro de la tabla, a proposito - el
+// backfill de Postgres necesita el historico completo, no solo lo que este
+// visible en pantalla) en el formato exacto que espera
+// scripts/import_carrier_requests_backfill.py (02-Reporte-Ventas-y-Eventos),
+// usado UNA SOLA VEZ para migrar lo que se firmo antes de que existiera el
+// dual-write en Code.gs (ver schema-unificado.sql SECTION 6). No borra ni
+// modifica nada aqui - es una lectura, mismo endpoint que ya usa esta
+// pagina para pintar la tabla.
+function downloadJson() {
+  const payload = { rows: submissions };
+  const jsonContent = JSON.stringify(payload, null, 2);
+  const blob = new Blob([jsonContent], { type: 'application/json;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'carrier_requests_export_' + new Date().toISOString().slice(0,10) + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 document.getElementById('carrierFilter').addEventListener('change', render);
 document.getElementById('agentSearch').addEventListener('input', render);
 document.getElementById('refreshBtn').addEventListener('click', loadData);
 document.getElementById('downloadBtn').addEventListener('click', downloadCsv);
+document.getElementById('downloadJsonBtn').addEventListener('click', downloadJson);
 
 populateCarrierFilter();
 applyLang();
