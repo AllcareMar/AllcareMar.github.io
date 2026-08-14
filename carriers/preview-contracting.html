@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Preview — Contracting &amp; Onboarding Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+.login-gate{position:fixed;inset:0;background:var(--gray-50);z-index:1000;display:none;align-items:center;justify-content:center;flex-direction:column;gap:18px;padding:20px;text-align:center}
+.login-gate.show{display:flex}
+.login-gate img{height:52px}
+.login-gate h2{font-size:18px;font-weight:800;color:var(--gray-800)}
+.login-gate p{font-size:13px;color:var(--gray-600);max-width:360px}
+.login-gate .err{color:var(--red);font-size:12.5px;font-weight:700}
+.login-gate .config-pending{font-size:12px;color:var(--amber);background:var(--amber-light);padding:10px 16px;border-radius:10px;max-width:360px}
+.data-error{position:fixed;inset:0;background:var(--gray-50);z-index:999;display:none;align-items:center;justify-content:center;padding:20px;text-align:center}
+.data-error.show{display:flex}
+.data-error .box{background:#fff;border-radius:var(--r-lg);box-shadow:var(--sh);padding:28px;max-width:420px}
+.data-error .box .t{font-weight:800;color:var(--red);margin-bottom:8px}
+:root{
+  --blue:#1a2fd4; --blue-dark:#0f1e9a; --blue-light:#e8ecff;
+  --red:#e8001d; --red-dark:#b50016; --red-light:#fff0f2;
+  --white:#ffffff; --gray-50:#faf8f5; --gray-100:#f3efe9; --gray-200:#e6e0d6;
+  --gray-400:#8b8377; --gray-600:#544f47; --gray-800:#2b2723;
+  --green:#00a86b; --amber:#c9820a; --amber-light:#fff6e5; --green-light:#e8f9f2;
+  --r:12px; --r-lg:20px; --r-xl:28px;
+  --sh:0 4px 24px rgba(58,53,48,.08); --sh-lg:0 16px 56px rgba(58,53,48,.14);
+  --t:.2s ease;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Open Sans',sans-serif;color:var(--gray-800);background:var(--gray-50);min-height:100vh}
+h1,h2,h3{font-family:'Montserrat',sans-serif;line-height:1.2}
+.banner{background:var(--blue);color:#fff;padding:10px 20px;text-align:center;font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;letter-spacing:.02em}
+.wrap{max-width:920px;margin:0 auto;padding:32px 20px 80px}
+.topbar{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.topbar h1{font-size:22px;font-weight:800;color:var(--gray-800)}
+.topbar .sub{font-size:13px;color:var(--gray-400);font-weight:600}
+.logo-img{height:44px;width:auto;flex-shrink:0}
+.lang-toggle{margin-left:auto;background:var(--gray-100);color:var(--gray-800);border:1.5px solid var(--gray-200);border-radius:20px;padding:8px 16px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:12px;cursor:pointer;letter-spacing:.03em;flex-shrink:0}
+.lang-toggle:hover{background:var(--gray-200)}
+.steps{display:flex;gap:8px;margin-bottom:28px}
+.step-pill{flex:1;padding:10px 14px;border-radius:10px;background:var(--gray-100);font-family:'Montserrat',sans-serif;font-weight:700;font-size:12.5px;color:var(--gray-400);display:flex;align-items:center;gap:8px;transition:var(--t)}
+.step-pill.active{background:var(--blue-light);color:var(--blue-dark)}
+.step-pill.done{background:var(--green-light);color:var(--green)}
+.step-pill .num{width:22px;height:22px;border-radius:50%;background:currentColor;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.step-pill .num i{color:#fff}
+.card{background:var(--white);border-radius:var(--r-lg);box-shadow:var(--sh);padding:28px;margin-bottom:20px}
+.card h2{font-size:17px;font-weight:800;margin-bottom:6px}
+.card .desc{font-size:13px;color:var(--gray-600);margin-bottom:20px}
+.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.choice-card{border:2px solid var(--gray-200);border-radius:var(--r-lg);padding:24px;text-align:center;cursor:pointer;transition:var(--t)}
+.choice-card:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:var(--sh)}
+.choice-card.selected{border-color:var(--blue);background:var(--blue-light)}
+.choice-card i{font-size:32px;color:var(--blue);margin-bottom:10px}
+.choice-card .t{font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px}
+.choice-card .s{font-size:12px;color:var(--gray-400);margin-top:4px}
+select,.select-like{width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--gray-200);font-family:'Open Sans',sans-serif;font-size:14px;color:var(--gray-800);background:#fff;margin-bottom:14px}
+label.field-label{display:block;font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--gray-600);margin-bottom:6px}
+.lock-banner{display:flex;align-items:center;gap:10px;background:var(--amber-light);color:var(--amber);border-radius:10px;padding:12px 16px;font-size:13px;font-weight:700;margin-bottom:18px}
+.lock-banner i{font-size:16px}
+.hier{font-size:12.5px;color:var(--gray-400);margin-bottom:20px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.hier b{color:var(--gray-800)}
+.hier .arrow{color:var(--gray-200)}
+.progress-track{height:8px;border-radius:6px;background:var(--gray-100);overflow:hidden;margin-bottom:4px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));border-radius:6px;transition:width .3s ease}
+.progress-label{font-size:11.5px;color:var(--gray-400);font-weight:700;margin-bottom:20px}
+.checklist{display:flex;flex-direction:column;gap:2px}
+.check-row{display:flex;align-items:flex-start;gap:14px;padding:14px 12px;border-radius:10px;transition:var(--t);border:1px solid transparent}
+.check-row:hover{background:var(--gray-50);border-color:var(--gray-100)}
+.check-row.disabled{opacity:.4;pointer-events:none}
+.chk{width:24px;height:24px;border-radius:7px;border:2px solid var(--gray-200);flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--t);margin-top:2px}
+.chk.checked{background:var(--green);border-color:var(--green);color:#fff}
+.chk i{font-size:12px;display:none}
+.chk.checked i{display:block}
+.crow-body{flex:1}
+.crow-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;color:var(--gray-800);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge-tag{font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:20px;letter-spacing:.03em;text-transform:uppercase}
+.badge-file{background:var(--blue-light);color:var(--blue-dark)}
+.badge-email{background:var(--red-light);color:var(--red)}
+.crow-date{font-size:11.5px;color:var(--gray-400);margin-top:3px;font-weight:600}
+.crow-date.filled{color:var(--green);font-weight:700}
+.upload-row{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+.btn-upload{font-family:'Montserrat',sans-serif;font-weight:800;font-size:11.5px;border:1.5px solid var(--blue);background:var(--blue-light);color:var(--blue-dark);padding:7px 14px;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:var(--t)}
+.btn-upload:hover{background:var(--blue);color:#fff}
+.upload-note{font-size:11.5px;color:var(--gray-400);font-weight:600}
+.upload-note.error{color:var(--red)}
+.current-file-row{font-size:11.5px;font-weight:700;color:var(--blue-dark);margin-top:8px;display:flex;align-items:center;gap:6px}
+.current-file-row a{color:var(--blue);text-decoration:underline}
+.upload-hint{font-size:10.5px;color:var(--gray-400);font-weight:600;margin-top:4px;max-width:480px}
+.email-row{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+.btn-send-email{font-family:'Montserrat',sans-serif;font-weight:800;font-size:11.5px;border:none;background:var(--red);color:#fff;padding:7px 14px;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:var(--t)}
+.btn-send-email:hover{background:var(--red-dark)}
+.btn-send-email.sent{background:var(--green);cursor:default}
+.btn-send-email:disabled{opacity:.85;cursor:default}
+.email-sent-note{font-size:11.5px;color:var(--green);font-weight:700}
+.btnbar{display:flex;justify-content:space-between;margin-top:24px}
+button.nav-btn{font-family:'Montserrat',sans-serif;font-weight:800;font-size:13.5px;border:none;border-radius:10px;padding:12px 22px;cursor:pointer;transition:var(--t)}
+.btn-back{background:var(--gray-100);color:var(--gray-600)}
+.btn-next{background:var(--blue);color:#fff}
+.btn-next:disabled{background:var(--gray-200);color:var(--gray-400);cursor:not-allowed}
+.mock-note{background:#fff8e1;border:1px solid #f0d98c;border-radius:10px;padding:12px 16px;font-size:12px;color:#7a5c00;margin-bottom:22px;display:flex;gap:10px;align-items:flex-start}
+.mock-note i{margin-top:2px}
+.carrier-hint{font-size:12px;color:var(--gray-400);margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.carrier-legend{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:14px;padding:10px 14px;background:var(--gray-50);border-radius:10px}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:var(--gray-600);font-family:'Montserrat',sans-serif}
+.carrier-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-bottom:6px}
+.carrier-chip{border:1.5px solid var(--gray-200);border-radius:10px;padding:12px 14px;font-size:12.5px;font-weight:700;font-family:'Montserrat',sans-serif;color:var(--gray-800);cursor:pointer;display:flex;align-items:flex-start;gap:9px;transition:var(--t);background:#fff}
+.carrier-chip:hover{border-color:var(--blue);transform:translateY(-1px)}
+.carrier-chip span{display:flex;flex-direction:column;gap:2px}
+.carrier-chip.selected{border-width:2px;border-color:var(--blue);background:var(--blue-light);color:var(--blue-dark);box-shadow:0 0 0 2px var(--blue-light)}
+.carrier-chip.disabled{opacity:.45;cursor:not-allowed;background:var(--gray-50);filter:grayscale(.6)}
+.carrier-chip.disabled:hover{border-color:var(--gray-200);transform:none}
+.carrier-chip i{flex-shrink:0;color:var(--gray-400);width:14px;text-align:center;margin-top:2px}
+.carrier-chip.disabled i{color:var(--gray-400)}
+.chip-states{font-weight:600;color:var(--gray-400);font-size:10.5px}
+.carrier-chip.disabled .chip-states{color:var(--amber)}
+.chip-status-label{font-weight:800;font-size:9.5px;text-transform:uppercase;letter-spacing:.03em}
+/* Enabled-carrier progress states — distinct colors so completed / in
+   progress / not started are identifiable at a glance in Step 2 */
+.carrier-chip.status-completed{border-color:var(--green);background:var(--green-light)}
+.carrier-chip.status-completed i{color:var(--green)}
+.carrier-chip.status-completed .chip-status-label{color:var(--green)}
+.carrier-chip.status-in-progress{border-color:var(--amber);background:var(--amber-light)}
+.carrier-chip.status-in-progress i{color:var(--amber)}
+.carrier-chip.status-in-progress .chip-status-label{color:var(--amber)}
+.carrier-chip.status-not-started{border-color:var(--gray-200);background:#fff}
+.carrier-chip.status-not-started i{color:var(--blue)}
+.carrier-chip.status-not-started .chip-status-label{color:var(--gray-400)}
+.carrier-chip.selected.status-completed,.carrier-chip.selected.status-in-progress,.carrier-chip.selected.status-not-started{border-color:var(--blue);background:var(--blue-light)}
+.carrier-chip.selected i{color:var(--blue-dark)!important}
+.carrier-chip.selected .chip-status-label{color:var(--blue-dark)!important}
+.carrier-empty{font-size:12.5px;color:var(--gray-400);padding:16px;text-align:center;border:1.5px dashed var(--gray-200);border-radius:10px;margin-bottom:6px}
+.combo{position:relative;margin-bottom:14px}
+.combo input{width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--gray-200);font-family:'Open Sans',sans-serif;font-size:14px;color:var(--gray-800);background:#fff}
+.combo input:focus{outline:none;border-color:var(--blue)}
+.combo-list{position:absolute;z-index:20;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1.5px solid var(--gray-200);border-radius:10px;max-height:260px;overflow-y:auto;box-shadow:var(--sh-lg);display:none}
+.combo-list.open{display:block}
+.combo-item{padding:10px 14px;font-size:13.5px;cursor:pointer;border-bottom:1px solid var(--gray-100)}
+.combo-item:last-child{border-bottom:none}
+.combo-item:hover,.combo-item.hi{background:var(--blue-light)}
+.combo-item .leader-star{color:var(--amber);margin-left:4px}
+.combo-empty{padding:14px;font-size:12.5px;color:var(--gray-400);text-align:center}
+</style>
+</head>
+<body>
+
+<div class="login-gate" id="loginGate">
+  <img src="assets/img/logo.png" alt="Allcare Mar Agency"/>
+  <h2 id="loginGateTitle">Sign in to continue</h2>
+  <p id="loginGateDesc">This tool is restricted to authorized Allcare Mar staff. Sign in with your Google Workspace account.</p>
+  <div id="googleSignInBtn"></div>
+  <div class="err" id="loginGateError" style="display:none"></div>
+  <div class="config-pending" id="loginGateConfigPending" style="display:none">Google Sign-In isn't configured yet on this deployment (missing Client ID) — this screen will start working once that's set.</div>
+</div>
+
+<div class="data-error" id="dataErrorScreen">
+  <div class="box">
+    <div class="t" id="dataErrorTitle">Couldn't load data</div>
+    <div id="dataErrorMsg" style="font-size:13px;color:var(--gray-600)"></div>
+  </div>
+</div>
+
+<div class="banner"><i class="fa-solid fa-eye"></i>&nbsp; <span id="bannerText">PREVIEW — visual mockup, no real backend yet. Sample data taken from Tracker.xlsx.</span></div>
+<div class="wrap" id="mainWrap">
+
+  <div class="topbar">
+    <img class="logo-img" src="assets/img/logo.png" alt="Allcare Mar Agency"/>
+    <div>
+      <h1 id="mainTitle">Contracting &amp; Onboarding Tracker</h1>
+      <div class="sub" id="topSub">Allcare Mar Agency — workflow preview</div>
+    </div>
+    <button class="lang-toggle" id="langBtn"><span id="lang-label">ES</span></button>
+  </div>
+
+  <div class="mock-note"><i class="fa-solid fa-circle-info"></i> <span id="mockNoteText">This is only the visual/UX side for your approval. Auto-email recipients and the Google Sheets connection get defined after this flow is approved.</span></div>
+
+  <div class="steps">
+    <div class="step-pill done" id="pillStep1"><span class="num"><i class="fa-solid fa-check"></i></span> <span id="pill1Text">1. Type</span></div>
+    <div class="step-pill active" id="pillStep2"><span class="num">2</span> <span id="pill2Text">2. Select</span></div>
+    <div class="step-pill" id="pillStep3"><span class="num">3</span> <span id="pill3Text">3. Contract Checklist</span></div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="card" id="cardStep1" style="display:none">
+    <h2 id="step1Title">Step 1 — Who is this?</h2>
+    <div class="desc" id="step1Desc">Select whether you are tracking an Agency (leader/upline) or an individual Agent.</div>
+    <div class="choice-grid">
+      <div class="choice-card" data-type="agency" onclick="selectType(this,'agency')">
+        <i class="fa-solid fa-building"></i>
+        <div class="t" id="agencyLabel">Agency</div>
+        <div class="s" id="agencySub">Agency leader / upline</div>
+      </div>
+      <div class="choice-card" data-type="agent" onclick="selectType(this,'agent')">
+        <i class="fa-solid fa-user"></i>
+        <div class="t" id="agentLabel">Agent</div>
+        <div class="s" id="agentSub">Individual agent</div>
+      </div>
+    </div>
+    <div class="btnbar">
+      <div></div>
+      <button class="nav-btn btn-next" id="btnStep1Next" disabled onclick="goStep(2)"><span id="nextLabel1">Next</span> <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="card" id="cardStep2">
+    <h2><span id="step2Title">Step 2 — Select</span> <span id="typeLabel">Agency or Agent</span> <span id="andCarrier">and Carrier</span></h2>
+    <div class="desc" id="step2Desc">Sample data loaded from the current Tracker.</div>
+
+    <label class="field-label" id="entityLabel">Agency / Agent</label>
+    <div class="combo" id="entityCombo">
+      <input type="text" id="entityInput" autocomplete="off" oninput="onEntityInput()" onfocus="onEntityFocus()"/>
+      <div class="combo-list" id="entityListBox"></div>
+    </div>
+
+    <label class="field-label" id="carrierFieldLabel">Carrier</label>
+    <div class="carrier-hint" id="carrierHint" style="display:none"><i class="fa-solid fa-circle-info"></i> <span id="carrierHintText"></span></div>
+    <div class="carrier-legend" id="carrierLegend" style="display:none">
+      <span class="legend-item"><i class="fa-solid fa-circle-check" style="color:var(--green)"></i> <span id="legendCompleted"></span></span>
+      <span class="legend-item"><i class="fa-solid fa-hourglass-half" style="color:var(--amber)"></i> <span id="legendInProgress"></span></span>
+      <span class="legend-item"><i class="fa-solid fa-circle" style="color:var(--blue)"></i> <span id="legendNotStarted"></span></span>
+      <span class="legend-item"><i class="fa-solid fa-lock" style="color:var(--gray-400)"></i> <span id="legendLocked"></span></span>
+    </div>
+    <div class="carrier-grid" id="carrierGrid"></div>
+    <div class="carrier-empty" id="carrierEmpty">Select an Agency or Agent above to see available carriers.</div>
+
+    <div class="btnbar">
+      <button class="nav-btn btn-back" onclick="goStep(1)"><i class="fa-solid fa-arrow-left"></i> <span id="backLabel1">Back</span></button>
+      <button class="nav-btn btn-next" id="btnStep2Next" disabled onclick="goStep(3)"><span id="viewChecklistLabel">View checklist</span> <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="card" id="cardStep3" style="display:none">
+    <h2 id="step3Title">Step 3 — Contracting checklist</h2>
+    <div class="hier" id="hierLine"></div>
+
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="progress-label" id="progressLabel">0 / 10 steps completed</div>
+
+    <div class="checklist" id="checklist"></div>
+
+    <div class="notify-uplines-box" id="notifyUplinesBox" style="display:none;margin-top:16px;padding:14px 16px;border:1px solid var(--brand-blue,#1c3f6e);border-radius:8px;background:#f4f8fc">
+      <p id="notifyUplinesDesc" style="margin:0 0 10px"></p>
+      <div class="email-row">
+        <button type="button" class="btn-send-email" id="notifyUplinesBtn" onclick="notifyUplines()"><i class="fa-solid fa-paper-plane"></i> <span class="btn-label">Notify Uplines</span></button>
+        <span class="email-sent-note" id="notifyUplinesNote" style="display:none"></span>
+      </div>
+    </div>
+
+    <div class="btnbar">
+      <button class="nav-btn btn-back" onclick="goStep(2)"><i class="fa-solid fa-arrow-left"></i> <span id="backLabel2">Back</span></button>
+      <div></div>
+    </div>
+  </div>
+
+</div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/shared-data.js"></script>
+<script>
+// STEPS, AGENCIES, AGENTS, CARRIER_STATES, AGENT_STATES, CARRIERS, PROGRESS,
+// and the gating/status functions (getCarrierEnabled, getCarrierStatus, etc.)
+// now all live in assets/js/shared-data.js — shared with reports.html so the
+// two never drift apart. Only page-specific UI code stays below.
+
+// ==== I18N (UI copy only — internal schema/keys above stay in English always) ====
+const I18N = {
+  en:{
+    banner:'PREVIEW — visual mockup, no real backend yet. Sample data taken from Tracker.xlsx.',
+    mainTitle:'Contracting & Onboarding Tracker',
+    topSub:'Allcare Mar Agency — workflow preview',
+    masterTag:'(Master)', leaderTag:'★ (Leader)',
+    mockNote:'This is only the visual/UX side for your approval. Auto-email recipients and the Google Sheets connection get defined after this flow is approved.',
+    pill1:'1. Type', pill2:'2. Select', pill3:'3. Contract Checklist',
+    step1Title:'Step 1 — Who is this?', step1Desc:'Select whether you are tracking an Agency (leader/upline) or an individual Agent.',
+    agency:'Agency', agencySub:'Agency leader / upline', agent:'Agent', agentSub:'Individual agent',
+    next:'Next', back:'Back',
+    step2Title:'Step 2 — Select', andCarrier:'and Carrier', step2Desc:'Sample data loaded from the current Tracker.',
+    entityLabel:'Agency / Agent', carrierLabel:'Carrier', selectPlaceholder:'— Select —', viewChecklist:'View checklist',
+    step3Title:'Step 3 — Contracting checklist',
+    progressLabel:'steps completed',
+    pending:'Pending', completed:'Completed', fileAttached:'certification.pdf attached', fileEmpty:'No file selected yet (image or PDF only)',
+    badgeFile:'File',
+    carrierWord:'Carrier',
+    carrierEmptyText:'Select an Agency or Agent above to see available carriers.',
+    carrierHint:'Only carriers already completed (through "Trainings") by the required leader are selectable. Locked carriers stay visible, greyed out.',
+    carrierLockedTitle:'Locked — the required leader has not completed this carrier yet',
+    carrierLockedLicenseTitle:'Locked — not licensed in a required state:',
+    noMatches:'No matches',
+    statusCompleted:'Completed', statusInProgress:'In progress', statusNotStarted:'Not started',
+    legendLocked:'Locked',
+    uploadBtn:'Upload', fileInvalid:'Invalid file type — only images or PDF allowed.', fileSelected:'Selected:',
+    fileCurrentLabel:'Current file:', fileViewLink:'View current file', replaceBtn:'Replace file', fileReplaceNote:'Uploading a new file will replace the link sent in future emails. The old file stays saved in Drive.',
+    sentLabel:'Sent ✓', testEmailSentTo:'Test email sent to',
+    loginTitle:'Sign in to continue', loginDesc:'This tool is restricted to authorized Allcare Mar staff. Sign in with your Google Workspace account.',
+    loginConfigPending:'Google Sign-In isn\'t configured yet on this deployment (missing Client ID) — this screen will start working once that\'s set.',
+    loginNotAuthorized:'This Google account is not authorized to use this tool.',
+    dataErrorTitle:'Couldn\'t load data', dataErrorRetry:'Please refresh the page, or contact IT if this keeps happening.',
+    uploadSending:'Uploading…', uploadFailed:'Upload failed:', uploadOk:'Uploaded ✓', savingStep:'Saving…', saveFailed:'Save failed:',
+    emailSending:'Sending…', emailFailed:'Send failed:',
+    notifyUplinesDesc:'{{carrier}} is fully contracted for {{agency}}. Notify the uplines with this agency\'s agents who requested this carrier?',
+    mockNotifyNote:'[Preview only] Would notify the uplines with agencies/agents who requested this carrier — see Code.gs (UPLINE_NOTIFY_RECIPIENTS).',
+  },
+  es:{
+    banner:'PREVIEW — mockup visual, sin backend real todavía. Datos de ejemplo tomados del Tracker.xlsx.',
+    mainTitle:'Rastreador de Contratación y Onboarding',
+    topSub:'Allcare Mar Agency — vista previa del flujo',
+    masterTag:'(Master)', leaderTag:'★ (Líder)',
+    mockNote:'Esto es solo la parte visual/UX para tu aprobación. Los destinatarios de email automático y la conexión con Google Sheets se definen después de aprobar este flujo.',
+    pill1:'1. Tipo', pill2:'2. Seleccionar', pill3:'3. Checklist del Contrato',
+    step1Title:'Paso 1 — ¿Quién es?', step1Desc:'Selecciona si vas a trackear una Agencia (líder/upline) o un Agente individual.',
+    agency:'Agencia', agencySub:'Líder de agencia / upline', agent:'Agente', agentSub:'Agente individual',
+    next:'Siguiente', back:'Atrás',
+    step2Title:'Paso 2 — Selecciona', andCarrier:'y Carrier', step2Desc:'Datos de ejemplo cargados desde el Tracker actual.',
+    entityLabel:'Agencia / Agente', carrierLabel:'Carrier', selectPlaceholder:'— Selecciona —', viewChecklist:'Ver checklist',
+    step3Title:'Paso 3 — Checklist de contratación',
+    progressLabel:'pasos completados',
+    pending:'Pendiente', completed:'Completado', fileAttached:'certificacion.pdf adjunto', fileEmpty:'Aún no hay archivo seleccionado (solo imagen o PDF)',
+    badgeFile:'Archivo',
+    carrierWord:'Carrier',
+    carrierEmptyText:'Selecciona una Agencia o Agente arriba para ver los carriers disponibles.',
+    carrierHint:'Solo se pueden seleccionar los carriers que el líder requerido ya completó (hasta "Trainings"). Los bloqueados se ven, pero apagados.',
+    carrierLockedTitle:'Bloqueado — el líder requerido aún no ha completado este carrier',
+    carrierLockedLicenseTitle:'Bloqueado — sin licencia en un estado requerido:',
+    noMatches:'Sin resultados',
+    statusCompleted:'Completado', statusInProgress:'En proceso', statusNotStarted:'Sin iniciar',
+    legendLocked:'Bloqueado',
+    uploadBtn:'Subir', fileInvalid:'Tipo de archivo inválido — solo se permiten imágenes o PDF.', fileSelected:'Seleccionado:',
+    fileCurrentLabel:'Archivo actual:', fileViewLink:'Ver archivo actual', replaceBtn:'Reemplazar archivo', fileReplaceNote:'Al subir un archivo nuevo, se reemplaza el link que se envía en los próximos emails. El archivo anterior queda guardado en Drive.',
+    sentLabel:'Enviado ✓', testEmailSentTo:'Email de prueba enviado a',
+    loginTitle:'Inicia sesión para continuar', loginDesc:'Esta herramienta es solo para staff autorizado de Allcare Mar. Inicia sesión con tu cuenta de Google Workspace.',
+    loginConfigPending:'El inicio de sesión con Google aún no está configurado en este despliegue (falta el Client ID) — esta pantalla empezará a funcionar cuando eso quede listo.',
+    loginNotAuthorized:'Esta cuenta de Google no está autorizada para usar esta herramienta.',
+    dataErrorTitle:'No se pudieron cargar los datos', dataErrorRetry:'Refresca la página, o contacta a IT si esto sigue pasando.',
+    uploadSending:'Subiendo…', uploadFailed:'Falló la subida:', uploadOk:'Subido ✓', savingStep:'Guardando…', saveFailed:'Falló al guardar:',
+    emailSending:'Enviando…', emailFailed:'Falló el envío:',
+    notifyUplinesDesc:'{{carrier}} ya está 100% contratado para {{agency}}. ¿Notificar a los uplines con los agentes de esta agencia que pidieron este carrier?',
+    mockNotifyNote:'[Solo preview] Notificaría a los uplines con las agencias/agentes que pidieron este carrier — ver Code.gs (UPLINE_NOTIFY_RECIPIENTS).',
+  }
+};
+
+let curLang = 'en'; // default English, per convention
+let currentType = null; // 'agency' | 'agent'
+let currentEntity = null;
+let currentCarrier = null;
+
+function t(){ return I18N[curLang]; }
+
+function applyLang(){
+  const x = t();
+  document.documentElement.lang = curLang; document.documentElement.setAttribute('data-lang',curLang);
+  document.getElementById('lang-label').textContent = curLang==='en' ? 'ES' : 'EN';
+  document.getElementById('bannerText').textContent = x.banner;
+  document.getElementById('mainTitle').textContent = x.mainTitle;
+  document.getElementById('topSub').textContent = x.topSub;
+  document.getElementById('mockNoteText').textContent = x.mockNote;
+  document.getElementById('pill1Text').textContent = x.pill1;
+  document.getElementById('pill2Text').textContent = x.pill2;
+  document.getElementById('pill3Text').textContent = x.pill3;
+  document.getElementById('step1Title').textContent = x.step1Title;
+  document.getElementById('step1Desc').textContent = x.step1Desc;
+  document.getElementById('agencyLabel').textContent = x.agency;
+  document.getElementById('agencySub').textContent = x.agencySub;
+  document.getElementById('agentLabel').textContent = x.agent;
+  document.getElementById('agentSub').textContent = x.agentSub;
+  document.getElementById('nextLabel1').textContent = x.next;
+  document.getElementById('backLabel1').textContent = x.back;
+  document.getElementById('backLabel2').textContent = x.back;
+  document.getElementById('step2Title').textContent = x.step2Title;
+  document.getElementById('andCarrier').textContent = x.andCarrier;
+  document.getElementById('step2Desc').textContent = x.step2Desc;
+  document.getElementById('carrierFieldLabel').textContent = x.carrierLabel;
+  document.getElementById('viewChecklistLabel').textContent = x.viewChecklist;
+  document.getElementById('step3Title').textContent = x.step3Title;
+  document.getElementById('typeLabel').textContent = currentType === 'agency' ? x.agency : (currentType === 'agent' ? x.agent : (curLang==='en'?'Agency or Agent':'Agencia o Agente'));
+  document.getElementById('entityLabel').textContent = currentType === 'agency' ? x.agency : x.entityLabel;
+  document.getElementById('entityInput').placeholder = x.selectPlaceholder;
+  document.getElementById('carrierEmpty').textContent = x.carrierEmptyText;
+  document.getElementById('loginGateTitle').textContent = x.loginTitle;
+  document.getElementById('loginGateDesc').textContent = x.loginDesc;
+  document.getElementById('loginGateConfigPending').textContent = x.loginConfigPending;
+  document.getElementById('dataErrorTitle').textContent = x.dataErrorTitle;
+  renderCarrierGrid();
+  if(document.getElementById('cardStep3').style.display !== 'none' && currentEntity && currentCarrier){
+    renderChecklist();
+  }
+}
+
+function toggleLang(){ curLang = curLang==='en'?'es':'en'; applyLang(); }
+document.getElementById('langBtn').addEventListener('click', toggleLang);
+
+function selectType(el, type){
+  document.querySelectorAll('.choice-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  currentType = type;
+  document.getElementById('btnStep1Next').disabled = false;
+}
+
+// Master list of {id,label,plainLabel} for the current type, used by the
+// searchable combobox below.
+let entityOptions = [];
+
+function buildEntityOptions(){
+  const x = t();
+  entityOptions = [];
+  if(currentType === 'agency'){
+    Object.entries(AGENCIES).forEach(([id,a])=>{
+      const label = a.name + (a.isMaster?' '+x.masterTag:'');
+      entityOptions.push({id, label, plain:a.name});
+    });
+  } else {
+    Object.entries(AGENTS).forEach(([id,ag])=>{
+      // Defensive: skip any agent whose agency isn't in AGENCIES (e.g. a
+      // Sales-Report-only agent with no agency_id that slipped through) -
+      // 2026-08-14 bug where this crashed with "Cannot read properties of
+      // undefined" and silently emptied the ENTIRE list, agency included,
+      // since the exception aborted the whole forEach. Backend now filters
+      // these out at the source too (see api/contracting.py /all-data), but
+      // this stays as a second line of defense.
+      const agency = AGENCIES[ag.agency];
+      if(!agency){ console.warn('Skipping agent with unknown agency:', id, ag); return; }
+      const leaderTag = ag.isLeader ? ' '+x.leaderTag : '';
+      const label = `${ag.name}${leaderTag} — ${agency.name}`;
+      entityOptions.push({id, label, plain:`${ag.name} ${agency.name}`});
+    });
+  }
+}
+
+// Called every time we land on Step 2 — resets the search box and options
+// for the (possibly new) type chosen in Step 1. This is also the fix for the
+// "stale selection" bug: currentEntity/currentCarrier are cleared here so
+// going back to Step 1 and picking a different type always starts fresh.
+function populateEntitySelect(){
+  const x = t();
+  document.getElementById('entityLabel').textContent = currentType === 'agency' ? x.agency : x.agent;
+  document.getElementById('typeLabel').textContent = currentType === 'agency' ? x.agency : x.agent;
+  document.getElementById('entityInput').placeholder = x.selectPlaceholder;
+  buildEntityOptions();
+  document.getElementById('entityInput').value = '';
+  closeEntityList();
+  currentEntity = null;
+  currentCarrier = null;
+  renderCarrierGrid();
+  checkStep2Ready();
+}
+
+function renderEntityList(query){
+  const x = t();
+  const box = document.getElementById('entityListBox');
+  const q = (query||'').trim().toLowerCase();
+  const matches = q ? entityOptions.filter(o => o.plain.toLowerCase().includes(q)) : entityOptions;
+  if(matches.length === 0){
+    box.innerHTML = `<div class="combo-empty">${x.noMatches}</div>`;
+  } else {
+    box.innerHTML = matches.map(o =>
+      `<div class="combo-item" onmousedown="pickEntity('${o.id}')">${o.label}</div>`
+    ).join('');
+  }
+  box.classList.add('open');
+}
+
+function closeEntityList(){
+  document.getElementById('entityListBox').classList.remove('open');
+}
+
+function onEntityFocus(){
+  // Show the FULL list on focus (not filtered by whatever label is already
+  // sitting in the box — filtering by the previous selection's full label,
+  // which includes "★"/"—", matched against nothing and required manually
+  // clearing the field first). Also select the text so typing immediately
+  // replaces it instead of requiring a manual delete.
+  const input = document.getElementById('entityInput');
+  input.select();
+  renderEntityList('');
+}
+
+function onEntityInput(){
+  const val = document.getElementById('entityInput').value;
+  renderEntityList(val);
+  // typing invalidates any prior confirmed selection until a match is clicked
+  if(currentEntity){
+    currentEntity = null;
+    currentCarrier = null;
+    renderCarrierGrid();
+    checkStep2Ready();
+  }
+}
+
+function pickEntity(id){
+  const opt = entityOptions.find(o => o.id === id);
+  if(!opt) return;
+  document.getElementById('entityInput').value = opt.label;
+  currentEntity = id;
+  currentCarrier = null;
+  closeEntityList();
+  renderCarrierGrid();
+  checkStep2Ready();
+}
+
+document.addEventListener('click', (e)=>{
+  const combo = document.getElementById('entityCombo');
+  if(combo && !combo.contains(e.target)) closeEntityList();
+});
+
+function goStep(n){
+  ['cardStep1','cardStep2','cardStep3'].forEach((id,i)=>{
+    document.getElementById(id).style.display = (i+1===n)?'block':'none';
+  });
+  ['pillStep1','pillStep2','pillStep3'].forEach((id,i)=>{
+    const el = document.getElementById(id);
+    el.classList.remove('active','done');
+    if(i+1 < n) el.classList.add('done');
+    else if(i+1 === n) el.classList.add('active');
+  });
+  if(n===2) populateEntitySelect();
+  if(n===3) renderChecklist();
+}
+
+function checkStep2Ready(){
+  document.getElementById('btnStep2Next').disabled = !(currentEntity && currentCarrier);
+}
+
+function renderCarrierGrid(){
+  const x = t();
+  const grid = document.getElementById('carrierGrid');
+  const empty = document.getElementById('carrierEmpty');
+  const hint = document.getElementById('carrierHint');
+  const legend = document.getElementById('carrierLegend');
+  if(!currentType || !currentEntity){
+    grid.innerHTML = ''; grid.style.display='none';
+    empty.style.display='block';
+    hint.style.display='none';
+    legend.style.display='none';
+    return;
+  }
+  empty.style.display='none';
+  grid.style.display='grid';
+  hint.style.display='flex';
+  legend.style.display='flex';
+  document.getElementById('carrierHintText').textContent = x.carrierHint;
+  document.getElementById('legendCompleted').textContent = x.statusCompleted;
+  document.getElementById('legendInProgress').textContent = x.statusInProgress;
+  document.getElementById('legendNotStarted').textContent = x.statusNotStarted;
+  document.getElementById('legendLocked').textContent = x.legendLocked;
+
+  grid.innerHTML = CARRIERS.map(c=>{
+    const info = getCarrierEnabled(currentType, currentEntity, c);
+    const selected = c === currentCarrier;
+    const cls = ['carrier-chip'];
+    if(!info.enabled) cls.push('disabled');
+    if(selected) cls.push('selected');
+
+    let icon, statusLabel = '';
+    let title = '';
+    if(!info.enabled){
+      icon = info.reason === 'license' ? 'fa-id-card' : 'fa-lock';
+      title = info.reason === 'license'
+        ? ` title="${x.carrierLockedLicenseTitle} ${info.requiredStates.join('/')}"`
+        : ` title="${x.carrierLockedTitle}"`;
+    } else {
+      const status = getCarrierStatus(currentType, currentEntity, c);
+      cls.push('status-' + status.replace('_','-'));
+      if(status === 'completed'){ icon = 'fa-circle-check'; statusLabel = x.statusCompleted; }
+      else if(status === 'in_progress'){ icon = 'fa-hourglass-half'; statusLabel = x.statusInProgress; }
+      else { icon = 'fa-circle'; statusLabel = x.statusNotStarted; }
+    }
+
+    const stateNote = info.requiredStates.length ? ` <span class="chip-states">(${info.requiredStates.join('/')})</span>` : '';
+    const statusTag = statusLabel ? ` <span class="chip-status-label">${statusLabel}</span>` : '';
+    return `<div class="${cls.join(' ')}" ${info.enabled?`onclick="selectCarrier('${c.replace(/'/g,"\\'")}')"`:''}${title}><i class="fa-solid ${icon}"></i><span>${c}${stateNote}${statusTag}</span></div>`;
+  }).join('');
+}
+
+function selectCarrier(name){
+  currentCarrier = name;
+  renderCarrierGrid();
+  checkStep2Ready();
+}
+
+function renderChecklist(){
+  const x = t();
+  const hier = document.getElementById('hierLine');
+  const entityName = currentType==='agency' ? AGENCIES[currentEntity].name : AGENTS[currentEntity].name;
+  let hierHtml = `<b>${entityName}</b>`;
+  if(currentType==='agent'){
+    hierHtml += ` <span class="arrow">›</span> ${x.agency}: <b>${AGENCIES[AGENTS[currentEntity].agency].name}</b>`;
+  }
+  hierHtml += ` <span class="arrow">›</span> ${x.carrierWord}: <b>${currentCarrier}</b>`;
+  hier.innerHTML = hierHtml;
+
+  const progressKey = progressKeyFor(currentType, currentEntity);
+  const progress = (PROGRESS[progressKey] && PROGRESS[progressKey][currentCarrier]) || {};
+  const list = document.getElementById('checklist');
+  list.innerHTML = '';
+  let doneCount = 0;
+  STEPS.forEach((s,idx)=>{
+    const checked = !!progress[s.key];
+    if(checked) doneCount++;
+    const hasFile = !!progress.fileUrl;
+    const row = document.createElement('div');
+    row.className = 'check-row';
+    row.innerHTML = `
+      <div class="chk ${checked?'checked':''}" data-key="${s.key}" onclick="toggleCheck(this)"><i class="fa-solid fa-check"></i></div>
+      <div class="crow-body">
+        <div class="crow-title">${idx+1}. ${s.label}
+          ${s.file?`<span class="badge-tag badge-file"><i class="fa-solid fa-paperclip"></i> ${x.badgeFile}</span>`:''}
+        </div>
+        <div class="crow-date ${checked?'filled':''}">${checked? '✓ '+x.completed+' — 2026-0'+(2+idx%7)+'-1'+(idx+1) : x.pending}</div>
+        ${s.file?`
+        <div class="current-file-row" id="currentFile-${s.key}" style="${hasFile?'':'display:none'}">
+          <i class="fa-solid fa-paperclip"></i> ${x.fileCurrentLabel} <a href="${hasFile?progress.fileUrl:'#'}" target="_blank" rel="noopener" id="currentFileLink-${s.key}">${x.fileViewLink}</a>
+        </div>
+        <div class="upload-row">
+          <input type="file" accept="image/jpeg,image/png,image/webp,image/gif,application/pdf,.jpg,.jpeg,.png,.webp,.gif,.pdf" id="fileInput-${s.key}" style="display:none" onchange="handleFileSelect(event,'${s.key}')"/>
+          <button type="button" class="btn-upload" id="uploadBtn-${s.key}" onclick="document.getElementById('fileInput-${s.key}').click()"><i class="fa-solid fa-upload"></i> <span>${hasFile?x.replaceBtn:x.uploadBtn}</span></button>
+          <span class="upload-note" id="uploadNote-${s.key}">${hasFile?'':x.fileEmpty}</span>
+        </div>
+        ${hasFile?`<div class="upload-hint">${x.fileReplaceNote}</div>`:''}`:''}
+        ${s.sendEmailButton?`
+        <div class="email-row">
+          <button type="button" class="btn-send-email" id="sendBtn-${s.key}" onclick="sendStepEmail('${s.key}', this)"><i class="fa-solid fa-paper-plane"></i> <span class="btn-label">Send Email</span></button>
+          <span class="email-sent-note" id="emailNote-${s.key}" style="display:none"></span>
+        </div>`:''}
+      </div>
+    `;
+    list.appendChild(row);
+  });
+  updateProgressBar(doneCount);
+  updateNotifyUplinesBox(progressKey, doneCount);
+}
+
+// ---- "Notify Uplines" box (2026-08-04, per-agency since 2026-08-06) —
+// shown on ANY agency leader's own view (not just the master's) once THAT
+// leader's checklist for the selected carrier hits 100% — e.g. Marcos sees
+// it once Allcare Mar is done, Julian sees it once JPM is done, each
+// independently. The button only ever notifies that one leader's own agency
+// (see notifyUplines() below), never other agencies. ----
+function updateNotifyUplinesBox(progressKey, doneCount){
+  const x = t();
+  const box = document.getElementById('notifyUplinesBox');
+  const isAgencyLeader = Object.values(AGENCIES).some(ag => ag.leaderAgentId === progressKey);
+  const eligible = isAgencyLeader && (doneCount >= 10);
+  box.style.display = eligible ? 'block' : 'none';
+  if(!eligible) return;
+  const agencyName = AGENCIES[AGENTS[progressKey].agency].name;
+  document.getElementById('notifyUplinesDesc').textContent = x.notifyUplinesDesc.replace('{{carrier}}', currentCarrier).replace('{{agency}}', agencyName);
+  document.getElementById('notifyUplinesNote').style.display = 'none';
+  const btn = document.getElementById('notifyUplinesBtn');
+  btn.disabled = false;
+  btn.classList.remove('sent');
+  btn.querySelector('.btn-label').textContent = 'Notify Uplines';
+}
+
+// ---- Step g) file upload — image or PDF only ----
+// If the live backend is configured (assets/js/config.js ENDPOINT_URL), the
+// file is base64-encoded and actually sent to Code.gs's uploadFile action,
+// which stores it in the "Certifications-Agents" Drive folder and links it
+// on the Progress row. Without a live backend (today's default / no login),
+// this just previews the filename, same as the original mockup.
+function fileToBase64(file){
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result).split(',')[1]); // strip data: prefix
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function handleFileSelect(evt, key){
+  const x = t();
+  const file = evt.target.files[0];
+  const note = document.getElementById(`uploadNote-${key}`);
+  if(!file){ note.textContent = x.fileEmpty; note.classList.remove('error'); return; }
+  const validExt = /\.(jpe?g|png|webp|gif|pdf)$/i.test(file.name);
+  const validType = ['image/jpeg','image/png','image/webp','image/gif','application/pdf'].includes(file.type);
+  if(!validExt && !validType){
+    note.textContent = x.fileInvalid;
+    note.classList.add('error');
+    evt.target.value = '';
+    return;
+  }
+  note.classList.remove('error');
+  note.textContent = `${x.fileSelected} ${file.name}`;
+
+  if(liveModeReady()){
+    note.textContent = x.uploadSending;
+    try{
+      const base64 = await fileToBase64(file);
+      const agentId = progressKeyFor(currentType, currentEntity);
+      const result = await backendUploadFile(agentId, currentCarrier, base64, file.name, file.type);
+      if(result.error){
+        note.textContent = `${x.uploadFailed} ${result.error}`;
+        note.classList.add('error');
+      } else {
+        note.classList.remove('error');
+        note.textContent = `${x.uploadOk} ${file.name}`;
+        // Refresh the "current file" link + button label in place (2026-08-05,
+        // per Jesus: replacing a wrongly-uploaded file must be possible, and
+        // the NEW link is what future "Send Email" clicks will use — the old
+        // Drive file is never deleted, Code.gs's uploadFile_ always creates a
+        // new one and just overwrites file_url_g on the Progress row). No
+        // full re-render needed, just patch this row's DOM directly so the
+        // rest of the checklist state doesn't reset.
+        if(result.url){
+          const fileRow = document.getElementById(`currentFile-${key}`);
+          const fileLink = document.getElementById(`currentFileLink-${key}`);
+          const uploadBtn = document.getElementById(`uploadBtn-${key}`);
+          if(fileLink) fileLink.href = result.url;
+          if(fileRow) fileRow.style.display = '';
+          if(uploadBtn){ const lbl = uploadBtn.querySelector('span'); if(lbl) lbl.textContent = x.replaceBtn; }
+          // Keep the in-memory PROGRESS in sync too, so switching carriers
+          // and coming back still shows the right link without a refetch.
+          const progressKey = progressKeyFor(currentType, currentEntity);
+          if(PROGRESS[progressKey] && PROGRESS[progressKey][currentCarrier]) PROGRESS[progressKey][currentCarrier].fileUrl = result.url;
+        }
+      }
+    } catch(err){
+      note.textContent = `${x.uploadFailed} ${String(err)}`;
+      note.classList.add('error');
+    }
+  }
+}
+
+// ---- "Send Email" button (steps a, c, f, g, h, j) ----
+// If the live backend is configured, this calls Code.gs's sendStepEmail
+// action for real (MailApp.sendEmail to EMAIL_RECIPIENTS, logged in the
+// EmailLog sheet). The actual subject/body text for each of these 6 emails
+// is still "PENDING COPY" placeholders in Code.gs until Jesus writes the
+// real copy (see estado-proyecto.md sec. 14) — the button works end-to-end
+// either way. Without a live backend, this falls back to the original mock
+// simulation (button state + on-screen confirmation, nothing really sent).
+async function sendStepEmail(key, btnEl){
+  const x = t();
+  const step = STEPS.find(s=>s.key===key);
+  const entityName = currentType==='agency' ? AGENCIES[currentEntity].name : AGENTS[currentEntity].name;
+  const recipients = EMAIL_RECIPIENTS.join(', ');
+  const note = document.getElementById(`emailNote-${key}`);
+
+  btnEl.disabled = true;
+  const label = btnEl.querySelector('.btn-label');
+
+  if(liveModeReady()){
+    label.textContent = x.emailSending;
+    note.style.display = 'none';
+    const agentId = progressKeyFor(currentType, currentEntity);
+    const result = await backendSendStepEmail(agentId, currentCarrier, key);
+    if(result.error){
+      btnEl.disabled = false;
+      label.textContent = 'Send Email';
+      note.textContent = `${x.emailFailed} ${result.error}`;
+      note.style.display = 'block';
+      return;
+    }
+    btnEl.classList.add('sent');
+    label.textContent = x.sentLabel;
+    const now = new Date().toLocaleString(curLang==='en'?'en-US':'es-ES');
+    note.textContent = `${x.testEmailSentTo} ${(result.sentTo||[]).join(', ')} — ${now}`;
+    note.style.display = 'block';
+  } else {
+    console.log(`[MOCK EMAIL — no backend yet] Step "${step.label}" for ${entityName} / ${currentCarrier} -> would send to ${recipients}`);
+    btnEl.classList.add('sent');
+    label.textContent = x.sentLabel;
+    const now = new Date().toLocaleString(curLang==='en'?'en-US':'es-ES');
+    note.textContent = `${x.testEmailSentTo} ${recipients} — ${now}`;
+    note.style.display = 'block';
+  }
+
+  setTimeout(()=>{
+    btnEl.disabled = false;
+    btnEl.classList.remove('sent');
+    label.textContent = 'Send Email'; // per Jesus (2026-08-03): button always reads "Send Email", not translated
+  }, 3000);
+}
+
+// ---- "Notify Uplines" button (2026-08-04, per-agency since 2026-08-06 —
+// box only visible at 100% for whichever agency's leader is being viewed,
+// see updateNotifyUplinesBox above). Live mode calls Code.gs's
+// notifyUplines_ with the current entity's own agencyId, which
+// cross-references the separate Form-Carriers Sheet (Detalle_Pivot) for who
+// requested this carrier WITHIN that one agency only, and emails
+// UPLINE_NOTIFY_RECIPIENTS (still pending configuration, per Jesus — see
+// estado-proyecto.md). Without a live backend, this falls back to a mock
+// simulation same as the other "Send Email" buttons. ----
+async function notifyUplines(){
+  const x = t();
+  const btn = document.getElementById('notifyUplinesBtn');
+  const label = btn.querySelector('.btn-label');
+  const note = document.getElementById('notifyUplinesNote');
+  btn.disabled = true;
+
+  if(liveModeReady()){
+    label.textContent = x.emailSending;
+    note.style.display = 'none';
+    const agencyId = AGENTS[progressKeyFor(currentType, currentEntity)].agency;
+    const result = await backendNotifyUplines(currentCarrier, agencyId);
+    if(result.error){
+      btn.disabled = false;
+      label.textContent = 'Notify Uplines';
+      note.textContent = `${x.emailFailed} ${result.error}`;
+      note.style.display = 'block';
+      return;
+    }
+    btn.classList.add('sent');
+    label.textContent = x.sentLabel;
+    const now = new Date().toLocaleString(curLang==='en'?'en-US':'es-ES');
+    note.textContent = `${x.testEmailSentTo} ${(result.sentTo||[]).join(', ')} — ${now}`;
+    note.style.display = 'block';
+  } else {
+    console.log(`[MOCK — no backend yet] Notify Uplines for carrier "${currentCarrier}" would email UPLINE_NOTIFY_RECIPIENTS with agencies/agents from Form-Carriers who requested it.`);
+    btn.classList.add('sent');
+    label.textContent = x.sentLabel;
+    const now = new Date().toLocaleString(curLang==='en'?'en-US':'es-ES');
+    note.textContent = `${x.mockNotifyNote} — ${now}`;
+    note.style.display = 'block';
+  }
+
+  setTimeout(()=>{
+    btn.disabled = false;
+    btn.classList.remove('sent');
+    label.textContent = 'Notify Uplines'; // always English, same rule as "Send Email"
+  }, 3000);
+}
+
+async function toggleCheck(el){
+  const x = t();
+  el.classList.toggle('checked');
+  const row = el.closest('.check-row');
+  const dateEl = row.querySelector('.crow-date');
+  const isChecked = el.classList.contains('checked');
+  const today = new Date().toISOString().slice(0,10);
+  dateEl.textContent = isChecked ? `✓ ${x.completed} — ${today}` : x.pending;
+  dateEl.classList.toggle('filled', isChecked);
+  const total = document.querySelectorAll('.chk.checked').length;
+  updateProgressBar(total);
+  updateNotifyUplinesBox(progressKeyFor(currentType, currentEntity), total);
+
+  if(liveModeReady()){
+    const stepKey = el.dataset.key;
+    const agentId = progressKeyFor(currentType, currentEntity);
+    dateEl.textContent = x.savingStep;
+    const result = await backendUpdateStep(agentId, currentCarrier, stepKey, isChecked);
+    if(result.error){
+      dateEl.textContent = `${x.saveFailed} ${result.error}`;
+      dateEl.classList.remove('filled');
+      el.classList.toggle('checked'); // revert the visual state, the write didn't stick
+    } else {
+      dateEl.textContent = isChecked ? `✓ ${x.completed} — ${today}` : x.pending;
+    }
+  }
+}
+
+function updateProgressBar(count){
+  const x = t();
+  const pct = Math.round((count/10)*100);
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressLabel').textContent = `${count} / 10 ${x.progressLabel} (${pct}%)`;
+}
+
+// ============================================================================
+// Boot sequence (2026-08-04) — decides between static preview data (today's
+// default, ENDPOINT_URL empty) and the live backend + Google Sign-In gate.
+// See assets/js/shared-data.js "Backend connection" section for initData()/
+// hasLiveBackend(). Not yet verified end-to-end against the live deployment
+// (pending GOOGLE_CLIENT_ID from the website-repo agent + a real in-browser
+// test) — see estado-proyecto.md.
+// ============================================================================
+
+function showLoginGate(errorMsg){
+  const x = t();
+  document.getElementById('mainWrap').style.display = 'none';
+  document.getElementById('loginGate').classList.add('show');
+  const errEl = document.getElementById('loginGateError');
+  if(errorMsg){ errEl.textContent = errorMsg; errEl.style.display = 'block'; }
+  else { errEl.style.display = 'none'; }
+
+  if(typeof GOOGLE_CLIENT_ID === 'undefined' || !GOOGLE_CLIENT_ID){
+    document.getElementById('loginGateConfigPending').style.display = 'block';
+    return;
+  }
+  document.getElementById('loginGateConfigPending').style.display = 'none';
+  if(!window.google || !google.accounts || !google.accounts.id){
+    setTimeout(()=>showLoginGate(errorMsg), 300); // GIS script still loading
+    return;
+  }
+  google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: onGoogleCredential });
+  google.accounts.id.renderButton(document.getElementById('googleSignInBtn'), {theme:'outline', size:'large'});
+}
+
+// Hides the "PREVIEW — visual mockup" banner + the yellow "this is only the
+// visual/UX side" note once real live data is loaded (2026-08-04) — both
+// were being shown unconditionally regardless of mode, which was misleading
+// after the backend actually went live (Jesus caught this in production).
+// Only called when status.mode === 'live'; static mode keeps showing both,
+// same as always.
+function hidePreviewNotices_(){
+  const banner = document.querySelector('.banner');
+  if(banner) banner.style.display = 'none';
+  const mockNote = document.querySelector('.mock-note');
+  if(mockNote) mockNote.style.display = 'none';
+}
+
+async function onGoogleCredential(response){
+  setStoredIdToken(response.credential);
+  const status = await initData();
+  if(status.mode === 'live'){
+    document.getElementById('loginGate').classList.remove('show');
+    document.getElementById('mainWrap').style.display = 'block';
+    applyLang();
+    hidePreviewNotices_();
+    goStep(1);
+  } else {
+    showLoginGate(status.error || t().loginNotAuthorized);
+  }
+}
+
+async function boot(){
+  applyLang();
+  const status = await initData();
+  if(status.mode === 'live' || status.mode === 'static'){
+    document.getElementById('loginGate').classList.remove('show');
+    document.getElementById('mainWrap').style.display = 'block';
+    if(status.mode === 'live') hidePreviewNotices_();
+    goStep(1);
+  } else if(status.mode === 'needs-login'){
+    showLoginGate(status.error);
+  } else {
+    document.getElementById('mainWrap').style.display = 'none';
+    document.getElementById('dataErrorMsg').textContent = status.error;
+    document.getElementById('dataErrorScreen').classList.add('show');
+  }
+}
+
+boot();
+</script>
+</body>
+</html>
