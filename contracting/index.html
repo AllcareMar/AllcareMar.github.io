@@ -406,19 +406,50 @@ function selectType(el, type){
 // searchable combobox below.
 let entityOptions = [];
 
+// Agency sort order used by both branches below: master agency (Allcare
+// Mar) first, then everyone else alphabetically by name (2026-08-14, per
+// Jesus - a flat/random order made the 76-agent list hard to scan).
+function sortedAgencyIds_(){
+  return Object.keys(AGENCIES).sort((a,b)=>{
+    const A = AGENCIES[a], B = AGENCIES[b];
+    if(!!A.isMaster !== !!B.isMaster) return A.isMaster ? -1 : 1;
+    return (A.name||'').localeCompare(B.name||'');
+  });
+}
+
 function buildEntityOptions(){
   const x = t();
   entityOptions = [];
   if(currentType === 'agency'){
-    Object.entries(AGENCIES).forEach(([id,a])=>{
+    sortedAgencyIds_().forEach(id=>{
+      const a = AGENCIES[id];
       const label = a.name + (a.isMaster?' '+x.masterTag:'');
       entityOptions.push({id, label, plain:a.name});
     });
   } else {
+    // Grouped by agency (master first), leader listed first within each
+    // group, then the rest of that agency's agents alphabetically.
+    sortedAgencyIds_().forEach(agencyId=>{
+      const agency = AGENCIES[agencyId];
+      const agentsInAgency = Object.entries(AGENTS).filter(([,ag]) => ag.agency === agencyId);
+      agentsInAgency.sort(([,a],[,b])=>{
+        if(!!a.isLeader !== !!b.isLeader) return a.isLeader ? -1 : 1;
+        return (a.name||'').localeCompare(b.name||'');
+      });
+      agentsInAgency.forEach(([id,ag])=>{
+        const leaderTag = ag.isLeader ? ' '+x.leaderTag : '';
+        const label = `${ag.name}${leaderTag} — ${agency.name}`;
+        entityOptions.push({id, label, plain:`${ag.name} ${agency.name}`});
+      });
+    });
+    // Defensive: any agent whose agency isn't in AGENCIES at all (e.g. a
+    // Sales-Report-only agent with no agency_id that slipped through) is
+    // skipped rather than crashing the whole list - 2026-08-14 bug where an
+    // unguarded AGENCIES[ag.agency].name threw and silently emptied the
+    // ENTIRE dropdown. Backend now filters these out at the source too (see
+    // api/contracting.py /all-data), this stays as a second line of defense.
     Object.entries(AGENTS).forEach(([id,ag])=>{
-      const leaderTag = ag.isLeader ? ' '+x.leaderTag : '';
-      const label = `${ag.name}${leaderTag} — ${AGENCIES[ag.agency].name}`;
-      entityOptions.push({id, label, plain:`${ag.name} ${AGENCIES[ag.agency].name}`});
+      if(!AGENCIES[ag.agency]) console.warn('Skipping agent with unknown agency:', id, ag);
     });
   }
 }
