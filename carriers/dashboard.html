@@ -82,7 +82,6 @@
       <div class="actions">
         <span id="whoami" style="font-size:0.8rem;color:var(--muted);"></span>
         <button class="btn download-btn" id="downloadBtn">Download CSV</button>
-        <button class="btn download-btn" id="downloadJsonBtn" title="For the one-time Postgres backfill script - see scripts/import_carrier_requests_backfill.py">Download JSON (backfill)</button>
         <button class="btn refresh-btn" id="refreshBtn">Refresh</button>
         <button class="btn signout-btn" id="signoutBtn">Sign out</button>
       </div>
@@ -119,10 +118,25 @@
 
 <script>
 // ==== CONFIGURACION ====
+// Retirado 2026-08-14 (ver Progress-Sites.md item 18/25): el dashboard ya
+// NO lee de la Sheet via Code.gs. ENDPOINT_URL se mantiene solo porque
+// index.html (el formulario que llenan los agentes) lo sigue usando para
+// su propio POST - no se toca aqui.
 const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbxk3DAA3zOUTYhMQ3U1u8Aq7TdLtf1lDnE_Jo1uqkUSseYJh_U3WdTLom5_n-pqxEGh/exec";
+// Lectura en vivo: GET /api/carrier-requests (api/carrier_requests.py),
+// mismo servidor/host que el resto de la API (sales-report.html,
+// events.html, el dual-write de Contracting). Requiere Authorization:
+// Bearer <idToken de Google> - el backend acepta el idToken crudo
+// directamente (get_current_user en api/auth.py), no hace falta el
+// intercambio de sesion de 15 dias que usan esas otras paginas: este
+// dashboard se abre puntualmente, no se mantiene abierto todo el dia.
+const CARRIER_REQUESTS_READ_API_URL = "https://server-bayonne.tailed39b8.ts.net:10000/api/carrier-requests";
 // Client ID de OAuth (Google Cloud Console > Credenciales > ID de cliente OAuth > Aplicacion web)
 const GOOGLE_CLIENT_ID = "564752963603-nanb8q4atdnmrl70s4mg8ljom7md3336.apps.googleusercontent.com";
-// Lista de correos autorizados para ver el dashboard (tambien se valida en el backend Code.gs)
+// Lista de correos autorizados para ver el dashboard - se valida aqui (UX,
+// evita mostrar el boton de Google si no aplica) Y en el backend
+// (require_carrier_dashboard_admin en api/auth.py, CARRIER_DASHBOARD_ADMIN_EMAILS)
+// - la validacion real es la del servidor, esta es solo cosmetica.
 const ALLOWED_EMAILS = ["jcabreja@allcaremar.com", "acastillo@allcaremar.com", "epeguero@allcaremar.com", "mrodriguez@allcaremar.com", "wmartinez@allcaremar.com"];
 
 const AGENTS = [{"id": "nicole-arratia", "name": "Nicole Arratia", "agency": "Allcare Mar Agency", "npn": 21365351, "states": ["NJ", "FL", "AL"], "email": "nicole_arratia@allcaremar.com"}, {"id": "adriana-ayala", "name": "Adriana Ayala", "agency": "Allcare Mar Agency", "npn": 18693465, "states": ["NJ", "FL", "TX", "PA", "NY", "NC", "MI", "GA", "DE", "CT", "CA", "AZ"], "email": "a.ayala@allcaremar.com"}, {"id": "iris-balgobin", "name": "Iris Balgobin", "agency": "Allcare Mar Agency", "npn": 20023702, "states": ["NJ", "FL", "TX", "VA", "PA", "AZ"], "email": "iris.pina@allcaremar.com"}, {"id": "yaisha-colon", "name": "Yaisha Colon", "agency": "Allcare Mar Agency", "npn": 20141057, "states": ["NJ", "FL", "VA"], "email": "yaisha.colon@allcaremar.com"}, {"id": "jonathan-fernandez", "name": "Jonathan Fernandez", "agency": "Allcare Mar Agency", "npn": 10038794, "states": ["NJ", "FL", "DE", "PA"], "email": "jfernandez@allcaremar.com"}, {"id": "jesus-garcia", "name": "Jesus Garcia", "agency": "Allcare Mar Agency", "npn": 19966871, "states": ["NJ", "TN", "TX", "SC", "PA", "NC", "MI", "VA", "FL", "CT", "CA", "AZ"], "email": "j.garcia@allcaremar.com"}, {"id": "ramon-gil", "name": "Ramon Gil", "agency": "Allcare Mar Agency", "npn": 21270640, "states": ["NJ", "NY", "DE"], "email": "rgil@allcaremar.com"}, {"id": "tayler-gray", "name": "Tayler Gray", "agency": "Allcare Mar Agency", "npn": 22075036, "states": ["NJ", "PA", "VA"], "email": "tgray@allcaremar.com"}, {"id": "ulysses-hyman", "name": "Ulysses Hyman", "agency": "Allcare Mar Agency", "npn": 21628567, "states": ["NJ", "PA", "MD", "DE", "AL"], "email": "uhyman@allcaremar.com"}, {"id": "oliver-jimenez", "name": "Oliver Jimenez", "agency": "Allcare Mar Agency", "npn": 20157564, "states": ["NJ", "CA", "CT", "DE", "FL", "LA", "MD", "NY", "NC", "PA", "SC", "TN"], "email": "oliver.j@nxhealthagency.com"}, {"id": "felix-liriano", "name": "Felix Liriano", "agency": "Allcare Mar Agency", "npn": 15622164, "states": ["NJ", "NY", "VA"], "email": "fliriano@allcaremar.com"}, {"id": "kimberly-lopez", "name": "Kimberly Lopez", "agency": "Allcare Mar Agency", "npn": 21272776, "states": ["NJ", "TN", "TX", "SC", "PA", "OH", "NC", "MI", "VA", "IL", "FL", "CO"], "email": "klopez@allcaremar.com"}, {"id": "nelson-lopez", "name": "Nelson Lopez", "agency": "Allcare Mar Agency", "npn": 21552557, "states": ["FL", "OH", "CO"], "email": "nlopez@allcaremar.com"}, {"id": "alvorine-martin", "name": "Alvorine Martin", "agency": "Allcare Mar Agency", "npn": 18931592, "states": ["NJ", "TX", "SC", "PA", "NY", "NC", "FL"], "email": "amartin@allcaremar.com"}, {"id": "maria-monsalve", "name": "Maria Monsalve", "agency": "Allcare Mar Agency", "npn": 20333792, "states": ["NJ", "NY", "PA", "FL", "DE", "CA"], "email": "mmonsalve@allcaremar.com"}, {"id": "francia-munoz", "name": "Francia Munoz", "agency": "Allcare Mar Agency", "npn": 5701964, "states": ["NJ", "OH", "PA", "NY", "NC", "VA", "MD", "FL", "DE", "CO", "AL"], "email": "fmunoz@allcaremar.com"}, {"id": "joshua-munoz", "name": "Joshua Munoz", "agency": "Allcare Mar Agency", "npn": 19723792, "states": ["NJ", "NY", "FL", "DE", "PA"], "email": "j.munoz@allcaremar.com"}, {"id": "paola-peguero", "name": "Paola Peguero", "agency": "Allcare Mar Agency", "npn": 21308259, "states": ["NJ", "FL", "TX", "PA", "DE", "CA"], "email": "ppeguero@allcaremar.com"}, {"id": "carlos-perez", "name": "Carlos Perez", "agency": "Allcare Mar Agency", "npn": 20119286, "states": ["NJ", "NY", "TX", "NC", "SC", "PA", "FL", "CA"], "email": "carloshealthagent@gmail.com"}, {"id": "luz-pujols", "name": "Luz Pujols", "agency": "Allcare Mar Agency", "npn": 22125097, "states": ["NJ", "PA", "RI", "FL"], "email": "lpujols@allcaremar.com"}, {"id": "cristian-quinones", "name": "Cristian Quinones", "agency": "Allcare Mar Agency", "npn": 16343082, "states": ["NJ", "FL", "TX", "SC", "PA", "NC", "MI", "VA", "GA", "CT", "CO", "AZ"], "email": "cquinones@allcaremar.com"}, {"id": "mariela-read", "name": "Mariela Read", "agency": "Allcare Mar Agency", "npn": 21537659, "states": ["NJ", "FL"], "email": "mread@allcaremar.com"}, {"id": "sixto-rodriguez", "name": "Sixto Rodriguez", "agency": "Allcare Mar Agency", "npn": 22081987, "states": ["NJ"], "email": "sirodriguez@allcaremar.com"}, {"id": "marcos-rodriguez-martinez", "name": "Marcos Rodriguez-Martinez", "agency": "Allcare Mar Agency", "npn": 18837337, "states": ["NJ", "NY", "TX", "SC", "PA", "OH", "WI", "TN", "NC", "MI", "VA", "RI", "MD", "LA", "IL", "GA", "FL", "DE", "CT", "CO", "CA", "AZ", "AL"], "email": "mrodriguez@allcaremar.com"}, {"id": "jorge-rodriguez", "name": "Jorge Rodriguez", "agency": "Allcare Mar Agency", "npn": 18720447, "states": ["FL"], "email": "jirodriguez@allcaremar.com"}, {"id": "maria-rosario", "name": "Maria Rosario", "agency": "Allcare Mar Agency", "npn": 21683254, "states": ["NJ", "FL"], "email": "mrosario@allcaremar.com"}, {"id": "carlos-sanchez", "name": "Carlos Sanchez", "agency": "Allcare Mar Agency", "npn": 20385905, "states": ["NJ", "FL", "TN", "TX", "PA", "NC", "MI", "VA", "GA", "CA"], "email": "csanchez@allcaremar.com"}, {"id": "patricia-sanchez", "name": "Patricia Sanchez", "agency": "Allcare Mar Agency", "npn": 18996617, "states": ["FL"], "email": "psanchez@allcaremar.com"}, {"id": "maria-santiago", "name": "Maria Santiago", "agency": "Allcare Mar Agency", "npn": 18762745, "states": ["NJ", "NY", "PA", "TX", "OH", "VA", "RI", "AL", "CA", "CT", "DE", "FL", "GA", "LA"], "email": "msanti@allcaremar.com"}, {"id": "diego-zetina", "name": "Diego Zetina", "agency": "Allcare Mar Agency", "npn": 17675231, "states": ["TX"], "email": "dzetina@allcaremar.com"}, {"id": "karitssa-barry", "name": "Karitssa Barry", "agency": "JPM Solutions", "npn": 22060869, "states": ["NJ"], "email": "kfernandez@allcaremar.com"}, {"id": "glorie-alicea", "name": "Glorie Alicea", "agency": "JPM Solutions", "npn": 22269201, "states": ["FL"], "email": "galicea@allcaremar.com"}, {"id": "patricia-sixon", "name": "Patricia Sixon", "agency": "JPM Solutions", "npn": 21551296, "states": ["NJ", "NY", "FL", "DE", "AL"], "email": "psixon@allcaremar.com"}, {"id": "yisel-rosario", "name": "Yisel Rosario", "agency": "JPM Solutions", "npn": 22205943, "states": ["NJ", "PA"], "email": "yrosario@allcaremar.com"}, {"id": "julian-vega", "name": "Julian Vega", "agency": "JPM Solutions", "npn": 19246582, "states": ["NJ", "NY", "TX", "PA", "FL", "DE", "AL"], "email": "julian_vega@allcaremar.com"}, {"id": "christopher-barry", "name": "Christopher Barry", "agency": "GW Ins Group", "npn": 21564575, "states": ["NJ"], "email": "cbarry@allcaremar.com"}, {"id": "carlos-colon", "name": "Carlos Colon", "agency": "GW Ins Group", "npn": 20267503, "states": ["NJ", "NC", "OH", "TX", "PA", "FL", "AZ"], "email": "ccolon@allcaremar.com"}, {"id": "glenda-colon", "name": "Glenda Colon", "agency": "GW Ins Group", "npn": 20295835, "states": ["NJ", "NY", "TX", "SC", "PA", "OH", "NC", "VA", "RI", "FL", "DE", "CT", "AZ"], "email": "glendahealthagent@gmail.com"}, {"id": "johnny-de-los-angeles", "name": "Johnny De Los Angeles", "agency": "GW Ins Group", "npn": 21493158, "states": ["NJ", "CT", "NY", "PA", "FL", "DE"], "email": "jdelosangeles@allcaremar.com"}, {"id": "marilyn-gamboa", "name": "Marilyn Gamboa", "agency": "GW Ins Group", "npn": 20038285, "states": ["NJ", "TX", "OH", "NC", "FL"], "email": "mgamboa@allcaremar.com"}, {"id": "alison-rodriguez", "name": "Alison Rodriguez", "agency": "GW Ins Group", "npn": 11726699, "states": ["NJ", "TX", "SC", "PA", "OH", "NY", "NC", "VA", "RI", "FL", "DE", "CT", "AZ"], "email": "alisonrodriguez@allcaremar.com"}, {"id": "gabriela-brito", "name": "Gabriela Brito", "agency": "Martell Multi Service", "npn": 22068952, "states": ["NJ", "PA"], "email": "gbrito@allcaremar.com"}, {"id": "jose-fernandez", "name": "Jose Fernandez", "agency": "Martell Multi Service", "npn": 21151513, "states": ["NJ", "TX", "PA", "DE"], "email": "jofernandez@allcaremar.com"}, {"id": "glorivette-giunto", "name": "Glorivette Giunto", "agency": "Martell Multi Service", "npn": 20561677, "states": ["NJ", "NY", "FL", "PA"], "email": "egiunto@allcaremar.com"}, {"id": "ana-martell", "name": "Ana Martell", "agency": "Martell Multi Service", "npn": 7968747, "states": ["NJ", "NY", "GA", "DE", "OH", "PA", "TX", "FL"], "email": "amartell@allcaremar.com"}, {"id": "julissa-padilla", "name": "Julissa Padilla", "agency": "Martell Multi Service", "npn": 18261672, "states": ["NJ", "PA"], "email": "jpadilla@allcaremar.com"}, {"id": "sergio-ramirez", "name": "Sergio Ramirez", "agency": "Martell Multi Service", "npn": 21715074, "states": ["NJ"], "email": "sramirez@allcaremar.com"}, {"id": "gisela-uribe", "name": "Gisela Uribe", "agency": "Martell Multi Service", "npn": 21546542, "states": ["NJ", "NY", "FL"], "email": "guribe@allcaremar.com"}, {"id": "melissa-acosta", "name": "Melissa Acosta", "agency": "KMRA Group", "npn": 19682429, "states": ["NJ", "FL", "PA", "SC"], "email": "macosta@allcaremar.com"}, {"id": "brittany-gibbs", "name": "Brittany Gibbs", "agency": "KMRA Group", "npn": 20505858, "states": ["NJ", "PA", "FL", "DE"], "email": "brittany.gibbs@allcaremar.com"}, {"id": "amanda-ortiz", "name": "Amanda Ortiz", "agency": "KMRA Group", "npn": 20778238, "states": ["NJ", "PA"], "email": "aortiz@allcaremar.com"}, {"id": "roland-pinzon", "name": "Roland Pinzon", "agency": "KMRA Group", "npn": 16488836, "states": ["NJ", "TX", "SC", "PA", "NC", "MD", "FL", "DE"], "email": "rpinzon@allcaremar.com"}, {"id": "carol-quinones", "name": "Carol Quinones", "agency": "KMRA Group", "npn": 22059618, "states": ["NJ", "MD", "PA", "FL"], "email": "cmquinones@allcaremar.com"}, {"id": "samir-sanchez", "name": "Samir Sanchez", "agency": "KMRA Group", "npn": 22107933, "states": ["NJ"], "email": "ssanchez@allcaremar.com"}, {"id": "tammy-tanksley", "name": "Tammy Tanksley", "agency": "KMRA Group", "npn": 7615009, "states": ["NJ"], "email": "ttanksley@allcaremar.com"}, {"id": "margot-flores", "name": "Margot Flores", "agency": "Top Tier Health Consultants", "npn": 22181974, "states": ["NJ"], "email": "mflores@allcaremar.com"}, {"id": "priscilla-galarza", "name": "Priscilla Galarza", "agency": "Top Tier Health Consultants", "npn": 18976363, "states": ["NJ", "NY", "PA", "FL", "DE"], "email": "pgalarza@allcaremar.com"}, {"id": "jocelyn-rodriguez", "name": "Jocelyn Rodriguez", "agency": "Top Tier Health Consultants", "npn": 21013054, "states": ["NJ", "NY", "DE", "FL"], "email": "jocelyn.rod@allcaremar.com"}, {"id": "gary-chicnes", "name": "Gary Chicnes", "agency": "AMC Care Group", "npn": 21748622, "states": ["NJ", "TX", "NC"], "email": "gchicnes@allcaremar.com"}, {"id": "ana-michelle-christopher", "name": "Ana Michelle Christopher", "agency": "AMC Care Group", "npn": 10386235, "states": ["NJ", "FL", "WI", "TN", "TX", "SC", "PA", "OH", "NY", "NC", "MI", "VA", "RI", "MD", "LA", "GA", "DE", "CT", "CO", "CA", "AZ", "AL"], "email": "anamichelle@allcaremar.com"}, {"id": "emanuel-cruz", "name": "Emanuel Cruz", "agency": "AMC Care Group", "npn": 10385498, "states": ["NJ", "NY", "TX", "NC", "MI"], "email": "ecruz@allcaremar.com"}, {"id": "carlos-ortega", "name": "Carlos Ortega", "agency": "AMC Care Group", "npn": 13516620, "states": ["NJ", "FL", "WI", "TN", "TX", "SC", "PA", "OH", "NY", "NC", "MI", "VA", "LA", "DE", "CT", "CO", "CA", "AZ", "AL"], "email": "cortega@allcaremar.com"}, {"id": "keylin-pagan", "name": "Keylin Pagan", "agency": "AMC Care Group", "npn": 21546245, "states": ["NJ", "NY", "TX", "PA", "NC", "FL", "AL"], "email": "kpagan@allcaremar.com"}];
@@ -512,7 +526,6 @@ const I18N = {
     missingClientId: 'GOOGLE_CLIENT_ID is not configured in dashboard.html (see README).',
     dashTitle: 'Carrier Responses Dashboard - By Agent',
     downloadBtn: 'Download CSV',
-    downloadJsonBtn: 'Download JSON (backfill)',
     refreshBtn: 'Refresh',
     signoutBtn: 'Sign out',
     lblTotal: 'Total agents',
@@ -523,7 +536,7 @@ const I18N = {
     allCarriersOpt: '-- All carriers --',
     searchPlaceholder: 'Search agent...',
     thAgent: 'Agent', thAgency: 'Agency', thLicenses: 'Licenses', thCarriers: 'Carriers selected', thDate: 'Date',
-    emptyNoData: 'No data yet. Configure ENDPOINT_URL or wait for responses.',
+    emptyNoData: 'No data yet. Configure CARRIER_REQUESTS_READ_API_URL or wait for responses.',
     emptyNoResults: 'No results with these filters.',
     accessDeniedServer: 'Access denied by server: ',
     errorLoading: 'Error loading responses: ',
@@ -540,7 +553,6 @@ const I18N = {
     missingClientId: 'Falta configurar GOOGLE_CLIENT_ID en dashboard.html (ver README).',
     dashTitle: 'Dashboard de Respuestas - Carriers por Agente',
     downloadBtn: 'Descargar CSV',
-    downloadJsonBtn: 'Descargar JSON (backfill)',
     refreshBtn: 'Actualizar',
     signoutBtn: 'Cerrar sesion',
     lblTotal: 'Agentes totales',
@@ -551,7 +563,7 @@ const I18N = {
     allCarriersOpt: '-- Todos los carriers --',
     searchPlaceholder: 'Buscar agente...',
     thAgent: 'Agente', thAgency: 'Agencia', thLicenses: 'Licencias', thCarriers: 'Carriers seleccionados', thDate: 'Fecha',
-    emptyNoData: 'Sin datos aun. Configura ENDPOINT_URL o espera respuestas.',
+    emptyNoData: 'Sin datos aun. Configura CARRIER_REQUESTS_READ_API_URL o espera respuestas.',
     emptyNoResults: 'Sin resultados con estos filtros.',
     accessDeniedServer: 'Acceso denegado por el servidor: ',
     errorLoading: 'Error al cargar respuestas: ',
@@ -572,7 +584,6 @@ function applyLang() {
   document.getElementById('deniedMsg').textContent = t.deniedMsg;
   document.getElementById('dashTitle').textContent = t.dashTitle;
   document.getElementById('downloadBtn').textContent = t.downloadBtn;
-  document.getElementById('downloadJsonBtn').textContent = t.downloadJsonBtn;
   document.getElementById('refreshBtn').textContent = t.refreshBtn;
   document.getElementById('signoutBtn').textContent = t.signoutBtn;
   document.getElementById('lblTotal').textContent = t.lblTotal;
@@ -655,21 +666,22 @@ async function loadData() {
   emptyMsg.style.display = 'none';
   specialEmptyMsgKey = null;
   specialEmptyMsgExtra = '';
-  if (!ENDPOINT_URL || ENDPOINT_URL.indexOf('PASTE_') === 0) {
+  if (!CARRIER_REQUESTS_READ_API_URL || CARRIER_REQUESTS_READ_API_URL.indexOf('PASTE_') === 0) {
     specialEmptyMsgKey = 'emptyNoData';
     render();
     return;
   }
   try {
-    const url = ENDPOINT_URL + '?action=list&token=' + encodeURIComponent(idToken || '');
-    const res = await fetch(url);
-    const data = await res.json();
-    if (data.ok === false) {
+    const res = await fetch(CARRIER_REQUESTS_READ_API_URL, {
+      headers: { 'Authorization': 'Bearer ' + (idToken || '') }
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
       specialEmptyMsgKey = 'accessDeniedServer';
-      specialEmptyMsgExtra = data.error || '';
+      specialEmptyMsgExtra = (data && data.detail) || ('HTTP ' + res.status);
       submissions = [];
     } else {
-      submissions = data.rows || data || [];
+      submissions = data.rows || [];
     }
   } catch (err) {
     specialEmptyMsgKey = 'errorLoading';
@@ -731,14 +743,17 @@ function render() {
   }
 
   document.getElementById('statTotal').textContent = AGENTS.length;
-  const doneIds = new Set(submissions.map(s => s.agentId));
-  document.getElementById('statDone').textContent = doneIds.size;
-  document.getElementById('statPending').textContent = AGENTS.length - doneIds.size;
+  // Matchea por email (2026-08-14, retiro del Sheet) en vez de agentId - la
+  // API de Postgres ya no tiene ese slug, email es la llave confiable que
+  // se usa en todo el proyecto para esto (ver api/carrier_requests.py).
+  const doneEmails = new Set(submissions.map(s => (s.email || '').toLowerCase()).filter(Boolean));
+  document.getElementById('statDone').textContent = doneEmails.size;
+  document.getElementById('statPending').textContent = AGENTS.length - doneEmails.size;
   const carrierSet = new Set();
   submissions.forEach(s => visibleCarriers(s.carriers).forEach(c => carrierSet.add(c)));
   document.getElementById('statCarriers').textContent = carrierSet.size;
 
-  const pending = AGENTS.filter(a => !doneIds.has(a.id)).sort((a,b)=>a.name.localeCompare(b.name));
+  const pending = AGENTS.filter(a => !doneEmails.has((a.email || '').toLowerCase())).sort((a,b)=>a.name.localeCompare(b.name));
   const pendingList = document.getElementById('pendingList');
   pendingList.innerHTML = pending.length
     ? pending.map(a => `<span>${a.name}</span>`).join('')
@@ -778,33 +793,10 @@ function downloadCsv() {
   URL.revokeObjectURL(url);
 }
 
-// Descarga TODAS las submissions (sin filtro de la tabla, a proposito - el
-// backfill de Postgres necesita el historico completo, no solo lo que este
-// visible en pantalla) en el formato exacto que espera
-// scripts/import_carrier_requests_backfill.py (02-Reporte-Ventas-y-Eventos),
-// usado UNA SOLA VEZ para migrar lo que se firmo antes de que existiera el
-// dual-write en Code.gs (ver schema-unificado.sql SECTION 6). No borra ni
-// modifica nada aqui - es una lectura, mismo endpoint que ya usa esta
-// pagina para pintar la tabla.
-function downloadJson() {
-  const payload = { rows: submissions };
-  const jsonContent = JSON.stringify(payload, null, 2);
-  const blob = new Blob([jsonContent], { type: 'application/json;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'carrier_requests_export_' + new Date().toISOString().slice(0,10) + '.json';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
 document.getElementById('carrierFilter').addEventListener('change', render);
 document.getElementById('agentSearch').addEventListener('input', render);
 document.getElementById('refreshBtn').addEventListener('click', loadData);
 document.getElementById('downloadBtn').addEventListener('click', downloadCsv);
-document.getElementById('downloadJsonBtn').addEventListener('click', downloadJson);
 
 populateCarrierFilter();
 applyLang();
