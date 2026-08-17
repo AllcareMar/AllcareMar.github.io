@@ -251,6 +251,7 @@ en:{
   alreadyIn:"You're already signed up",
   hMine:"My events", noMine:"You haven't signed up for any event yet.",
   statusRegistered:"Registered", statusApproved:"Confirmed", statusRejected:"Not selected this time",
+  addToCalendar:"+ Add to Google Calendar",
   reportPrompt:"This event already happened — tell us how it went:",
   reportPlaceholder:"How did it go? Any issues, was it a success, was it hard to get to, etc.",
   madeSale:"I made a sale at this event", sendReport:"Send report", reportSent:"✓ Report sent — thank you.",
@@ -298,6 +299,7 @@ es:{
   alreadyIn:"Ya estás inscrito",
   hMine:"Mis eventos", noMine:"Todavía no te has inscrito a ningún evento.",
   statusRegistered:"Inscrito", statusApproved:"Confirmado", statusRejected:"No seleccionado esta vez",
+  addToCalendar:"+ Agregar a Google Calendar",
   reportPrompt:"Este evento ya pasó — cuéntanos cómo te fue:",
   reportPlaceholder:"¿Cómo te fue? Situaciones, si fue un éxito, si fue difícil llegar, etc.",
   madeSale:"Hice una venta en este evento", sendReport:"Enviar reporte", reportSent:"✓ Reporte enviado — gracias.",
@@ -417,6 +419,13 @@ document.querySelectorAll('.ev-tab').forEach(tab=>{
     ['open','mine','suggest','admin'].forEach(k=>{
       document.getElementById('p-'+k).hidden = (k !== tab.dataset.t);
     });
+    // 2026-08-17 fix: "Open Events" was only ever fetched once on page load
+    // (or after registering, or on language toggle) - switching back to this
+    // tab never refreshed it, so a slot freed up by an admin unassign in
+    // Administración (or anyone else registering/being removed) stayed
+    // stale until a full page reload. Now it refetches every time this tab
+    // is opened, same as 'mine' and 'admin' already did.
+    if (tab.dataset.t === 'open') loadOpenEvents();
     if (tab.dataset.t === 'mine') loadMyEvents();
     if (tab.dataset.t === 'admin' && isEventsAdmin) loadAdminAll();
   });
@@ -463,6 +472,7 @@ async function loadMyEvents(){
       <h3>${r.title}</h3>
       <div class="event-meta">${r.event_date} — ${r.address}, ${r.zipcode}</div>
       <span class="badge ${badgeClass}">${badgeText}</span>
+      ${r.calendar_link ? `<div style="margin-top:8px"><a href="${r.calendar_link}" target="_blank" rel="noopener">${t('addToCalendar')}</a></div>` : ''}
       ${needsReport ? `<div class="report-box">
         <p class="ev-hint">${t('reportPrompt')}</p>
         <textarea data-event="${r.event_id}" class="reportText" placeholder="${t('reportPlaceholder')}"></textarea>
