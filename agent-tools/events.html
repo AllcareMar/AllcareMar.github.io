@@ -155,6 +155,22 @@ label.chk{display:flex;align-items:center;gap:8px;font-size:13px;margin:8px 0}
 
   <div class="ev-panel" id="p-admin" hidden>
     <div class="ev-section">
+      <div class="ev-h2" id="hPending"></div>
+      <p class="ev-hint" id="hintPending"></p>
+      <div id="admPendingEvents"></div>
+    </div>
+
+    <div class="ev-section">
+      <div class="ev-h2" id="hManage"></div>
+      <p class="ev-hint" id="hintManage"></p>
+      <div class="manage-filters" style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+        <input type="text" id="admManageSearch" style="flex:1;min-width:220px" placeholder="">
+        <select id="admManageDateFilter"></select>
+      </div>
+      <div id="admOpenEvents"></div>
+    </div>
+
+    <div class="ev-section">
       <div class="ev-h2" id="hLookup"></div>
       <p class="ev-hint" id="hintLookup"></p>
       <div style="display:flex;gap:10px;margin-bottom:14px">
@@ -164,17 +180,7 @@ label.chk{display:flex;align-items:center;gap:8px;font-size:13px;margin:8px 0}
       <div id="admLookupResults"></div>
     </div>
 
-    <div class="ev-section">
-      <div class="ev-h2" id="hPending"></div>
-      <p class="ev-hint" id="hintPending"></p>
-      <div id="admPendingEvents"></div>
-    </div>
-
-    <div class="ev-section">
-      <div class="ev-h2" id="hManage"></div>
-      <p class="ev-hint" id="hintManage"></p>
-      <div id="admOpenEvents"></div>
-    </div>
+    <datalist id="eventsAgentsList"></datalist>
 
     <div class="ev-section">
       <div class="ev-h2" id="hCreate"></div>
@@ -213,6 +219,7 @@ label.chk{display:flex;align-items:center;gap:8px;font-size:13px;margin:8px 0}
       <div class="form-card">
         <input type="file" id="admImportFile" accept=".xlsx,.xls">
         <button class="btn-primary" id="admImportBtn" style="margin-top:12px"></button>
+        <button class="btn-sec" id="admPublishAllBtn" style="margin-top:12px;margin-left:8px"></button>
         <div id="admImportResult" style="margin-top:12px;font-size:12.5px;line-height:1.7"></div>
       </div>
     </div>
@@ -267,10 +274,18 @@ en:{
   hLookup:"Find an agent", hintLookup:"Search by name or email to see every event they're registered/assigned to.",
   lookupBtn:"Search", lookupEmpty:"No matches.", lookupNoQuery:"Type a name or email above.",
   regStatusRegistered:"Registered (awaiting decision)", regStatusApproved:"Approved / attending", regStatusRejected:"Not selected",
-  hImport:"Bulk import from Excel", hintImport:"Same format as the yearly street-fair calendar sheet (Date Event, Event Name, City, State, Zip Code, Event Organizer, Contact/Email/Phone Organizer, Notes). Imported events land as internal (unpublished) — publish each one when it's ready for agents.",
+  hImport:"Bulk import from Excel", hintImport:"Same format as the yearly street-fair calendar sheet (Date Event, Event Name, City, State, Zip Code, Event Organizer, Contact/Email/Phone Organizer, Notes) — plus an optional \"Address\" column (full street address). Without it, imported events show just \"City, State\" until you fix the address per event below. Imported events land as internal (unpublished) — publish them when ready for agents, one by one or all at once.",
   importBtn:"Import file", importing:"Importing…",
   importOk:n=>`✓ ${n} event(s) imported (internal — not visible to agents yet).`,
   importSkipped:n=>`${n} row(s) skipped:`, chooseFile:"Choose a file first.",
+  publishAllBtn:"Publish all imported events", publishingAll:"Publishing…",
+  publishAllOk:n=>n>0 ? `✓ ${n} imported event(s) published — now visible to agents.` : "Nothing to publish — no unpublished imported events right now.",
+  editAddressBtn:"✎ Address", editAddressPrompt:"Full street address for this event (shown to agents and used for the Google Maps link):",
+  manageSearchPh:"Search by event name, organizer, or city…",
+  dateFilterAll:"All events", dateFilterNext30:"Next 30 days", dateFilterThisMonth:"This month", dateFilterThisYear:"This year",
+  manageDetailsBtn:"Manage ▾", manageDetailsBtnOpen:"Manage ▴",
+  noManageFiltered:"No events match that search/filter.",
+  assignPhNew:"Type an agent's name or email…",
 },
 es:{
   title:"Eventos", sub:"Allcare Mar Agency", logout:"Cerrar sesión",
@@ -306,10 +321,18 @@ es:{
   hLookup:"Buscar agente", hintLookup:"Busca por nombre o email para ver en qué eventos está inscrito/asignado.",
   lookupBtn:"Buscar", lookupEmpty:"Sin resultados.", lookupNoQuery:"Escribe un nombre o email arriba.",
   regStatusRegistered:"Inscrito (pendiente de decisión)", regStatusApproved:"Aprobado / asiste", regStatusRejected:"No seleccionado",
-  hImport:"Importación masiva desde Excel", hintImport:"Mismo formato de la hoja anual de street fairs (Date Event, Event Name, City, State, Zip Code, Event Organizer, Contact/Email/Phone Organizer, Notes). Los eventos importados quedan internos (no publicados) — publica cada uno cuando esté listo para los agentes.",
+  hImport:"Importación masiva desde Excel", hintImport:"Mismo formato de la hoja anual de street fairs (Date Event, Event Name, City, State, Zip Code, Event Organizer, Contact/Email/Phone Organizer, Notes) — más una columna opcional \"Address\" (dirección completa). Sin ella, los eventos importados muestran solo \"Ciudad, Estado\" hasta que corrijas la dirección de cada uno abajo. Los eventos importados quedan internos (no publicados) — publícalos cuando estén listos, uno por uno o todos de una vez.",
   importBtn:"Importar archivo", importing:"Importando…",
   importOk:n=>`✓ ${n} evento(s) importado(s) (internos — todavía no los ven los agentes).`,
   importSkipped:n=>`${n} fila(s) omitida(s):`, chooseFile:"Elige un archivo primero.",
+  publishAllBtn:"Publicar todos los importados", publishingAll:"Publicando…",
+  publishAllOk:n=>n>0 ? `✓ ${n} evento(s) importado(s) publicado(s) — ya los ven los agentes.` : "Nada que publicar — no hay eventos importados sin publicar ahora mismo.",
+  editAddressBtn:"✎ Dirección", editAddressPrompt:"Dirección completa de este evento (se muestra a los agentes y se usa para el link de Google Maps):",
+  manageSearchPh:"Buscar por nombre del evento, organizador o ciudad…",
+  dateFilterAll:"Todos los eventos", dateFilterNext30:"Próximos 30 días", dateFilterThisMonth:"Este mes", dateFilterThisYear:"Este año",
+  manageDetailsBtn:"Administrar ▾", manageDetailsBtnOpen:"Administrar ▴",
+  noManageFiltered:"Ningún evento coincide con esa búsqueda/filtro.",
+  assignPhNew:"Escribe el nombre o email del agente…",
 }
 };
 function t(k){ return I18N[curLang][k]; }
@@ -346,6 +369,12 @@ function applyStaticText(){
   document.getElementById('hintPending').textContent = t('hintPending');
   document.getElementById('hManage').textContent = t('hManage');
   document.getElementById('hintManage').textContent = t('hintManage');
+  document.getElementById('admManageSearch').placeholder = t('manageSearchPh');
+  document.getElementById('admManageDateFilter').innerHTML = `
+    <option value="all">${t('dateFilterAll')}</option>
+    <option value="next30" selected>${t('dateFilterNext30')}</option>
+    <option value="thisMonth">${t('dateFilterThisMonth')}</option>
+    <option value="thisYear">${t('dateFilterThisYear')}</option>`;
   document.getElementById('hCreate').textContent = t('hCreate');
   document.getElementById('admLblTitle').textContent = t('lblTitle');
   document.getElementById('admLblOrganizer').textContent = t('lblOrganizer');
@@ -364,6 +393,7 @@ function applyStaticText(){
   document.getElementById('hImport').textContent = t('hImport');
   document.getElementById('hintImport').textContent = t('hintImport');
   document.getElementById('admImportBtn').textContent = t('importBtn');
+  document.getElementById('admPublishAllBtn').textContent = t('publishAllBtn');
   document.getElementById('hHistory').textContent = t('hHistory');
 }
 
@@ -512,41 +542,99 @@ async function loadAdminPending(){
   }));
 }
 
+let adminManageCache = []; // [{e, regs}] - fetched once per loadAdminManage(), filtered/re-rendered locally without refetching
+
 async function loadAdminManage(){
   const events = await apiJson(API_BASE, '/events/admin/all?status=open');
   const full = await apiJson(API_BASE, '/events/admin/all?status=full');
-  const wrap = document.getElementById('admOpenEvents');
   const all = [...full, ...events];
-  if (!all.length) { wrap.innerHTML = `<p class="ev-hint">${t('noManage')}</p>`; return; }
-  const blocks = await Promise.all(all.map(async e => {
+  adminManageCache = await Promise.all(all.map(async e => {
     const regs = await apiJson(API_BASE, `/events/admin/${e.id}/registrations`);
     return { e, regs };
   }));
-  wrap.innerHTML = blocks.map(({e, regs}) => `
+  renderAdminManage();
+}
+
+// Filters/renders from adminManageCache - added 2026-08-17 (Jesus: with 100+
+// events/year, a flat scrolling stack of full cards doesn't work). Search box
+// + date-range filter above the list narrow it down instantly (no refetch,
+// pure client-side filter over the cache); each event collapses to a
+// one-line summary by default with a "Manage" button that expands the
+// registrations/assign/publish/cancel controls - so scanning 100 events
+// means scanning 100 short rows, not 100 tall cards.
+function renderAdminManage(){
+  const wrap = document.getElementById('admOpenEvents');
+  if (!adminManageCache.length) { wrap.innerHTML = `<p class="ev-hint">${t('noManage')}</p>`; return; }
+
+  const search = (document.getElementById('admManageSearch').value || '').trim().toLowerCase();
+  const dateFilter = document.getElementById('admManageDateFilter').value;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const in30 = new Date(today); in30.setDate(in30.getDate() + 30);
+  const monthEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  const yearEnd = new Date(today.getFullYear(), 11, 31);
+
+  const filtered = adminManageCache.filter(({e}) => {
+    if (search) {
+      const hay = `${e.title} ${e.organizer} ${e.address} ${e.zipcode}`.toLowerCase();
+      if (!hay.includes(search)) return false;
+    }
+    if (dateFilter !== 'all') {
+      const d = new Date(e.event_date + 'T00:00:00');
+      if (dateFilter === 'next30' && (d < today || d > in30)) return false;
+      if (dateFilter === 'thisMonth' && (d < today || d > monthEnd)) return false;
+      if (dateFilter === 'thisYear' && (d < today || d > yearEnd)) return false;
+    }
+    return true;
+  });
+
+  if (!filtered.length) { wrap.innerHTML = `<p class="ev-hint">${t('noManageFiltered')}</p>`; return; }
+
+  wrap.innerHTML = filtered.map(({e, regs}) => `
     <div class="event-card">
       <h3>${e.title}
         <span class="badge ${e.status==='full'?'badge-full':'badge-open'}">${e.status==='full'?t('statusFull'):t('statusOpen')}</span>
         <span class="badge ${e.published?'badge-published':'badge-unpublished'}">${e.published?t('badgePublished'):t('badgeUnpublished')}</span>
       </h3>
       <div class="event-meta">
-        ${e.organizer} · ${e.event_date}${e.event_time ? ' · ' + e.event_time : ''} · ${e.address}, ${e.zipcode}<br>
-        ${e.slots_taken}/${e.max_slots}
+        ${e.organizer} · ${e.event_date}${e.event_time ? ' · ' + e.event_time : ''} · ${e.address}, ${e.zipcode} · ${e.slots_taken}/${e.max_slots}
       </div>
-      <div style="margin-top:10px">
-        ${regs.map(r => `<div class="reg-row"><label><input type="checkbox" class="attendCheck" data-event="${e.id}" value="${r.agent_email}" checked> ${r.agent_name} (${r.agent_email})</label><span class="ev-hint" style="margin:0">${t('registered')} ${new Date(r.registered_at).toLocaleString()}</span><button type="button" class="btn-unassign" data-unassign="${e.id}" data-email="${r.agent_email}" title="${t('cancel')}">×</button></div>`).join('')}
-      </div>
-      <div class="assign-row">
-        <input type="text" class="assignInput" data-event="${e.id}" placeholder="${t('assignPh')}">
-        <button class="btn-sec" data-assign="${e.id}">${t('assignBtn')}</button>
-      </div>
-      <div class="event-foot">
-        <div style="display:flex;gap:8px">
-          <button class="btn-sec" data-cancel="${e.id}">${t('cancel')}</button>
-          <button class="btn-sec" data-toggle-publish="${e.id}">${e.published?t('unpublishBtn'):t('publishBtn')}</button>
+      <button type="button" class="btn-sec" data-toggle-details-btn="${e.id}" style="margin-top:8px">${t('manageDetailsBtn')}</button>
+      <div class="event-details" data-details="${e.id}" style="display:none;margin-top:10px">
+        <div>
+          ${regs.map(r => `<div class="reg-row"><label><input type="checkbox" class="attendCheck" data-event="${e.id}" value="${r.agent_email}" checked> ${r.agent_name} (${r.agent_email})</label><span class="ev-hint" style="margin:0">${t('registered')} ${new Date(r.registered_at).toLocaleString()}</span><button type="button" class="btn-unassign" data-unassign="${e.id}" data-email="${r.agent_email}" title="${t('cancel')}">×</button></div>`).join('')}
         </div>
-        <button class="btn-primary" data-finalize="${e.id}">${t('finalize')}</button>
+        <div class="assign-row">
+          <input type="text" class="assignInput" list="eventsAgentsList" data-event="${e.id}" placeholder="${t('assignPhNew')}">
+          <button class="btn-sec" data-assign="${e.id}">${t('assignBtn')}</button>
+        </div>
+        <div class="event-foot">
+          <div style="display:flex;gap:8px">
+            <button class="btn-sec" data-cancel="${e.id}">${t('cancel')}</button>
+            <button class="btn-sec" data-edit-address="${e.id}" data-current-address="${e.address.replace(/"/g,'&quot;')}">${t('editAddressBtn')}</button>
+            <button class="btn-sec" data-toggle-publish="${e.id}">${e.published?t('unpublishBtn'):t('publishBtn')}</button>
+          </div>
+          <button class="btn-primary" data-finalize="${e.id}">${t('finalize')}</button>
+        </div>
       </div>
     </div>`).join('');
+
+  wrap.querySelectorAll('[data-toggle-details-btn]').forEach(btn=>btn.addEventListener('click', ()=>{
+    const id = btn.dataset.toggleDetailsBtn;
+    const details = wrap.querySelector(`[data-details="${id}"]`);
+    const isOpen = details.style.display !== 'none';
+    details.style.display = isOpen ? 'none' : 'block';
+    btn.textContent = isOpen ? t('manageDetailsBtn') : t('manageDetailsBtnOpen');
+  }));
+  wrap.querySelectorAll('[data-edit-address]').forEach(btn=>btn.addEventListener('click', async ()=>{
+    const eventId = btn.dataset.editAddress;
+    const current = btn.dataset.currentAddress;
+    const next = prompt(t('editAddressPrompt'), current);
+    if (next === null || next.trim() === '' || next === current) return;
+    try {
+      await apiJson(API_BASE, `/events/admin/${eventId}/edit`, {method:'POST', body: JSON.stringify({address: next.trim()})});
+      loadAdminAll();
+    } catch(e) { alert(e.message); }
+  }));
   wrap.querySelectorAll('[data-finalize]').forEach(btn=>btn.addEventListener('click', async ()=>{
     const eventId = btn.dataset.finalize;
     const emails = Array.from(wrap.querySelectorAll(`.attendCheck[data-event="${eventId}"]:checked`)).map(c=>c.value);
@@ -574,6 +662,20 @@ async function loadAdminManage(){
       loadAdminAll();
     } catch(e) { alert(e.message); }
   }));
+}
+
+document.getElementById('admManageSearch').addEventListener('input', renderAdminManage);
+document.getElementById('admManageDateFilter').addEventListener('change', renderAdminManage);
+
+let agentsDatalistLoaded = false;
+async function loadAgentsDatalist(){
+  if (agentsDatalistLoaded) return;
+  try {
+    const rows = await apiJson(API_BASE, '/events/admin/agents-list');
+    document.getElementById('eventsAgentsList').innerHTML =
+      rows.map(r => `<option value="${r.email}">${r.agent_name}</option>`).join('');
+    agentsDatalistLoaded = true;
+  } catch (e) { /* non-critical - assign field still works typed free-hand */ }
 }
 
 async function loadAdminLookup(){
@@ -668,7 +770,26 @@ document.getElementById('admImportBtn').addEventListener('click', async ()=>{
   }
 });
 
+document.getElementById('admPublishAllBtn').addEventListener('click', async ()=>{
+  const btn = document.getElementById('admPublishAllBtn');
+  const resultDiv = document.getElementById('admImportResult');
+  btn.disabled = true;
+  const originalText = btn.textContent;
+  btn.textContent = t('publishingAll');
+  try {
+    const r = await apiJson(API_BASE, '/events/admin/publish-all-imported', {method:'POST'});
+    resultDiv.innerHTML = `<p style="color:var(--green);font-weight:700">${t('publishAllOk')(r.published_count)}</p>`;
+    loadAdminAll();
+  } catch(e) {
+    resultDiv.innerHTML = `<p style="color:var(--red)">${e.message}</p>`;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = originalText;
+  }
+});
+
 async function loadAdminAll(){
+  await loadAgentsDatalist();
   await loadAdminPending();
   await loadAdminManage();
   await loadAdminHistory();
