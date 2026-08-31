@@ -79,6 +79,7 @@ textarea{min-height:90px;resize:vertical}
 .badge-full{background:#ffe6cc;color:#8a4a00}
 .badge-closed{background:#e6f8f0;color:#046a45}
 .badge-canceled{background:var(--red-light);color:var(--red-dark)}
+.badge-rescheduled{background:#fff3cd;color:#7a5b00}
 .badge-published{background:#e6f8f0;color:#046a45}
 .badge-unpublished{background:var(--gray-100);color:var(--gray-600)}
 .report-box{border-top:1.5px solid var(--gray-200);margin-top:12px;padding-top:12px}
@@ -94,6 +95,10 @@ label.chk{display:flex;align-items:center;gap:8px;font-size:13px;margin:8px 0}
 .lookup-row{background:#fff;border:1.5px solid var(--gray-200);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:13px}
 .lookup-row b{color:var(--blue-dark)}
 @media(max-width:700px){.grid2{grid-template-columns:1fr}}
+.modal-overlay{position:fixed;inset:0;background:rgba(43,39,35,.5);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+.modal-overlay.show{display:flex}
+.modal-box{background:#fff;border-radius:var(--r-lg);padding:24px;max-width:420px;width:100%;box-shadow:var(--sh-lg)}
+.modal-box h3{font-size:15px;color:var(--blue-dark);margin-bottom:16px}
 </style>
 </head>
 <body>
@@ -137,6 +142,10 @@ label.chk{display:flex;align-items:center;gap:8px;font-size:13px;margin:8px 0}
       </div>
       <div class="grid2">
         <div class="field"><label class="frm-lbl" id="lblAddress"></label><input type="text" id="fAddress"></div>
+        <div class="field"><label class="frm-lbl" id="lblCity"></label><input type="text" id="fCity"></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label class="frm-lbl" id="lblState"></label><select id="fState"></select></div>
         <div class="field"><label class="frm-lbl" id="lblZip"></label><input type="text" id="fZip"></div>
       </div>
       <div class="grid2">
@@ -195,6 +204,10 @@ label.chk{display:flex;align-items:center;gap:8px;font-size:13px;margin:8px 0}
         </div>
         <div class="grid2">
           <div class="field"><label class="frm-lbl" id="lblOrgPhone"></label><input type="text" id="admFOrgPhone"></div>
+          <div class="field"><label class="frm-lbl" id="admLblCity"></label><input type="text" id="admFCity"></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label class="frm-lbl" id="admLblState"></label><select id="admFState"></select></div>
           <div class="field"><label class="frm-lbl" id="admLblZip"></label><input type="text" id="admFZip"></div>
         </div>
         <div class="field"><label class="frm-lbl" id="admLblAddress"></label><input type="text" id="admFAddress"></div>
@@ -231,6 +244,41 @@ label.chk{display:flex;align-items:center;gap:8px;font-size:13px;margin:8px 0}
   </div>
 </main>
 
+<!-- Cancel/reschedule modal (added 2026-08-31) - collects the reason + outcome
+     before POSTing /admin/{id}/cancel, so the auto-email to registered/approved
+     agents (Progress-Sites.md punto 43, "email 8") can say why and whether the
+     event was canceled or rescheduled. -->
+<div class="modal-overlay" id="cancelModal">
+  <div class="modal-box">
+    <h3 id="cancelModalTitle"></h3>
+    <div class="field">
+      <label class="frm-lbl" id="lblCancelOutcome"></label>
+      <select id="cancelOutcome">
+        <option value="canceled" id="optOutcomeCanceled"></option>
+        <option value="rescheduled" id="optOutcomeRescheduled"></option>
+      </select>
+    </div>
+    <div class="field">
+      <label class="frm-lbl" id="lblCancelReason"></label>
+      <select id="cancelReason">
+        <option value="organizer_canceled" id="optReasonOrganizerCanceled"></option>
+        <option value="weather" id="optReasonWeather"></option>
+        <option value="venue_unavailable" id="optReasonVenue"></option>
+        <option value="logistics_issue" id="optReasonLogistics"></option>
+        <option value="other" id="optReasonOther"></option>
+      </select>
+    </div>
+    <div class="field" id="cancelReasonOtherWrap" style="display:none">
+      <label class="frm-lbl" id="lblCancelReasonOther"></label>
+      <input type="text" id="cancelReasonOther">
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:6px">
+      <button type="button" class="btn-sec" id="cancelModalClose"></button>
+      <button type="button" class="btn-reject" id="cancelModalConfirm"></button>
+    </div>
+  </div>
+</div>
+
 <script type="module">
 import { API_BASE, apiReady } from "./assets/js/api-config.js";
 import { guard, apiJson } from "./assets/js/agent-api-session.js";
@@ -238,6 +286,19 @@ import { guard, apiJson } from "./assets/js/agent-api-session.js";
 const session = guard();
 let curLang = 'en';
 let isEventsAdmin = false;
+
+// US state dropdown (added 2026-08-31) - NJ is every event today, but Jesus
+// confirmed we'll have events in other states later, so this is a real
+// field (events.city/state in the DB) instead of assuming NJ forever.
+const US_STATES = ["NJ","NY","PA","CT","AL","AK","AZ","AR","CA","CO","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NM","NC","ND","OH","OK","OR","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY","DC"];
+function populateStateSelects(){
+  ['fState','admFState'].forEach(id=>{
+    const sel = document.getElementById(id);
+    if (!sel || sel.options.length) return; // already populated
+    sel.innerHTML = US_STATES.map(s=>`<option value="${s}">${s}</option>`).join('');
+    sel.value = 'NJ';
+  });
+}
 
 const I18N = {
 en:{
@@ -256,7 +317,7 @@ en:{
   reportPlaceholder:"How did it go? Any issues, was it a success, was it hard to get to, etc.",
   madeSale:"I made a sale at this event", sendReport:"Send report", reportSent:"✓ Report sent — thank you.",
   hSuggest:"Suggest an event", hintSuggest:"We'll review it before it appears in the open events list above.",
-  lblTitle:"Event name", lblOrganizer:"Organizer", lblAddress:"Address", lblZip:"Zip code",
+  lblTitle:"Event name", lblOrganizer:"Organizer", lblAddress:"Address", lblCity:"City", lblState:"State", lblZip:"Zip code",
   lblOrgContact:"Organizer contact name (optional)", lblOrgEmail:"Organizer email (optional)", lblOrgPhone:"Organizer phone (optional)",
   lblDate:"Event date", lblTime:"Time (optional)", lblDeadline:"Registration deadline", lblMaxSlots:"Max agents",
   lblNotes:"Notes (optional)", suggestBtn:"Submit for review", suggestSuccess:"✓ Submitted — we'll review it soon.",
@@ -270,6 +331,7 @@ en:{
   hCreate:"Create a new event", createBtn:"Create event", createSuccess:"✓ Event created.",
   hHistory:"Closed / canceled events", noHistory:"Nothing here yet.",
   statusClosedConfirmed:"Confirmed", statusClosedIncomplete:"Closed — incomplete", statusCanceled:"Canceled",
+  statusRescheduled:"Rescheduled",
   badgePublished:"Public", badgeUnpublished:"Internal", publishBtn:"Publish", unpublishBtn:"Make internal",
   assignPh:"Agent email to add directly", assignBtn:"Add",
   hLookup:"Find an agent", hintLookup:"Search by name or email to see every event they're registered/assigned to.",
@@ -287,6 +349,13 @@ en:{
   manageDetailsBtn:"Manage ▾", manageDetailsBtnOpen:"Manage ▴",
   noManageFiltered:"No events match that search/filter.",
   assignPhNew:"Type an agent's name or email…",
+  cancelModalTitle:"Cancel or reschedule this event",
+  lblCancelOutcome:"This event is being…", optOutcomeCanceled:"Canceled", optOutcomeRescheduled:"Rescheduled",
+  lblCancelReason:"Reason (organizer-driven, outside our control)",
+  optReasonOrganizerCanceled:"Organizer canceled the event", optReasonWeather:"Weather / safety conditions",
+  optReasonVenue:"Venue unavailable / venue issue", optReasonLogistics:"Organizer logistics issue",
+  optReasonOther:"Other (specify below)",
+  lblCancelReasonOther:"Specify the reason", cancelModalCancelBtn:"Never mind", cancelModalConfirmBtn:"Confirm & notify agents",
 },
 es:{
   title:"Eventos", sub:"Allcare Mar Agency", logout:"Cerrar sesión",
@@ -304,7 +373,7 @@ es:{
   reportPlaceholder:"¿Cómo te fue? Situaciones, si fue un éxito, si fue difícil llegar, etc.",
   madeSale:"Hice una venta en este evento", sendReport:"Enviar reporte", reportSent:"✓ Reporte enviado — gracias.",
   hSuggest:"Sugerir un evento", hintSuggest:"Lo revisamos antes de que aparezca en el listado de eventos abiertos.",
-  lblTitle:"Nombre del evento", lblOrganizer:"Organizador", lblAddress:"Dirección", lblZip:"Código postal",
+  lblTitle:"Nombre del evento", lblOrganizer:"Organizador", lblAddress:"Dirección", lblCity:"Ciudad", lblState:"Estado", lblZip:"Código postal",
   lblOrgContact:"Nombre de contacto del organizador (opcional)", lblOrgEmail:"Email del organizador (opcional)", lblOrgPhone:"Teléfono del organizador (opcional)",
   lblDate:"Fecha del evento", lblTime:"Horario (opcional)", lblDeadline:"Fecha límite de inscripción", lblMaxSlots:"Máximo de agentes",
   lblNotes:"Notas (opcional)", suggestBtn:"Enviar para revisión", suggestSuccess:"✓ Enviado — lo revisaremos pronto.",
@@ -318,6 +387,7 @@ es:{
   hCreate:"Crear un evento nuevo", createBtn:"Crear evento", createSuccess:"✓ Evento creado.",
   hHistory:"Eventos cerrados / cancelados", noHistory:"Todavía no hay nada aquí.",
   statusClosedConfirmed:"Confirmado", statusClosedIncomplete:"Cerrado — incompleto", statusCanceled:"Cancelado",
+  statusRescheduled:"Reprogramado",
   badgePublished:"Público", badgeUnpublished:"Interno", publishBtn:"Publicar", unpublishBtn:"Volver interno",
   assignPh:"Email del agente a agregar directo", assignBtn:"Agregar",
   hLookup:"Buscar agente", hintLookup:"Busca por nombre o email para ver en qué eventos está inscrito/asignado.",
@@ -335,6 +405,13 @@ es:{
   manageDetailsBtn:"Administrar ▾", manageDetailsBtnOpen:"Administrar ▴",
   noManageFiltered:"Ningún evento coincide con esa búsqueda/filtro.",
   assignPhNew:"Escribe el nombre o email del agente…",
+  cancelModalTitle:"Cancelar o reprogramar este evento",
+  lblCancelOutcome:"Este evento está siendo…", optOutcomeCanceled:"Cancelado", optOutcomeRescheduled:"Reprogramado",
+  lblCancelReason:"Razón (decisión del organizador, ajena a nosotros)",
+  optReasonOrganizerCanceled:"El organizador canceló el evento", optReasonWeather:"Clima / condiciones de seguridad",
+  optReasonVenue:"Local no disponible / problema con el local", optReasonLogistics:"Problema logístico del organizador",
+  optReasonOther:"Otra (especificar abajo)",
+  lblCancelReasonOther:"Especifica la razón", cancelModalCancelBtn:"Cancelar", cancelModalConfirmBtn:"Confirmar y avisar a los agentes",
 }
 };
 function t(k){ return I18N[curLang][k]; }
@@ -355,6 +432,8 @@ function applyStaticText(){
   document.getElementById('lblTitle').textContent = t('lblTitle');
   document.getElementById('lblOrganizer').textContent = t('lblOrganizer');
   document.getElementById('lblAddress').textContent = t('lblAddress');
+  document.getElementById('lblCity').textContent = t('lblCity');
+  document.getElementById('lblState').textContent = t('lblState');
   document.getElementById('lblZip').textContent = t('lblZip');
   document.getElementById('lblDate').textContent = t('lblDate');
   document.getElementById('lblTime').textContent = t('lblTime');
@@ -384,6 +463,8 @@ function applyStaticText(){
   document.getElementById('lblOrgEmail').textContent = t('lblOrgEmail');
   document.getElementById('lblOrgPhone').textContent = t('lblOrgPhone');
   document.getElementById('admLblAddress').textContent = t('lblAddress');
+  document.getElementById('admLblCity').textContent = t('lblCity');
+  document.getElementById('admLblState').textContent = t('lblState');
   document.getElementById('admLblZip').textContent = t('lblZip');
   document.getElementById('admLblDate').textContent = t('lblDate');
   document.getElementById('admLblTime').textContent = t('lblTime');
@@ -397,6 +478,19 @@ function applyStaticText(){
   document.getElementById('admImportBtn').textContent = t('importBtn');
   document.getElementById('admPublishAllBtn').textContent = t('publishAllBtn');
   document.getElementById('hHistory').textContent = t('hHistory');
+  document.getElementById('cancelModalTitle').textContent = t('cancelModalTitle');
+  document.getElementById('lblCancelOutcome').textContent = t('lblCancelOutcome');
+  document.getElementById('optOutcomeCanceled').textContent = t('optOutcomeCanceled');
+  document.getElementById('optOutcomeRescheduled').textContent = t('optOutcomeRescheduled');
+  document.getElementById('lblCancelReason').textContent = t('lblCancelReason');
+  document.getElementById('optReasonOrganizerCanceled').textContent = t('optReasonOrganizerCanceled');
+  document.getElementById('optReasonWeather').textContent = t('optReasonWeather');
+  document.getElementById('optReasonVenue').textContent = t('optReasonVenue');
+  document.getElementById('optReasonLogistics').textContent = t('optReasonLogistics');
+  document.getElementById('optReasonOther').textContent = t('optReasonOther');
+  document.getElementById('lblCancelReasonOther').textContent = t('lblCancelReasonOther');
+  document.getElementById('cancelModalClose').textContent = t('cancelModalCancelBtn');
+  document.getElementById('cancelModalConfirm').textContent = t('cancelModalConfirmBtn');
 }
 
 document.getElementById('langBtn').addEventListener('click', ()=>{
@@ -410,6 +504,42 @@ document.getElementById('logoutBtn').addEventListener('click', ()=>{
   localStorage.removeItem('acm_gsession');
   if (typeof google !== 'undefined' && google.accounts) { try { google.accounts.id.disableAutoSelect(); } catch(e){} }
   window.location.href = '../login.html';
+});
+
+// Cancel/reschedule modal (added 2026-08-31) - see /admin/{id}/cancel below.
+let cancelModalEventId = null;
+function openCancelModal(eventId){
+  cancelModalEventId = eventId;
+  document.getElementById('cancelOutcome').value = 'canceled';
+  document.getElementById('cancelReason').value = 'organizer_canceled';
+  document.getElementById('cancelReasonOther').value = '';
+  document.getElementById('cancelReasonOtherWrap').style.display = 'none';
+  document.getElementById('cancelModal').classList.add('show');
+}
+function closeCancelModal(){
+  cancelModalEventId = null;
+  document.getElementById('cancelModal').classList.remove('show');
+}
+document.getElementById('cancelReason').addEventListener('change', (e)=>{
+  document.getElementById('cancelReasonOtherWrap').style.display = e.target.value === 'other' ? 'block' : 'none';
+});
+document.getElementById('cancelModalClose').addEventListener('click', closeCancelModal);
+document.getElementById('cancelModalConfirm').addEventListener('click', async ()=>{
+  if (!cancelModalEventId) return;
+  const outcome = document.getElementById('cancelOutcome').value;
+  const reasonKey = document.getElementById('cancelReason').value;
+  const reasonOther = document.getElementById('cancelReasonOther').value.trim();
+  if (reasonKey === 'other' && !reasonOther) {
+    document.getElementById('cancelReasonOther').focus();
+    return;
+  }
+  const eventId = cancelModalEventId;
+  closeCancelModal();
+  // Sends the reason KEY (not the on-screen label) so the backend can build
+  // the English AND Spanish sentence correctly regardless of which language
+  // the admin has the UI in right now (see REASON_TEXT in api/events.py).
+  await apiJson(API_BASE, `/events/admin/${eventId}/cancel`, {method:'POST', body: JSON.stringify({reason_key: reasonKey, reason_other: reasonOther, outcome})});
+  loadAdminAll();
 });
 
 document.querySelectorAll('.ev-tab').forEach(tab=>{
@@ -502,6 +632,8 @@ document.getElementById('suggestBtn').addEventListener('click', async ()=>{
     title: document.getElementById('fTitle').value,
     organizer: document.getElementById('fOrganizer').value,
     address: document.getElementById('fAddress').value,
+    city: document.getElementById('fCity').value,
+    state: document.getElementById('fState').value,
     zipcode: document.getElementById('fZip').value,
     event_date: document.getElementById('fDate').value,
     event_time: document.getElementById('fTime').value || null,
@@ -509,7 +641,7 @@ document.getElementById('suggestBtn').addEventListener('click', async ()=>{
     max_slots: parseInt(document.getElementById('fMaxSlots').value || '4', 10),
     notes: document.getElementById('fNotes').value || null,
   };
-  if (!body.title || !body.organizer || !body.address || !body.zipcode || !body.event_date || !body.registration_deadline) {
+  if (!body.title || !body.organizer || !body.address || !body.city || !body.zipcode || !body.event_date || !body.registration_deadline) {
     alert(curLang==='en' ? 'Please complete all required fields.' : 'Completa todos los campos requeridos.');
     return;
   }
@@ -517,7 +649,8 @@ document.getElementById('suggestBtn').addEventListener('click', async ()=>{
     await apiJson(API_BASE, '/events/suggest', {method:'POST', body: JSON.stringify(body)});
     document.getElementById('suggestSuccess').style.display = 'block';
     document.getElementById('suggestSuccess').textContent = t('suggestSuccess');
-    ['fTitle','fOrganizer','fAddress','fZip','fDate','fTime','fDeadline','fNotes'].forEach(id=>document.getElementById(id).value='');
+    ['fTitle','fOrganizer','fAddress','fCity','fZip','fDate','fTime','fDeadline','fNotes'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('fState').value = 'NJ';
     document.getElementById('fMaxSlots').value = 4;
   } catch(e) { alert(e.message); }
 });
@@ -651,8 +784,8 @@ function renderAdminManage(){
     await apiJson(API_BASE, `/events/admin/${eventId}/finalize`, {method:'POST', body: JSON.stringify({approved_emails: emails})});
     loadAdminAll();
   }));
-  wrap.querySelectorAll('[data-cancel]').forEach(btn=>btn.addEventListener('click', async ()=>{
-    await apiJson(API_BASE, `/events/admin/${btn.dataset.cancel}/cancel`, {method:'POST'}); loadAdminAll();
+  wrap.querySelectorAll('[data-cancel]').forEach(btn=>btn.addEventListener('click', ()=>{
+    openCancelModal(btn.dataset.cancel);
   }));
   wrap.querySelectorAll('[data-toggle-publish]').forEach(btn=>btn.addEventListener('click', async ()=>{
     await apiJson(API_BASE, `/events/admin/${btn.dataset.togglePublish}/toggle-publish`, {method:'POST'}); loadAdminAll();
@@ -706,10 +839,10 @@ document.getElementById('admLookupBtn').addEventListener('click', loadAdminLooku
 document.getElementById('admLookupQ').addEventListener('keydown', (e)=>{ if (e.key === 'Enter') loadAdminLookup(); });
 
 async function loadAdminHistory(){
-  const statuses = ['closed_confirmed','closed_incomplete','canceled'];
+  const statuses = ['closed_confirmed','closed_incomplete','canceled','rescheduled'];
   const lists = await Promise.all(statuses.map(s => apiJson(API_BASE, `/events/admin/all?status=${s}`)));
   const all = lists.flat().sort((a,b) => new Date(b.event_date) - new Date(a.event_date));
-  const badgeMap = { closed_confirmed:['badge-closed','statusClosedConfirmed'], closed_incomplete:['badge-full','statusClosedIncomplete'], canceled:['badge-canceled','statusCanceled'] };
+  const badgeMap = { closed_confirmed:['badge-closed','statusClosedConfirmed'], closed_incomplete:['badge-full','statusClosedIncomplete'], canceled:['badge-canceled','statusCanceled'], rescheduled:['badge-rescheduled','statusRescheduled'] };
   const wrap = document.getElementById('admHistoryEvents');
   if (!all.length) { wrap.innerHTML = `<p class="ev-hint">${t('noHistory')}</p>`; return; }
   wrap.innerHTML = all.map(e => {
@@ -727,6 +860,8 @@ document.getElementById('admCreateBtn').addEventListener('click', async ()=>{
     organizer_email: document.getElementById('admFOrgEmail').value || null,
     organizer_phone: document.getElementById('admFOrgPhone').value || null,
     address: document.getElementById('admFAddress').value,
+    city: document.getElementById('admFCity').value,
+    state: document.getElementById('admFState').value,
     zipcode: document.getElementById('admFZip').value,
     event_date: document.getElementById('admFDate').value,
     event_time: document.getElementById('admFTime').value || null,
@@ -735,7 +870,7 @@ document.getElementById('admCreateBtn').addEventListener('click', async ()=>{
     notes: document.getElementById('admFNotes').value || null,
     published: document.getElementById('admFPublished').checked,
   };
-  if (!body.title || !body.organizer || !body.address || !body.zipcode || !body.event_date || !body.registration_deadline) {
+  if (!body.title || !body.organizer || !body.address || !body.city || !body.zipcode || !body.event_date || !body.registration_deadline) {
     alert(curLang==='en' ? 'Please complete all required fields.' : 'Completa todos los campos requeridos.');
     return;
   }
@@ -743,7 +878,8 @@ document.getElementById('admCreateBtn').addEventListener('click', async ()=>{
     await apiJson(API_BASE, '/events/admin', {method:'POST', body: JSON.stringify(body)});
     document.getElementById('admCreateSuccess').style.display = 'block';
     document.getElementById('admCreateSuccess').textContent = t('createSuccess');
-    ['admFTitle','admFOrganizer','admFOrgContact','admFOrgEmail','admFOrgPhone','admFAddress','admFZip','admFDate','admFTime','admFDeadline','admFNotes'].forEach(id=>document.getElementById(id).value='');
+    ['admFTitle','admFOrganizer','admFOrgContact','admFOrgEmail','admFOrgPhone','admFAddress','admFCity','admFZip','admFDate','admFTime','admFDeadline','admFNotes'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('admFState').value = 'NJ';
     document.getElementById('admFMaxSlots').value = 4;
     document.getElementById('admFPublished').checked = true;
     loadAdminAll();
@@ -810,6 +946,7 @@ async function loadAdminAll(){
 async function init(){
   if (!session) return;
   applyStaticText();
+  populateStateSelects();
   if (!apiReady()) {
     document.getElementById('apiBanner').classList.add('show');
     document.getElementById('apiBanner').textContent = t('apiPending');
