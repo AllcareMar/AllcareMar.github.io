@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Agents Directory — Allcare Mar Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+:root{
+  --blue:#1a2fd4; --blue-dark:#0f1e9a; --blue-light:#e8ecff;
+  --red:#e8001d; --red-dark:#b50016; --red-light:#fff0f2;
+  --gray-50:#faf8f5; --gray-100:#f3efe9; --gray-200:#e6e0d6;
+  --gray-400:#8b8377; --gray-600:#544f47; --gray-800:#2b2723;
+  --green:#00a86b;
+  --r:12px; --r-lg:20px;
+  --sh:0 4px 24px rgba(58,53,48,.08); --sh-lg:0 16px 56px rgba(58,53,48,.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Open Sans',sans-serif;color:var(--gray-800);background:var(--gray-50);min-height:100vh}
+h1,h2,h3{font-family:'Montserrat',sans-serif;line-height:1.2}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+
+.ev-header{display:flex;align-items:center;justify-content:space-between;padding:18px 5vw;background:linear-gradient(135deg,var(--blue-dark),var(--blue));color:#fff;flex-wrap:wrap;gap:12px}
+.ev-header .brand{display:flex;align-items:center;gap:14px}
+.ev-header .brand img{height:30px;filter:brightness(0) invert(1)}
+.ev-header h1{font-size:16px;font-weight:800}
+.ev-header .sub{font-size:11.5px;opacity:.8}
+.ev-header-right{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.lang-toggle{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:20px;padding:8px 14px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:11.5px;cursor:pointer}
+.btn-logout{background:var(--red);border:none;color:#fff;padding:9px 16px;border-radius:20px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:12px;cursor:pointer}
+
+.ev-wrap{max-width:1080px;margin:0 auto;padding:32px 5vw 80px}
+.ev-banner{background:#fff3cd;border:1px solid #ffe08a;color:#7a5b00;font-size:13px;padding:14px 18px;border-radius:10px;margin-bottom:22px;line-height:1.6;display:none}
+.ev-banner.show{display:block}
+.ev-banner.denied{background:var(--red-light);color:var(--red-dark);border-color:#ffd0d6}
+
+.ev-panel{border:1.5px solid var(--gray-200);border-radius:var(--r-lg);padding:24px;background:#fff;box-shadow:var(--sh)}
+.ev-h2{font-size:17px;font-weight:800;color:var(--blue-dark);margin-bottom:4px}
+.ev-hint{font-size:12.5px;color:var(--gray-600);margin-bottom:18px}
+
+.search-row{position:relative;margin-bottom:6px}
+.search-row i{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--gray-400);font-size:14px}
+#dirSearch{width:100%;padding:13px 16px 13px 42px;border:1.5px solid var(--gray-200);border-radius:12px;font-size:15px;font-family:'Open Sans',sans-serif;background:var(--gray-50);color:var(--gray-800)}
+#dirSearch:focus{outline:none;border-color:var(--blue);background:#fff}
+.result-count{font-size:12px;color:var(--gray-600);margin:10px 2px 16px}
+
+.dir-table-wrap{overflow-x:auto;border:1.5px solid var(--gray-200);border-radius:var(--r-lg)}
+table.dir-table{width:100%;border-collapse:collapse;font-size:13px;background:#fff}
+table.dir-table th{text-align:left;font-family:'Montserrat',sans-serif;font-weight:800;font-size:11px;letter-spacing:.03em;text-transform:uppercase;color:var(--blue-dark);background:var(--blue-light);padding:12px 14px;white-space:nowrap;position:sticky;top:0}
+table.dir-table td{padding:11px 14px;border-top:1px solid var(--gray-200);vertical-align:top}
+table.dir-table tr:hover td{background:var(--gray-50)}
+table.dir-table td.name-cell{font-weight:700;color:var(--gray-800)}
+table.dir-table td.mono{font-variant-numeric:tabular-nums;color:var(--gray-600)}
+table.dir-table a.mailto{color:var(--blue)}
+.agency-tag{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:700;background:var(--gray-100);color:var(--gray-600);white-space:nowrap}
+.no-results{padding:30px;text-align:center;color:var(--gray-600);font-size:13.5px}
+tr.agency-row td{background:var(--blue-light);border-top:1.5px solid var(--gray-200)}
+tr.agency-row:hover td{background:var(--blue-light)}
+tr.agency-row td.name-cell{color:var(--blue-dark);font-weight:800;font-family:'Montserrat',sans-serif;font-size:12.5px;text-transform:uppercase;letter-spacing:.02em}
+@media(max-width:700px){
+  .ev-wrap{padding:20px 4vw 60px}
+  table.dir-table{font-size:12px}
+  table.dir-table th,table.dir-table td{padding:9px 10px}
+}
+</style>
+</head>
+<body>
+<header class="ev-header">
+  <div class="brand"><img src="../assets/img/logo-allcaremar.png" alt="Allcare Mar"/>
+    <div><h1 id="hTitle"></h1><div class="sub" id="hSub"></div></div></div>
+  <div class="ev-header-right">
+    <button class="lang-toggle" id="langBtn">ES</button>
+    <button class="btn-logout" id="logoutBtn"></button>
+  </div>
+</header>
+
+<main class="ev-wrap">
+  <div class="ev-banner" id="apiBanner"></div>
+
+  <div class="ev-panel">
+    <div class="ev-h2" id="hDir"></div>
+    <div class="ev-hint" id="hintDir"></div>
+
+    <div class="search-row">
+      <i class="fas fa-magnifying-glass"></i>
+      <input type="text" id="dirSearch" autocomplete="off"/>
+    </div>
+    <div class="result-count" id="resultCount"></div>
+
+    <div class="dir-table-wrap">
+      <table class="dir-table">
+        <thead>
+          <tr>
+            <th id="colWriting"></th>
+            <th id="colName"></th>
+            <th id="colAgency"></th>
+            <th id="colPhone"></th>
+            <th id="colExt"></th>
+            <th id="colEmail"></th>
+          </tr>
+        </thead>
+        <tbody id="dirBody"></tbody>
+      </table>
+      <div class="no-results" id="noResults" style="display:none"></div>
+    </div>
+  </div>
+</main>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<script type="module">
+import { guard } from "./assets/js/agent-api-session.js";
+
+const session = guard();
+let curLang = 'en';
+let ALL_ROWS = [];
+
+const I18N = {
+  en:{
+    title:"Agents Directory", sub:"Allcare Mar Agency", logout:"Sign out",
+    hDir:"Search the agents directory", hintDir:"Type a Writing ID or a name to find an agent's office extension or email — each partner agency's own Writing ID is highlighted above its agents. This list stays inside the portal — there's no file to download.",
+    searchPh:"Search by Writing ID or name…",
+    colWriting:"Writing ID", colName:"Name", colAgency:"Agency", colPhone:"Office phone", colExt:"Ext.", colEmail:"Email",
+    resultCount:(n,total)=> n===total ? `${total} agent(s)` : `${n} of ${total} agent(s)`,
+    noResults:"No agents match that search.",
+    loadError:"Couldn't load the directory. Try reloading the page.",
+  },
+  es:{
+    title:"Directorio de Agentes", sub:"Allcare Mar Agency", logout:"Cerrar sesión",
+    hDir:"Busca en el directorio de agentes", hintDir:"Escribe un Writing ID o un nombre para encontrar la extensión de oficina o el correo de un agente — el Writing ID propio de cada agencia socia aparece resaltado arriba de sus agentes. Este listado se queda dentro del portal — no hay ningún archivo para descargar.",
+    searchPh:"Busca por Writing ID o nombre…",
+    colWriting:"Writing ID", colName:"Nombre", colAgency:"Agencia", colPhone:"Tel. oficina", colExt:"Ext.", colEmail:"Email",
+    resultCount:(n,total)=> n===total ? `${total} agente(s)` : `${n} de ${total} agente(s)`,
+    noResults:"Ningún agente coincide con esa búsqueda.",
+    loadError:"No se pudo cargar el directorio. Intenta recargar la página.",
+  }
+};
+function t(k){ return I18N[curLang][k]; }
+
+function applyStaticText(){
+  document.getElementById('hTitle').textContent = t('title');
+  document.getElementById('hSub').textContent = t('sub');
+  document.getElementById('logoutBtn').textContent = t('logout');
+  document.getElementById('hDir').textContent = t('hDir');
+  document.getElementById('hintDir').textContent = t('hintDir');
+  document.getElementById('dirSearch').placeholder = t('searchPh');
+  document.getElementById('colWriting').textContent = t('colWriting');
+  document.getElementById('colName').textContent = t('colName');
+  document.getElementById('colAgency').textContent = t('colAgency');
+  document.getElementById('colPhone').textContent = t('colPhone');
+  document.getElementById('colExt').textContent = t('colExt');
+  document.getElementById('colEmail').textContent = t('colEmail');
+  document.getElementById('noResults').textContent = t('noResults');
+  renderTable(document.getElementById('dirSearch').value);
+}
+
+function norm(s){
+  return (s || '').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+}
+
+function renderTable(query){
+  const q = norm(query.trim());
+  const totalAgents = ALL_ROWS.filter(r => r.type === 'agent').length;
+  const rows = !q ? ALL_ROWS : ALL_ROWS.filter(r =>
+    norm(r.writing_id).includes(q) ||
+    norm(r.name).includes(q) ||
+    norm(r.email).includes(q) ||
+    norm(r.agency).includes(q)
+  );
+  const tbody = document.getElementById('dirBody');
+  const noResults = document.getElementById('noResults');
+  const shownAgents = rows.filter(r => r.type === 'agent').length;
+  document.getElementById('resultCount').textContent = t('resultCount')(shownAgents, totalAgents);
+
+  if (!rows.length) {
+    tbody.innerHTML = '';
+    noResults.style.display = 'block';
+    return;
+  }
+  noResults.style.display = 'none';
+  tbody.innerHTML = rows.map(r => r.type === 'agency' ? `
+    <tr class="agency-row">
+      <td class="mono">${r.writing_id ? esc(r.writing_id) : '—'}</td>
+      <td class="name-cell">${esc(r.name)}</td>
+      <td><span class="agency-tag">${esc(r.agency)}</span></td>
+      <td class="mono">${r.company_number ? esc(r.company_number) : '—'}</td>
+      <td class="mono">${r.ext ? esc(r.ext) : '—'}</td>
+      <td>${r.email ? `<a class="mailto" href="mailto:${esc(r.email)}">${esc(r.email)}</a>` : '—'}</td>
+    </tr>
+  ` : `
+    <tr>
+      <td class="mono">${r.writing_id ? esc(r.writing_id) : '—'}</td>
+      <td class="name-cell">${esc(r.name)}</td>
+      <td><span class="agency-tag">${esc(r.agency)}</span></td>
+      <td class="mono">${r.company_number ? esc(r.company_number) : '—'}</td>
+      <td class="mono">${r.ext ? esc(r.ext) : '—'}</td>
+      <td>${r.email ? `<a class="mailto" href="mailto:${esc(r.email)}">${esc(r.email)}</a>` : '—'}</td>
+    </tr>
+  `).join('');
+}
+
+function esc(s){
+  return (s || '').toString().replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+async function loadDirectory(){
+  const resp = await fetch('../agents-directory.json', { cache: 'no-store' });
+  if (!resp.ok) throw new Error('load_failed');
+  const data = await resp.json();
+  const agencies = data.agencies || [];
+  const agents = data.agents || [];
+  const rows = [];
+  agencies.forEach(ag => {
+    rows.push({
+      type: 'agency', writing_id: ag.writing_id, name: ag.agency, agency: ag.agency,
+      company_number: ag.phone, ext: ag.ext, email: ag.email
+    });
+    agents.filter(a => a.agency === ag.agency).forEach(a => rows.push({ type: 'agent', ...a }));
+  });
+  ALL_ROWS = rows;
+}
+
+document.getElementById('dirSearch').addEventListener('input', (e) => renderTable(e.target.value));
+
+document.getElementById('langBtn').addEventListener('click', ()=>{
+  curLang = curLang === 'en' ? 'es' : 'en';
+  document.getElementById('langBtn').textContent = curLang === 'en' ? 'ES' : 'EN';
+  applyStaticText();
+});
+document.getElementById('logoutBtn').addEventListener('click', ()=>{
+  localStorage.removeItem('acm_gsession');
+  if (typeof google !== 'undefined' && google.accounts) { try { google.accounts.id.disableAutoSelect(); } catch(e){} }
+  window.location.href = '../login.html';
+});
+
+async function init(){
+  if (!session) return;
+  applyStaticText();
+  try {
+    await loadDirectory();
+    renderTable('');
+  } catch(e) {
+    document.getElementById('apiBanner').classList.add('show');
+    document.getElementById('apiBanner').classList.add('denied');
+    document.getElementById('apiBanner').textContent = t('loadError');
+  }
+}
+init();
+</script>
+</body>
+</html>
