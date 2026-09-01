@@ -106,7 +106,8 @@
         "unitedhealthcare",
         "healthfirst",
         "scanhealth"
-      ]
+      ],
+      "planenroll": "https://www.planenroll.com/?purl=Adriana-AyalaNegron"
     },
     {
       "name": "Iris Balgobin",
@@ -265,7 +266,7 @@
         "hs",
         "healthfirst"
       ],
-      "planenroll": "https://www.sunfirematrix.com/app/consumer/pfs/20157564/"
+      "planenroll": "https://www.planenroll.com/?purl=Oliver-Jimenez"
     },
     {
       "name": "Felix Liriano",
@@ -339,7 +340,8 @@
       "carriers": [
         "unitedhealthcare",
         "humana"
-      ]
+      ],
+      "planenroll": "https://www.planenroll.com/?purl=Alvorine-Martin"
     },
     {
       "name": "Maria Monsalve",
@@ -735,7 +737,8 @@
           "image": "/agentes/yisel-rosario.webp",
           "carriers": [
             "unitedhealthcare"
-          ]
+          ],
+          "planenroll": "https://www.planenroll.com/?purl=Yisel-Rosario-Montero"
         },
         {
           "name": "Julian Vega",
@@ -904,7 +907,8 @@
           ],
           "image": "/agentes/gabriela-brito.webp",
           "carriers": [
-            "unitedhealthcare"
+            "unitedhealthcare",
+            "humana"
           ],
           "planenroll": "https://www.planenroll.com/?purl=Gabriela-Brito-Uribe"
         },

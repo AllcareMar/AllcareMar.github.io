@@ -20,13 +20,18 @@ export const GOOGLE_CLIENT_ID = "564752963603-nanb8q4atdnmrl70s4mg8ljom7md3336.a
 export const WORKSPACE_DOMAIN = "allcaremar.com";
 
 // Excepciones al dominio @allcaremar.com en todo el sitio (login, dashboard,
-// resources, firma-requerida): agentes reales que usan un Gmail personal en
-// vez de cuenta de Workspace. Pedido explicito de Jesus.
-// - carloshealthagent@gmail.com: Carlos Perez.
+// resources, firma-requerida): agentes reales que usan un correo fuera del
+// dominio principal. Pedido explicito de Jesus.
+// - carloshealthagent@gmail.com: Carlos Perez (Gmail personal).
 // - glendahealthagent@gmail.com: Glenda Colon, lider de GW Ins Group LLC
 //   (agregado 2026-08-10 - sin esto, tampoco podia entrar al dashboard de
 //   agentes, aunque ya esta en staff.json/roster de GW).
-export const EXTRA_ALLOWED_EMAILS = ["carloshealthagent@gmail.com", "glendahealthagent@gmail.com"];
+// - oliver.j@nxhealthagency.com: Oliver Jimenez (agregado 2026-08-31 -
+//   cuenta de un segundo grupo/dominio del Workspace de Jesus, Next Gen
+//   Health Agency (nxhealthagency.com); Jesus eligio agregar el correo
+//   puntual en vez de habilitar todo el dominio nxhealthagency.com - repetir
+//   este mismo paso para cada agente nuevo de ese dominio).
+export const EXTRA_ALLOWED_EMAILS = ["carloshealthagent@gmail.com", "glendahealthagent@gmail.com", "oliver.j@nxhealthagency.com"];
 
 // Verdadero si el email puede entrar al ecosistema de agentes: dominio
 // @allcaremar.com, o esta en la lista de excepciones de arriba. Esta es la
