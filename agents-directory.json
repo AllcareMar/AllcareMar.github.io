@@ -1,0 +1,599 @@
+{
+  "updated": "2026-09-01",
+  "agencies": [
+    {
+      "agency": "Allcare Mar Agency",
+      "writing_id": "6476929/6321669/6768101",
+      "phone": "(800) 697-5631",
+      "ext": "",
+      "email": "info@allcaremar.com"
+    },
+    {
+      "agency": "JPM Solutions",
+      "writing_id": "6666970/6769746",
+      "phone": "",
+      "ext": "",
+      "email": ""
+    },
+    {
+      "agency": "GW Ins Group LLC",
+      "writing_id": "6483476/6768861",
+      "phone": "(888) 213-0222",
+      "ext": "222",
+      "email": "info@gwinsgroup.com"
+    },
+    {
+      "agency": "Martell Multi Service LLC",
+      "writing_id": "6561568/6769049",
+      "phone": "",
+      "ext": "",
+      "email": ""
+    },
+    {
+      "agency": "KMRA Group LLC",
+      "writing_id": "6561560/6768908",
+      "phone": "",
+      "ext": "",
+      "email": ""
+    },
+    {
+      "agency": "NCE Consulting Group LLC",
+      "writing_id": "6776106",
+      "phone": "",
+      "ext": "",
+      "email": ""
+    },
+    {
+      "agency": "Top Tier Health Consultants",
+      "writing_id": "6533965/6769092",
+      "phone": "",
+      "ext": "",
+      "email": ""
+    },
+    {
+      "agency": "AMC Care Group LLC",
+      "writing_id": "6658901/6768978",
+      "phone": "",
+      "ext": "",
+      "email": ""
+    }
+  ],
+  "agents": [
+    {
+      "writing_id": "6696168/6769478",
+      "name": "Arratia Araneda, Nicole",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(407) 495-4119",
+      "ext": "119",
+      "email": "nicole_arratia@allcaremar.com"
+    },
+    {
+      "writing_id": "6477082/6769775",
+      "name": "Ayala Negron, Adriana",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(856) 349-0178",
+      "ext": "430",
+      "email": "a.ayala@allcaremar.com"
+    },
+    {
+      "writing_id": "6510062/6769359",
+      "name": "Balgobin, Iris",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(201) 350-6619",
+      "ext": "426",
+      "email": "iris.pina@allcaremar.com"
+    },
+    {
+      "writing_id": "6399473/6769737",
+      "name": "Colon Perez, Yaisha",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(352) 327-3600",
+      "ext": "416",
+      "email": "yaisha.colon@allcaremar.com"
+    },
+    {
+      "writing_id": "6547501/6722962/6769056/6769057",
+      "name": "Fernandez, Jonathan",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(862) 347-4366",
+      "ext": "866",
+      "email": "jfernandez@allcaremar.com"
+    },
+    {
+      "writing_id": "6481580/6769311",
+      "name": "Garcia, Jesus",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(956) 441-2494",
+      "ext": "457",
+      "email": "j.garcia@allcaremar.com"
+    },
+    {
+      "writing_id": "6692417/6769847",
+      "name": "Gil, Ramon",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(646) 586-2316",
+      "ext": "316",
+      "email": "rgil@allcaremar.com"
+    },
+    {
+      "writing_id": "6740171/6769362",
+      "name": "Gray, Tayler",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(804) 715-1356",
+      "ext": "1356",
+      "email": "tgray@allcaremar.com"
+    },
+    {
+      "writing_id": "6695713/6769852",
+      "name": "Hyman, Ulysses",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(551) 273-3318",
+      "ext": "318",
+      "email": "uhyman@allcaremar.com"
+    },
+    {
+      "writing_id": "6404713/6761085",
+      "name": "Jimenez, Oliver",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(201) 809-9079",
+      "ext": "419",
+      "email": "oliver.j@allcaremar.com"
+    },
+    {
+      "writing_id": "6669642/6769128",
+      "name": "Liriano, Felix",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(804) 630-0228",
+      "ext": "228",
+      "email": "fliriano@allcaremar.com"
+    },
+    {
+      "writing_id": "6657993/6769021",
+      "name": "Lopez, Kimberly",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(407) 487-3134",
+      "ext": "134",
+      "email": "klopez@allcaremar.com"
+    },
+    {
+      "writing_id": "6670146/6769736",
+      "name": "Lopez, Nelson",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(407) 674-0140",
+      "ext": "140",
+      "email": "nlopez@allcaremar.com"
+    },
+    {
+      "writing_id": "6345897/6723102/6769085",
+      "name": "Martin, Alvorine",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(856) 349-0154",
+      "ext": "424",
+      "email": "amartin@allcaremar.com"
+    },
+    {
+      "writing_id": "6426310/6769851",
+      "name": "Monsalve, Maria",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(856) 349-0181",
+      "ext": "421",
+      "email": "mmonsalve@allcaremar.com"
+    },
+    {
+      "writing_id": "6404726/6670355/6769129",
+      "name": "Munoz, Francia",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(201) 882-0308",
+      "ext": "418",
+      "email": "fmunoz@allcaremar.com"
+    },
+    {
+      "writing_id": "6562366/6770264",
+      "name": "Munoz, Joshua",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(732) 298-6107",
+      "ext": "413",
+      "email": "j.munoz@allcaremar.com"
+    },
+    {
+      "writing_id": "6619283/6769392",
+      "name": "Peguero Ruiz, Paola",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(856) 864-1791",
+      "ext": "791",
+      "email": "ppeguero@allcaremar.com"
+    },
+    {
+      "writing_id": "6398960/6781677/6769087",
+      "name": "Perez Ferreira, Carlos",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(201) 777-3206",
+      "ext": "414",
+      "email": "carloshealthagent@gmail.com"
+    },
+    {
+      "writing_id": "6750480/6769814",
+      "name": "Pujols Cruz, Luz",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(551) 258-4604",
+      "ext": "4604",
+      "email": "lpujols@allcaremar.com"
+    },
+    {
+      "writing_id": "6673805/6769721/6769722/6479002",
+      "name": "Quinones Medina, Cristian",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(856) 349-0184",
+      "ext": "433",
+      "email": "cquinones@allcaremar.com"
+    },
+    {
+      "writing_id": "6668324/6773633/6769164",
+      "name": "Read Jacobo, Mariela",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(954) 451-1151",
+      "ext": "151",
+      "email": "mread@allcaremar.com"
+    },
+    {
+      "writing_id": "6553036/6769036",
+      "name": "Rodriguez, Luis",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(201) 578-9172",
+      "ext": "172",
+      "email": "luis.rod@allcaremar.com"
+    },
+    {
+      "writing_id": "6744553/6769047",
+      "name": "Rodriguez Contreras, Sixto",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(908) 335-9496",
+      "ext": "9496",
+      "email": "sirodriguez@allcaremar.com"
+    },
+    {
+      "writing_id": "2231264/2219526/2191933/6768905",
+      "name": "Rodriguez-Martinez, Marcos",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(201) 987-1097",
+      "ext": "403",
+      "email": "mrodriguez@allcaremar.com"
+    },
+    {
+      "writing_id": "6755252/6775099",
+      "name": "Rodriguez Morales, Jorge",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(407) 632-1434",
+      "ext": "1434",
+      "email": "jirodriguez@allcaremar.com"
+    },
+    {
+      "writing_id": "6698388/6769622",
+      "name": "Rosario, Maria",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(407) 490-0244",
+      "ext": "244",
+      "email": "mrosario@allcaremar.com"
+    },
+    {
+      "writing_id": "6581229",
+      "name": "Salazar, Alex",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(352) 437-6026",
+      "ext": "6026",
+      "email": "asalazar@allcaremar.com"
+    },
+    {
+      "writing_id": "6772531",
+      "name": "Sanchez, Patricia",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(407) 908-7180",
+      "ext": "7180",
+      "email": "psanchez@allcaremar.com"
+    },
+    {
+      "writing_id": "6557336/6769089",
+      "name": "Sanchez, Carlos",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(973) 640-7746",
+      "ext": "469",
+      "email": "csanchez@allcaremar.com"
+    },
+    {
+      "writing_id": "6296069/6768983",
+      "name": "Santiago, Maria",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(201) 987-1079",
+      "ext": "404",
+      "email": "msanti@allcaremar.com"
+    },
+    {
+      "writing_id": "6768973",
+      "name": "Zetina Pantoja, Diego",
+      "agency": "Allcare Mar Agency",
+      "company_number": "(956) 462-1262",
+      "ext": "1262",
+      "email": "dzetina@allcaremar.com"
+    },
+    {
+      "writing_id": "6773684",
+      "name": "Alicea, Glorie",
+      "agency": "JPM Solutions",
+      "company_number": "(786) 765-4288",
+      "ext": "4288",
+      "email": "galicea@allcaremar.com"
+    },
+    {
+      "writing_id": "6740170/6771013",
+      "name": "Barry, Karitssa",
+      "agency": "JPM Solutions",
+      "company_number": "(551) 246-1036",
+      "ext": "1036",
+      "email": "kfernandez@allcaremar.com"
+    },
+    {
+      "writing_id": "6763543/6770849",
+      "name": "Rosario, Yisel Miguelina",
+      "agency": "JPM Solutions",
+      "company_number": "(973) 936-9994",
+      "ext": "9994",
+      "email": "yrosario@allcaremar.com"
+    },
+    {
+      "writing_id": "6676237/6770587",
+      "name": "Sixon, Patricia",
+      "agency": "JPM Solutions",
+      "company_number": "(201) 534-2143",
+      "ext": "143",
+      "email": "psixon@allcaremar.com"
+    },
+    {
+      "writing_id": "6511798/6773960",
+      "name": "Vega, Julian",
+      "agency": "JPM Solutions",
+      "company_number": "(201) 710-7752",
+      "ext": "400",
+      "email": "julian_vega@allcaremar.com"
+    },
+    {
+      "writing_id": "6677135/6769459",
+      "name": "Barry, Christopher",
+      "agency": "GW Ins Group LLC",
+      "company_number": "(201) 534-9142",
+      "ext": "142",
+      "email": "cbarry@allcaremar.com"
+    },
+    {
+      "writing_id": "6602247/6769453",
+      "name": "Colon, Carlos",
+      "agency": "GW Ins Group LLC",
+      "company_number": "(973) 206-3088",
+      "ext": "388",
+      "email": "ccolon@allcaremar.com"
+    },
+    {
+      "writing_id": "6420359/6769460",
+      "name": "Colon, Glenda",
+      "agency": "GW Ins Group LLC",
+      "company_number": "(856) 349-0159",
+      "ext": "417",
+      "email": "glendahealthagent@gmail.com"
+    },
+    {
+      "writing_id": "6660188/6769444",
+      "name": "De Los Angeles, Johnny",
+      "agency": "GW Ins Group LLC",
+      "company_number": "(201) 350-6624",
+      "ext": "624",
+      "email": "jdelosangeles@allcaremar.com"
+    },
+    {
+      "writing_id": "6698191/6769848",
+      "name": "Gamboa, Marilyn",
+      "agency": "GW Ins Group LLC",
+      "company_number": "(352) 760-9137",
+      "ext": "137",
+      "email": "mgamboa@allcaremar.com"
+    },
+    {
+      "writing_id": "6485727/6657721/6769369/6769414",
+      "name": "Rodriguez Benitez, Alison",
+      "agency": "GW Ins Group LLC",
+      "company_number": "(973) 695-0889",
+      "ext": "445",
+      "email": "alisonrodriguez@allcaremar.com"
+    },
+    {
+      "writing_id": "6740330/6771016",
+      "name": "Brito Uribe, Gabriela",
+      "agency": "Martell Multi Service LLC",
+      "company_number": "(551) 246-1406",
+      "ext": "1406",
+      "email": "gbrito@allcaremar.com"
+    },
+    {
+      "writing_id": "6587124/6728955/6770376/6770380",
+      "name": "Fernandez, Jose",
+      "agency": "Martell Multi Service LLC",
+      "company_number": "(973) 640-7745",
+      "ext": "745",
+      "email": "jofernandez@allcaremar.com"
+    },
+    {
+      "writing_id": "6480178/6771043",
+      "name": "Giunto, Glorivette Eve",
+      "agency": "Martell Multi Service LLC",
+      "company_number": "(201) 468-9825",
+      "ext": "439",
+      "email": "egiunto@allcaremar.com"
+    },
+    {
+      "writing_id": "6561452/6412575/6776919",
+      "name": "Martell, Ana",
+      "agency": "Martell Multi Service LLC",
+      "company_number": "(973) 218-8770",
+      "ext": "770",
+      "email": "amartell@allcaremar.com"
+    },
+    {
+      "writing_id": "6656753/6772709",
+      "name": "Padilla, Julissa",
+      "agency": "Martell Multi Service LLC",
+      "company_number": "(973) 221-5128",
+      "ext": "128",
+      "email": "jpadilla@allcaremar.com"
+    },
+    {
+      "writing_id": "6717934/6770908",
+      "name": "Ramirez, Sergio",
+      "agency": "Martell Multi Service LLC",
+      "company_number": "(551) 264-5208",
+      "ext": "208",
+      "email": "sramirez@allcaremar.com"
+    },
+    {
+      "writing_id": "6669502/6770912",
+      "name": "Uribe, Gisela",
+      "agency": "Martell Multi Service LLC",
+      "company_number": "(551) 244-1189",
+      "ext": "189",
+      "email": "guribe@allcaremar.com"
+    },
+    {
+      "writing_id": "6671762/6668416/6770095/6770097",
+      "name": "Acosta, Melissa",
+      "agency": "KMRA Group LLC",
+      "company_number": "(551) 258-2175",
+      "ext": "175",
+      "email": "macosta@allcaremar.com"
+    },
+    {
+      "writing_id": "6711915/6722056/6769878",
+      "name": "Gibbs, Brittany",
+      "agency": "KMRA Group LLC",
+      "company_number": "(201) 623-0980",
+      "ext": "980",
+      "email": "brittany.gibbs@allcaremar.com"
+    },
+    {
+      "writing_id": "6711915/6770278",
+      "name": "Ortiz, Amanda",
+      "agency": "KMRA Group LLC",
+      "company_number": "(201) 479-1476",
+      "ext": "1476",
+      "email": "aortiz@allcaremar.com"
+    },
+    {
+      "writing_id": "6561331/6770542",
+      "name": "Pinzon, Roland",
+      "agency": "KMRA Group LLC",
+      "company_number": "(201) 623-0954",
+      "ext": "954",
+      "email": "rpinzon@allcaremar.com"
+    },
+    {
+      "writing_id": "6747107/6769881",
+      "name": "Quinones, Carol",
+      "agency": "KMRA Group LLC",
+      "company_number": "(443) 376-6051",
+      "ext": "6051",
+      "email": "cmquinones@allcaremar.com"
+    },
+    {
+      "writing_id": "6561967",
+      "name": "Reyes, Olga",
+      "agency": "KMRA Group LLC",
+      "company_number": "(973) 475-5595",
+      "ext": "5595",
+      "email": "oreyes@allcaremar.com"
+    },
+    {
+      "writing_id": "6749222/6770301",
+      "name": "Sanchez, Samir",
+      "agency": "KMRA Group LLC",
+      "company_number": "(551) 273-3190",
+      "ext": "3190",
+      "email": "ssanchez@allcaremar.com"
+    },
+    {
+      "writing_id": "6644612/6770847",
+      "name": "Tanksley, Tammy",
+      "agency": "KMRA Group LLC",
+      "company_number": "(201) 502-0264",
+      "ext": "264",
+      "email": "ttanksley@allcaremar.com"
+    },
+    {
+      "writing_id": "6776106",
+      "name": "Nathan Dominguez",
+      "agency": "NCE Consulting Group LLC",
+      "company_number": "(551) 396-6004",
+      "ext": "6004",
+      "email": "ndominguez@allcaremar.com"
+    },
+    {
+      "writing_id": "6762363/6771015",
+      "name": "Flores, Margot",
+      "agency": "Top Tier Health Consultants",
+      "company_number": "(551) 408-9040",
+      "ext": "9040",
+      "email": "mflores@allcaremar.com"
+    },
+    {
+      "writing_id": "6511760/6770570",
+      "name": "Galarza, Priscilla",
+      "agency": "Top Tier Health Consultants",
+      "company_number": "(201) 710- 7727",
+      "ext": "441",
+      "email": "pgalarza@allcaremar.com"
+    },
+    {
+      "writing_id": "6562597/6772491",
+      "name": "Rodriguez, Jocelyn",
+      "agency": "Top Tier Health Consultants",
+      "company_number": "(732) 298-6106",
+      "ext": "412",
+      "email": "jocelyn.rod@allcaremar.com"
+    },
+    {
+      "writing_id": "6740080/6769873",
+      "name": "Chicnes Pizarro, Gary",
+      "agency": "AMC Care Group LLC",
+      "company_number": "(205) 737-1088",
+      "ext": "1088",
+      "email": "gchicnes@allcaremar.com"
+    },
+    {
+      "writing_id": "6475621/6770835",
+      "name": "Christopher, Ana",
+      "agency": "AMC Care Group LLC",
+      "company_number": "(862) 347-4365",
+      "ext": "428",
+      "email": "anamichelle@allcaremar.com"
+    },
+    {
+      "writing_id": "6673716/6770094",
+      "name": "Cruz Nunez, Emanuel",
+      "agency": "AMC Care Group LLC",
+      "company_number": "(201) 534-1122",
+      "ext": "122",
+      "email": "ecruz@allcaremar.com"
+    },
+    {
+      "writing_id": "6476249/6769876",
+      "name": "Ortega, Carlos",
+      "agency": "AMC Care Group LLC",
+      "company_number": "(862) 347-4364",
+      "ext": "427",
+      "email": "cortega@allcaremar.com"
+    },
+    {
+      "writing_id": "6671606/6769914",
+      "name": "Pagan, Keylin",
+      "agency": "AMC Care Group LLC",
+      "company_number": "(201) 702-8217",
+      "ext": "217",
+      "email": "kpagan@allcaremar.com"
+    }
+  ]
+}

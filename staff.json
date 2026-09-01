@@ -674,6 +674,33 @@
         "humana"
       ],
       "image": "/agentes/diego-zetina.webp"
+    },
+    {
+      "name": "Luis Rodriguez",
+      "phone": "(201) 578-9172",
+      "extension": "172",
+      "email": "luis.rod@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "carriers": [
+        "unitedhealthcare"
+      ],
+      "image": "/agentes/luis-rodriguez.webp",
+      "active": false
+    },
+    {
+      "name": "Alex Salazar",
+      "phone": "(352) 437-6026",
+      "extension": "6026",
+      "email": "asalazar@allcaremar.com",
+      "licensed_states": [
+        "PENDIENTE"
+      ],
+      "carriers": [
+        "unitedhealthcare"
+      ],
+      "image": "/agentes/alex-salazar.webp"
     }
   ],
   "partner_agencies": [
@@ -1101,6 +1128,19 @@
           ]
         },
         {
+          "name": "Olga Reyes",
+          "phone": "(973) 475-5595",
+          "extension": "5595",
+          "email": "oreyes@allcaremar.com",
+          "licensed_states": [
+            "PENDIENTE"
+          ],
+          "image": "/agentes/olga-reyes.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
+        },
+        {
           "name": "Samir Sanchez",
           "phone": "(551) 273-3190",
           "extension": "3190",
@@ -1303,6 +1343,26 @@
             "AL"
           ],
           "image": "/agentes/keylin-pagan.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
+        }
+      ]
+    },
+    {
+      "agency_id": "nce-consulting-group-llc",
+      "agency_name": "NCE Consulting Group LLC",
+      "agency_description": "Authorized partner agency of Allcare Mar Agency.",
+      "agents": [
+        {
+          "name": "Nathan Dominguez",
+          "phone": "(551) 396-6004",
+          "extension": "6004",
+          "email": "ndominguez@allcaremar.com",
+          "licensed_states": [
+            "NJ"
+          ],
+          "image": "/agentes/nathan-dominguez.webp",
           "carriers": [
             "unitedhealthcare"
           ]

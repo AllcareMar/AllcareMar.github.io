@@ -515,14 +515,18 @@ function agentCardHTML(a){
 
 function renderDirectory(){
   if(!directoryData)return;
+  // "active:false" (added 2026-09-01, ver Luis Rodriguez) = existe en el
+  // roster/registro pero no se le crea tarjeta publica todavia - filtrado
+  // aqui y en el buscador de abajo, no se borra de staff.json.
+  const isActive=a=>a.active!==false;
   const indepGrid=document.getElementById('independentAgentsGrid');
-  indepGrid.innerHTML=(directoryData.independent_agents||[]).map(agentCardHTML).join('');
+  indepGrid.innerHTML=(directoryData.independent_agents||[]).filter(isActive).map(agentCardHTML).join('');
 
   const partnersContainer=document.getElementById('partnerAgenciesContainer');
   partnersContainer.innerHTML=(directoryData.partner_agencies||[]).map(agency=>{
     return '<div class="agency-block">'+
       '<div class="agency-block-header"><div class="agency-name">'+agency.agency_name+'</div><div class="agency-desc">'+(agency.agency_description||'')+'</div></div>'+
-      '<div class="agent-grid">'+(agency.agents||[]).map(agentCardHTML).join('')+'</div>'+
+      '<div class="agent-grid">'+(agency.agents||[]).filter(isActive).map(agentCardHTML).join('')+'</div>'+
     '</div>';
   }).join('');
 
@@ -561,7 +565,7 @@ function applySearchFilter(query){
     // grilla, uno al lado del otro, sin título de sección ni nombre de agencia.
     const all=(directoryData&&directoryData.independent_agents||[]).concat(
       (directoryData&&directoryData.partner_agencies||[]).flatMap(ag=>ag.agents||[])
-    );
+    ).filter(a=>a.active!==false);
     const matches=all.filter(a=>{
       const nameMatch=a.name.toLowerCase().includes(q);
       const carrierMatch=!carrier||(a.carriers||[]).includes(carrier);
