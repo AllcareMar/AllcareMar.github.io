@@ -57,6 +57,8 @@ table.dir-table td.name-cell{font-weight:700;color:var(--gray-800)}
 table.dir-table td.mono{font-variant-numeric:tabular-nums;color:var(--gray-600)}
 table.dir-table a.mailto{color:var(--blue)}
 .agency-tag{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:700;background:var(--gray-100);color:var(--gray-600);white-space:nowrap}
+.wid-list{display:flex;flex-wrap:wrap;gap:5px}
+.wid-pill{display:inline-block;padding:2px 8px;border-radius:6px;background:var(--gray-100);border:1px solid var(--gray-200);font-variant-numeric:tabular-nums;font-size:11.5px;font-weight:600;color:var(--gray-800);white-space:nowrap}
 .no-results{padding:30px;text-align:center;color:var(--gray-600);font-size:13.5px}
 tr.agency-row td{background:var(--blue-light);border-top:1.5px solid var(--gray-200)}
 tr.agency-row:hover td{background:var(--blue-light)}
@@ -184,7 +186,7 @@ function renderTable(query){
   noResults.style.display = 'none';
   tbody.innerHTML = rows.map(r => r.type === 'agency' ? `
     <tr class="agency-row">
-      <td class="mono">${r.writing_id ? esc(r.writing_id) : '—'}</td>
+      <td class="mono">${fmtWid(r.writing_id)}</td>
       <td class="name-cell">${esc(r.name)}</td>
       <td><span class="agency-tag">${esc(r.agency)}</span></td>
       <td class="mono">${r.company_number ? esc(r.company_number) : '—'}</td>
@@ -193,7 +195,7 @@ function renderTable(query){
     </tr>
   ` : `
     <tr>
-      <td class="mono">${r.writing_id ? esc(r.writing_id) : '—'}</td>
+      <td class="mono">${fmtWid(r.writing_id)}</td>
       <td class="name-cell">${esc(r.name)}</td>
       <td><span class="agency-tag">${esc(r.agency)}</span></td>
       <td class="mono">${r.company_number ? esc(r.company_number) : '—'}</td>
@@ -201,6 +203,11 @@ function renderTable(query){
       <td>${r.email ? `<a class="mailto" href="mailto:${esc(r.email)}">${esc(r.email)}</a>` : '—'}</td>
     </tr>
   `).join('');
+}
+
+function fmtWid(s){
+  if (!s) return '—';
+  return `<span class="wid-list">${s.toString().split('/').map(id => `<span class="wid-pill">${esc(id.trim())}</span>`).join('')}</span>`;
 }
 
 function esc(s){
