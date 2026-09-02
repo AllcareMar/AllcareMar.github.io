@@ -193,6 +193,8 @@ table.rv-table td{padding:9px 10px;border-bottom:1px solid var(--gray-200)}
       <input type="text" id="newAgentZoom">
     </div>
     <button class="btn-primary" id="addAgentBtn"></button>
+    <div class="rv-divider"></div>
+    <input type="text" id="agentSearchInput" style="margin-bottom:12px">
     <div id="agentsList"></div>
   </div>
 </main>
@@ -247,6 +249,8 @@ en:{
   backupBtn:"Run backup now", backupStatus:ts=>ts?("✓ Last backup: "+ts):"No backup yet.",
   backupDone:"✓ Backup saved on the server (data/backups) as CSV and Excel.",
   hAgents:"Agent management", active:"Active", inactive:"Deactivated", deactivate:"Deactivate", activate:"Activate",
+  editAgentBtn:"Edit", editAgentNamePrompt:"Full name:", editAgentEmailPrompt:"Email:", editAgentSuccess:"Agent updated.",
+  agentSearchPh:"Search agent by name or email...", agentSearchEmpty:"No agents match that search.",
   newAgentNamePh:"Full name", newAgentEmailPh:"Email", newAgentZoomPh:"Zoom ID (optional)",
   addAgentBtn:"Add agent", addAgentNeedsFields:"Enter at least a name and an email.",
   addAgentSuccess:"Agent saved.",
@@ -276,6 +280,8 @@ es:{
   backupBtn:"Generar backup ahora", backupStatus:ts=>ts?("✓ Último backup: "+ts):"Sin backups todavía.",
   backupDone:"✓ Backup guardado en el servidor (data/backups) en CSV y Excel.",
   hAgents:"Gestión de agentes", active:"Activo", inactive:"De baja", deactivate:"Desactivar", activate:"Activar",
+  editAgentBtn:"Editar", editAgentNamePrompt:"Nombre completo:", editAgentEmailPrompt:"Email:", editAgentSuccess:"Agente actualizado.",
+  agentSearchPh:"Buscar agente por nombre o email...", agentSearchEmpty:"Ningún agente coincide con esa búsqueda.",
   newAgentNamePh:"Nombre completo", newAgentEmailPh:"Email", newAgentZoomPh:"Zoom ID (opcional)",
   addAgentBtn:"Agregar agente", addAgentNeedsFields:"Escribe al menos un nombre y un email.",
   addAgentSuccess:"Agente guardado.",
@@ -317,6 +323,7 @@ function applyStaticText(){
   document.getElementById('newAgentName').placeholder = t('newAgentNamePh');
   document.getElementById('newAgentEmail').placeholder = t('newAgentEmailPh');
   document.getElementById('newAgentZoom').placeholder = t('newAgentZoomPh');
+  document.getElementById('agentSearchInput').placeholder = t('agentSearchPh');
   document.getElementById('addAgentBtn').textContent = t('addAgentBtn');
   document.getElementById('floatLbl').textContent = t('floatLbl');
   renderNumSalesUI();
@@ -461,14 +468,30 @@ document.getElementById('histCarrierFilter').addEventListener('change', loadHist
 
 let agentsAll = [];
 let agentsShown = PAGE_SIZE;
+let agentSearchQuery = '';
+
+function normAgentSearch(s){
+  return (s || '').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+}
 
 function renderAgentsList(){
-  const visible = agentsAll.slice(0, agentsShown);
-  const moreCount = agentsAll.length - visible.length;
+  const q = normAgentSearch(agentSearchQuery.trim());
+  const filtered = !q ? agentsAll : agentsAll.filter(a =>
+    normAgentSearch(a.agent_name).includes(q) || normAgentSearch(a.email).includes(q)
+  );
+  const visible = filtered.slice(0, agentsShown);
+  const moreCount = filtered.length - visible.length;
+  if (!filtered.length) {
+    document.getElementById('agentsList').innerHTML = `<p class="frm-hint">${t('agentSearchEmpty')}</p>`;
+    return;
+  }
   document.getElementById('agentsList').innerHTML = visible.map(a=>`
     <div class="agent-row"><div><b>${a.agent_name}</b> — ${a.email}<br><span class="${a.active?'status-active':'status-inactive'}">${a.active?t('active'):t('inactive')}</span></div>
-    <button class="btn-sec" data-id="${a.id}" data-active="${a.active}">${a.active?t('deactivate'):t('activate')}</button></div>`).join('') +
-    (agentsAll.length ? `<p class="frm-hint" style="margin-top:10px">${t('showingOf')(visible.length, agentsAll.length)}</p>` : '') +
+    <div style="display:flex;gap:6px">
+    <button class="btn-sec" data-edit-id="${a.id}" data-edit-name="${a.agent_name.replace(/"/g,'&quot;')}" data-edit-email="${a.email}">${t('editAgentBtn')}</button>
+    <button class="btn-sec" data-id="${a.id}" data-active="${a.active}">${a.active?t('deactivate'):t('activate')}</button>
+    </div></div>`).join('') +
+    `<p class="frm-hint" style="margin-top:10px">${t('showingOf')(visible.length, filtered.length)}</p>` +
     (moreCount > 0 ? `<button class="btn-sec" id="agentsMoreBtn">${t('showMore')(Math.min(PAGE_SIZE, moreCount))}</button>` : '');
   document.querySelectorAll('#agentsList button[data-id]').forEach(btn=>{
     btn.addEventListener('click', async ()=>{
@@ -476,9 +499,35 @@ function renderAgentsList(){
       loadAdmin();
     });
   });
+  // Edicion rapida via prompt() - mismo nivel de friccion que el resto del
+  // panel de Admin (nada de modal nuevo para un caso que se usa poco:
+  // corregir un nombre/email/zoom_id mal escrito, ej. Oliver Jimenez
+  // 2026-09-02). Cancelar cualquiera de los 2 prompts deja todo sin tocar.
+  document.querySelectorAll('#agentsList button[data-edit-id]').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      const newName = prompt(t('editAgentNamePrompt'), btn.dataset.editName);
+      if (newName === null) return;
+      const newEmail = prompt(t('editAgentEmailPrompt'), btn.dataset.editEmail);
+      if (newEmail === null) return;
+      try {
+        await apiJson(API_BASE, `/sales/admin/agents/${btn.dataset.editId}/edit`, {
+          method: 'POST',
+          body: JSON.stringify({ agent_name: newName.trim(), email: newEmail.trim() })
+        });
+        alert(t('editAgentSuccess'));
+        loadAdmin();
+      } catch (e) { alert(e.message); }
+    });
+  });
   const moreBtn = document.getElementById('agentsMoreBtn');
   if (moreBtn) moreBtn.addEventListener('click', ()=>{ agentsShown += PAGE_SIZE; renderAgentsList(); });
 }
+
+document.getElementById('agentSearchInput').addEventListener('input', (e)=>{
+  agentSearchQuery = e.target.value;
+  agentsShown = PAGE_SIZE;
+  renderAgentsList();
+});
 
 document.getElementById('addAgentBtn').addEventListener('click', async ()=>{
   const agent_name = document.getElementById('newAgentName').value.trim();
