@@ -41,6 +41,13 @@ img{display:block;max-width:100%}
 .ev-tabs{display:flex;gap:4px;margin-bottom:0;flex-wrap:wrap}
 .ev-tab{padding:11px 18px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;border:1.5px solid var(--gray-200);border-bottom:none;border-radius:12px 12px 0 0;cursor:pointer;background:var(--gray-100);color:var(--gray-600)}
 .ev-tab.on{background:#fff;color:var(--blue-dark);border-color:var(--gray-200)}
+/* Sub-pestanas dentro de "Manage events" (2026-09-01) - clase separada de
+   .ev-tab a proposito: el listener generico document.querySelectorAll('.ev-tab')
+   lee tab.dataset.t (pestanas externas Open/Mine/Suggest/Admin) y con .ev-tab
+   aqui tambien habria hecho match, pisando ese estado con data-mt indefinido. */
+.ev-subtabs{display:flex;gap:4px;margin-bottom:0;flex-wrap:wrap}
+.ev-subtab{padding:9px 16px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;border:1.5px solid var(--gray-200);border-bottom:none;border-radius:10px 10px 0 0;cursor:pointer;background:var(--gray-100);color:var(--gray-600)}
+.ev-subtab.on{background:#fff;color:var(--blue-dark);border-color:var(--gray-200)}
 .ev-panel{border:1.5px solid var(--gray-200);border-radius:0 var(--r-lg) var(--r-lg) var(--r-lg);padding:24px;background:#fff;box-shadow:var(--sh)}
 .ev-panel[hidden]{display:none}
 
@@ -84,6 +91,10 @@ textarea{min-height:90px;resize:vertical}
 .badge-unpublished{background:var(--gray-100);color:var(--gray-600)}
 .report-box{border-top:1.5px solid var(--gray-200);margin-top:12px;padding-top:12px}
 label.chk{display:flex;align-items:center;gap:8px;font-size:13px;margin:8px 0}
+.pill-group{display:flex;gap:6px;flex-wrap:wrap}
+.pill-opt{padding:8px 14px;border-radius:20px;font-size:12.5px;font-family:'Montserrat',sans-serif;font-weight:700;border:1.5px solid var(--gray-200);background:#fff;color:var(--gray-600);cursor:pointer}
+.pill-opt:hover{border-color:var(--blue)}
+.pill-opt.sel{background:var(--blue);color:#fff;border-color:var(--blue)}
 
 .reg-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--gray-200);font-size:13px}
 .reg-row label{display:flex;align-items:center;gap:8px;flex:1}
@@ -172,11 +183,35 @@ label.chk{display:flex;align-items:center;gap:8px;font-size:13px;margin:8px 0}
     <div class="ev-section">
       <div class="ev-h2" id="hManage"></div>
       <p class="ev-hint" id="hintManage"></p>
-      <div class="manage-filters" style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
-        <input type="text" id="admManageSearch" style="flex:1;min-width:220px" placeholder="">
-        <select id="admManageDateFilter"></select>
+      <div class="ev-subtabs" id="mgmtTabs">
+        <div class="ev-subtab on" data-mt="openfull" id="mgmtTabOpen"></div>
+        <div class="ev-subtab" data-mt="confirmed" id="mgmtTabConfirmed"></div>
+        <div class="ev-subtab" data-mt="closed" id="mgmtTabClosed"></div>
+        <div class="ev-subtab" data-mt="history" id="mgmtTabHistory"></div>
       </div>
-      <div id="admOpenEvents"></div>
+      <div style="border:1.5px solid var(--gray-200);border-top:none;border-radius:0 0 var(--r-lg) var(--r-lg);padding:20px;background:#fff">
+        <div id="mgmt-openfull">
+          <div class="manage-filters" style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+            <input type="text" id="admManageSearch" style="flex:1;min-width:220px" placeholder="">
+            <select id="admManageDateFilter"></select>
+          </div>
+          <div id="admOpenEvents"></div>
+        </div>
+        <div id="mgmt-confirmed" hidden>
+          <p class="ev-hint" id="hintConfirmed"></p>
+          <div id="admConfirmedEvents"></div>
+          <button class="btn-sec" id="admConfirmedShowAll" style="margin-top:10px;display:none"></button>
+        </div>
+        <div id="mgmt-closed" hidden>
+          <p class="ev-hint" id="hintClosed"></p>
+          <div id="admClosedEvents"></div>
+          <button class="btn-sec" id="admClosedShowAll" style="margin-top:10px;display:none"></button>
+        </div>
+        <div id="mgmt-history" hidden>
+          <div id="admHistoryEvents"></div>
+          <button class="btn-sec" id="admHistoryShowAll" style="margin-top:10px;display:none"></button>
+        </div>
+      </div>
     </div>
 
     <div class="ev-section">
@@ -237,10 +272,6 @@ label.chk{display:flex;align-items:center;gap:8px;font-size:13px;margin:8px 0}
       </div>
     </div>
 
-    <div class="ev-section">
-      <div class="ev-h2" id="hHistory"></div>
-      <div id="admHistoryEvents"></div>
-    </div>
   </div>
 </main>
 
@@ -314,8 +345,17 @@ en:{
   statusRegistered:"Registered", statusApproved:"Confirmed", statusRejected:"Not selected this time",
   addToCalendar:"+ Add to Google Calendar",
   reportPrompt:"This event already happened — tell us how it went:",
-  reportPlaceholder:"How did it go? Any issues, was it a success, was it hard to get to, etc.",
-  madeSale:"I made a sale at this event", sendReport:"Send report", reportSent:"✓ Report sent — thank you.",
+  reportDeadline:d=>`Complete by ${d} (3 days after the event) or administrators get notified as not completed.`,
+  lblLeads:"How many leads did you get?", lblLocationRating:"Was your spot within the event adequate?",
+  lblOrganizerRating:"Organizer friendliness", lblSeniorAttendance:"Senior/elderly attendance volume",
+  lblGeneralAttendance:"General attendance volume", lblWouldReturn:"Would you attend this event again?",
+  lblComments:"General comments (optional)",
+  ratingExcellent:"Excellent", ratingGood:"Good", ratingFair:"Fair", ratingPoor:"Poor",
+  attHigh:"High", attMedium:"Medium", attLow:"Low", yes:"Yes", no:"No",
+  reportMissingFields:"Please answer every question before sending.",
+  reportPlaceholder:"How did it go? Any issues, was it hard to get to, etc.",
+  madeSale:"I made sales at this event", sendReport:"Send feedback", reportSent:"✓ Feedback sent — thank you.",
+  reportSentRedirect:"✓ Feedback sent — taking you to Sales Report to log your sale…",
   hSuggest:"Suggest an event", hintSuggest:"We'll review it before it appears in the open events list above.",
   lblTitle:"Event name", lblOrganizer:"Organizer", lblAddress:"Address", lblCity:"City", lblState:"State", lblZip:"Zip code",
   lblOrgContact:"Organizer contact name (optional)", lblOrgEmail:"Organizer email (optional)", lblOrgPhone:"Organizer phone (optional)",
@@ -329,9 +369,13 @@ en:{
   registered:"Registered on", finalize:"Finalize attendees", cancel:"Cancel event",
   statusFull:"Full", statusOpen:"Open",
   hCreate:"Create a new event", createBtn:"Create event", createSuccess:"✓ Event created.",
-  hHistory:"Closed / canceled events", noHistory:"Nothing here yet.",
+  noHistory:"Nothing here yet.",
   statusClosedConfirmed:"Confirmed", statusClosedIncomplete:"Closed — incomplete", statusCanceled:"Canceled",
   statusRescheduled:"Rescheduled",
+  mgmtTabOpen:"Open / Full", mgmtTabConfirmed:"Confirmed", mgmtTabClosed:"Closed — incomplete", mgmtTabHistory:"History",
+  hintConfirmed:"Attendance is locked in. Reassign an agent here only for a last-minute emergency swap.",
+  hintClosed:"Deadline passed without filling all slots. Add last-minute agents, then finalize when ready.",
+  showAll:n=>`Show all (${n})`, showLess:"Show less", reopenBtn:"Reopen",
   badgePublished:"Public", badgeUnpublished:"Internal", publishBtn:"Publish", unpublishBtn:"Make internal",
   assignPh:"Agent email to add directly", assignBtn:"Add",
   hLookup:"Find an agent", hintLookup:"Search by name or email to see every event they're registered/assigned to.",
@@ -370,8 +414,17 @@ es:{
   statusRegistered:"Inscrito", statusApproved:"Confirmado", statusRejected:"No seleccionado esta vez",
   addToCalendar:"+ Agregar a Google Calendar",
   reportPrompt:"Este evento ya pasó — cuéntanos cómo te fue:",
-  reportPlaceholder:"¿Cómo te fue? Situaciones, si fue un éxito, si fue difícil llegar, etc.",
-  madeSale:"Hice una venta en este evento", sendReport:"Enviar reporte", reportSent:"✓ Reporte enviado — gracias.",
+  reportDeadline:d=>`Complétalo antes del ${d} (3 días después del evento) o se le avisa a los administradores como no completado.`,
+  lblLeads:"¿Cuántos leads obtuviste?", lblLocationRating:"¿La ubicación dentro del evento fue adecuada?",
+  lblOrganizerRating:"Amabilidad de los organizadores", lblSeniorAttendance:"Volumen de asistencia de Envejecientes",
+  lblGeneralAttendance:"Volumen de asistencia en General", lblWouldReturn:"¿Volverías a este evento en el futuro?",
+  lblComments:"Comentarios generales (opcional)",
+  ratingExcellent:"Excelente", ratingGood:"Buena", ratingFair:"Regular", ratingPoor:"Mala",
+  attHigh:"Alto", attMedium:"Medio", attLow:"Bajo", yes:"Sí", no:"No",
+  reportMissingFields:"Responde todas las preguntas antes de enviar.",
+  reportPlaceholder:"¿Cómo te fue? Situaciones, si fue difícil llegar, etc.",
+  madeSale:"Realicé Ventas en este evento", sendReport:"Enviar feedback", reportSent:"✓ Feedback enviado — gracias.",
+  reportSentRedirect:"✓ Feedback enviado — llevándote a Reporte de Ventas para registrar tu venta…",
   hSuggest:"Sugerir un evento", hintSuggest:"Lo revisamos antes de que aparezca en el listado de eventos abiertos.",
   lblTitle:"Nombre del evento", lblOrganizer:"Organizador", lblAddress:"Dirección", lblCity:"Ciudad", lblState:"Estado", lblZip:"Código postal",
   lblOrgContact:"Nombre de contacto del organizador (opcional)", lblOrgEmail:"Email del organizador (opcional)", lblOrgPhone:"Teléfono del organizador (opcional)",
@@ -385,9 +438,13 @@ es:{
   registered:"Inscrito el", finalize:"Finalizar asistentes", cancel:"Cancelar evento",
   statusFull:"Lleno", statusOpen:"Abierto",
   hCreate:"Crear un evento nuevo", createBtn:"Crear evento", createSuccess:"✓ Evento creado.",
-  hHistory:"Eventos cerrados / cancelados", noHistory:"Todavía no hay nada aquí.",
+  noHistory:"Todavía no hay nada aquí.",
   statusClosedConfirmed:"Confirmado", statusClosedIncomplete:"Cerrado — incompleto", statusCanceled:"Cancelado",
   statusRescheduled:"Reprogramado",
+  mgmtTabOpen:"Abiertos / Llenos", mgmtTabConfirmed:"Confirmados", mgmtTabClosed:"Cerrados — incompletos", mgmtTabHistory:"Historial",
+  hintConfirmed:"La asistencia ya está confirmada. Reasigna un agente aquí solo para una emergencia de último momento.",
+  hintClosed:"Venció el plazo sin llenar todos los cupos. Agrega agentes de último momento y finaliza cuando estés listo.",
+  showAll:n=>`Ver todo (${n})`, showLess:"Ver menos", reopenBtn:"Reactivar",
   badgePublished:"Público", badgeUnpublished:"Interno", publishBtn:"Publicar", unpublishBtn:"Volver interno",
   assignPh:"Email del agente a agregar directo", assignBtn:"Agregar",
   hLookup:"Buscar agente", hintLookup:"Busca por nombre o email para ver en qué eventos está inscrito/asignado.",
@@ -477,7 +534,12 @@ function applyStaticText(){
   document.getElementById('hintImport').textContent = t('hintImport');
   document.getElementById('admImportBtn').textContent = t('importBtn');
   document.getElementById('admPublishAllBtn').textContent = t('publishAllBtn');
-  document.getElementById('hHistory').textContent = t('hHistory');
+  document.getElementById('mgmtTabOpen').textContent = t('mgmtTabOpen');
+  document.getElementById('mgmtTabConfirmed').textContent = t('mgmtTabConfirmed');
+  document.getElementById('mgmtTabClosed').textContent = t('mgmtTabClosed');
+  document.getElementById('mgmtTabHistory').textContent = t('mgmtTabHistory');
+  document.getElementById('hintConfirmed').textContent = t('hintConfirmed');
+  document.getElementById('hintClosed').textContent = t('hintClosed');
   document.getElementById('cancelModalTitle').textContent = t('cancelModalTitle');
   document.getElementById('lblCancelOutcome').textContent = t('lblCancelOutcome');
   document.getElementById('optOutcomeCanceled').textContent = t('optOutcomeCanceled');
@@ -578,26 +640,49 @@ async function loadOpenEvents(){
       </div>
       <div class="event-foot">
         <span class="slots-pill ${e.slots_left===0?'full':''}">${e.slots_left>0 ? t('slotsLeft')(e.slots_left) : t('full')}</span>
-        <button class="btn-primary" data-id="${e.id}" ${e.slots_left===0?'disabled':''}>${t('register')}</button>
+        ${e.already_registered
+          ? `<button class="btn-primary" disabled>${t('alreadyIn')}</button>`
+          : `<button class="btn-primary" data-id="${e.id}" ${e.slots_left===0?'disabled':''}>${t('register')}</button>`}
       </div>
     </div>`).join('');
   wrap.querySelectorAll('button[data-id]').forEach(btn=>{
     btn.addEventListener('click', async ()=>{
+      // 2026-09-01, Jesus: "debe tener el bloqueo para que no pueda
+      // inscribirse nuevamente" - el servidor ya lo rechazaba, pero el
+      // boton se veia habilitado igual (already_registered arriba lo
+      // cubre para la carga normal); esto es solo defensa extra contra
+      // doble clic mientras la primera llamada todavia esta en vuelo.
+      if (btn.disabled) return;
+      btn.disabled = true;
       try { await apiJson(API_BASE, `/events/${btn.dataset.id}/register`, {method:'POST'}); loadOpenEvents(); loadMyEvents(); }
-      catch(e) { alert(e.message); }
+      catch(e) { alert(e.message); btn.disabled = false; }
     });
   });
+}
+
+// Grupos de botones del formulario de feedback (2026-09-01). Los value
+// viajan en ingles (lo que espera el backend, ver ReportIn en events.py) -
+// las etiquetas se traducen via t().
+const RATING_OPTS = [['excellent','ratingExcellent'],['good','ratingGood'],['fair','ratingFair'],['poor','ratingPoor']];
+const ATTENDANCE_OPTS = [['high','attHigh'],['medium','attMedium'],['low','attLow']];
+const RETURN_OPTS = [['true','yes'],['false','no']];
+
+function pillGroup(groupName, eventId, opts){
+  return `<div class="pill-group" data-group="${groupName}" data-event="${eventId}">` +
+    opts.map(([val,key])=>`<button type="button" class="pill-opt" data-value="${val}">${t(key)}</button>`).join('') +
+    `</div>`;
 }
 
 async function loadMyEvents(){
   const data = await apiJson(API_BASE, '/events/mine');
   const wrap = document.getElementById('myEvents');
   if (!data.registrations.length) { wrap.innerHTML = `<p class="ev-hint">${t('noMine')}</p>`; return; }
-  const pendingIds = new Set(data.pending_reports.map(p=>p.event_id));
+  const pendingMap = new Map(data.pending_reports.map(p=>[p.event_id, p.feedback_deadline]));
   wrap.innerHTML = data.registrations.map(r=>{
     const badgeClass = r.status==='approved'?'badge-approved':(r.status==='rejected'?'badge-rejected':'badge-registered');
     const badgeText = r.status==='approved'?t('statusApproved'):(r.status==='rejected'?t('statusRejected'):t('statusRegistered'));
-    const needsReport = pendingIds.has(r.event_id);
+    const feedbackDeadline = pendingMap.get(r.event_id);
+    const needsReport = pendingMap.has(r.event_id);
     return `<div class="event-card">
       <h3>${r.title}</h3>
       <div class="event-meta">${r.event_date} — ${r.address}, ${r.zipcode}</div>
@@ -605,24 +690,100 @@ async function loadMyEvents(){
       ${r.calendar_link ? `<div style="margin-top:8px"><a href="${r.calendar_link}" target="_blank" rel="noopener">${t('addToCalendar')}</a></div>` : ''}
       ${needsReport ? `<div class="report-box">
         <p class="ev-hint">${t('reportPrompt')}</p>
-        <textarea data-event="${r.event_id}" class="reportText" placeholder="${t('reportPlaceholder')}"></textarea>
+        <p class="ev-hint" style="margin-top:-10px"><strong>${t('reportDeadline')(feedbackDeadline)}</strong></p>
+        <div class="field">
+          <label class="frm-lbl">${t('lblLeads')}</label>
+          <input type="number" min="0" step="1" class="reportLeads" data-event="${r.event_id}">
+        </div>
+        <div class="field">
+          <label class="frm-lbl">${t('lblLocationRating')}</label>
+          ${pillGroup('location', r.event_id, RATING_OPTS)}
+        </div>
+        <div class="field">
+          <label class="frm-lbl">${t('lblOrganizerRating')}</label>
+          ${pillGroup('organizer', r.event_id, RATING_OPTS)}
+        </div>
+        <div class="field">
+          <label class="frm-lbl">${t('lblSeniorAttendance')}</label>
+          ${pillGroup('senior', r.event_id, ATTENDANCE_OPTS)}
+        </div>
+        <div class="field">
+          <label class="frm-lbl">${t('lblGeneralAttendance')}</label>
+          ${pillGroup('general', r.event_id, ATTENDANCE_OPTS)}
+        </div>
         <label class="chk"><input type="checkbox" class="reportSale" data-event="${r.event_id}"> ${t('madeSale')}</label>
+        <div class="field">
+          <label class="frm-lbl">${t('lblWouldReturn')}</label>
+          ${pillGroup('return', r.event_id, RETURN_OPTS)}
+        </div>
+        <div class="field">
+          <label class="frm-lbl">${t('lblComments')}</label>
+          <textarea data-event="${r.event_id}" class="reportText" placeholder="${t('reportPlaceholder')}"></textarea>
+        </div>
         <button class="btn-sec" data-submit-report="${r.event_id}">${t('sendReport')}</button>
+        <div class="reportError" data-error="${r.event_id}" style="display:none;color:var(--red);font-size:12.5px;margin-top:8px"></div>
         <div class="reportDone" data-done="${r.event_id}" style="display:none;color:var(--green);font-weight:700;font-size:13px;margin-top:8px">${t('reportSent')}</div>
       </div>` : ''}
     </div>`;
   }).join('');
+
+  wrap.querySelectorAll('.pill-group').forEach(group=>{
+    group.querySelectorAll('.pill-opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        group.querySelectorAll('.pill-opt').forEach(b=>b.classList.remove('sel'));
+        btn.classList.add('sel');
+      });
+    });
+  });
+
   wrap.querySelectorAll('[data-submit-report]').forEach(btn=>{
     btn.addEventListener('click', async ()=>{
       const eventId = btn.dataset.submitReport;
-      const text = wrap.querySelector(`.reportText[data-event="${eventId}"]`).value;
+      const errorDiv = wrap.querySelector(`.reportError[data-error="${eventId}"]`);
+      errorDiv.style.display = 'none';
+      const leadsInput = wrap.querySelector(`.reportLeads[data-event="${eventId}"]`);
+      const selected = (groupName) => {
+        const g = wrap.querySelector(`.pill-group[data-group="${groupName}"][data-event="${eventId}"]`);
+        return g.querySelector('.pill-opt.sel')?.dataset.value || null;
+      };
+      const leadsCount = leadsInput.value === '' ? null : parseInt(leadsInput.value, 10);
+      const locationRating = selected('location');
+      const organizerRating = selected('organizer');
+      const seniorAttendance = selected('senior');
+      const generalAttendance = selected('general');
+      const returnVal = selected('return');
+      if (leadsCount === null || isNaN(leadsCount) || !locationRating || !organizerRating || !seniorAttendance || !generalAttendance || !returnVal) {
+        errorDiv.textContent = t('reportMissingFields');
+        errorDiv.style.display = 'block';
+        return;
+      }
       const madeSale = wrap.querySelector(`.reportSale[data-event="${eventId}"]`).checked;
-      if (!text.trim()) return;
+      const text = wrap.querySelector(`.reportText[data-event="${eventId}"]`).value;
       try {
-        await apiJson(API_BASE, `/events/${eventId}/report`, {method:'POST', body:JSON.stringify({report_text:text, made_sale:madeSale})});
+        await apiJson(API_BASE, `/events/${eventId}/report`, {method:'POST', body:JSON.stringify({
+          leads_count: leadsCount,
+          location_rating: locationRating,
+          organizer_rating: organizerRating,
+          senior_attendance: seniorAttendance,
+          general_attendance: generalAttendance,
+          made_sale: madeSale,
+          would_return: returnVal === 'true',
+          report_text: text.trim() || null,
+        })});
         btn.style.display = 'none';
-        wrap.querySelector(`.reportDone[data-done="${eventId}"]`).style.display = 'block';
-      } catch(e) { alert(e.message); }
+        const doneDiv = wrap.querySelector(`.reportDone[data-done="${eventId}"]`);
+        if (madeSale) {
+          doneDiv.textContent = t('reportSentRedirect');
+          doneDiv.style.display = 'block';
+          setTimeout(()=>{ window.location.href = 'sales-report.html'; }, 1800);
+        } else {
+          doneDiv.textContent = t('reportSent');
+          doneDiv.style.display = 'block';
+        }
+      } catch(e) {
+        errorDiv.textContent = e.message;
+        errorDiv.style.display = 'block';
+      }
     });
   });
 }
@@ -685,7 +846,119 @@ async function loadAdminPending(){
   }));
 }
 
+const PAGE_SIZE = 5; // Confirmados/Cerrados/Historial: cuantas tarjetas se muestran antes de "ver todo" (2026-09-01)
 let adminManageCache = []; // [{e, regs}] - fetched once per loadAdminManage(), filtered/re-rendered locally without refetching
+
+// Tarjeta compartida de gestion (2026-09-01) - reusada por Abiertos,
+// Confirmados y Cerrados (antes solo Abiertos la tenia; Confirmados/
+// Cerrados vivian en un "Historial" combinado de solo lectura, sin forma
+// de tocar los agentes despues de finalizar - ver punto de Jesus: "que el
+// administrador pueda hacer el cambio de agente en ese evento
+// confirmado" / "que pueda incluir agentes de ultima hora" en cerrados).
+function manageCardHTML(e, regs, opts){
+  const { statusBadge, showCheckboxes, showFinalize, showPublishToggle, showReopen } = opts;
+  return `<div class="event-card">
+      <h3>${e.title} ${statusBadge}</h3>
+      <div class="event-meta">
+        ${e.organizer} · ${e.event_date}${e.event_time ? ' · ' + e.event_time : ''} · ${e.address}, ${e.zipcode}${e.max_slots ? ` · ${e.slots_taken}/${e.max_slots}` : ''}
+      </div>
+      <button type="button" class="btn-sec" data-toggle-details-btn="${e.id}" style="margin-top:8px">${t('manageDetailsBtn')}</button>
+      <div class="event-details" data-details="${e.id}" style="display:none;margin-top:10px">
+        <div>
+          ${regs.map(r => `<div class="reg-row"><label>${showCheckboxes ? `<input type="checkbox" class="attendCheck" data-event="${e.id}" value="${r.agent_email}" checked> ` : ''}${r.agent_name} (${r.agent_email})</label><span class="ev-hint" style="margin:0">${t('registered')} ${new Date(r.registered_at).toLocaleString()}</span><button type="button" class="btn-unassign" data-unassign="${e.id}" data-email="${r.agent_email}" title="${t('cancel')}">×</button></div>`).join('') || `<p class="ev-hint" style="margin:0">${t('noManage')}</p>`}
+        </div>
+        <div class="assign-row">
+          <input type="text" class="assignInput" list="eventsAgentsList" data-event="${e.id}" placeholder="${t('assignPhNew')}">
+          <button class="btn-sec" data-assign="${e.id}">${t('assignBtn')}</button>
+        </div>
+        <div class="event-foot">
+          <div style="display:flex;gap:8px">
+            <button class="btn-sec" data-cancel="${e.id}">${t('cancel')}</button>
+            <button class="btn-sec" data-edit-address="${e.id}" data-current-address="${e.address.replace(/"/g,'&quot;')}">${t('editAddressBtn')}</button>
+            ${showPublishToggle ? `<button class="btn-sec" data-toggle-publish="${e.id}">${e.published?t('unpublishBtn'):t('publishBtn')}</button>` : ''}
+            ${showReopen ? `<button class="btn-sec" data-reopen="${e.id}">${t('reopenBtn')}</button>` : ''}
+          </div>
+          ${showFinalize ? `<button class="btn-primary" data-finalize="${e.id}">${t('finalize')}</button>` : ''}
+        </div>
+      </div>
+    </div>`;
+}
+
+// Un solo listener delegado por seccion (en vez de repetir 7 wireups
+// identicos x3) - se llama despues de pintar cada seccion (Abiertos/
+// Confirmados/Cerrados) con su propio contenedor `wrap` y su propio
+// callback `onChanged` (cada seccion recarga solo su propia lista, no
+// las 3, para no perder el estado de "ver todo" de las otras).
+function wireManageHandlers(wrap, onChanged){
+  wrap.querySelectorAll('[data-toggle-details-btn]').forEach(btn=>btn.addEventListener('click', ()=>{
+    const id = btn.dataset.toggleDetailsBtn;
+    const details = wrap.querySelector(`[data-details="${id}"]`);
+    const isOpen = details.style.display !== 'none';
+    details.style.display = isOpen ? 'none' : 'block';
+    btn.textContent = isOpen ? t('manageDetailsBtn') : t('manageDetailsBtnOpen');
+  }));
+  wrap.querySelectorAll('[data-edit-address]').forEach(btn=>btn.addEventListener('click', async ()=>{
+    const eventId = btn.dataset.editAddress;
+    const current = btn.dataset.currentAddress;
+    const next = prompt(t('editAddressPrompt'), current);
+    if (next === null || next.trim() === '' || next === current) return;
+    try {
+      await apiJson(API_BASE, `/events/admin/${eventId}/edit`, {method:'POST', body: JSON.stringify({address: next.trim()})});
+      onChanged();
+    } catch(e) { alert(e.message); }
+  }));
+  wrap.querySelectorAll('[data-finalize]').forEach(btn=>btn.addEventListener('click', async ()=>{
+    // Deshabilitar de inmediato (2026-09-01, bug real: sin esto, varios
+    // clics mandaban varios POST y cada uno re-enviaba todos los emails
+    // de confirmacion de nuevo - ver guard nuevo en finalize() del
+    // servidor, que es la proteccion real; esto es solo para que no se
+    // pueda ni intentar desde la UI).
+    if (btn.disabled) return;
+    btn.disabled = true;
+    const eventId = btn.dataset.finalize;
+    const emails = Array.from(wrap.querySelectorAll(`.attendCheck[data-event="${eventId}"]:checked`)).map(c=>c.value);
+    try {
+      await apiJson(API_BASE, `/events/admin/${eventId}/finalize`, {method:'POST', body: JSON.stringify({approved_emails: emails})});
+      loadAdminAll();
+    } catch(e) {
+      alert(e.message);
+      btn.disabled = false;
+    }
+  }));
+  wrap.querySelectorAll('[data-cancel]').forEach(btn=>btn.addEventListener('click', ()=>{
+    openCancelModal(btn.dataset.cancel);
+  }));
+  wrap.querySelectorAll('[data-toggle-publish]').forEach(btn=>btn.addEventListener('click', async ()=>{
+    await apiJson(API_BASE, `/events/admin/${btn.dataset.togglePublish}/toggle-publish`, {method:'POST'}); onChanged();
+  }));
+  // Reactivar (2026-09-01): vuelve un evento Confirmado/Cerrado a 'open' sin
+  // tocar sus inscripciones existentes - pensado para deshacer un
+  // finalize de prueba (como el de Johnny) o un cierre por error. Las
+  // inscripciones que no correspondan se quitan aparte con el boton x de
+  // cada agente (unassign), que ya funciona sin importar el status.
+  wrap.querySelectorAll('[data-reopen]').forEach(btn=>btn.addEventListener('click', async ()=>{
+    if (!confirm(curLang==='en' ? 'Reopen this event as Open? Existing registrations stay - remove any test/incorrect ones with the x next to their name.' : '¿Reactivar este evento como Abierto? Las inscripciones actuales se mantienen - quita las de prueba/incorrectas con la x junto a su nombre.')) return;
+    try {
+      await apiJson(API_BASE, `/events/admin/${btn.dataset.reopen}/edit`, {method:'POST', body: JSON.stringify({status: 'open'})});
+      onChanged();
+    } catch(e) { alert(e.message); }
+  }));
+  wrap.querySelectorAll('[data-unassign]').forEach(btn=>btn.addEventListener('click', async ()=>{
+    if (!confirm(curLang==='en' ? 'Remove this agent from the event?' : '¿Quitar a este agente del evento?')) return;
+    await apiJson(API_BASE, `/events/admin/${btn.dataset.unassign}/unassign`, {method:'POST', body: JSON.stringify({agent_email: btn.dataset.email})});
+    onChanged();
+  }));
+  wrap.querySelectorAll('[data-assign]').forEach(btn=>btn.addEventListener('click', async ()=>{
+    const eventId = btn.dataset.assign;
+    const input = wrap.querySelector(`.assignInput[data-event="${eventId}"]`);
+    const email = input.value.trim();
+    if (!email) return;
+    try {
+      await apiJson(API_BASE, `/events/admin/${eventId}/assign`, {method:'POST', body: JSON.stringify({agent_email: email})});
+      onChanged();
+    } catch(e) { alert(e.message); }
+  }));
+}
 
 async function loadAdminManage(){
   const events = await apiJson(API_BASE, '/events/admin/all?status=open');
@@ -732,83 +1005,78 @@ function renderAdminManage(){
 
   if (!filtered.length) { wrap.innerHTML = `<p class="ev-hint">${t('noManageFiltered')}</p>`; return; }
 
-  wrap.innerHTML = filtered.map(({e, regs}) => `
-    <div class="event-card">
-      <h3>${e.title}
-        <span class="badge ${e.status==='full'?'badge-full':'badge-open'}">${e.status==='full'?t('statusFull'):t('statusOpen')}</span>
-        <span class="badge ${e.published?'badge-published':'badge-unpublished'}">${e.published?t('badgePublished'):t('badgeUnpublished')}</span>
-      </h3>
-      <div class="event-meta">
-        ${e.organizer} · ${e.event_date}${e.event_time ? ' · ' + e.event_time : ''} · ${e.address}, ${e.zipcode} · ${e.slots_taken}/${e.max_slots}
-      </div>
-      <button type="button" class="btn-sec" data-toggle-details-btn="${e.id}" style="margin-top:8px">${t('manageDetailsBtn')}</button>
-      <div class="event-details" data-details="${e.id}" style="display:none;margin-top:10px">
-        <div>
-          ${regs.map(r => `<div class="reg-row"><label><input type="checkbox" class="attendCheck" data-event="${e.id}" value="${r.agent_email}" checked> ${r.agent_name} (${r.agent_email})</label><span class="ev-hint" style="margin:0">${t('registered')} ${new Date(r.registered_at).toLocaleString()}</span><button type="button" class="btn-unassign" data-unassign="${e.id}" data-email="${r.agent_email}" title="${t('cancel')}">×</button></div>`).join('')}
-        </div>
-        <div class="assign-row">
-          <input type="text" class="assignInput" list="eventsAgentsList" data-event="${e.id}" placeholder="${t('assignPhNew')}">
-          <button class="btn-sec" data-assign="${e.id}">${t('assignBtn')}</button>
-        </div>
-        <div class="event-foot">
-          <div style="display:flex;gap:8px">
-            <button class="btn-sec" data-cancel="${e.id}">${t('cancel')}</button>
-            <button class="btn-sec" data-edit-address="${e.id}" data-current-address="${e.address.replace(/"/g,'&quot;')}">${t('editAddressBtn')}</button>
-            <button class="btn-sec" data-toggle-publish="${e.id}">${e.published?t('unpublishBtn'):t('publishBtn')}</button>
-          </div>
-          <button class="btn-primary" data-finalize="${e.id}">${t('finalize')}</button>
-        </div>
-      </div>
-    </div>`).join('');
+  wrap.innerHTML = filtered.map(({e, regs}) => manageCardHTML(e, regs, {
+    statusBadge: `<span class="badge ${e.status==='full'?'badge-full':'badge-open'}">${e.status==='full'?t('statusFull'):t('statusOpen')}</span>
+        <span class="badge ${e.published?'badge-published':'badge-unpublished'}">${e.published?t('badgePublished'):t('badgeUnpublished')}</span>`,
+    showCheckboxes: true, showFinalize: true, showPublishToggle: true,
+  })).join('');
 
-  wrap.querySelectorAll('[data-toggle-details-btn]').forEach(btn=>btn.addEventListener('click', ()=>{
-    const id = btn.dataset.toggleDetailsBtn;
-    const details = wrap.querySelector(`[data-details="${id}"]`);
-    const isOpen = details.style.display !== 'none';
-    details.style.display = isOpen ? 'none' : 'block';
-    btn.textContent = isOpen ? t('manageDetailsBtn') : t('manageDetailsBtnOpen');
-  }));
-  wrap.querySelectorAll('[data-edit-address]').forEach(btn=>btn.addEventListener('click', async ()=>{
-    const eventId = btn.dataset.editAddress;
-    const current = btn.dataset.currentAddress;
-    const next = prompt(t('editAddressPrompt'), current);
-    if (next === null || next.trim() === '' || next === current) return;
-    try {
-      await apiJson(API_BASE, `/events/admin/${eventId}/edit`, {method:'POST', body: JSON.stringify({address: next.trim()})});
-      loadAdminAll();
-    } catch(e) { alert(e.message); }
-  }));
-  wrap.querySelectorAll('[data-finalize]').forEach(btn=>btn.addEventListener('click', async ()=>{
-    const eventId = btn.dataset.finalize;
-    const emails = Array.from(wrap.querySelectorAll(`.attendCheck[data-event="${eventId}"]:checked`)).map(c=>c.value);
-    await apiJson(API_BASE, `/events/admin/${eventId}/finalize`, {method:'POST', body: JSON.stringify({approved_emails: emails})});
-    loadAdminAll();
-  }));
-  wrap.querySelectorAll('[data-cancel]').forEach(btn=>btn.addEventListener('click', ()=>{
-    openCancelModal(btn.dataset.cancel);
-  }));
-  wrap.querySelectorAll('[data-toggle-publish]').forEach(btn=>btn.addEventListener('click', async ()=>{
-    await apiJson(API_BASE, `/events/admin/${btn.dataset.togglePublish}/toggle-publish`, {method:'POST'}); loadAdminAll();
-  }));
-  wrap.querySelectorAll('[data-unassign]').forEach(btn=>btn.addEventListener('click', async ()=>{
-    if (!confirm(curLang==='en' ? 'Remove this agent from the event?' : '¿Quitar a este agente del evento?')) return;
-    await apiJson(API_BASE, `/events/admin/${btn.dataset.unassign}/unassign`, {method:'POST', body: JSON.stringify({agent_email: btn.dataset.email})});
-    loadAdminAll();
-  }));
-  wrap.querySelectorAll('[data-assign]').forEach(btn=>btn.addEventListener('click', async ()=>{
-    const eventId = btn.dataset.assign;
-    const input = wrap.querySelector(`.assignInput[data-event="${eventId}"]`);
-    const email = input.value.trim();
-    if (!email) return;
-    try {
-      await apiJson(API_BASE, `/events/admin/${eventId}/assign`, {method:'POST', body: JSON.stringify({agent_email: email})});
-      loadAdminAll();
-    } catch(e) { alert(e.message); }
-  }));
+  wireManageHandlers(wrap, loadAdminManage);
 }
 
 document.getElementById('admManageSearch').addEventListener('input', renderAdminManage);
 document.getElementById('admManageDateFilter').addEventListener('change', renderAdminManage);
+
+// ---------------- Admin: Confirmados / Cerrados (2026-09-01) ----------------
+// Antes vivian mezclados y de solo lectura dentro de "Historial". Ahora
+// tienen su propia sub-pestana y la misma tarjeta de gestion que Abiertos
+// (assign/unassign siempre - ver admin_assign/admin_unassign en
+// events.py, nunca tuvieron restriccion de status - y Cerrados ademas
+// puede Finalize, ver el guard ampliado en finalize()).
+let adminConfirmedCache = [], adminConfirmedShowAll = false;
+let adminClosedCache = [], adminClosedShowAll = false;
+
+async function loadAdminConfirmed(){
+  const events = await apiJson(API_BASE, '/events/admin/all?status=closed_confirmed');
+  adminConfirmedCache = await Promise.all(events.map(async e => {
+    const regs = (await apiJson(API_BASE, `/events/admin/${e.id}/registrations`)).filter(r => r.status === 'approved');
+    return { e, regs };
+  }));
+  renderAdminConfirmed();
+}
+function renderAdminConfirmed(){
+  const wrap = document.getElementById('admConfirmedEvents');
+  const showAllBtn = document.getElementById('admConfirmedShowAll');
+  if (!adminConfirmedCache.length) { wrap.innerHTML = `<p class="ev-hint">${t('noManage')}</p>`; showAllBtn.style.display = 'none'; return; }
+  const shown = adminConfirmedShowAll ? adminConfirmedCache : adminConfirmedCache.slice(0, PAGE_SIZE);
+  wrap.innerHTML = shown.map(({e, regs}) => manageCardHTML(e, regs, {
+    statusBadge: `<span class="badge badge-closed">${t('statusClosedConfirmed')}</span>`,
+    showCheckboxes: false, showFinalize: false, showPublishToggle: false, showReopen: true,
+  })).join('');
+  wireManageHandlers(wrap, loadAdminConfirmed);
+  showAllBtn.style.display = adminConfirmedCache.length > PAGE_SIZE ? 'inline-block' : 'none';
+  showAllBtn.textContent = adminConfirmedShowAll ? t('showLess') : t('showAll')(adminConfirmedCache.length);
+}
+document.getElementById('admConfirmedShowAll').addEventListener('click', ()=>{
+  adminConfirmedShowAll = !adminConfirmedShowAll;
+  renderAdminConfirmed();
+});
+
+async function loadAdminClosedIncomplete(){
+  const events = await apiJson(API_BASE, '/events/admin/all?status=closed_incomplete');
+  adminClosedCache = await Promise.all(events.map(async e => {
+    const regs = await apiJson(API_BASE, `/events/admin/${e.id}/registrations`);
+    return { e, regs };
+  }));
+  renderAdminClosed();
+}
+function renderAdminClosed(){
+  const wrap = document.getElementById('admClosedEvents');
+  const showAllBtn = document.getElementById('admClosedShowAll');
+  if (!adminClosedCache.length) { wrap.innerHTML = `<p class="ev-hint">${t('noManage')}</p>`; showAllBtn.style.display = 'none'; return; }
+  const shown = adminClosedShowAll ? adminClosedCache : adminClosedCache.slice(0, PAGE_SIZE);
+  wrap.innerHTML = shown.map(({e, regs}) => manageCardHTML(e, regs, {
+    statusBadge: `<span class="badge badge-full">${t('statusClosedIncomplete')}</span>`,
+    showCheckboxes: true, showFinalize: true, showPublishToggle: false,
+  })).join('');
+  wireManageHandlers(wrap, loadAdminClosedIncomplete);
+  showAllBtn.style.display = adminClosedCache.length > PAGE_SIZE ? 'inline-block' : 'none';
+  showAllBtn.textContent = adminClosedShowAll ? t('showLess') : t('showAll')(adminClosedCache.length);
+}
+document.getElementById('admClosedShowAll').addEventListener('click', ()=>{
+  adminClosedShowAll = !adminClosedShowAll;
+  renderAdminClosed();
+});
 
 let agentsDatalistLoaded = false;
 async function loadAgentsDatalist(){
@@ -838,19 +1106,36 @@ async function loadAdminLookup(){
 document.getElementById('admLookupBtn').addEventListener('click', loadAdminLookup);
 document.getElementById('admLookupQ').addEventListener('keydown', (e)=>{ if (e.key === 'Enter') loadAdminLookup(); });
 
+// Historial: solo cancelados/reprogramados (2026-09-01) - Confirmados y
+// Cerrados-incompletos ahora tienen su propia sub-pestana de gestion activa
+// (loadAdminConfirmed/loadAdminClosedIncomplete arriba), asi que ya no
+// pertenecen aqui; esto era de solo lectura y sigue siendolo.
+let adminHistoryCache = [], adminHistoryShowAll = false;
+const HISTORY_BADGE_MAP = { canceled:['badge-canceled','statusCanceled'], rescheduled:['badge-rescheduled','statusRescheduled'] };
+
 async function loadAdminHistory(){
-  const statuses = ['closed_confirmed','closed_incomplete','canceled','rescheduled'];
+  const statuses = ['canceled','rescheduled'];
   const lists = await Promise.all(statuses.map(s => apiJson(API_BASE, `/events/admin/all?status=${s}`)));
-  const all = lists.flat().sort((a,b) => new Date(b.event_date) - new Date(a.event_date));
-  const badgeMap = { closed_confirmed:['badge-closed','statusClosedConfirmed'], closed_incomplete:['badge-full','statusClosedIncomplete'], canceled:['badge-canceled','statusCanceled'], rescheduled:['badge-rescheduled','statusRescheduled'] };
+  adminHistoryCache = lists.flat().sort((a,b) => new Date(b.event_date) - new Date(a.event_date));
+  renderAdminHistory();
+}
+function renderAdminHistory(){
   const wrap = document.getElementById('admHistoryEvents');
-  if (!all.length) { wrap.innerHTML = `<p class="ev-hint">${t('noHistory')}</p>`; return; }
-  wrap.innerHTML = all.map(e => {
-    const [cls, key] = badgeMap[e.status];
+  const showAllBtn = document.getElementById('admHistoryShowAll');
+  if (!adminHistoryCache.length) { wrap.innerHTML = `<p class="ev-hint">${t('noHistory')}</p>`; showAllBtn.style.display = 'none'; return; }
+  const shown = adminHistoryShowAll ? adminHistoryCache : adminHistoryCache.slice(0, PAGE_SIZE);
+  wrap.innerHTML = shown.map(e => {
+    const [cls, key] = HISTORY_BADGE_MAP[e.status];
     return `<div class="event-card"><h3>${e.title} <span class="badge ${cls}">${t(key)}</span></h3>
       <div class="event-meta">${e.organizer} · ${e.event_date} · ${e.address}, ${e.zipcode}</div></div>`;
   }).join('');
+  showAllBtn.style.display = adminHistoryCache.length > PAGE_SIZE ? 'inline-block' : 'none';
+  showAllBtn.textContent = adminHistoryShowAll ? t('showLess') : t('showAll')(adminHistoryCache.length);
 }
+document.getElementById('admHistoryShowAll').addEventListener('click', ()=>{
+  adminHistoryShowAll = !adminHistoryShowAll;
+  renderAdminHistory();
+});
 
 document.getElementById('admCreateBtn').addEventListener('click', async ()=>{
   const body = {
@@ -938,8 +1223,24 @@ async function loadAdminAll(){
   await loadAgentsDatalist();
   await loadAdminPending();
   await loadAdminManage();
+  await loadAdminConfirmed();
+  await loadAdminClosedIncomplete();
   await loadAdminHistory();
 }
+
+// Sub-pestanas de "Manage events" (2026-09-01) - clase .ev-subtab, separada
+// a proposito del listener global de .ev-tab (ver comentario en el CSS).
+// Cada seccion ya se carga de una vez en loadAdminAll() (arriba), asi que
+// aqui solo se cambia visibilidad - no hay refetch por pestana.
+document.querySelectorAll('#mgmtTabs .ev-subtab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('#mgmtTabs .ev-subtab').forEach(x=>x.classList.remove('on'));
+    tab.classList.add('on');
+    ['openfull','confirmed','closed','history'].forEach(k=>{
+      document.getElementById('mgmt-'+k).hidden = (k !== tab.dataset.mt);
+    });
+  });
+});
 
 // ---------------- Init ----------------
 
