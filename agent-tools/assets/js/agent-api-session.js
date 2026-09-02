@@ -22,7 +22,7 @@
 // time).
 // ============================================================================
 
-import { GOOGLE_CLIENT_ID, isEmailAllowed } from "../../../google-config.js";
+import { GOOGLE_CLIENT_ID, isEmailAllowed, refreshAllowedEmails } from "../../../google-config.js";
 import { API_BASE } from "./api-config.js";
 
 function _getRawSession() {
@@ -40,6 +40,10 @@ export function guard() {
     window.location.href = '../../../login.html';
     return null;
   }
+  // Sin await a proposito - guard() debe seguir siendo sincrono para no
+  // tocar cada pagina que lo llama. Solo mantiene el cache de
+  // EXTRA_ALLOWED_EMAILS tibio para la proxima carga (ver google-config.js).
+  refreshAllowedEmails(API_BASE);
   return session;
 }
 
