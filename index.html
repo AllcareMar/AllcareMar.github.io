@@ -572,9 +572,10 @@ const T={
     addr_val:"546 Avenue C, Bayonne, NJ 07002",ph_val:"<a href='tel:8006975631'>800.697.5631</a> (Toll-Free)",em_val:"<a href='mailto:info@allcaremar.com'>info@allcaremar.com</a>",
     h1:"Mon – Fri",h1v:"9:00 AM – 5:30 PM",h2:"Saturday",h2v:"9:00 AM – 2:00 PM",h3:"Sunday",h3v:"Closed",
     cf_ey:"Contact Us",cf_title:"Request Your <em>Free Consultation</em>",cf_h3:"Tell Us About You",cf_sub:"We\'ll respond within 24 business hours. No commitment, no cost.",
-    lb_fn:"First Name",lb_ln:"Last Name",lb_ph:"Phone Number",lb_em:"Email",lb_age:"Your Age Range",lb_int:"I\'m Interested In",lb_msg:"Message (optional)",
+    lb_fn:"First Name",lb_ln:"Last Name",lb_ph:"Phone Number",lb_em:"Email",lb_age:"Your Age Range",lb_int:"I\'m Interested In",lb_state:"State of Residence",lb_zip:"ZIP Code",lb_resaddr:"Address (optional)",lb_msg:"Message (optional)",
     age_opt:["Select age range","60–64 (turning 65 soon)","65–70","71–79","80 or older"],
     int_opt:["Select topic","New to Medicare (first time)","Switching or reviewing my plan","Comparing carriers","Understanding my benefits","Medicare & Medicaid (Dual Eligible)","Other"],
+    state_ph:"Select your state",zip_ph:"07002",address_ph:"Street and city",
     msg_ph:"Briefly describe your situation or question...",
     btn_sub:"Send My Request",form_note:"🔒 Your information is private and never shared with third parties.",
     faq_ey:"FAQ",faq_title:"Frequently Asked <em>Questions</em>",
@@ -660,9 +661,10 @@ const T={
     addr_val:"546 Avenue C, Bayonne, NJ 07002",ph_val:"<a href='tel:8006975631'>800.697.5631</a> (Sin Costo)",em_val:"<a href='mailto:info@allcaremar.com'>info@allcaremar.com</a>",
     h1:"Lun – Vie",h1v:"9:00 AM – 5:30 PM",h2:"Sábado",h2v:"9:00 AM – 2:00 PM",h3:"Domingo",h3v:"Cerrado",
     cf_ey:"Contáctenos",cf_title:"Solicita tu <em>Consulta Gratuita</em>",cf_h3:"Cuéntanos Sobre Ti",cf_sub:"Respondemos dentro de 24 horas hábiles. Sin compromiso, sin costo.",
-    lb_fn:"Nombre",lb_ln:"Apellido",lb_ph:"Teléfono",lb_em:"Correo Electrónico",lb_age:"Tu Rango de Edad",lb_int:"Me Interesa",lb_msg:"Mensaje (opcional)",
+    lb_fn:"Nombre",lb_ln:"Apellido",lb_ph:"Teléfono",lb_em:"Correo Electrónico",lb_age:"Tu Rango de Edad",lb_int:"Me Interesa",lb_state:"Estado de Residencia",lb_zip:"Código Postal",lb_resaddr:"Dirección (opcional)",lb_msg:"Mensaje (opcional)",
     age_opt:["Selecciona rango","60–64 (próximo a cumplir 65)","65–70","71–79","80 años o más"],
     int_opt:["Selecciona tema","Nuevo en Medicare (primera vez)","Cambiar o revisar mi plan","Comparar aseguradoras","Entender mis beneficios","Medicare y Medicaid (Doble Elegible)","Otro"],
+    state_ph:"Selecciona tu estado",zip_ph:"07002",address_ph:"Calle y ciudad",
     msg_ph:"Describe brevemente tu situación o pregunta...",
     btn_sub:"Enviar Solicitud",form_note:"🔒 Tu información es privada y nunca se comparte con terceros.",
     faq_ey:"Preguntas Frecuentes",faq_title:"Respuestas a tus <em>Preguntas</em>",
@@ -806,11 +808,14 @@ function setLang(l){
   document.getElementById('cf-title').innerHTML=t.cf_title;
   document.getElementById('cf-h3').textContent=t.cf_h3;
   document.getElementById('cf-sub').textContent=t.cf_sub;
-  ['lb-fn','lb-ln','lb-ph','lb-em','lb-age','lb-int','lb-msg'].forEach(id=>document.getElementById(id).textContent=t[id.replace(/-/g,'_')]);
+  ['lb-fn','lb-ln','lb-ph','lb-em','lb-age','lb-int','lb-state','lb-zip','lb-resaddr','lb-msg'].forEach(id=>document.getElementById(id).textContent=t[id.replace(/-/g,'_')]);
   const ageSel=document.getElementById('age-sel');
   ageSel.innerHTML=t.age_opt.map(o=>`<option>${o}</option>`).join('');
   const intSel=document.getElementById('int-sel');
   intSel.innerHTML=t.int_opt.map(o=>`<option>${o}</option>`).join('');
+  document.getElementById('zip-input').placeholder=t.zip_ph;
+  document.getElementById('address-input').placeholder=t.address_ph;
+  populateStateSelect();
   document.getElementById('msg-ta').placeholder=t.msg_ph;
   document.getElementById('btn-sub').innerHTML='<i class="fas fa-paper-plane"></i> '+t.btn_sub;
   document.getElementById('form-note').textContent=t.form_note;
@@ -1148,7 +1153,7 @@ function setLang(l){
         <div class="leader-icon-row">
           <a href="tel:+12019871079" class="leader-icon-btn icon-call" aria-label="Call Maria Santiago"><i class="fas fa-phone-alt"></i></a>
           <a href="mailto:msanti@allcaremar.com" class="leader-icon-btn icon-email" aria-label="Email Maria Santiago"><i class="fas fa-envelope"></i></a>
-          <span class="leader-icon-btn icon-profile disabled" aria-hidden="true" title="Coming soon"><i class="fas fa-arrow-up-right-from-square"></i></span>
+          <a href="https://www.planenroll.com/?purl=Maria-Santiago-1" target="_blank" rel="noopener" class="leader-icon-btn icon-profile" aria-label="View profile — Maria Santiago (opens in new tab)"><i class="fas fa-arrow-up-right-from-square"></i></a>
         </div>
       </div>
     </div>
@@ -1320,6 +1325,11 @@ function setLang(l){
         </div>
         <div class="form-grp2"><label id="lb-age"></label><select id="age-sel"></select></div>
         <div class="form-grp2"><label id="lb-int"></label><select id="int-sel"></select></div>
+        <div class="form-row2">
+          <div class="form-grp2"><label id="lb-state"></label><select id="state-sel"></select></div>
+          <div class="form-grp2"><label id="lb-zip"></label><input type="text" inputmode="numeric" id="zip-input" maxlength="10"/></div>
+        </div>
+        <div class="form-grp2"><label id="lb-resaddr"></label><input type="text" id="address-input"/></div>
         <div class="form-grp2"><label id="lb-msg"></label><textarea id="msg-ta"></textarea></div>
         <button class="btn-submit-form" id="btn-sub" onclick="handleContactSubmit()"></button>
         <p class="form-msg" id="form-msg" style="display:none"></p>
@@ -1433,6 +1443,43 @@ function setLang(l){
 // Office Staff — cargado dinámicamente desde staff.json (misma fuente que usa agents.html)
 let staffDataCache=null;
 
+// Nombre EXACTO tal como aparece en staff.json → es la fuente única de verdad
+// de "en qué estados operamos", reutilizada tanto por el mapa de EE.UU. como
+// por el selector de Estado de Residencia del formulario "Tell Us About You"
+// (2026-09-02, pedido de Jesus: si mañana se agrega/quita un estado a Marcos
+// Rodriguez-Martinez en el Excel/staff.json, ambos se actualizan solos, sin
+// tocar código). Declarado ANTES de setLang('en') a propósito - applyLang()
+// llama a populateStateSelect() en su primera ejecución síncrona, así que
+// esta const debe existir ya para ese momento.
+const USMAP_REFERENCE_AGENT='Marcos Rodriguez-Martinez';
+const STATE_NAMES={AK:'Alaska',AL:'Alabama',AR:'Arkansas',AZ:'Arizona',CA:'California',CO:'Colorado',CT:'Connecticut',DE:'Delaware',FL:'Florida',GA:'Georgia',HI:'Hawaii',IA:'Iowa',ID:'Idaho',IL:'Illinois',IN:'Indiana',KS:'Kansas',KY:'Kentucky',LA:'Louisiana',MA:'Massachusetts',MD:'Maryland',ME:'Maine',MI:'Michigan',MN:'Minnesota',MO:'Missouri',MS:'Mississippi',MT:'Montana',NC:'North Carolina',ND:'North Dakota',NE:'Nebraska',NH:'New Hampshire',NJ:'New Jersey',NM:'New Mexico',NV:'Nevada',NY:'New York',OH:'Ohio',OK:'Oklahoma',OR:'Oregon',PA:'Pennsylvania',RI:'Rhode Island',SC:'South Carolina',SD:'South Dakota',TN:'Tennessee',TX:'Texas',UT:'Utah',VA:'Virginia',VT:'Vermont',WA:'Washington',WI:'Wisconsin',WV:'West Virginia',WY:'Wyoming'};
+
+// Lee en vivo licensed_states del agente de referencia (mismo dato que el
+// mapa) y arma <option> ordenadas alfabéticamente por nombre. Se llama en
+// cada applyLang() (cambia solo el placeholder por idioma) - conserva la
+// selección previa del usuario si sigue siendo válida, y no vuelve a pedir
+// staff.json una vez cacheado (sin llamada de red extra en cada toggle).
+async function populateStateSelect(){
+  const sel=document.getElementById('state-sel');
+  if(!sel)return;
+  const prevValue=sel.value;
+  if(!staffDataCache){
+    try{
+      const res=await fetch('staff.json');
+      staffDataCache=await res.json();
+    }catch(err){
+      console.error('No se pudo cargar staff.json para el selector de estados',err);
+      return;
+    }
+  }
+  const agent=(staffDataCache.independent_agents||[]).find(a=>a.name===USMAP_REFERENCE_AGENT);
+  const codes=(agent&&agent.licensed_states&&agent.licensed_states[0]!=='PENDIENTE')?agent.licensed_states:[];
+  const sorted=codes.map(c=>c.trim().toUpperCase()).filter(c=>STATE_NAMES[c]).sort((a,b)=>STATE_NAMES[a].localeCompare(STATE_NAMES[b]));
+  const t=T[lang];
+  sel.innerHTML='<option value="">'+t.state_ph+'</option>'+sorted.map(c=>`<option value="${c}">${STATE_NAMES[c]}</option>`).join('');
+  if(prevValue && sorted.includes(prevValue))sel.value=prevValue;
+}
+
 // Init language
 setLang('en');
 
@@ -1468,10 +1515,9 @@ async function renderOfficeStaff(){
 // Coordenadas aproximadas (proyección simple lat/lon) para un mapa punteado de EE.UU.
 // AK/HI en recuadro aparte (convención cartográfica estándar).
 const US_STATE_COORDS={AK:[30,350],AL:[440.3,196.5],AR:[375.7,171.8],AZ:[151.0,180.0],CA:[61.1,144.7],CO:[224.7,123.5],CT:[620.8,106.9],DE:[588.5,157.5],FL:[501.4,245.9],GA:[479.5,197.6],HI:[95,350],IA:[363.1,88.2],ID:[119.9,61.2],IL:[412.6,111.8],IN:[446.0,112.9],KS:[306.6,129.4],KY:[457.6,141.2],LA:[381.5,215.3],MA:[637.2,78.7],MD:[554.7,155.5],ME:[653.1,42.2],MI:[456.4,61.2],MN:[353.8,37.6],MO:[374.6,129.4],MS:[406.8,197.6],MT:[177.5,29.4],NC:[525.6,163.5],ND:[282.4,23.5],NE:[290.4,94.1],NH:[629.5,50.2],NJ:[599.7,132.6],NM:[217.8,176.5],NV:[96.8,120.0],NY:[564.5,81.6],OH:[487.5,108.2],OK:[316.9,163.5],OR:[50.7,64.7],PA:[541.2,107.2],RI:[648.6,101.8],SC:[508.3,183.5],SD:[285.8,60.0],TN:[444.9,160.0],TX:[296.2,211.8],UT:[153.3,120.0],VA:[533.6,141.2],VT:[589.9,56.7],WA:[51.9,24.7],WI:[404.5,57.6],WV:[511.7,128.2],WY:[201.7,76.5]};
-// Nombre EXACTO tal como aparece en staff.json → es la fuente única de verdad.
-// Si mañana se agrega/quita un estado a Marcos Rodriguez-Martinez en el Excel/staff.json,
-// este mapa lo refleja automáticamente sin tocar código (se lee en vivo, no hardcodeado).
-const USMAP_REFERENCE_AGENT='Marcos Rodriguez-Martinez';
+// USMAP_REFERENCE_AGENT y STATE_NAMES se movieron arriba de setLang('en')
+// (junto a staffDataCache) - populateStateSelect() del formulario de
+// contacto necesita esa const disponible desde la primera carga de página.
 var usmapLicensedCount=0;
 var usmapBuilt=false;
 
@@ -1617,6 +1663,9 @@ async function handleContactSubmit(){
   const emEl=document.getElementById('email-input');
   const ageEl=document.getElementById('age-sel');
   const intEl=document.getElementById('int-sel');
+  const stateEl=document.getElementById('state-sel');
+  const zipEl=document.getElementById('zip-input');
+  const addressEl=document.getElementById('address-input');
   const msgEl=document.getElementById('msg-ta');
   const noteEl=document.getElementById('form-msg');
   const btn=document.getElementById('btn-sub');
@@ -1627,9 +1676,14 @@ async function handleContactSubmit(){
   const em=emEl.value.trim();
   const age=ageEl.value.trim();
   const intr=intEl.value.trim();
+  const state=stateEl.value.trim();
+  const zip=zipEl.value.trim();
+  const address=addressEl.value.trim();
   const msg=msgEl.value.trim();
 
-  if(!fn||!ln||!ph||!age||!intr){
+  // Estado y ZIP: obligatorios. Direccion y Mensaje: opcionales (pedido
+  // de Jesus, 2026-09-02).
+  if(!fn||!ln||!ph||!age||!intr||!state||!zip){
     noteEl.className='form-msg form-msg-error';
     noteEl.textContent=lang==='en'?'Please complete all required fields.':'Por favor completa todos los campos obligatorios.';
     noteEl.style.display='block';
@@ -1643,12 +1697,12 @@ async function handleContactSubmit(){
 
   try{
     const payload=new URLSearchParams({
-      firstName:fn,lastName:ln,phone:ph,email:em,ageRange:age,interest:intr,message:msg,lang
+      firstName:fn,lastName:ln,phone:ph,email:em,ageRange:age,interest:intr,state,zip,address,message:msg,lang
     });
     await fetch(GOOGLE_SCRIPT_URL,{method:'POST',mode:'no-cors',body:payload});
 
-    fnEl.value='';lnEl.value='';phEl.value='';emEl.value='';msgEl.value='';
-    ageEl.selectedIndex=0;intEl.selectedIndex=0;
+    fnEl.value='';lnEl.value='';phEl.value='';emEl.value='';zipEl.value='';addressEl.value='';msgEl.value='';
+    ageEl.selectedIndex=0;intEl.selectedIndex=0;stateEl.selectedIndex=0;
 
     noteEl.className='form-msg form-msg-success';
     noteEl.textContent=lang==='en'
