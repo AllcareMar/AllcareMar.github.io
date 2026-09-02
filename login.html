@@ -132,7 +132,7 @@ img{display:block;max-width:100%}
   <span id="mini-copy"></span><a href="privacy-security-policy.pdf" target="_blank" rel="noopener" id="mini-priv"></a>
 </footer>
 <script type="module">
-import { GOOGLE_CLIENT_ID, WORKSPACE_DOMAIN, isEmailAllowed, isDashboardRosterAllowed } from "./google-config.js";
+import { GOOGLE_CLIENT_ID, WORKSPACE_DOMAIN, isEmailAllowed, isDashboardRosterAllowed, refreshAllowedEmails } from "./google-config.js";
 import { API_BASE } from "./agent-tools/assets/js/api-config.js";
 
 let curLang = 'en';
@@ -262,6 +262,11 @@ async function handleCredentialResponse(response){
   const email = payload.email || 'unknown';
   const verified = payload.email_verified === true;
 
+  // Refresca la excepcion de dominio contra el backend ANTES de decidir -
+  // asi un agente agregado hace un minuto a la tabla `agents` entra sin
+  // esperar a que su navegador tenga el cache viejo (ver google-config.js).
+  await refreshAllowedEmails(API_BASE);
+
   if(!verified || !isEmailAllowed(email)){
     showDenied('domain');
     notifyUnauthorized(email);
@@ -326,6 +331,10 @@ function renderGoogleButton(){
 }
 
 window.onload = function(){
+  // Refresco en segundo plano (sin await) solo para mantener el cache de
+  // EXTRA_ALLOWED_EMAILS tibio - el chequeo real y bloqueante ya ocurre
+  // dentro de handleCredentialResponse() con await.
+  refreshAllowedEmails(API_BASE);
   // Si ya hay sesión válida guardada en este navegador, ni mostramos el login.
   if(getValidSession()){ window.location.href = 'dashboard-agentes.html'; return; }
   applyLang();

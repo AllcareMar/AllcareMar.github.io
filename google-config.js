@@ -19,19 +19,48 @@
 export const GOOGLE_CLIENT_ID = "564752963603-nanb8q4atdnmrl70s4mg8ljom7md3336.apps.googleusercontent.com";
 export const WORKSPACE_DOMAIN = "allcaremar.com";
 
-// Excepciones al dominio @allcaremar.com en todo el sitio (login, dashboard,
-// resources, firma-requerida): agentes reales que usan un correo fuera del
-// dominio principal. Pedido explicito de Jesus.
-// - carloshealthagent@gmail.com: Carlos Perez (Gmail personal).
-// - glendahealthagent@gmail.com: Glenda Colon, lider de GW Ins Group LLC
-//   (agregado 2026-08-10 - sin esto, tampoco podia entrar al dashboard de
-//   agentes, aunque ya esta en staff.json/roster de GW).
-// - oliver.j@nxhealthagency.com: Oliver Jimenez (agregado 2026-08-31 -
-//   cuenta de un segundo grupo/dominio del Workspace de Jesus, Next Gen
-//   Health Agency (nxhealthagency.com); Jesus eligio agregar el correo
-//   puntual en vez de habilitar todo el dominio nxhealthagency.com - repetir
-//   este mismo paso para cada agente nuevo de ese dominio).
-export const EXTRA_ALLOWED_EMAILS = ["carloshealthagent@gmail.com", "glendahealthagent@gmail.com", "oliver.j@nxhealthagency.com"];
+// 2026-09-02 - ROOT FIX: esto era un array hardcoded aqui, OTRO hardcoded en
+// api/auth.py y un TERCERO en carriers/index.html - las 3 copias se
+// desincronizaban cada vez que Jesus agregaba un agente nuevo con correo
+// externo (paso el 2026-09-02 con Glenda y Oliver: podian entrar al sitio
+// pero les daba 403 en Events/Carriers porque esas dos listas no se habian
+// actualizado). Fuente unica de verdad ahora: la tabla `agents` en Postgres
+// (la misma que ya usa Sales, se administra en Admin > Agentes). Este array
+// es solo un CACHE local que se refresca desde GET /api/auth/allowed-emails
+// - ver refreshAllowedEmails() abajo. Arranca con la ultima copia guardada
+// en localStorage (o vacio la primera vez) para que isEmailAllowed() siga
+// siendo sincrono en cada carga de pagina, sin esperar una llamada de red.
+const CACHE_KEY = "acm_extra_emails_cache";
+export let EXTRA_ALLOWED_EMAILS = [];
+try {
+  const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || "null");
+  if (cached && Array.isArray(cached.emails)) EXTRA_ALLOWED_EMAILS = cached.emails;
+} catch (e) { /* localStorage no disponible o corrupto - sigue con [] */ }
+
+// Refresca EXTRA_ALLOWED_EMAILS (y CARRIER_DASHBOARD_ADMIN_EMAILS, ver mas
+// abajo) contra el backend. Se llama: (a) una vez, awaited, en el momento
+// real de login.html/carriers/index.html antes de validar el correo - para
+// que un agente agregado hace 2 minutos entre sin problema aunque su
+// navegador nunca haya visto la lista nueva; y (b) en segundo plano (sin
+// await) desde agent-api-session.js/guard() en cada pagina, solo para
+// mantener el cache tibio de cara a la proxima carga. Si la API esta caida,
+// se queda con el ultimo cache conocido (mismo comportamiento que ya tenia
+// isDashboardRosterAllowed con staff.json) - nunca bloquea el login por eso.
+export async function refreshAllowedEmails(apiBase) {
+  try {
+    const resp = await fetch(`${apiBase}/auth/allowed-emails`, { cache: "no-store" });
+    if (!resp.ok) return;
+    const data = await resp.json();
+    if (Array.isArray(data.extra_allowed_emails)) {
+      EXTRA_ALLOWED_EMAILS = data.extra_allowed_emails;
+      localStorage.setItem(CACHE_KEY, JSON.stringify({ emails: EXTRA_ALLOWED_EMAILS, ts: Date.now() }));
+    }
+    if (Array.isArray(data.carrier_dashboard_admins)) {
+      CARRIER_DASHBOARD_ADMIN_EMAILS = data.carrier_dashboard_admins;
+      localStorage.setItem(ADMIN_CACHE_KEY, JSON.stringify({ emails: CARRIER_DASHBOARD_ADMIN_EMAILS, ts: Date.now() }));
+    }
+  } catch (e) { /* offline/API caida - se queda con el cache actual */ }
+}
 
 // Verdadero si el email puede entrar al ecosistema de agentes: dominio
 // @allcaremar.com, o esta en la lista de excepciones de arriba. Esta es la
@@ -45,6 +74,20 @@ export function isEmailAllowed(email) {
   if (domain === WORKSPACE_DOMAIN.toLowerCase()) return true;
   return EXTRA_ALLOWED_EMAILS.map(x => x.toLowerCase()).includes(e);
 }
+
+// Mismo patron de cache/refresh que EXTRA_ALLOWED_EMAILS, para los 5 correos
+// admin del formulario/dashboard de Carriers (antes hardcoded tambien en
+// carriers/index.html). Fuente real: CARRIER_DASHBOARD_ADMIN_EMAILS en
+// api/auth.py (env var opcional, con ese mismo fallback de 5 correos).
+const ADMIN_CACHE_KEY = "acm_carrier_admins_cache";
+export let CARRIER_DASHBOARD_ADMIN_EMAILS = [
+  "jcabreja@allcaremar.com", "acastillo@allcaremar.com", "epeguero@allcaremar.com",
+  "mrodriguez@allcaremar.com", "wmartinez@allcaremar.com",
+];
+try {
+  const cachedAdmins = JSON.parse(localStorage.getItem(ADMIN_CACHE_KEY) || "null");
+  if (cachedAdmins && Array.isArray(cachedAdmins.emails)) CARRIER_DASHBOARD_ADMIN_EMAILS = cachedAdmins.emails;
+} catch (e) { /* sigue con el fallback de arriba */ }
 
 // Correos administrativos/compartidos que deben poder entrar al dashboard de
 // agentes aunque no sean una persona individual listada en staff.json.

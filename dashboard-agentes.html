@@ -217,7 +217,8 @@ footer.auth-mini-footer a{color:var(--gray-600);font-weight:700;margin-left:6px}
 </div>
 
 <script type="module">
-import { isEmailAllowed } from "./google-config.js";
+import { isEmailAllowed, refreshAllowedEmails } from "./google-config.js";
+import { API_BASE } from "./agent-tools/assets/js/api-config.js";
 
 let curLang='en';
 
@@ -483,6 +484,9 @@ async function runSignatureGate(session){
 }
 
 function guard(){
+  // Sin await - dashboard-agentes.html es la pagina de entrada mas visitada,
+  // asi mantiene el cache de EXTRA_ALLOWED_EMAILS tibio (ver google-config.js).
+  refreshAllowedEmails(API_BASE);
   const raw = localStorage.getItem('acm_gsession');
   if(!raw){ window.location.href='login.html'; return null; }
   let session;
