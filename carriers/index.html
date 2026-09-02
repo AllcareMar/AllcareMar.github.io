@@ -609,21 +609,60 @@ const successDetail = document.getElementById('successDetail');
 const loginScreen = document.getElementById('loginScreen');
 const deniedBox = document.getElementById('deniedBox');
 
-// Unica excepcion al dominio @allcaremar.com: este correo externo tiene
-// permiso explicito de Jesus para llenar el formulario.
-const EXTRA_ALLOWED_EMAILS = ['carloshealthagent@gmail.com'];
+// 2026-09-02 - ROOT FIX: esto era un array hardcoded aqui, OTRO en
+// google-config.js y un TERCERO en api/auth.py - se desincronizaban cada vez
+// que Jesus agregaba un agente con correo externo. Fuente unica de verdad
+// ahora: la tabla `agents` en Postgres (Admin > Agentes). Estos dos arrays
+// son solo un CACHE local en localStorage, refrescado contra
+// GET /api/auth/allowed-emails - ver refreshAllowedEmails() abajo. Esta
+// pagina no usa modulos ES (no importa google-config.js) porque es un
+// formulario standalone que no habla con el resto del sitio, asi que
+// duplica la misma logica de cache/refresh en vez de importarla.
+const ALLOWED_CACHE_KEY = 'acm_extra_emails_cache';
+const ADMIN_CACHE_KEY = 'acm_carrier_admins_cache';
+const CARRIERS_API_BASE = 'https://server-bayonne.tailed39b8.ts.net:10000/api';
 
-// Mismos 5 correos de ALLOWED_DASHBOARD_EMAILS en Code.gs: tambien pueden
-// llenar el formulario y seleccionar carriers, aunque no tengan perfil en
-// AGENTS (se les arma un perfil generico que ve todos los carriers, sin
-// filtro de estado).
-const ADMIN_EMAILS = [
+let EXTRA_ALLOWED_EMAILS = [];
+try {
+  const cached = JSON.parse(localStorage.getItem(ALLOWED_CACHE_KEY) || 'null');
+  if (cached && Array.isArray(cached.emails)) EXTRA_ALLOWED_EMAILS = cached.emails;
+} catch (e) { /* localStorage no disponible o corrupto - sigue con [] */ }
+
+// Mismos 5 correos de CARRIER_DASHBOARD_ADMIN_EMAILS en api/auth.py - este
+// fallback hardcoded es solo por si el fetch nunca corrio (primera visita
+// sin red); en cuanto refreshAllowedEmails() resuelve, se reemplaza con la
+// lista real del servidor.
+let ADMIN_EMAILS = [
   'jcabreja@allcaremar.com',
   'acastillo@allcaremar.com',
   'epeguero@allcaremar.com',
   'mrodriguez@allcaremar.com',
   'wmartinez@allcaremar.com'
 ];
+try {
+  const cachedAdmins = JSON.parse(localStorage.getItem(ADMIN_CACHE_KEY) || 'null');
+  if (cachedAdmins && Array.isArray(cachedAdmins.emails)) ADMIN_EMAILS = cachedAdmins.emails;
+} catch (e) { /* sigue con el fallback de arriba */ }
+
+async function refreshAllowedEmails() {
+  try {
+    const resp = await fetch(`${CARRIERS_API_BASE}/auth/allowed-emails`, { cache: 'no-store' });
+    if (!resp.ok) return;
+    const data = await resp.json();
+    if (Array.isArray(data.extra_allowed_emails)) {
+      EXTRA_ALLOWED_EMAILS = data.extra_allowed_emails;
+      localStorage.setItem(ALLOWED_CACHE_KEY, JSON.stringify({ emails: EXTRA_ALLOWED_EMAILS, ts: Date.now() }));
+    }
+    if (Array.isArray(data.carrier_dashboard_admins)) {
+      ADMIN_EMAILS = data.carrier_dashboard_admins;
+      localStorage.setItem(ADMIN_CACHE_KEY, JSON.stringify({ emails: ADMIN_EMAILS, ts: Date.now() }));
+    }
+  } catch (e) { /* offline/API caida - se queda con el cache actual */ }
+}
+// Refresco en segundo plano al cargar, para que el cache ya este tibio si
+// alguien intenta iniciar sesion enseguida (el chequeo real y bloqueante
+// ocurre con await dentro de handleCredentialResponse).
+refreshAllowedEmails();
 
 let currentAgent = null;
 let selectedCarriers = new Set();
@@ -747,13 +786,18 @@ function selectAgentByEmail(email, picture, name) {
   return match;
 }
 
-function handleCredentialResponse(response) {
+async function handleCredentialResponse(response) {
   let payload;
   try { payload = decodeJwt(response.credential); }
   catch (e) { showDenied(I18N[curLang].deniedJwt); return; }
 
   const email = payload.email || '';
   const verified = payload.email_verified === true;
+
+  // Refresca contra el backend ANTES de decidir - asi un agente agregado
+  // hace un minuto a la tabla `agents` entra sin esperar a que este
+  // navegador tenga el cache viejo.
+  await refreshAllowedEmails();
 
   if (!verified || !isEmailAllowed(email)) {
     showDenied(I18N[curLang].deniedDomain);
