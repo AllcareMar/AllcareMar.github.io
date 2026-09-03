@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Appointment / License Request — Allcare Mar Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+:root{
+  --blue:#1a2fd4; --blue-dark:#0f1e9a; --blue-light:#e8ecff;
+  --red:#e8001d; --red-dark:#b50016; --red-light:#fff0f2;
+  --gray-50:#faf8f5; --gray-100:#f3efe9; --gray-200:#e6e0d6;
+  --gray-400:#8b8377; --gray-600:#544f47; --gray-800:#2b2723;
+  --green:#00a86b; --amber:#b8860b;
+  --r:12px; --r-lg:20px;
+  --sh:0 4px 24px rgba(58,53,48,.08); --sh-lg:0 16px 56px rgba(58,53,48,.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Open Sans',sans-serif;color:var(--gray-800);background:var(--gray-50);min-height:100vh}
+h1,h2,h3{font-family:'Montserrat',sans-serif;line-height:1.2}
+a{text-decoration:none;color:inherit}
+
+.ev-header{display:flex;align-items:center;justify-content:space-between;padding:18px 5vw;background:linear-gradient(135deg,var(--blue-dark),var(--blue));color:#fff;flex-wrap:wrap;gap:12px}
+.ev-header .brand{display:flex;align-items:center;gap:14px}
+.ev-header .brand img{height:30px;filter:brightness(0) invert(1)}
+.ev-header h1{font-size:16px;font-weight:800}
+.ev-header .sub{font-size:11.5px;opacity:.8}
+.ev-header-right{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.lang-toggle{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:20px;padding:8px 14px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:11.5px;cursor:pointer}
+.btn-logout{background:var(--red);border:none;color:#fff;padding:9px 16px;border-radius:20px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:12px;cursor:pointer}
+
+.ev-wrap{max-width:820px;margin:0 auto;padding:32px 5vw 80px}
+.ev-banner{background:#fff3cd;border:1px solid #ffe08a;color:#7a5b00;font-size:13px;padding:14px 18px;border-radius:10px;margin-bottom:22px;line-height:1.6;display:none}
+.ev-banner.show{display:block}
+.ev-banner.blocking{background:var(--red-light);border-color:#f5b5bd;color:var(--red-dark)}
+
+.ev-tabs{display:flex;gap:4px;flex-wrap:wrap}
+.ev-tab{padding:11px 18px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;border:1.5px solid var(--gray-200);border-bottom:none;border-radius:12px 12px 0 0;cursor:pointer;background:var(--gray-100);color:var(--gray-600)}
+.ev-tab.on{background:#fff;color:var(--blue-dark);border-color:var(--gray-200)}
+.ev-panel{border:1.5px solid var(--gray-200);border-radius:0 var(--r-lg) var(--r-lg) var(--r-lg);padding:24px;background:#fff;box-shadow:var(--sh)}
+.ev-h2{font-size:17px;font-weight:800;color:var(--blue-dark);margin-bottom:4px}
+.ev-hint{font-size:12.5px;color:var(--gray-600);margin-bottom:16px}
+
+.field{margin-bottom:16px}
+.frm-lbl{display:block;font-size:12.5px;font-weight:700;color:var(--gray-800);margin-bottom:6px;font-family:'Montserrat',sans-serif}
+.frm-lbl .req{color:var(--red)}
+.frm-lbl .opt{color:var(--gray-400);font-weight:600;text-transform:none}
+select,input[type=text],textarea{width:100%;padding:11px 13px;border:1.5px solid var(--gray-200);border-radius:10px;font-size:14px;font-family:'Open Sans',sans-serif;background:#fff;color:var(--gray-800)}
+.autofield{background:var(--gray-50);color:var(--gray-600);padding:11px 13px;border:1.5px solid var(--gray-200);border-radius:10px;font-size:14px}
+input[readonly]{background:var(--gray-50);color:var(--gray-600);cursor:not-allowed}
+.npn-hint{font-size:11px;color:var(--gray-400);margin-top:5px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:640px){.row2{grid-template-columns:1fr}}
+
+.btn-primary{background:var(--blue);color:#fff;border:none;padding:10px 18px;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:800;cursor:pointer}
+.btn-primary:disabled{background:var(--gray-400);color:#fff;opacity:1;cursor:not-allowed}
+.btn-sec{background:#fff;border:1.5px solid var(--blue);color:var(--blue-dark);padding:9px 14px;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
+.btn-sec:disabled{opacity:.5;cursor:default}
+
+.states-box{border:1.5px solid var(--gray-200);border-radius:10px;padding:6px;max-height:230px;overflow-y:auto}
+.state-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:6px}
+.state-item:hover{background:var(--gray-50)}
+.state-item input{width:16px;height:16px}
+.state-item label{font-size:13.5px;cursor:pointer}
+.state-item.disabled{opacity:.55}
+.state-item.disabled label{cursor:not-allowed}
+.state-item.disabled em{color:var(--red);font-style:normal;font-size:11px;font-weight:700}
+.states-hint{font-size:11.5px;color:var(--gray-400);margin-top:6px}
+
+.upload-section{margin-top:6px;border-left:3px solid var(--blue);padding-left:14px}
+.upload-row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--blue-light);border-radius:8px;padding:10px 14px;margin-bottom:8px;flex-wrap:wrap}
+.upload-row .state-name{font-family:'Montserrat',sans-serif;font-weight:800;font-size:12.5px;color:var(--blue-dark)}
+.upload-row .file-btn{background:#fff;border:1.5px solid var(--blue);color:var(--blue-dark);padding:6px 12px;border-radius:8px;font-size:11.5px;font-weight:700;font-family:'Montserrat',sans-serif;cursor:pointer}
+.upload-row .filename{font-size:11.5px;color:var(--green);font-weight:700}
+.upload-row .filename.missing{color:var(--gray-400);font-weight:600}
+.upload-row input[type=file]{display:none}
+
+.upline-box{border:1.5px solid var(--gray-200);border-radius:10px;padding:12px 14px;background:var(--gray-50);font-size:13px;line-height:1.7}
+.upline-box b{color:var(--gray-800)}
+
+.event-card{background:#fff;border:1.5px solid var(--gray-200);border-radius:var(--r-lg);padding:16px 18px;margin-bottom:12px;box-shadow:var(--sh)}
+.tk-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.tk-cat{font-family:'Montserrat',sans-serif;font-weight:800;font-size:13.5px;color:var(--gray-800)}
+.tk-meta{font-size:12px;color:var(--gray-600);margin-top:3px}
+.badge{display:inline-block;padding:4px 10px;border-radius:20px;font-size:10.5px;font-weight:800;font-family:'Montserrat',sans-serif;white-space:nowrap}
+.badge-pending_files{background:#fff3cd;color:var(--amber)}
+.badge-submitted{background:#e6f8f0;color:#046a45}
+.state-link-list{font-size:12px;margin-top:8px;line-height:1.8}
+.state-link-list a{color:var(--blue-dark);text-decoration:underline}
+</style>
+</head>
+<body>
+<header class="ev-header">
+  <div class="brand"><img src="../assets/img/logo-allcaremar.png" alt="Allcare Mar"/>
+    <div><h1 id="hTitle"></h1><div class="sub" id="hSub"></div></div></div>
+  <div class="ev-header-right">
+    <button class="lang-toggle" id="langBtn">ES</button>
+    <button class="btn-logout" id="logoutBtn"></button>
+  </div>
+</header>
+
+<main class="ev-wrap">
+  <div class="ev-banner" id="apiBanner"></div>
+  <div class="ev-banner blocking" id="uplineBanner"></div>
+
+  <div class="ev-tabs" id="tabs">
+    <div class="ev-tab on" data-t="request" id="tabRequest"></div>
+    <div class="ev-tab" data-t="mine" id="tabMine"></div>
+  </div>
+
+  <div class="ev-panel" id="p-request">
+    <div class="ev-h2" id="hRequest"></div>
+    <p class="ev-hint" id="hintRequest"></p>
+
+    <div class="field">
+      <label class="frm-lbl" id="lblRequester"></label>
+      <div class="autofield" id="requesterAutofield"></div>
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label class="frm-lbl" id="lblNpn"></label>
+        <input type="text" id="fNpn" placeholder="1234567890">
+        <div class="npn-hint" id="npnLockedHint" style="display:none"></div>
+      </div>
+      <div class="field">
+        <label class="frm-lbl" id="lblWritingId"></label>
+        <input type="text" id="fWritingId">
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="frm-lbl" id="lblResidence"></label>
+      <select id="fResidence"></select>
+    </div>
+
+    <div class="field">
+      <label class="frm-lbl" id="lblCarrier"></label>
+      <select id="fCarrier"></select>
+    </div>
+
+    <div class="field">
+      <label class="frm-lbl" id="lblStates"></label>
+      <div class="states-box" id="statesBox"></div>
+      <div class="states-hint" id="statesHint"></div>
+    </div>
+
+    <div class="field">
+      <label class="frm-lbl" id="lblUploads"></label>
+      <div class="upload-section" id="uploadSection"></div>
+      <div class="states-hint" id="uploadsHint"></div>
+    </div>
+
+    <div class="field">
+      <label class="frm-lbl" id="lblUpline"></label>
+      <div class="upline-box" id="uplineBox"></div>
+    </div>
+
+    <button class="btn-primary" id="submitBtn"></button>
+    <div id="reqSuccess" style="display:none;margin-top:12px;color:var(--green);font-weight:700;font-size:13.5px"></div>
+    <div id="reqError" style="display:none;margin-top:12px;color:var(--red);font-weight:700;font-size:13.5px"></div>
+  </div>
+
+  <div class="ev-panel" id="p-mine" hidden>
+    <div class="ev-h2" id="hMine"></div>
+    <div id="myRequests"></div>
+  </div>
+</main>
+
+<script type="module">
+import { API_BASE, apiReady } from "./assets/js/api-config.js";
+import { guard, apiJson } from "./assets/js/agent-api-session.js";
+
+const session = guard();
+let curLang = 'en';
+let staffDataCache = null;
+let eligible = null; // { agent_npn_on_file, upline, carriers }
+let checkedStates = new Set(); // state codes currently checked
+let stateFiles = {}; // state code -> File object (not yet uploaded)
+
+const USMAP_REFERENCE_AGENT = 'Marcos Rodriguez-Martinez';
+const STATE_NAMES = {AK:'Alaska',AL:'Alabama',AR:'Arkansas',AZ:'Arizona',CA:'California',CO:'Colorado',CT:'Connecticut',DE:'Delaware',FL:'Florida',GA:'Georgia',HI:'Hawaii',IA:'Iowa',ID:'Idaho',IL:'Illinois',IN:'Indiana',KS:'Kansas',KY:'Kentucky',LA:'Louisiana',MA:'Massachusetts',MD:'Maryland',ME:'Maine',MI:'Michigan',MN:'Minnesota',MO:'Missouri',MS:'Mississippi',MT:'Montana',NC:'North Carolina',ND:'North Dakota',NE:'Nebraska',NH:'New Hampshire',NJ:'New Jersey',NM:'New Mexico',NV:'Nevada',NY:'New York',OH:'Ohio',OK:'Oklahoma',OR:'Oregon',PA:'Pennsylvania',RI:'Rhode Island',SC:'South Carolina',SD:'South Dakota',TN:'Tennessee',TX:'Texas',UT:'Utah',VA:'Virginia',VT:'Vermont',WA:'Washington',WI:'Wisconsin',WV:'West Virginia',WY:'Wyoming'};
+
+const I18N = {
+en:{
+  title:"Appointment / License Request", sub:"Allcare Mar Agency", logout:"Sign out",
+  apiPending:"This tool is being connected to the server — check back soon.",
+  tabRequest:"Request Appointment", tabMine:"My Requests",
+  hRequest:"Request Appointment / License with a Carrier",
+  hintRequest:"Request that a new state/carrier appointment be opened on your behalf. Your upline is filled in automatically — you don't need to enter it.",
+  lblRequester:"Agent", lblNpn:"NPN", lblWritingId:"Writing ID (optional)",
+  npnLockedHint:"🔒 NPN on file — contact administration to correct it.",
+  lblResidence:"Residence State", lblCarrier:"Carrier",
+  lblStates:"States to Request",
+  statesHint:"This list is pulled automatically from the states the agency is already licensed in — add a new state to the reference agent and it appears here on its own.",
+  stateUnavailable:"not licensed by your upline",
+  carrierPh:"— Select a carrier —", residencePh:"— Select a state —",
+  noCarriers:"No carriers are available for your upline yet — contact administration.",
+  lblUploads:"License to Request (image or PDF)", uploadsHint:"Check/uncheck states above to add or remove their upload row here — 1 file per state.",
+  uploadMissing:"No file yet", uploadChange:"Change", uploadBtn:"Upload file",
+  lblUpline:"Upline Hierarchy (automatic, not editable)",
+  uplineAgency:name=>`Agency: ${name}`, uplineNpn:npn=>`NPN: ${npn}`, uplineEmail:email=>`Email: ${email}`,
+  uplineMissing:"No upline is configured for your account yet. Contact administration before requesting an appointment.",
+  submitBtn:"Send Request", sending:"Sending…",
+  reqSuccess:caseNum=>`✓ Request ${caseNum} submitted — you'll be contacted once it's processed.`,
+  hMine:"My Requests", noMine:"You haven't submitted any appointment requests yet.",
+  statusPending:"Uploading files", statusSubmitted:"Submitted",
+  viewFile:"view file", noFile:"no file",
+  errUploadFailed:"One of the files failed to upload — try again.",
+},
+es:{
+  title:"Solicitud de Appointment / Licencia", sub:"Allcare Mar Agency", logout:"Cerrar sesión",
+  apiPending:"Esta herramienta se está conectando al servidor — vuelve a intentar en un momento.",
+  tabRequest:"Solicitar Appointment", tabMine:"Mis Solicitudes",
+  hRequest:"Solicitar Appointment / Licencia con un Carrier",
+  hintRequest:"Solicita que se te apertura un nuevo appointment de estado/carrier. Tu upline se rellena automático — no lo tienes que escribir.",
+  lblRequester:"Agente", lblNpn:"NPN", lblWritingId:"Writing ID (opcional)",
+  npnLockedHint:"🔒 NPN en archivo — contacta a administración para corregirlo.",
+  lblResidence:"Estado de Residencia", lblCarrier:"Carrier",
+  lblStates:"Estados a Solicitar",
+  statesHint:"Esta lista sale automática de los estados donde la agencia ya tiene licencia — agrega un estado nuevo al agente de referencia y aparece aquí solo.",
+  stateUnavailable:"tu upline no tiene licencia aquí",
+  carrierPh:"— Selecciona un carrier —", residencePh:"— Selecciona un estado —",
+  noCarriers:"Todavía no hay carriers disponibles para tu upline — comunícate con administración.",
+  lblUploads:"Licencia a Solicitar (imagen o PDF)", uploadsHint:"Marca/desmarca estados arriba para agregar o quitar su casilla de archivo aquí — 1 archivo por estado.",
+  uploadMissing:"Sin archivo todavía", uploadChange:"Cambiar", uploadBtn:"Subir archivo",
+  lblUpline:"Jerarquía Upline (automático, no editable)",
+  uplineAgency:name=>`Agencia: ${name}`, uplineNpn:npn=>`NPN: ${npn}`, uplineEmail:email=>`Email: ${email}`,
+  uplineMissing:"Tu cuenta todavía no tiene un upline configurado. Comunícate con administración antes de solicitar un appointment.",
+  submitBtn:"Enviar Solicitud", sending:"Enviando…",
+  reqSuccess:caseNum=>`✓ Solicitud ${caseNum} enviada — te contactarán en cuanto se procese.`,
+  hMine:"Mis Solicitudes", noMine:"Todavía no has enviado ninguna solicitud de appointment.",
+  statusPending:"Subiendo archivos", statusSubmitted:"Enviada",
+  viewFile:"ver archivo", noFile:"sin archivo",
+  errUploadFailed:"Uno de los archivos no se pudo subir — intenta de nuevo.",
+},
+};
+function t(k){ return I18N[curLang][k]; }
+
+function applyStaticText(){
+  document.getElementById('hTitle').textContent = t('title');
+  document.getElementById('hSub').textContent = t('sub');
+  document.getElementById('logoutBtn').textContent = t('logout');
+  document.getElementById('tabRequest').textContent = t('tabRequest');
+  document.getElementById('tabMine').textContent = t('tabMine');
+  document.getElementById('hRequest').textContent = t('hRequest');
+  document.getElementById('hintRequest').textContent = t('hintRequest');
+  document.getElementById('lblRequester').textContent = t('lblRequester');
+  document.getElementById('requesterAutofield').textContent = `🔒 ${session.name || session.email} — ${session.email}`;
+  document.getElementById('lblNpn').innerHTML = `${t('lblNpn')} <span class="req">*</span>`;
+  document.getElementById('lblWritingId').textContent = t('lblWritingId');
+  document.getElementById('lblResidence').innerHTML = `${t('lblResidence')} <span class="req">*</span>`;
+  document.getElementById('lblCarrier').innerHTML = `${t('lblCarrier')} <span class="req">*</span>`;
+  document.getElementById('lblStates').innerHTML = `${t('lblStates')} <span class="req">*</span>`;
+  document.getElementById('statesHint').textContent = t('statesHint');
+  document.getElementById('lblUploads').innerHTML = `${t('lblUploads')} <span class="req">*</span>`;
+  document.getElementById('uploadsHint').textContent = t('uploadsHint');
+  document.getElementById('lblUpline').textContent = t('lblUpline');
+  document.getElementById('submitBtn').textContent = t('submitBtn');
+  document.getElementById('hMine').textContent = t('hMine');
+  renderCarrierSelect();
+  renderResidenceSelect();
+  renderUplineBox();
+  renderStatesBox();
+  renderUploadRows();
+  applyNpnLockState();
+  updateSubmitBtnState();
+}
+
+document.getElementById('langBtn').addEventListener('click', ()=>{
+  curLang = curLang === 'en' ? 'es' : 'en';
+  document.getElementById('langBtn').textContent = curLang === 'en' ? 'ES' : 'EN';
+  applyStaticText();
+  if (!document.getElementById('p-mine').hidden) loadMyRequests();
+});
+document.getElementById('logoutBtn').addEventListener('click', ()=>{
+  localStorage.removeItem('acm_gsession');
+  if (typeof google !== 'undefined' && google.accounts) { try { google.accounts.id.disableAutoSelect(); } catch(e){} }
+  window.location.href = '../login.html';
+});
+
+document.querySelectorAll('.ev-tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.ev-tab').forEach(x=>x.classList.remove('on'));
+    tab.classList.add('on');
+    ['request','mine'].forEach(k=>{
+      document.getElementById('p-'+k).hidden = (k !== tab.dataset.t);
+    });
+    if (tab.dataset.t === 'mine') loadMyRequests();
+  });
+});
+
+// ---------------- Estados (desde /staff.json, mismo mecanismo que index.html) ----------------
+async function eligibleStateCodes(){
+  if(!staffDataCache){
+    try{
+      const res = await fetch('/staff.json');
+      staffDataCache = await res.json();
+    }catch(err){
+      console.error('No se pudo cargar staff.json', err);
+      return [];
+    }
+  }
+  const agent = (staffDataCache.independent_agents||[]).find(a=>a.name===USMAP_REFERENCE_AGENT);
+  const codes = (agent && agent.licensed_states && agent.licensed_states[0]!=='PENDIENTE') ? agent.licensed_states : [];
+  return codes.map(c=>c.trim().toUpperCase()).filter(c=>STATE_NAMES[c]).sort((a,b)=>STATE_NAMES[a].localeCompare(STATE_NAMES[b]));
+}
+
+function renderResidenceSelect(){
+  // Estado de Residencia = donde vive el agente, NO donde la agencia tiene
+  // licencia. Por eso usa los 50 estados completos (Object.keys(STATE_NAMES)),
+  // a diferencia de "Estados a Solicitar" que sí se filtra por
+  // eligibleStateCodes()/Marcos.
+  const sel = document.getElementById('fResidence');
+  const prev = sel.value;
+  const codes = Object.keys(STATE_NAMES).sort((a,b)=>STATE_NAMES[a].localeCompare(STATE_NAMES[b]));
+  sel.innerHTML = `<option value="">${t('residencePh')}</option>` + codes.map(c=>`<option value="${c}">${STATE_NAMES[c]} (${c})</option>`).join('');
+  if (prev && codes.includes(prev)) sel.value = prev;
+}
+
+async function renderStatesBox(){
+  // Doble filtro (2026-09-03, pedido de Jesus): la lista BASE sigue siendo
+  // los estados de Marcos (agencia completa), pero un estado solo queda
+  // SELECCIONABLE si ademas esta en eligible.upline.licensed_states (la
+  // agencia upline especifica del agente, ej. GW, tiene que tener licencia
+  // ahi tambien - por ley, no basta con que Allcare Mar la tenga). Los que
+  // no pasan el segundo filtro se MUESTRAN pero deshabilitados, con una
+  // etiqueta explicando por que, en vez de desaparecer sin explicacion.
+  const box = document.getElementById('statesBox');
+  const codes = await eligibleStateCodes();
+  const uplineStates = new Set((eligible && eligible.upline && eligible.upline.licensed_states) || []);
+  box.innerHTML = codes.map(c=>{
+    const allowed = uplineStates.has(c);
+    return `
+    <div class="state-item ${allowed?'':'disabled'}">
+      <input type="checkbox" id="st-${c}" value="${c}" ${checkedStates.has(c)?'checked':''} ${allowed?'':'disabled'}>
+      <label for="st-${c}">${STATE_NAMES[c]} (${c})${allowed?'':` — <em>${t('stateUnavailable')}</em>`}</label>
+    </div>`;
+  }).join('');
+  box.querySelectorAll('input[type=checkbox]').forEach(cb=>{
+    cb.addEventListener('change', ()=>{
+      if (cb.checked) checkedStates.add(cb.value);
+      else { checkedStates.delete(cb.value); delete stateFiles[cb.value]; }
+      renderUploadRows();
+      updateSubmitBtnState();
+    });
+  });
+}
+
+function renderUploadRows(){
+  const section = document.getElementById('uploadSection');
+  const codes = [...checkedStates].sort((a,b)=>STATE_NAMES[a].localeCompare(STATE_NAMES[b]));
+  section.innerHTML = codes.map(c=>{
+    const has = !!stateFiles[c];
+    const fname = has ? stateFiles[c].name : t('uploadMissing');
+    return `<div class="upload-row" data-state="${c}">
+      <span class="state-name">${STATE_NAMES[c]} (${c})</span>
+      <span class="filename ${has?'':'missing'}">${has?'✓ ':''}${fname}</span>
+      <label class="file-btn">${has?t('uploadChange'):t('uploadBtn')}<input type="file" accept="image/*,.pdf" data-state-input="${c}"></label>
+    </div>`;
+  }).join('');
+  section.querySelectorAll('input[type=file]').forEach(inp=>{
+    inp.addEventListener('change', ()=>{
+      const code = inp.dataset.stateInput;
+      if (inp.files[0]) stateFiles[code] = inp.files[0];
+      renderUploadRows();
+      updateSubmitBtnState();
+    });
+  });
+}
+
+// ---------------- Carriers + Upline (desde el backend) ----------------
+function renderCarrierSelect(){
+  const sel = document.getElementById('fCarrier');
+  const prev = sel.value;
+  const carriers = (eligible && eligible.carriers) || [];
+  if (!carriers.length){
+    sel.innerHTML = `<option value="">${t('noCarriers')}</option>`;
+    sel.disabled = true;
+    return;
+  }
+  sel.disabled = false;
+  sel.innerHTML = `<option value="">${t('carrierPh')}</option>` + carriers.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+  if (prev && carriers.some(c=>c.id===prev)) sel.value = prev;
+}
+
+function renderUplineBox(){
+  const box = document.getElementById('uplineBox');
+  const banner = document.getElementById('uplineBanner');
+  const upline = eligible && eligible.upline;
+  if (!upline){
+    box.innerHTML = `<em>—</em>`;
+    banner.textContent = t('uplineMissing');
+    banner.classList.add('show');
+    return;
+  }
+  banner.classList.remove('show');
+  box.innerHTML = `
+    <div>${t('uplineAgency')(upline.agency_name)}</div>
+    <div>${t('uplineNpn')(upline.npn)}</div>
+    <div>${t('uplineEmail')(upline.email)}</div>`;
+}
+
+// ---------------- Validación + envío ----------------
+let submitting = false;
+
+function formIsValid(){
+  const npn = document.getElementById('fNpn').value.trim();
+  const residence = document.getElementById('fResidence').value;
+  const carrierId = document.getElementById('fCarrier').value;
+  const hasUpline = !!(eligible && eligible.upline);
+  const statesOk = checkedStates.size > 0 && [...checkedStates].every(c=>!!stateFiles[c]);
+  return Boolean(npn && residence && carrierId && hasUpline && statesOk);
+}
+function updateSubmitBtnState(){
+  document.getElementById('submitBtn').disabled = submitting || !formIsValid();
+}
+document.getElementById('fNpn').addEventListener('input', updateSubmitBtnState);
+document.getElementById('fResidence').addEventListener('change', updateSubmitBtnState);
+document.getElementById('fCarrier').addEventListener('change', updateSubmitBtnState);
+
+document.getElementById('submitBtn').addEventListener('click', async ()=>{
+  if (submitting || !formIsValid()) return;
+  const errEl = document.getElementById('reqError');
+  const okEl = document.getElementById('reqSuccess');
+  errEl.style.display = 'none'; okEl.style.display = 'none';
+
+  submitting = true;
+  updateSubmitBtnState();
+  const submitBtnLabel = document.getElementById('submitBtn').textContent;
+  document.getElementById('submitBtn').textContent = t('sending');
+
+  try {
+    const body = {
+      npn: document.getElementById('fNpn').value.trim(),
+      writing_id: document.getElementById('fWritingId').value.trim() || null,
+      residence_state: document.getElementById('fResidence').value,
+      carrier_id: document.getElementById('fCarrier').value,
+      states: [...checkedStates],
+    };
+    const created = await apiJson(API_BASE, '/carrier-appointments', { method: 'POST', body: JSON.stringify(body) });
+
+    for (const code of checkedStates) {
+      const fd = new FormData();
+      fd.append('file', stateFiles[code]);
+      await apiJson(API_BASE, `/carrier-appointments/${created.id}/state-file/${code}`, { method: 'POST', body: fd });
+    }
+
+    await apiJson(API_BASE, `/carrier-appointments/${created.id}/finalize`, { method: 'POST' });
+
+    okEl.textContent = t('reqSuccess')(created.case_number);
+    okEl.style.display = 'block';
+    resetForm();
+  } catch (e) {
+    errEl.textContent = e.message || t('errUploadFailed');
+    errEl.style.display = 'block';
+  } finally {
+    submitting = false;
+    document.getElementById('submitBtn').textContent = submitBtnLabel;
+    updateSubmitBtnState();
+  }
+});
+
+// NPN bloqueado (2026-09-03, pedido de Jesus): cuando el NPN del agente
+// YA esta cargado en Postgres (agents.npn, via el listado que Jesus va a
+// subir - ver Progress-Sites.md), el campo se vuelve de solo lectura en
+// vez de editable, porque el NPN no cambia y asi se evita que alguien lo
+// pise por error. Si todavia no esta en archivo, se deja editable y
+// obligatorio como hasta ahora.
+function applyNpnLockState(){
+  const input = document.getElementById('fNpn');
+  const hint = document.getElementById('npnLockedHint');
+  const locked = !!(eligible && eligible.agent_npn_on_file);
+  input.readOnly = locked;
+  hint.style.display = locked ? 'block' : 'none';
+  hint.textContent = locked ? t('npnLockedHint') : '';
+}
+
+function resetForm(){
+  document.getElementById('fNpn').value = eligible.agent_npn_on_file || '';
+  applyNpnLockState();
+  document.getElementById('fWritingId').value = '';
+  document.getElementById('fResidence').selectedIndex = 0;
+  document.getElementById('fCarrier').selectedIndex = 0;
+  checkedStates = new Set();
+  stateFiles = {};
+  renderStatesBox();
+  renderUploadRows();
+  updateSubmitBtnState();
+}
+
+// ---------------- Mis Solicitudes ----------------
+async function loadMyRequests(){
+  const data = await apiJson(API_BASE, '/carrier-appointments/mine');
+  const wrap = document.getElementById('myRequests');
+  if (!data.requests.length) { wrap.innerHTML = `<p class="ev-hint">${t('noMine')}</p>`; return; }
+  wrap.innerHTML = data.requests.map(requestCardHTML).join('');
+}
+
+function fmtDate(iso){
+  try { return new Date(iso).toLocaleString(); } catch(e) { return iso; }
+}
+
+function requestCardHTML(r){
+  const badgeClass = `badge-${r.status}`;
+  const badgeText = r.status === 'submitted' ? t('statusSubmitted') : t('statusPending');
+  const statesHtml = (r.states||[]).map(s=>
+    s.file_drive_url
+      ? `${s.state_code}: <a href="${s.file_drive_url}" target="_blank" rel="noopener">${t('viewFile')}</a>`
+      : `${s.state_code}: ${t('noFile')}`
+  ).join(' · ');
+  return `<div class="event-card">
+    <div class="tk-top">
+      <div><div class="tk-cat">${r.carrier_name}</div>
+        <div class="tk-meta">${r.case_number} · ${fmtDate(r.created_at)}</div>
+      </div>
+      <span class="badge ${badgeClass}">${badgeText}</span>
+    </div>
+    <div class="state-link-list">${statesHtml}</div>
+  </div>`;
+}
+
+// ---------------- Init ----------------
+async function init(){
+  applyStaticText();
+  if (!apiReady()) {
+    document.getElementById('apiBanner').classList.add('show');
+    document.getElementById('apiBanner').textContent = t('apiPending');
+    return;
+  }
+  try {
+    eligible = await apiJson(API_BASE, '/carrier-appointments/eligible-data');
+    document.getElementById('fNpn').value = eligible.agent_npn_on_file || '';
+  } catch(e) {
+    document.getElementById('apiBanner').classList.add('show');
+    document.getElementById('apiBanner').textContent = e.message;
+    eligible = { agent_npn_on_file: '', upline: null, carriers: [] };
+  }
+  applyNpnLockState();
+  await renderStatesBox();
+  applyStaticText();
+}
+init();
+</script>
+</body>
+</html>
