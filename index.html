@@ -1494,7 +1494,10 @@ async function renderOfficeStaff(){
       const res=await fetch('staff.json');
       staffDataCache=await res.json();
     }
-    const list=staffDataCache.office_staff||[];
+    // hidden:true = sigue en staff.json (datos, historial) pero no se
+    // pinta en el sitio público - ej. Mariel Capellan (2026-09-09, pedido
+    // de Jesus: "quitala del index, dejala oculta en código").
+    const list=(staffDataCache.office_staff||[]).filter(p=>!p.hidden);
     grid.innerHTML=list.map(p=>{
       const initials=p.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
       const position=lang==='es'?(p.position_es||p.position_en):(p.position_en||p.position_es);

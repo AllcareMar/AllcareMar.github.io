@@ -19,15 +19,6 @@
       "image": "/agentes/julian-vega.webp"
     },
     {
-      "name": "Mariel Capellan",
-      "position_en": "Office Team Leader",
-      "position_es": "Líder de Equipo de Oficina",
-      "phone": "(973) 944-5544",
-      "extension": "435",
-      "email": "mcapellan@allcaremar.com",
-      "image": "/agentes/mariel-capellan.webp"
-    },
-    {
       "name": "Aurelyn Castillo",
       "position_en": "CEO Assistant",
       "position_es": "Asistente del CEO",
@@ -62,6 +53,16 @@
       "extension": "202",
       "email": "jcabreja@allcaremar.com",
       "image": "/agentes/jesus-cabreja.webp"
+    },
+    {
+      "name": "Mariel Capellan",
+      "position_en": "Office Team Leader",
+      "position_es": "Líder de Equipo de Oficina",
+      "phone": "(973) 944-5544",
+      "extension": "435",
+      "email": "mcapellan@allcaremar.com",
+      "image": "/agentes/mariel-capellan.webp",
+      "hidden": true
     }
   ],
   "independent_agents": [
