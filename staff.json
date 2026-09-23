@@ -916,6 +916,19 @@
             "unitedhealthcare"
           ],
           "planenroll": "https://www.planenroll.com/?purl=Alison-Rodriguez-Benitez"
+        },
+        {
+          "name": "Dianitza Martinez",
+          "phone": "(863) 888-2210",
+          "email": "dmartinez@allcaremar.com",
+          "licensed_states": [
+            "FL",
+            "NC"
+          ],
+          "image": "/agentes/dianitza-martinez.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ]
         }
       ]
     },
