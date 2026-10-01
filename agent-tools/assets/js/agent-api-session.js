@@ -35,6 +35,8 @@ function _getRawSession() {
 export function guard() {
   const session = _getRawSession();
   if (!session) { window.location.href = '../../../login.html'; return null; }
+  // Sales Compass-only session (login.html, scope 'compass'): agent tools are off-limits.
+  if (session.scope === 'compass') { window.location.href = '/compass/'; return null; }
   if (!isEmailAllowed(session.email) || !session.localExp || Date.now() > session.localExp) {
     localStorage.removeItem('acm_gsession');
     window.location.href = '../../../login.html';
