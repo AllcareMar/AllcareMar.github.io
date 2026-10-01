@@ -203,9 +203,12 @@ function notifyUnauthorized(email){
 // Ajustar aquí si Jesus quiere otra duración (ej. 8*60*60*1000 = 8 horas por turno).
 const SESSION_DURATION_MS = 15*24*60*60*1000; // 15 días
 
-function saveSession(payload, rawIdToken, apiSessionToken){
+function saveSession(payload, rawIdToken, apiSessionToken, scope){
   localStorage.setItem('acm_gsession', JSON.stringify({
     email: payload.email, name: payload.name || '', picture: payload.picture || '',
+    // 'compass' = Sales Compass-only user (invited in Compass > Admin > Users,
+    // not on staff.json). Every other portal page sends them to /compass/.
+    scope: scope || 'portal',
     localExp: Date.now() + SESSION_DURATION_MS,
     // Real Google id_token from this login (JWT string) + its real expiry
     // (payload.exp, seconds since epoch -> ms) — kept only as a fallback for
@@ -247,11 +250,27 @@ function getValidSession(){
   if(!raw) return null;
   let session;
   try{ session = JSON.parse(raw); }catch(e){ localStorage.removeItem('acm_gsession'); return null; }
-  if(!isEmailAllowed(session.email) || !session.localExp || Date.now() > session.localExp){
+  const okIdentity = session.scope === 'compass' || isEmailAllowed(session.email);
+  if(!okIdentity || !session.localExp || Date.now() > session.localExp){
     localStorage.removeItem('acm_gsession');
     return null;
   }
   return session;
+}
+
+// Sales Compass-only access: the person is not on the portal roster, but an
+// Admin invited them in Compass. The SERVER decides (GET /api/compass/me with
+// a token minted from this fresh Google login) - nothing is trusted here.
+async function tryCompassOnlyAccess(payload, credential){
+  const token = await exchangeForApiSessionToken(credential);
+  if(!token) return false;
+  try{
+    const r = await fetch(API_BASE + '/compass/me', { headers: { 'Authorization': 'Bearer ' + token } });
+    if(!r.ok) return false;
+  }catch(e){ return false; }
+  saveSession(payload, credential, token, 'compass');
+  window.location.href = '/compass/';
+  return true;
 }
 
 async function handleCredentialResponse(response){
@@ -268,6 +287,7 @@ async function handleCredentialResponse(response){
   await refreshAllowedEmails(API_BASE);
 
   if(!verified || !isEmailAllowed(email)){
+    if(verified && await tryCompassOnlyAccess(payload, response.credential)) return;
     showDenied('domain');
     notifyUnauthorized(email);
     return;
@@ -280,7 +300,11 @@ async function handleCredentialResponse(response){
   // department shouldn't get into the agent dashboard just by having an
   // @allcaremar.com login.
   const rosterOk = await isDashboardRosterAllowed(email);
-  if(rosterOk === false){ showDenied('staff'); return; }
+  if(rosterOk === false){
+    if(await tryCompassOnlyAccess(payload, response.credential)) return;
+    showDenied('staff');
+    return;
+  }
   if(rosterOk === null){ showDenied('error'); return; }
 
   const apiSessionToken = await exchangeForApiSessionToken(response.credential);
@@ -292,7 +316,11 @@ async function handleCredentialResponse(response){
 // full URL - so this can't be abused as an open redirect.
 function postLoginTarget(){
   const n = new URLSearchParams(location.search).get('next') || '';
-  return (/^\/(?!\/)[A-Za-z0-9_\-\/.]*$/.test(n)) ? n : 'dashboard-agentes.html';
+  const safe = /^\/(?!\/)[A-Za-z0-9_\-\/.]*$/.test(n) ? n : '';
+  let scope = 'portal';
+  try{ scope = (JSON.parse(localStorage.getItem('acm_gsession') || '{}').scope) || 'portal'; }catch(e){}
+  if(scope === 'compass') return '/compass/';   // Compass-only users never land on the dashboard
+  return safe || 'dashboard-agentes.html';
 }
 window.handleCredentialResponse = handleCredentialResponse;
 

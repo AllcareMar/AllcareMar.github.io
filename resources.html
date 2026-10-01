@@ -177,6 +177,8 @@ function applyMiniFooter(){
   if(!raw){ window.location.href='login.html'; return; }
   let session;
   try{ session = JSON.parse(raw); }catch(e){ localStorage.removeItem('acm_gsession'); window.location.href='login.html'; return; }
+  // Sales Compass-only session (login.html, scope 'compass'): not allowed in the portal.
+  if(session.scope === 'compass'){ window.location.href='/compass/'; return; }
   if(!isEmailAllowed(session.email) || !session.localExp || Date.now() > session.localExp){
     localStorage.removeItem('acm_gsession');
     window.location.href='login.html';
