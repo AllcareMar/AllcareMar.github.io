@@ -285,7 +285,14 @@ async function handleCredentialResponse(response){
 
   const apiSessionToken = await exchangeForApiSessionToken(response.credential);
   saveSession(payload, response.credential, apiSessionToken);
-  window.location.href = 'dashboard-agentes.html';
+  window.location.href = postLoginTarget();
+}
+// 2026-10-01: optional ?next=/compass/ return path (Sales Compass and other
+// internal apps). Only same-origin absolute paths are accepted - never a
+// full URL - so this can't be abused as an open redirect.
+function postLoginTarget(){
+  const n = new URLSearchParams(location.search).get('next') || '';
+  return (/^\/(?!\/)[A-Za-z0-9_\-\/.]*$/.test(n)) ? n : 'dashboard-agentes.html';
 }
 window.handleCredentialResponse = handleCredentialResponse;
 
@@ -336,7 +343,7 @@ window.onload = function(){
   // dentro de handleCredentialResponse() con await.
   refreshAllowedEmails(API_BASE);
   // Si ya hay sesión válida guardada en este navegador, ni mostramos el login.
-  if(getValidSession()){ window.location.href = 'dashboard-agentes.html'; return; }
+  if(getValidSession()){ window.location.href = postLoginTarget(); return; }
   applyLang();
 };
 </script>

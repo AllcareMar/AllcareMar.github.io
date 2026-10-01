@@ -124,10 +124,14 @@ export async function isDashboardRosterAllowed(email) {
     const resp = await fetch("/staff.json", { cache: "no-store" });
     if (!resp.ok) return null;
     const data = await resp.json();
-    if ((data.office_staff || []).some(p => (p.email || "").toLowerCase() === e)) return true;
-    if ((data.independent_agents || []).some(p => (p.email || "").toLowerCase() === e)) return true;
+    // 2026-10-01: entries flagged dashboard_access:false (e.g. NEXTGEN agents
+    // Mercedes Fernandez / Cardosil Faulcon) keep their public agent card but
+    // are denied dashboard login until Jesus explicitly enables them.
+    const match = p => (p.email || "").toLowerCase() === e && p.dashboard_access !== false;
+    if ((data.office_staff || []).some(match)) return true;
+    if ((data.independent_agents || []).some(match)) return true;
     for (const agency of (data.partner_agencies || [])) {
-      if ((agency.agents || []).some(p => (p.email || "").toLowerCase() === e)) return true;
+      if ((agency.agents || []).some(match)) return true;
     }
     return false;
   } catch (err) {
