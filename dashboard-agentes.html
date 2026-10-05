@@ -404,10 +404,11 @@ const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxax1NwoYg81T
 
 // Cuentas de la agencia exentas del gate (no son agentes que deban firmar
 // el Confidentiality Agreement). EXEMPT_GATE_ACTIVE queda en false mientras
-// se está probando el flujo completo (para poder testear como jcabreja@) —
-// ⚠️ CAMBIAR A true antes de subir esta versión a GitHub / producción.
+// se está probando el flujo completo (para poder testear como jcabreja@).
+// 2026-10-05: activado - info@ firmaba y Jotform no devolvía su envío, el
+// portal quedaba bloqueado en el gate (cuentas de agencia, no agentes).
 const EXEMPT_EMAILS = ['info@allcaremar.com', 'jcabreja@allcaremar.com'];
-const EXEMPT_GATE_ACTIVE = false;
+const EXEMPT_GATE_ACTIVE = true;
 
 function getCachedSigned(email){
   try{
@@ -482,7 +483,14 @@ async function runSignatureGate(session){
   // Confirmado (o se agotaron los reintentos post-firma): recién ahora se
   // revela el modal con el botón — no antes, para no mostrarlo de más.
   revealSignModal();
-  if(justSigned) checkingEl.style.display = 'none';
+  if(justSigned){
+    // Firmó pero Jotform todavía no devuelve su envío: se explica en vez de
+    // dejar al agente en un ciclo sin salida (reporte de Jesus 2026-10-05).
+    checkingEl.style.display = 'block';
+    checkingEl.textContent = curLang==='en'
+      ? 'Your signature is not confirmed yet. Wait 1 minute and reload this page. If it keeps asking, contact the Allcare office (the form may have been sent with a different email).'
+      : 'Tu firma todavía no aparece confirmada. Espera 1 minuto y recarga la página. Si lo sigue pidiendo, contacta a la oficina de Allcare (el formulario pudo enviarse con otro email).';
+  }
 }
 
 function guard(){
