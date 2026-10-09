@@ -203,6 +203,7 @@ section{padding:88px 0}
 .carrier-marquee-track:hover{animation-play-state:paused}
 @keyframes carrierMarquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .carrier-tile{background:#fff;border:1.5px solid var(--gray-200);border-radius:var(--r);padding:20px 16px;text-align:center;transition:var(--t);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;min-height:112px;width:210px;flex-shrink:0}
+.carrier-tile[hidden]{display:none!important} /* 2026-10-09: carriers without license (Horizon, EmblemHealth, Fidelis, Molina) hidden from the public - remove hidden to show again */
 .carrier-tile:hover{border-color:var(--blue);transform:translateY(-4px);box-shadow:var(--sh)}
 .carrier-tile:hover .ct-cta{color:var(--red)}
 .ct-logo-img{max-width:100%;width:auto;height:auto;max-height:76px;object-fit:contain;flex-shrink:0}
@@ -516,7 +517,7 @@ footer{background:#0a1340;padding:60px 0 0}
 <script>
 const T={
   en:{
-    topbar:"📞 Call Toll-Free: <a href='tel:8006975631'>800.697.5631</a> &nbsp;|&nbsp; Mon–Fri 9AM–5:30PM, Sat 9AM–2PM &nbsp;|&nbsp; 100% Free Service for Medicare Beneficiaries &nbsp;|&nbsp; <a href='#contact'>Se Habla Español</a>",
+    topbar:"📞 Call Toll-Free: <a href='tel:8006975631'>800.697.5631</a> &nbsp;|&nbsp; Mon–Fri 9AM–7PM, Sat 9AM–2PM &nbsp;|&nbsp; 100% Free Service for Medicare Beneficiaries &nbsp;|&nbsp; <a href='#contact'>Se Habla Español</a>",
     hero_eyebrow:"Licensed Medicare Agents · No Cost to You",
     hero_h1:"Local, Trusted Guidance on <em>Medicare</em> Plans",
     hero_desc:"We are independent insurance representatives helping seniors across the country find the best Medicare Advantage, Supplement, and Prescription Drug plans — from the top carriers.",
@@ -570,7 +571,7 @@ const T={
     map_ey:"Find Us",map_title:"Visit Us or Call — We\'re Here for You",map_desc:"We serve clients in-person, by phone, or by video call — wherever is most convenient for you.",
     lbl_addr:"Address",lbl_phone:"Phone",lbl_email:"Email",lbl_hours:"Business Hours",
     addr_val:"546 Avenue C, Bayonne, NJ 07002",ph_val:"<a href='tel:8006975631'>800.697.5631</a> (Toll-Free)",em_val:"<a href='mailto:info@allcaremar.com'>info@allcaremar.com</a>",
-    h1:"Mon – Fri",h1v:"9:00 AM – 5:30 PM",h2:"Saturday",h2v:"9:00 AM – 2:00 PM",h3:"Sunday",h3v:"Closed",
+    h1:"Mon – Fri",h1v:"9:00 AM – 7:00 PM",h2:"Saturday",h2v:"9:00 AM – 2:00 PM",h3:"Sunday",h3v:"Closed",
     cf_ey:"Contact Us",cf_title:"Request Your <em>Free Consultation</em>",cf_h3:"Tell Us About You",cf_sub:"We\'ll respond within 24 business hours. No commitment, no cost.",
     lb_fn:"First Name",lb_ln:"Last Name",lb_ph:"Phone Number",lb_em:"Email",lb_age:"Your Age Range",lb_int:"I\'m Interested In",lb_state:"State of Residence",lb_zip:"ZIP Code",lb_resaddr:"Address (optional)",lb_msg:"Message (optional)",
     age_opt:["Select age range","60–64 (turning 65 soon)","65–70","71–79","80 or older"],
@@ -592,7 +593,7 @@ const T={
     fn_med:"Medicare",fl_ma:"Medicare Advantage",fl_ms:"Medicare Supplement",fl_pd:"Prescription Drug Plans",fl_dsnp:"DSNP Plans",
     fn_res:"Resources",fl_comp:"Plan Comparisons",fl_bas:"Medicare Basics",fl_faq:"FAQs",fl_ev:"Events",
     fn_co:"Company",fl_ab:"About Us",fl_team:"Our Team",fl_car:"Careers",fl_con:"Contact",
-    fn_sup:"Support",fl_p1:"800.697.5631",fl_p2:"info@allcaremar.com",fl_p3:"Mon–Fri 9AM–5:30PM, Sat 9AM–2PM",fl_p4:"Se Habla Español",
+    fn_sup:"Support",fl_p1:"800.697.5631",fl_p2:"info@allcaremar.com",fl_p3:"Mon–Fri 9AM–7PM, Sat 9AM–2PM",fl_p4:"Se Habla Español",
     copy:"© 2026 Allcare Mar Insurance Agents. All Rights Reserved.",
     priv:"Privacy Policy",terms:"Terms of Use",cms_disc:"CMS Disclaimer",access:"Accessibility",
     privsum_ey:"HIPAA & HITECH Compliance",
@@ -605,7 +606,7 @@ const T={
     privsum_btn_label:"View Full Privacy & Security Policy (PDF)"
   },
   es:{
-    topbar:"📞 Llamada Gratuita: <a href='tel:8006975631'>800.697.5631</a> &nbsp;|&nbsp; Lun–Vie 9AM–5:30PM, Sáb 9AM–2PM &nbsp;|&nbsp; Servicio 100% Gratuito · Se Habla Español &nbsp;|&nbsp; <a href='#contact'>Contáctenos</a>",
+    topbar:"📞 Llamada Gratuita: <a href='tel:8006975631'>800.697.5631</a> &nbsp;|&nbsp; Lun–Vie 9AM–7PM, Sáb 9AM–2PM &nbsp;|&nbsp; Servicio 100% Gratuito · Se Habla Español &nbsp;|&nbsp; <a href='#contact'>Contáctenos</a>",
     hero_eyebrow:"Agentes Certificados de Medicare · Sin Costo para Ti",
     hero_h1:"Agentes Locales y de Confianza en Planes <em>Medicare</em>",
     hero_desc:"Somos representantes independientes de seguros que ayudamos a personas mayores en todo el país a encontrar los mejores planes de Medicare Advantage, Suplementario y Medicamentos — con las aseguradoras líderes.",
@@ -659,7 +660,7 @@ const T={
     map_ey:"Encuéntranos",map_title:"Visítanos o Llama — Estamos Aquí para Ti",map_desc:"Atendemos en persona, por teléfono o videollamada — donde sea más cómodo para ti.",
     lbl_addr:"Dirección",lbl_phone:"Teléfono",lbl_email:"Correo",lbl_hours:"Horario de Atención",
     addr_val:"546 Avenue C, Bayonne, NJ 07002",ph_val:"<a href='tel:8006975631'>800.697.5631</a> (Sin Costo)",em_val:"<a href='mailto:info@allcaremar.com'>info@allcaremar.com</a>",
-    h1:"Lun – Vie",h1v:"9:00 AM – 5:30 PM",h2:"Sábado",h2v:"9:00 AM – 2:00 PM",h3:"Domingo",h3v:"Cerrado",
+    h1:"Lun – Vie",h1v:"9:00 AM – 7:00 PM",h2:"Sábado",h2v:"9:00 AM – 2:00 PM",h3:"Domingo",h3v:"Cerrado",
     cf_ey:"Contáctenos",cf_title:"Solicita tu <em>Consulta Gratuita</em>",cf_h3:"Cuéntanos Sobre Ti",cf_sub:"Respondemos dentro de 24 horas hábiles. Sin compromiso, sin costo.",
     lb_fn:"Nombre",lb_ln:"Apellido",lb_ph:"Teléfono",lb_em:"Correo Electrónico",lb_age:"Tu Rango de Edad",lb_int:"Me Interesa",lb_state:"Estado de Residencia",lb_zip:"Código Postal",lb_resaddr:"Dirección (opcional)",lb_msg:"Mensaje (opcional)",
     age_opt:["Selecciona rango","60–64 (próximo a cumplir 65)","65–70","71–79","80 años o más"],
@@ -681,7 +682,7 @@ const T={
     fn_med:"Medicare",fl_ma:"Medicare Advantage",fl_ms:"Medicare Suplementario",fl_pd:"Planes de Medicamentos",fl_dsnp:"Planes DSNP",
     fn_res:"Recursos",fl_comp:"Comparación de Planes",fl_bas:"Conceptos Básicos",fl_faq:"Preguntas Frecuentes",fl_ev:"Eventos",
     fn_co:"Compañía",fl_ab:"Sobre Nosotros",fl_team:"Nuestro Equipo",fl_car:"Empleo",fl_con:"Contacto",
-    fn_sup:"Soporte",fl_p1:"800.697.5631",fl_p2:"info@allcaremar.com",fl_p3:"Lun–Vie 9AM–5:30PM, Sáb 9AM–2PM",fl_p4:"Se Habla Español",
+    fn_sup:"Soporte",fl_p1:"800.697.5631",fl_p2:"info@allcaremar.com",fl_p3:"Lun–Vie 9AM–7PM, Sáb 9AM–2PM",fl_p4:"Se Habla Español",
     copy:"© 2026 Allcare Mar Insurance Agents. Todos los derechos reservados.",
     priv:"Política de Privacidad",terms:"Términos de Uso",cms_disc:"Divulgación CMS",access:"Accesibilidad",
     privsum_ey:"Cumplimiento HIPAA y HITECH",
@@ -1027,13 +1028,13 @@ function setLang(l){
       <a class="carrier-tile" href="agents.html?carrier=humana" aria-label="View agents licensed to sell Humana"><img class="ct-logo-img" src="assets/img/carriers/humana.webp" alt="Humana" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
       <a class="carrier-tile" href="agents.html?carrier=devoted-health" aria-label="View agents licensed to sell Devoted Health"><img class="ct-logo-img" src="assets/img/carriers/devoted-health.webp" alt="Devoted Health" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
       <a class="carrier-tile" href="agents.html?carrier=jefferson-health" aria-label="View agents licensed to sell Jefferson Health Plans"><img class="ct-logo-img" src="assets/img/carriers/jefferson-health.webp" alt="Jefferson Health Plans" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
-      <a class="carrier-tile" href="agents.html?carrier=horizon" aria-label="View agents licensed to sell Horizon BCBSNJ"><img class="ct-logo-img" src="assets/img/carriers/horizon.webp" alt="Horizon BCBSNJ" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
+      <a class="carrier-tile" data-inactive="no-license-2026-10" hidden href="agents.html?carrier=horizon" aria-label="View agents licensed to sell Horizon BCBSNJ"><img class="ct-logo-img" src="assets/img/carriers/horizon.webp" alt="Horizon BCBSNJ" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
       <a class="carrier-tile" href="agents.html?carrier=anthem" aria-label="View agents licensed to sell Anthem"><img class="ct-logo-img" src="assets/img/carriers/anthem.webp" alt="Anthem" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
       <a class="carrier-tile" href="agents.html?carrier=hs" aria-label="View agents licensed to sell HealthSpring"><img class="ct-logo-img" src="assets/img/carriers/healthspring.webp" alt="HealthSpring" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
-      <a class="carrier-tile" href="agents.html?carrier=emblemhealth" aria-label="View agents licensed to sell EmblemHealth"><img class="ct-logo-img" src="assets/img/carriers/emblemhealth.webp" alt="EmblemHealth" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
-      <a class="carrier-tile" href="agents.html?carrier=fidelis" aria-label="View agents licensed to sell Fidelis Care"><img class="ct-logo-img" src="assets/img/carriers/fidelis.webp" alt="Fidelis Care" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
+      <a class="carrier-tile" data-inactive="no-license-2026-10" hidden href="agents.html?carrier=emblemhealth" aria-label="View agents licensed to sell EmblemHealth"><img class="ct-logo-img" src="assets/img/carriers/emblemhealth.webp" alt="EmblemHealth" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
+      <a class="carrier-tile" data-inactive="no-license-2026-10" hidden href="agents.html?carrier=fidelis" aria-label="View agents licensed to sell Fidelis Care"><img class="ct-logo-img" src="assets/img/carriers/fidelis.webp" alt="Fidelis Care" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
       <a class="carrier-tile" href="agents.html?carrier=healthfirst" aria-label="View agents licensed to sell Healthfirst"><img class="ct-logo-img" src="assets/img/carriers/healthfirst.webp" alt="Healthfirst" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
-      <a class="carrier-tile" href="agents.html?carrier=molina-healthcare" aria-label="View agents licensed to sell Molina Healthcare"><img class="ct-logo-img" src="assets/img/carriers/molina-healthcare.webp" alt="Molina Healthcare" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
+      <a class="carrier-tile" data-inactive="no-license-2026-10" hidden href="agents.html?carrier=molina-healthcare" aria-label="View agents licensed to sell Molina Healthcare"><img class="ct-logo-img" src="assets/img/carriers/molina-healthcare.webp" alt="Molina Healthcare" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
       <a class="carrier-tile" href="agents.html?carrier=scanhealth" aria-label="View agents licensed to sell SCAN Health Plan"><img class="ct-logo-img" src="assets/img/carriers/scanhealth.webp" alt="SCAN Health Plan" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
       <a class="carrier-tile" href="agents.html?carrier=wellcare" aria-label="View agents licensed to sell Wellcare"><img class="ct-logo-img" src="assets/img/carriers/wellcare.webp" alt="Wellcare" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
       <a class="carrier-tile" href="agents.html?carrier=wellpoint" aria-label="View agents licensed to sell Wellpoint"><img class="ct-logo-img" src="assets/img/carriers/wellpoint.webp" alt="Wellpoint" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
@@ -1043,13 +1044,13 @@ function setLang(l){
       <a class="carrier-tile" href="agents.html?carrier=humana" aria-label="View agents licensed to sell Humana" aria-hidden="true" tabindex="-1"><img class="ct-logo-img" src="assets/img/carriers/humana.webp" alt="Humana" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
       <a class="carrier-tile" href="agents.html?carrier=devoted-health" aria-label="View agents licensed to sell Devoted Health" aria-hidden="true" tabindex="-1"><img class="ct-logo-img" src="assets/img/carriers/devoted-health.webp" alt="Devoted Health" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
       <a class="carrier-tile" href="agents.html?carrier=jefferson-health" aria-label="View agents licensed to sell Jefferson Health Plans" aria-hidden="true" tabindex="-1"><img class="ct-logo-img" src="assets/img/carriers/jefferson-health.webp" alt="Jefferson Health Plans" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
-      <a class="carrier-tile" href="agents.html?carrier=horizon" aria-label="View agents licensed to sell Horizon BCBSNJ" aria-hidden="true" tabindex="-1"><img class="ct-logo-img" src="assets/img/carriers/horizon.webp" alt="Horizon BCBSNJ" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
+      <a class="carrier-tile" data-inactive="no-license-2026-10" hidden href="agents.html?carrier=horizon" aria-label="View agents licensed to sell Horizon BCBSNJ" aria-hidden="true" tabindex="-1"><img class="ct-logo-img" src="assets/img/carriers/horizon.webp" alt="Horizon BCBSNJ" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
       <a class="carrier-tile" href="agents.html?carrier=anthem" aria-label="View agents licensed to sell Anthem" aria-hidden="true" tabindex="-1"><img class="ct-logo-img" src="assets/img/carriers/anthem.webp" alt="Anthem" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
       <a class="carrier-tile" href="agents.html?carrier=hs" aria-label="View agents licensed to sell HealthSpring" aria-hidden="true" tabindex="-1"><img class="ct-logo-img" src="assets/img/carriers/healthspring.webp" alt="HealthSpring" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
-      <a class="carrier-tile" href="agents.html?carrier=emblemhealth" aria-label="View agents licensed to sell EmblemHealth" aria-hidden="true" tabindex="-1"><img class="ct-logo-img" src="assets/img/carriers/emblemhealth.webp" alt="EmblemHealth" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
-      <a class="carrier-tile" href="agents.html?carrier=fidelis" aria-label="View agents licensed to sell Fidelis Care" aria-hidden="true" tabindex="-1"><img class="ct-logo-img" src="assets/img/carriers/fidelis.webp" alt="Fidelis Care" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
+      <a class="carrier-tile" data-inactive="no-license-2026-10" hidden href="agents.html?carrier=emblemhealth" aria-label="View agents licensed to sell EmblemHealth" aria-hidden="true" tabindex="-1"><img class="ct-logo-img" src="assets/img/carriers/emblemhealth.webp" alt="EmblemHealth" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
+      <a class="carrier-tile" data-inactive="no-license-2026-10" hidden href="agents.html?carrier=fidelis" aria-label="View agents licensed to sell Fidelis Care" aria-hidden="true" tabindex="-1"><img class="ct-logo-img" src="assets/img/carriers/fidelis.webp" alt="Fidelis Care" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
       <a class="carrier-tile" href="agents.html?carrier=healthfirst" aria-label="View agents licensed to sell Healthfirst" aria-hidden="true" tabindex="-1"><img class="ct-logo-img" src="assets/img/carriers/healthfirst.webp" alt="Healthfirst" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
-      <a class="carrier-tile" href="agents.html?carrier=molina-healthcare" aria-label="View agents licensed to sell Molina Healthcare" aria-hidden="true" tabindex="-1"><img class="ct-logo-img" src="assets/img/carriers/molina-healthcare.webp" alt="Molina Healthcare" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
+      <a class="carrier-tile" data-inactive="no-license-2026-10" hidden href="agents.html?carrier=molina-healthcare" aria-label="View agents licensed to sell Molina Healthcare" aria-hidden="true" tabindex="-1"><img class="ct-logo-img" src="assets/img/carriers/molina-healthcare.webp" alt="Molina Healthcare" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
       <a class="carrier-tile" href="agents.html?carrier=scanhealth" aria-label="View agents licensed to sell SCAN Health Plan" aria-hidden="true" tabindex="-1"><img class="ct-logo-img" src="assets/img/carriers/scanhealth.webp" alt="SCAN Health Plan" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
       <a class="carrier-tile" href="agents.html?carrier=wellcare" aria-label="View agents licensed to sell Wellcare" aria-hidden="true" tabindex="-1"><img class="ct-logo-img" src="assets/img/carriers/wellcare.webp" alt="Wellcare" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
       <a class="carrier-tile" href="agents.html?carrier=wellpoint" aria-label="View agents licensed to sell Wellpoint" aria-hidden="true" tabindex="-1"><img class="ct-logo-img" src="assets/img/carriers/wellpoint.webp" alt="Wellpoint" loading="lazy"/><span class="ct-cta"><span class="ct-cta-txt">View Agents</span> <i class="fas fa-arrow-right"></i></span></a>
