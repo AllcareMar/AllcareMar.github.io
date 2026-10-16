@@ -106,6 +106,7 @@ async function _exchangeForApiToken(googleIdToken) {
     method: 'POST',
     headers: { 'Authorization': 'Bearer ' + googleIdToken }
   });
+  if (resp.status >= 500) throw new TypeError('server_unavailable'); // proxy/API down, not an auth issue
   if (!resp.ok) throw new Error('session_exchange_failed');
   const data = await resp.json();
   const session = _getRawSession();
@@ -134,7 +135,14 @@ export async function getApiSessionToken() {
 export async function apiFetch(apiBase, path, options = {}) {
   let token;
   try { token = await getApiSessionToken(); }
-  catch (e) { window.location.href = '../../../login.html'; throw e; }
+  catch (e) {
+    // 2026-10-13: a network failure (server/Funnel down -> TypeError "Failed
+    // to fetch") is NOT an auth problem. Redirecting to login.html here sent
+    // agents back to the dashboard (login.html sees a valid UI session and
+    // forwards there), hiding the real cause. Show the error on the page instead.
+    if (e instanceof TypeError) throw new Error('Server unavailable — please try again in a few minutes / Servidor no disponible — intente de nuevo en unos minutos');
+    window.location.href = '../../../login.html'; throw e;
+  }
 
   // No Content-Type for FormData (file uploads) - the browser sets its own
   // multipart boundary automatically, and only if we don't set the header
