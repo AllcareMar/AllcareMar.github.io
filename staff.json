@@ -1,5 +1,5 @@
 {
-  "_readme": "Single source of truth for the Allcare Mar agent directory. Used by index.html (office_staff only) and agents.html (independent_agents + partner_agencies). Synced from Agent-Contact-Website.xlsx (authoritative source, 2026-10-01); agent order follows the Excel exactly. licensed_states uses 2-letter codes; ['PENDIENTE'] = no licensed states recorded yet (never invent license data). carriers = array of slugs (unitedhealthcare, aetna, humana, devoted-health, jefferson-health, horizon, anthem, hs (HealthSpring), emblemhealth, fidelis, healthfirst, molina-healthcare, scanhealth, wellcare, wellpoint, clover-health) mapped from Excel column F codes (AET/HUM/DEV/JEF/HOR/ANT/HS/EMB/FID/HF/MOL/SCAN/WC/WP/CLH); everyone gets unitedhealthcare by default. Drives agents.html?carrier=<slug>. planenroll (optional URL) = Excel column G; enables the profile button on the agent card. active:false = kept in the roster but no public card. dashboard_access:false = public card only, login to dashboard-agentes.html denied by isDashboardRosterAllowed() until Jesus says otherwise. Partner agency 'leader' / agent 'is_leader' = agency leader, contact point for future updates (e.g. NEXTGEN Health Agency -> Oliver Jimenez).",
+  "_readme": "Single source of truth for the Allcare Mar agent directory. Used by index.html (office_staff only) and agents.html (independent_agents + partner_agencies). Synced from Agent-Contact-Website.xlsx (authoritative source, 2026-10-29); agent order follows the Excel exactly. licensed_states uses 2-letter codes; ['PENDIENTE'] = no licensed states recorded yet (never invent license data). carriers = array of slugs (unitedhealthcare, aetna, humana, devoted-health, jefferson-health, horizon, anthem, hs (HealthSpring), emblemhealth, fidelis, healthfirst, molina-healthcare, scanhealth, wellcare, wellpoint, clover-health) mapped from Excel column F codes (AET/HUM/DEV/JEF/HOR/ANT/HS/EMB/FID/HF/MOL/SCAN/WC/WP/CLH); everyone gets unitedhealthcare by default. Drives agents.html?carrier=<slug>. planenroll (optional URL) = Excel column G; enables the profile button on the agent card. active:false = kept in the roster but no public card. dashboard_access:false = public card only, login to dashboard-agentes.html denied by isDashboardRosterAllowed() until Jesus says otherwise. Partner agency 'leader' / agent 'is_leader' = agency leader, contact point for future updates (e.g. NEXTGEN Health Agency -> Oliver Jimenez).",
   "office_staff": [
     {
       "name": "Waldo Martinez",
@@ -134,7 +134,8 @@
         "hs",
         "scanhealth",
         "clover-health"
-      ]
+      ],
+      "planenroll": "https://www.planenroll.com/?purl=Iris-Balgobin"
     },
     {
       "name": "Yaisha Colon",
@@ -152,7 +153,8 @@
         "humana",
         "devoted-health",
         "hs"
-      ]
+      ],
+      "planenroll": "https://www.planenroll.com/?purl=Yaisha-Colon-Perez"
     },
     {
       "name": "Jonathan Fernandez",
@@ -197,7 +199,8 @@
         "devoted-health",
         "hs",
         "scanhealth"
-      ]
+      ],
+      "planenroll": "https://www.planenroll.com/AgentBio?purl=Jesus-Garcia-7"
     },
     {
       "name": "Ramon Gil",
@@ -212,7 +215,8 @@
       "image": "/agentes/ramon-gil.webp",
       "carriers": [
         "unitedhealthcare"
-      ]
+      ],
+      "planenroll": "https://www.planenroll.com/AgentBio?purl=Ramon-Gil"
     },
     {
       "name": "Tayler Gray",
@@ -264,7 +268,8 @@
       "image": "/agentes/felix-liriano.webp",
       "carriers": [
         "unitedhealthcare"
-      ]
+      ],
+      "planenroll": "https://www.planenroll.com/AgentBio?purl=Felix-Liriano"
     },
     {
       "name": "Kimberly Lopez",
@@ -291,7 +296,8 @@
         "devoted-health",
         "hs",
         "scanhealth"
-      ]
+      ],
+      "planenroll": "https://www.planenroll.com/AgentBio?purl=Kimberly-Lopez-Caro"
     },
     {
       "name": "Nelson Lopez",
@@ -374,7 +380,8 @@
       "image": "/agentes/francia-munoz.webp",
       "carriers": [
         "unitedhealthcare"
-      ]
+      ],
+      "planenroll": "https://www.planenroll.com/AgentBio?purl=Francia-Munoz"
     },
     {
       "name": "Joshua Munoz",
@@ -394,7 +401,8 @@
         "devoted-health",
         "hs",
         "clover-health"
-      ]
+      ],
+      "planenroll": "https://www.planenroll.com/AgentBio?purl=Joshua-Munoz"
     },
     {
       "name": "Paola Peguero",
@@ -418,7 +426,8 @@
         "healthfirst",
         "scanhealth",
         "clover-health"
-      ]
+      ],
+      "planenroll": "https://www.planenroll.com/AgentBio?purl=Paola-Peguero"
     },
     {
       "name": "Carlos Perez",
@@ -528,6 +537,21 @@
         "clover-health"
       ],
       "planenroll": "https://www.planenroll.com/?purl=Sixto-Rodriguez"
+    },
+    {
+      "name": "Luis Rodriguez",
+      "phone": "(201) 578-9172",
+      "extension": "172",
+      "email": "luis.rod@allcaremar.com",
+      "licensed_states": [
+        "NJ",
+        "TN",
+        "AL"
+      ],
+      "carriers": [
+        "unitedhealthcare"
+      ],
+      "image": "/agentes/luis-rodriguez.webp"
     },
     {
       "name": "Marcos Rodriguez-Martinez",
@@ -688,6 +712,19 @@
       "planenroll": "https://www.planenroll.com/?purl=Maria-Santiago-1"
     },
     {
+      "name": "Bryan Song",
+      "phone": "(551) 284-3664",
+      "extension": "3664",
+      "email": "bsong@allcaremar.com",
+      "licensed_states": [
+        "NJ"
+      ],
+      "image": "/agentes/bryan-song.webp",
+      "carriers": [
+        "unitedhealthcare"
+      ]
+    },
+    {
       "name": "Diego Zetina",
       "phone": "(956) 462-1262",
       "extension": "1262",
@@ -702,21 +739,8 @@
         "humana",
         "devoted-health",
         "hs"
-      ]
-    },
-    {
-      "name": "Luis Rodriguez",
-      "phone": "(201) 578-9172",
-      "extension": "172",
-      "email": "luis.rod@allcaremar.com",
-      "licensed_states": [
-        "PENDIENTE"
       ],
-      "carriers": [
-        "unitedhealthcare"
-      ],
-      "image": "/agentes/luis-rodriguez.webp",
-      "active": false
+      "planenroll": "https://planenroll.com/?purl=Diego-Zetina-Pantoja"
     }
   ],
   "partner_agencies": [
@@ -736,7 +760,8 @@
           "image": "/agentes/karitssa-barry.webp",
           "carriers": [
             "unitedhealthcare"
-          ]
+          ],
+          "planenroll": "https://www.planenroll.com/?purl=Karitssa-Barry"
         },
         {
           "name": "Glorie Alicea",
@@ -749,7 +774,8 @@
           "image": "/agentes/glorie-alicea.webp",
           "carriers": [
             "unitedhealthcare"
-          ]
+          ],
+          "planenroll": "https://www.planenroll.com/AgentBio?purl=Glorie-Alicea"
         },
         {
           "name": "Patricia Sixon",
@@ -767,7 +793,8 @@
           "carriers": [
             "unitedhealthcare",
             "healthfirst"
-          ]
+          ],
+          "planenroll": "https://www.planenroll.com/?purl=Patricia-Sixon"
         },
         {
           "name": "Yisel Rosario",
@@ -806,7 +833,8 @@
             "hs",
             "healthfirst",
             "scanhealth"
-          ]
+          ],
+          "planenroll": "https://www.planenroll.com/AgentBio?purl=Julian-Vega"
         }
       ]
     },
@@ -978,11 +1006,13 @@
           "email": "gbrito@allcaremar.com",
           "licensed_states": [
             "NJ",
-            "PA"
+            "PA",
+            "FL"
           ],
           "image": "/agentes/gabriela-brito.webp",
           "carriers": [
             "unitedhealthcare",
+            "aetna",
             "humana",
             "devoted-health",
             "clover-health"
@@ -1004,7 +1034,8 @@
           "carriers": [
             "unitedhealthcare",
             "humana"
-          ]
+          ],
+          "planenroll": "https://www.planenroll.com/?purl=Jose-Fernandez-4"
         },
         {
           "name": "Glorivette Giunto",
@@ -1136,7 +1167,23 @@
           "carriers": [
             "unitedhealthcare",
             "humana"
-          ]
+          ],
+          "planenroll": "https://www.planenroll.com/AgentBio?purl=Brittany-Gibbs"
+        },
+        {
+          "name": "Valencia Noel",
+          "phone": "(646) 499-2583",
+          "extension": "2583",
+          "email": "vnoel@allcaremar.com",
+          "licensed_states": [
+            "NJ",
+            "NY"
+          ],
+          "image": "/agentes/valencia-noel.webp",
+          "carriers": [
+            "unitedhealthcare"
+          ],
+          "planenroll": "https://www.planenroll.com/AgentBio?purl=Valencia-Noel"
         },
         {
           "name": "Amanda Ortiz",
@@ -1174,7 +1221,8 @@
             "unitedhealthcare",
             "devoted-health",
             "hs"
-          ]
+          ],
+          "planenroll": "https://www.planenroll.com/AgentBio?purl=Roland-Pinzon"
         },
         {
           "name": "Carol Quinones",
@@ -1191,7 +1239,8 @@
           "carriers": [
             "unitedhealthcare",
             "humana"
-          ]
+          ],
+          "planenroll": "https://www.planenroll.com/AgentBio?purl=Carol-Quinones"
         },
         {
           "name": "Olga Reyes",
@@ -1219,7 +1268,8 @@
           "carriers": [
             "unitedhealthcare",
             "humana"
-          ]
+          ],
+          "planenroll": "https://www.planenroll.com/AgentBio?purl=Samir-Sanchez"
         },
         {
           "name": "Tammy Tanksley",
@@ -1350,6 +1400,8 @@
           "image": "/agentes/ana-michelle-christopher.webp",
           "carriers": [
             "unitedhealthcare",
+            "aetna",
+            "humana",
             "devoted-health",
             "hs"
           ],
@@ -1370,7 +1422,8 @@
           "image": "/agentes/emanuel-cruz.webp",
           "carriers": [
             "unitedhealthcare"
-          ]
+          ],
+          "planenroll": "https://www.planenroll.com/AgentBio?purl=Emanuel-Cruz"
         },
         {
           "name": "Carlos Ortega",
@@ -1400,7 +1453,11 @@
           ],
           "image": "/agentes/carlos-ortega.webp",
           "carriers": [
-            "unitedhealthcare"
+            "unitedhealthcare",
+            "aetna",
+            "humana",
+            "devoted-health",
+            "hs"
           ]
         },
         {
@@ -1420,7 +1477,8 @@
           "image": "/agentes/keylin-pagan.webp",
           "carriers": [
             "unitedhealthcare"
-          ]
+          ],
+          "planenroll": "https://www.planenroll.com/AgentBio?purl=Keylin-Pagan"
         }
       ]
     },
@@ -1479,7 +1537,8 @@
             "jefferson-health",
             "horizon"
           ],
-          "dashboard_access": false
+          "dashboard_access": false,
+          "planenroll": "https://www.sunfirematrix.com/app/consumer/pfs/21410429/"
         },
         {
           "name": "Cardosil Faulcon",
